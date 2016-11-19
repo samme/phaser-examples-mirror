@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>p2 physics/load polygon 3.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  p2 physics/load polygon 3
+</h1>
+<a href="/js/p2%20physics/load%20polygon%203.js">source: p2 physics/load polygon 3.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'contra2'</span><span class="p">,</span> <span class="s1">'assets/pics/contra2.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">contra</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="c1">//	Enable p2 physics</span>
+	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">P2JS</span><span class="p">);</span>
+
+	<span class="nx">contra</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span> <span class="o">-</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'contra2'</span><span class="p">);</span>
+
+	<span class="c1">//	Enable the physics body on this sprite and turn on the visual debugger</span>
+	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">contra</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+	<span class="nx">contra</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clearShapes</span><span class="p">();</span>
+
+	<span class="c1">//	You can specify the addition of a new polygon to a body in 3 different ways:</span>
+
+	<span class="nx">contra</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">addPolygon</span><span class="p">(</span> <span class="p">{}</span> <span class="p">,</span>    <span class="mi">10</span><span class="p">,</span> <span class="mi">191</span>  <span class="p">,</span>  <span class="mi">26</span><span class="p">,</span> <span class="mi">158</span>  <span class="p">,</span>  <span class="mi">25</span><span class="p">,</span> <span class="mi">186</span>  <span class="p">,</span>  <span class="mi">13</span><span class="p">,</span> <span class="mi">204</span>  <span class="p">);</span>
+	<span class="c1">// contra.body.addPolygon( {} , [   10, 191  ,  26, 158  ,  25, 186  ,  13, 204  ]);</span>
+	<span class="c1">// contra.body.addPolygon( {} , [   [10, 191]  ,  [26, 158]  ,  [25, 186]  ,  [13, 204]  ]);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/p2%20physics/load%20polygon%203.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

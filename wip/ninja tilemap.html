@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/ninja tilemap.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/ninja tilemap
+</h1>
+<a href="/js/wip/ninja%20tilemap.js">source: wip/ninja tilemap.js</a><pre class="highlight javascript"><code>
+<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'map'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/maps/ninja-tilemap.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">TILED_JSON</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/shinyball.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/skies/sky2.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'kenney'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/kenney.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">sprite1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">map</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">layer</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">tiles</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="kd">var</span> <span class="nx">sky</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
+	<span class="nx">sky</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+	<span class="c1">//	Activate the Ninja physics system</span>
+	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">NINJA</span><span class="p">);</span>
+
+    <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'map'</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'kenney'</span><span class="p">);</span>
+    
+    <span class="nx">layer</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="s1">'Tile Layer 1'</span><span class="p">);</span>
+
+    <span class="nx">layer</span><span class="p">.</span><span class="nx">resizeWorld</span><span class="p">();</span>
+
+    <span class="kd">var</span> <span class="nx">slopeMap</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">'32'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'77'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'95'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'36'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'137'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'140'</span><span class="p">:</span> <span class="mi">2</span> <span class="p">};</span>
+
+    <span class="nx">tiles</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">ninja</span><span class="p">.</span><span class="nx">convertTilemap</span><span class="p">(</span><span class="nx">map</span><span class="p">,</span> <span class="nx">layer</span><span class="p">,</span> <span class="nx">slopeMap</span><span class="p">);</span>
+
+    <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
+    <span class="c1">// game.physics.ninja.enableAABB(sprite1);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">ninja</span><span class="p">.</span><span class="nx">enableCircle</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">sprite1</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+
+    <span class="c1">//  A little more bounce</span>
+    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">);</span>
+
+    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">tiles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">circle</span><span class="p">.</span><span class="nx">collideCircleVsTile</span><span class="p">(</span><span class="nx">tiles</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">tile</span><span class="p">);</span>
+        <span class="c1">// sprite1.body.aabb.collideAABBVsTile(tiles[i].tile);</span>
+    <span class="p">}</span>
+
+	<span class="c1">// game.physics.ninja.collide(sprite1, tiles);</span>
+
+    <span class="c1">// sprite1.body.setZeroVelocity();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+
+
+	<span class="c1">// game.debug.text(sprite1.body.shape.velocity.x, 32, 32);</span>
+	<span class="c1">// game.debug.text(sprite1.body.shape.velocity.y, 32, 64);</span>
+	<span class="c1">// game.debug.text(game.math.radToDeg(sprite1.body.angle), 32, 96);</span>
+
+	<span class="c1">// tile1.render(game.context, 'ninja-tiles');</span>
+	<span class="c1">// tile2.render(game.context, 'ninja-tiles');</span>
+
+    <span class="c1">// game.debug.geom(sprite1.body, 'rgba(0,255,0,0.4)', true, 1);</span>
+
+    <span class="c1">// game.debug.geom(tile1, 'rgba(0,255,0,0.4)', true, 1);</span>
+    <span class="c1">// game.debug.geom(tile1, 'rgba(0,255,0,0.4)', true, 1);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/ninja%20tilemap.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

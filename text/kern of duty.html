@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>text/kern of duty.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  text/kern of duty
+</h1>
+<a href="/js/text/kern%20of%20duty.js">source: text/kern of duty.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">" "</span><span class="p">,</span>
+    <span class="s2">"photon storm presents"</span><span class="p">,</span>
+    <span class="s2">"a phaser production"</span><span class="p">,</span>
+    <span class="s2">" "</span><span class="p">,</span>
+    <span class="s2">"Kern of Duty"</span><span class="p">,</span>
+    <span class="s2">" "</span><span class="p">,</span>
+    <span class="s2">"directed by rich davey"</span><span class="p">,</span>
+    <span class="s2">"rendering by mat groves"</span><span class="p">,</span>
+    <span class="s2">"    "</span><span class="p">,</span>
+    <span class="s2">"03:45, November 4th, 2014"</span><span class="p">,</span>
+    <span class="s2">"somewhere in the north pacific"</span><span class="p">,</span>
+    <span class="s2">"mission control bravo ..."</span><span class="p">,</span>
+<span class="p">];</span>
+
+<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cod'</span><span class="p">,</span> <span class="s1">'assets/pics/cod.jpg'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'cod'</span><span class="p">);</span>
+
+    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"30pt Courier"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#19cb65"</span><span class="p">,</span> <span class="na">stroke</span><span class="p">:</span> <span class="s2">"#119f4e"</span><span class="p">,</span> <span class="na">strokeThickness</span><span class="p">:</span> <span class="mi">2</span> <span class="p">});</span>
+
+    <span class="nx">nextLine</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">updateLine</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nx">content</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">length</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">line</span> <span class="o">=</span> <span class="nx">content</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">line</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="c1">// text.text = line;</span>
+        <span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="c1">//  Wait 2 seconds then start a new line</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">nextLine</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">nextLine</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">index</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">content</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">line</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="nx">content</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">updateLine</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/text/kern%20of%20duty.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

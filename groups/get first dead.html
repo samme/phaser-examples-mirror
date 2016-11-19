@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>groups/get first dead.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  groups/get first dead
+</h1>
+<a href="/js/groups/get%20first%20dead.js">source: groups/get first dead.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'veg'</span><span class="p">,</span> <span class="s1">'assets/sprites/fruitnveg32wh37.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">veg</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  Create a group</span>
+    <span class="nx">veg</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+
+    <span class="c1">//  Add 20 sprites to it - the 'false' parameter sets them all to dead</span>
+    <span class="nx">veg</span><span class="p">.</span><span class="nx">createMultiple</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s1">'veg'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+    <span class="c1">//  Set-up a simple repeating timer</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="nx">resurrect</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">resurrect</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  Get a dead item</span>
+    <span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">veg</span><span class="p">.</span><span class="nx">getFirstDead</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//  And bring it back to life</span>
+        <span class="nx">item</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">);</span>
+
+        <span class="c1">//  This just changes its frame</span>
+        <span class="nx">item</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">36</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'One item will be resurrected every second'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Living: '</span> <span class="o">+</span> <span class="nx">veg</span><span class="p">.</span><span class="nx">countLiving</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'   Dead: '</span> <span class="o">+</span> <span class="nx">veg</span><span class="p">.</span><span class="nx">countDead</span><span class="p">(),</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/groups/get%20first%20dead.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

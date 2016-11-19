@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/crt.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/crt
+</h1>
+<a href="/js/wip/crt.js">source: wip/crt.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'metal'</span><span class="p">,</span> <span class="s1">'assets/textures/metal.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+
+        <span class="s2">"uniform vec3      iResolution;"</span><span class="p">,</span>
+        <span class="s2">"uniform float     iGlobalTime;"</span><span class="p">,</span>
+        <span class="s2">"uniform float     iChannelTime[4];"</span><span class="p">,</span>
+        <span class="s2">"uniform vec4      iMouse;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec4      iDate;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec3      iChannelResolution[4];"</span><span class="p">,</span>
+        <span class="s2">"uniform int      iFrame;"</span><span class="p">,</span>
+        <span class="s2">"uniform float      iTimeDelta;"</span><span class="p">,</span>
+        <span class="s2">"uniform float      iFrameRate;"</span><span class="p">,</span>
+
+        <span class="s2">"struct Channel {"</span><span class="p">,</span>
+        <span class="s2">"vec3 resolution;"</span><span class="p">,</span>
+        <span class="s2">"float time;"</span><span class="p">,</span>
+        <span class="s2">"};"</span><span class="p">,</span>
+        <span class="s2">"uniform Channel xiChannel[4];"</span><span class="p">,</span>
+        <span class="s2">"uniform sampler2D iChannel0;"</span><span class="p">,</span>
+
+        <span class="s2">"// add any extra uniforms here"</span><span class="p">,</span>
+
+        <span class="s2">"// Loosely based on postprocessing shader by inigo quilez, License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License."</span><span class="p">,</span>
+
+        <span class="s2">"vec2 curve(vec2 uv)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"uv = (uv - 0.5) * 2.0;"</span><span class="p">,</span>
+            <span class="s2">"uv *= 1.1;"</span><span class="p">,</span>
+            <span class="s2">"uv.x *= 1.0 + pow((abs(uv.y) / 5.0), 2.0);"</span><span class="p">,</span>
+            <span class="s2">"uv.y *= 1.0 + pow((abs(uv.x) / 4.0), 2.0);"</span><span class="p">,</span>
+            <span class="s2">"uv  = (uv / 2.0) + 0.5;"</span><span class="p">,</span>
+            <span class="s2">"uv =  uv *0.92 + 0.04;"</span><span class="p">,</span>
+            <span class="s2">"return uv;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+        <span class="s2">"void mainImage( out vec4 fragColor, in vec2 fragCoord )"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec2 q = fragCoord.xy / iResolution.xy;"</span><span class="p">,</span>
+            <span class="s2">"vec2 uv = q;"</span><span class="p">,</span>
+            <span class="s2">"uv = curve( uv );"</span><span class="p">,</span>
+            <span class="s2">"vec3 oricol = texture2D( iChannel0, vec2(q.x,q.y) ).xyz;"</span><span class="p">,</span>
+            <span class="s2">"vec3 col;"</span><span class="p">,</span>
+            <span class="s2">"float x =  sin(0.3*iGlobalTime+uv.y*21.0)*sin(0.7*iGlobalTime+uv.y*29.0)*sin(0.3+0.33*iGlobalTime+uv.y*31.0)*0.0017;"</span><span class="p">,</span>
+
+            <span class="s2">"col.r = texture2D(iChannel0,vec2(x+uv.x+0.001,uv.y+0.001)).x+0.05;"</span><span class="p">,</span>
+            <span class="s2">"col.g = texture2D(iChannel0,vec2(x+uv.x+0.000,uv.y-0.002)).y+0.05;"</span><span class="p">,</span>
+            <span class="s2">"col.b = texture2D(iChannel0,vec2(x+uv.x-0.002,uv.y+0.000)).z+0.05;"</span><span class="p">,</span>
+            <span class="s2">"col.r += 0.08*texture2D(iChannel0,0.75*vec2(x+0.025, -0.027)+vec2(uv.x+0.001,uv.y+0.001)).x;"</span><span class="p">,</span>
+            <span class="s2">"col.g += 0.05*texture2D(iChannel0,0.75*vec2(x+-0.022, -0.02)+vec2(uv.x+0.000,uv.y-0.002)).y;"</span><span class="p">,</span>
+            <span class="s2">"col.b += 0.08*texture2D(iChannel0,0.75*vec2(x+-0.02, -0.018)+vec2(uv.x-0.002,uv.y+0.000)).z;"</span><span class="p">,</span>
+
+            <span class="s2">"col = clamp(col*0.6+0.4*col*col*1.0,0.0,1.0);"</span><span class="p">,</span>
+
+            <span class="s2">"float vig = (0.0 + 1.0*16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y));"</span><span class="p">,</span>
+            <span class="s2">"col *= vec3(pow(vig,0.3));"</span><span class="p">,</span>
+
+            <span class="s2">"col *= vec3(0.95,1.05,0.95);"</span><span class="p">,</span>
+            <span class="s2">"col *= 2.8;"</span><span class="p">,</span>
+
+            <span class="s2">"float scans = clamp( 0.35+0.35*sin(3.5*iGlobalTime+uv.y*iResolution.y*1.5), 0.0, 1.0);"</span><span class="p">,</span>
+
+            <span class="s2">"float s = pow(scans,1.7);"</span><span class="p">,</span>
+            <span class="s2">"col = col*vec3( 0.4+0.7*s) ;"</span><span class="p">,</span>
+
+            <span class="s2">"col *= 1.0+0.01*sin(110.0*iGlobalTime);"</span><span class="p">,</span>
+            <span class="s2">"if (uv.x &lt; 0.0 || uv.x &gt; 1.0)"</span><span class="p">,</span>
+            <span class="s2">"col *= 0.0;"</span><span class="p">,</span>
+            <span class="s2">"if (uv.y &lt; 0.0 || uv.y &gt; 1.0)"</span><span class="p">,</span>
+            <span class="s2">"col *= 0.0;"</span><span class="p">,</span>
+
+            <span class="s2">"col*=1.0-0.65*vec3(clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0));"</span><span class="p">,</span>
+
+            <span class="s2">"float comp = smoothstep( 0.1, 0.9, sin(iGlobalTime) );"</span><span class="p">,</span>
+
+            <span class="s2">"// Remove the next line to stop cross-fade between original and postprocess"</span><span class="p">,</span>
+            <span class="s2">"// col = mix( col, oricol, comp );"</span><span class="p">,</span>
+
+            <span class="s2">"fragColor = vec4(col,1.0);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"void main(void) {"</span><span class="p">,</span>
+            <span class="s2">"vec4 color = vec4(0.0, 0.0, 0.0, 1.0);"</span><span class="p">,</span>
+            <span class="s2">"mainImage(color, gl_FragCoord.xy);"</span><span class="p">,</span>
+            <span class="s2">"color.w = 1.0;"</span><span class="p">,</span>
+            <span class="s2">"gl_FragColor = color;"</span><span class="p">,</span>
+        <span class="s2">"}"</span>
+    <span class="p">];</span>
+
+    <span class="kd">var</span> <span class="nx">bob</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'metal'</span><span class="p">);</span>
+
+    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">uniforms</span><span class="p">.</span><span class="nx">iChannel0</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">bob</span><span class="p">.</span><span class="nx">texture</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/crt.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>create/gradient gen.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  create/gradient gen
+</h1>
+<a href="/js/create/gradient%20gen.js">source: create/gradient gen.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">conf</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">width</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+    <span class="na">height</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span>
+    <span class="na">renderer</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span>
+    <span class="na">parent</span><span class="p">:</span> <span class="s1">'phaser-example'</span><span class="p">,</span>
+    <span class="na">transparent</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="na">antialias</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="na">state</span><span class="p">:</span> <span class="k">this</span><span class="p">,</span>
+    <span class="na">resolution</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="nx">conf</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'colors'</span><span class="p">,</span> <span class="s1">'assets/misc/gradient-palettes.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'arrow'</span><span class="p">,</span> <span class="s1">'assets/misc/arrows.png'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">bmdSprite</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">markers</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">swatchBMD</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">swatch</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">isDragging</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">isOnSwatch</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">arrow1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">arrow2</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">currentArrow</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">chunk</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+
+<span class="c1">// rgba(52,3,98,1) to rgba(247,130,11,1) chunk 16</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#535353'</span><span class="p">;</span>
+
+	<span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">550</span><span class="p">);</span>
+    <span class="nx">bmd</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="nx">bmdSprite</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+
+    <span class="nx">markers</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+
+    <span class="nx">createMarker</span><span class="p">(</span><span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+    <span class="nx">createMarker</span><span class="p">(</span><span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+
+    <span class="nx">arrow1</span> <span class="o">=</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="nx">arrow2</span> <span class="o">=</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+    <span class="nx">currentArrow</span> <span class="o">=</span> <span class="nx">arrow1</span><span class="p">;</span>
+    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">checkClick</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="nx">swatchBMD</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
+    <span class="nx">swatchBMD</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'colors'</span><span class="p">);</span>
+
+    <span class="nx">swatch</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">800</span> <span class="o">-</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">swatchBMD</span><span class="p">);</span>
+    <span class="nx">swatch</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nx">swatch</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">startSwatch</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">swatch</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">stopSwatch</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">swatch</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">stopSwatch</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="nx">refresh</span><span class="p">();</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">updateColor</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">startSwatch</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">isOnSwatch</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">updateColor</span><span class="p">(</span><span class="nx">pointer</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">stopSwatch</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">isOnSwatch</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">updateColor</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">isOnSwatch</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">swatch</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">swatch</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="nx">swatchBMD</span><span class="p">.</span><span class="nx">getPixelRGB</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+
+        <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getColor32</span><span class="p">(</span><span class="nx">color</span><span class="p">.</span><span class="nx">a</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">g</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
+        <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">webrgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+        <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">rgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getRGB</span><span class="p">(</span><span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+
+        <span class="nx">refresh</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">makeCurrent</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="nx">currentArrow</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">;</span>
+
+    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">checkClick</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;=</span> <span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">createMarker</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+        <span class="nx">markers</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="s1">'y'</span><span class="p">);</span>
+        <span class="nx">refresh</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">createMarker</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">arrow</span> <span class="o">=</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">18</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s1">'arrow'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="nx">arrow</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="nx">arrow</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">markers</span><span class="p">.</span><span class="nx">total</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">arrow</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
+        <span class="nx">arrow</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">allowHorizontalDrag</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="nx">arrow</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">boundsRect</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+        <span class="nx">arrow</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">startRefresh</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        <span class="nx">arrow</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">stopRefresh</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">arrow</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getRandomColor</span><span class="p">();</span>
+    <span class="nx">arrow</span><span class="p">.</span><span class="nx">webrgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">arrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+    <span class="nx">arrow</span><span class="p">.</span><span class="nx">rgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getRGB</span><span class="p">(</span><span class="nx">arrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+
+    <span class="nx">arrow</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">pickColor</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">markers</span><span class="p">.</span><span class="nx">total</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">makeCurrent</span><span class="p">(</span><span class="nx">arrow</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">pickColor</span><span class="p">(</span><span class="nx">arrow</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">makeCurrent</span><span class="p">(</span><span class="nx">arrow</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">selectColor</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">swatch</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">swatch</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="nx">swatchBMD</span><span class="p">.</span><span class="nx">getPixelRGB</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+
+    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getColor32</span><span class="p">(</span><span class="nx">color</span><span class="p">.</span><span class="nx">a</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">g</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
+    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">webrgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">rgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getRGB</span><span class="p">(</span><span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+
+    <span class="nx">refresh</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">startRefresh</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">makeCurrent</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+
+    <span class="nx">isDragging</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">stopRefresh</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">isDragging</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="nx">markers</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="s1">'y'</span><span class="p">);</span>
+    <span class="nx">refresh</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">refresh</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">step</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">marker1</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">marker2</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">distance</span><span class="p">;</span>
+
+    <span class="nx">bmd</span><span class="p">.</span><span class="nx">cls</span><span class="p">();</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">c</span> <span class="o">&lt;</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">c</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">marker1</span> <span class="o">=</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">c</span><span class="p">];</span>
+        <span class="nx">marker2</span> <span class="o">=</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+
+        <span class="kd">var</span> <span class="nx">dy</span> <span class="o">=</span> <span class="nx">marker1</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">sy</span> <span class="o">=</span> <span class="nx">marker2</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+
+        <span class="nx">distance</span> <span class="o">=</span> <span class="nx">sy</span> <span class="o">-</span> <span class="nx">dy</span><span class="p">;</span>
+        <span class="nx">y</span> <span class="o">=</span> <span class="nx">dy</span><span class="p">;</span>
+        <span class="nx">step</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">distance</span> <span class="o">/</span> <span class="nx">chunk</span><span class="p">);</span>
+        <span class="nx">remainder</span> <span class="o">=</span> <span class="nx">distance</span> <span class="o">-</span> <span class="p">(</span><span class="nx">step</span> <span class="o">*</span> <span class="nx">chunk</span><span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">step</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">ci</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">interpolateRGB</span><span class="p">(</span><span class="nx">marker1</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span> <span class="nx">marker1</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">g</span><span class="p">,</span> <span class="nx">marker1</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">b</span><span class="p">,</span> <span class="nx">marker2</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span> <span class="nx">marker2</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">g</span><span class="p">,</span> <span class="nx">marker2</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">b</span><span class="p">,</span> <span class="nx">step</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+            <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">ci</span><span class="p">);</span>
+
+            <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">dy</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">chunk</span><span class="p">);</span>
+
+            <span class="nx">dy</span> <span class="o">+=</span> <span class="nx">chunk</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">//  Fill in the little gap that is left (if any)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">remainder</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">dy</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">remainder</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nx">bmd</span><span class="p">.</span><span class="nx">dirty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">isDragging</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">refresh</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/create/gradient%20gen.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>virtualjoystick/shader motion.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  virtualjoystick/shader motion
+</h1>
+<a href="/js/virtualjoystick/shader%20motion.js">source: virtualjoystick/shader motion.js</a><pre class="highlight javascript"><code><span class="cm">/**
+* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+* @copyright    2015 Photon Storm Ltd.
+* @license      {@link http://choosealicense.com/licenses/no-license/|No License}
+* 
+* @description  This example requires the Phaser Virtual Joystick Plugin to run.
+*               For more details please see http://phaser.io/shop/plugins/virtualjoystick
+*/</span>
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">PhaserGame</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">;</span>
+
+<span class="p">};</span>
+
+<span class="nx">PhaserGame</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="na">init</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">renderSession</span><span class="p">.</span><span class="nx">roundPixels</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+
+    <span class="p">},</span>
+
+    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'arcade'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/arcade-joystick.png'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/arcade-joystick.json'</span><span class="p">);</span>
+
+    <span class="p">},</span>
+
+    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">createShader</span><span class="p">();</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">pad</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">VirtualJoystick</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">stick</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addStick</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">alignBottomLeft</span><span class="p">();</span>
+
+    <span class="p">},</span>
+
+    <span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">uniforms</span><span class="p">.</span><span class="nx">mouse</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">filterX</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">uniforms</span><span class="p">.</span><span class="nx">mouse</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">filterY</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+
+    <span class="p">},</span>
+
+    <span class="na">createShader</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+            <span class="s2">"uniform float     time;"</span><span class="p">,</span>
+            <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
+            <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+
+            <span class="s2">"const float Tau        = 6.2832;"</span><span class="p">,</span>
+            <span class="s2">"const float speed  = .02;"</span><span class="p">,</span>
+            <span class="s2">"const float density    = .04;"</span><span class="p">,</span>
+            <span class="s2">"const float shape  = .04;"</span><span class="p">,</span>
+
+            <span class="s2">"float random( vec2 seed ) {"</span><span class="p">,</span>
+                <span class="s2">"return fract(sin(seed.x+seed.y*1e3)*1e5);"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"float Cell(vec2 coord) {"</span><span class="p">,</span>
+                <span class="s2">"vec2 cell = fract(coord) * vec2(.5,2.) - vec2(.0,.5);"</span><span class="p">,</span>
+                <span class="s2">"return (1.-length(cell*2.-1.))*step(random(floor(coord)),density)*2.;"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"void main( void ) {"</span><span class="p">,</span>
+
+                <span class="s2">"vec2 p = gl_FragCoord.xy / resolution  - mouse;"</span><span class="p">,</span>
+
+                <span class="s2">"float a = fract(atan(p.x, p.y) / Tau);"</span><span class="p">,</span>
+                <span class="s2">"float d = length(p);"</span><span class="p">,</span>
+
+                <span class="s2">"vec2 coord = vec2(pow(d, shape), a)*256.;"</span><span class="p">,</span>
+                <span class="s2">"vec2 delta = vec2(-time*speed*256., .5);"</span><span class="p">,</span>
+                <span class="s2">"//vec2 delta = vec2(-time*speed*256., cos(length(p)*10.)*2e0+time*5e-1); // wavy wavy"</span><span class="p">,</span>
+
+                <span class="s2">"float c = 0.;"</span><span class="p">,</span>
+                <span class="s2">"for(int i=0; i&lt;3; i++) {"</span><span class="p">,</span>
+                    <span class="s2">"coord += delta;"</span><span class="p">,</span>
+                    <span class="s2">"c = max(c, Cell(coord));"</span><span class="p">,</span>
+                <span class="s2">"}"</span><span class="p">,</span>
+
+                <span class="s2">"gl_FragColor = vec4(c*d);"</span><span class="p">,</span>
+            <span class="s2">"}"</span>
+        <span class="p">];</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+
+        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">filter</span> <span class="p">];</span>
+
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Game'</span><span class="p">,</span> <span class="nx">PhaserGame</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/virtualjoystick/shader%20motion.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

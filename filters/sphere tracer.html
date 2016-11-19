@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>filters/sphere tracer.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  filters/sphere tracer
+</h1>
+<a href="/js/filters/sphere%20tracer.js">source: filters/sphere tracer.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  From http://glslsandbox.com/e#16061.2</span>
+
+    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+
+        <span class="s2">"#ifdef GL_ES"</span><span class="p">,</span>
+        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+        <span class="s2">"const vec3 df = vec3(0.05, 0.0, 0.0);"</span><span class="p">,</span>
+        <span class="s2">"#else"</span><span class="p">,</span>
+        <span class="s2">"const vec3 df = vec3(0.01, 0.0, 0.0);"</span><span class="p">,</span>
+        <span class="s2">"#endif"</span><span class="p">,</span>
+
+        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+
+        <span class="s2">"// Sphere tracer by mzeo"</span><span class="p">,</span>
+        <span class="s2">"// inspired by http://www.youtube.com/watch?v=kuesTvUYsSc#t=377"</span><span class="p">,</span>
+        <span class="s2">"// waves by @hintz"</span><span class="p">,</span>
+
+        <span class="s2">"#define AUTO_CAMERA"</span><span class="p">,</span>
+
+        <span class="s2">"// Constants"</span><span class="p">,</span>
+        <span class="s2">"// Camera"</span><span class="p">,</span>
+        <span class="s2">"const vec3 origin = vec3(0, 0, 0);"</span><span class="p">,</span>
+        <span class="s2">"const int steps = 128;"</span><span class="p">,</span>
+        <span class="s2">"const vec3 sun = vec3(1.0, .5, -1.0);"</span><span class="p">,</span>
+
+        <span class="s2">"const int miterations = 32;"</span><span class="p">,</span>
+
+        <span class="s2">"// Ball"</span><span class="p">,</span>
+        <span class="s2">"struct Ball"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec3 pos;"</span><span class="p">,</span>
+            <span class="s2">"float size;"</span><span class="p">,</span>
+        <span class="s2">"};"</span><span class="p">,</span>
+
+        <span class="s2">"const Ball ball = Ball(vec3(0, 0, 5), 0.5);"</span><span class="p">,</span>
+
+        <span class="s2">"struct Balls"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec3 dir;"</span><span class="p">,</span>
+            <span class="s2">"vec3 p;"</span><span class="p">,</span>
+            <span class="s2">"float dist;"</span><span class="p">,</span>
+        <span class="s2">"};"</span><span class="p">,</span>
+
+        <span class="s2">"const Balls balls = Balls(vec3(1, 0, 0), vec3(0, 0, 0), 1.0);"</span><span class="p">,</span>
+
+        <span class="s2">"// Floor"</span><span class="p">,</span>
+
+        <span class="s2">"struct Plane"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec3 n;"</span><span class="p">,</span>
+            <span class="s2">"float d;"</span><span class="p">,</span>
+        <span class="s2">"};"</span><span class="p">,</span>
+
+        <span class="s2">"const Plane plane = Plane(vec3(0, 1, 0), -1.0);"</span><span class="p">,</span>
+
+        <span class="s2">"// Distance"</span><span class="p">,</span>
+        <span class="s2">"struct Dist"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float dist;"</span><span class="p">,</span>
+            <span class="s2">"int id;"</span><span class="p">,</span>
+        <span class="s2">"};"</span><span class="p">,</span>
+
+
+        <span class="s2">"Dist and(Dist a, Dist b)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"if (a.dist &lt; b.dist)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"return a;"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"return b;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"Dist fBall(Ball ball, vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"return Dist(length(ball.pos - p) - ball.size, 0);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"Ball get(Balls balls, float t)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float a = abs(mod(t, 6.0) - 3.0);"</span><span class="p">,</span>
+            <span class="s2">"vec3 p = balls.p + balls.dir * t * balls.dist + a * a * vec3(0, -0.15, 0);"</span><span class="p">,</span>
+            <span class="s2">"return Ball(p, ball.size);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"Dist fBalls(Balls balls, vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float t = dot(p - balls.p, balls.dir) / balls.dist;"</span><span class="p">,</span>
+            <span class="s2">"float t0 = t - fract(t + fract(time) * 2.0);"</span><span class="p">,</span>
+            <span class="s2">"float t1 = t0 + 1.0;"</span><span class="p">,</span>
+
+            <span class="s2">"return and("</span><span class="p">,</span>
+            <span class="s2">"fBall(get(balls, t0), p),"</span><span class="p">,</span>
+            <span class="s2">"fBall(get(balls, t1), p));"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"Dist fPlane(Plane plane, vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"return Dist(dot(plane.n, p) - plane.d - 0.4*cos(length(p.xz) - time), 1);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"Dist f(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"return and("</span><span class="p">,</span>
+            <span class="s2">"fBalls(balls, p),"</span><span class="p">,</span>
+            <span class="s2">"fPlane(plane, p));"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 grad(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float f0 = f(p).dist;"</span><span class="p">,</span>
+
+            <span class="s2">"return normalize(vec3("</span><span class="p">,</span>
+            <span class="s2">"f(p + df.xyz).dist,"</span><span class="p">,</span>
+            <span class="s2">"f(p + df.yxz).dist,"</span><span class="p">,</span>
+            <span class="s2">"f(p + df.yzx).dist) - f0);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float mandel(vec2 c)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec2 z = c;"</span><span class="p">,</span>
+
+            <span class="s2">"for(int i = 0; i &lt; miterations; ++i)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"z = vec2(z.x*z.x - z.y*z.y, 2.0*z.x*z.y) + c;"</span><span class="p">,</span>
+                <span class="s2">"if (length(z) &gt; 40.0) return float(i) / float(miterations);"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"return 0.0;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 floorTexture(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"mat2 rot = mat2(vec2(1, 1), vec2(1, -1));"</span><span class="p">,</span>
+            <span class="s2">"vec2 c = rot * (p.xz + vec2(-0.7, -1.0)) * 0.2;"</span><span class="p">,</span>
+            <span class="s2">"float i = mandel(c);"</span><span class="p">,</span>
+            <span class="s2">"return clamp(vec3(i * 10.0, i * i *10.0, i*i*i*5.0).zyx, vec3(0,0,0), vec3(2,2,2));"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+
+        <span class="s2">"vec4 shade(vec3 p, vec3 ray, int id)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec3 n = grad(p);"</span><span class="p">,</span>
+            <span class="s2">"float diffuse = clamp(dot(normalize(sun), n), 0.0, 1.0);"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 color;"</span><span class="p">,</span>
+            <span class="s2">"float ref;"</span><span class="p">,</span>
+
+            <span class="s2">"if (id == 0)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"color = vec3(0,1,0);"</span><span class="p">,</span>
+                <span class="s2">"ref = 0.1;"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+            <span class="s2">"else"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"color = floorTexture(p);"</span><span class="p">,</span>
+                <span class="s2">"ref = 0.5;"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"return vec4(color * diffuse, 1) * ref;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec4 combine(vec4 a, vec4 b)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"return a + b * (1.0 - a.w);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec4 sky(vec3 ray)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float sun = dot(ray, normalize(sun));"</span><span class="p">,</span>
+            <span class="s2">"sun = (sun &gt; 0.0) ? pow(sun, 100.0) * 3.0 : 0.0;"</span><span class="p">,</span>
+            <span class="s2">"float horizon = 1.0 - abs(ray.y);"</span><span class="p">,</span>
+            <span class="s2">"vec3 blue = vec3(0.1, 0.3, 0.6);"</span><span class="p">,</span>
+            <span class="s2">"vec3 red = vec3(0.6, 0.3, 0.) * 2.0;"</span><span class="p">,</span>
+            <span class="s2">"return vec4(vec3(0.9, 0.8, 0.5) * sun + blue * horizon + red * pow(horizon, 8.0), 1);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec4 trace(vec3 origin, vec3 ray)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec3 p = origin;"</span><span class="p">,</span>
+            <span class="s2">"Dist dist = Dist(10000.0, 2);"</span><span class="p">,</span>
+            <span class="s2">"vec4 result = vec4(0, 0, 0, 0);"</span><span class="p">,</span>
+
+            <span class="s2">"for(int i = 0; i &lt; steps; ++i)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"dist = f(p);"</span><span class="p">,</span>
+                <span class="s2">"if (dist.dist &gt; 0.01)"</span><span class="p">,</span>
+                <span class="s2">"{"</span><span class="p">,</span>
+                    <span class="s2">"p += ray * dist.dist;"</span><span class="p">,</span>
+                    <span class="s2">"float absorb = exp(-dist.dist * 0.05);"</span><span class="p">,</span>
+                    <span class="s2">"vec4 s = sky(ray) * (1.0 - absorb);"</span><span class="p">,</span>
+
+                    <span class="s2">"result = combine(result, s);"</span><span class="p">,</span>
+                <span class="s2">"}"</span><span class="p">,</span>
+                <span class="s2">"else if (result.w &lt; 0.99)"</span><span class="p">,</span>
+                <span class="s2">"{"</span><span class="p">,</span>
+                    <span class="s2">"vec3 n = grad(p);"</span><span class="p">,</span>
+                    <span class="s2">"vec4 s = shade(p, ray, dist.id);"</span><span class="p">,</span>
+                    <span class="s2">"ray = reflect(ray, n);"</span><span class="p">,</span>
+                    <span class="s2">"p += n * 0.01;"</span><span class="p">,</span>
+
+                    <span class="s2">"result = combine(result, s);"</span><span class="p">,</span>
+                <span class="s2">"}"</span><span class="p">,</span>
+                <span class="s2">"else"</span><span class="p">,</span>
+                <span class="s2">"{"</span><span class="p">,</span>
+                    <span class="s2">"break;"</span><span class="p">,</span>
+                <span class="s2">"}"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"return combine(result, sky(ray));"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"void main(void)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float scale = 2.0 / max(resolution.x, resolution.y);"</span><span class="p">,</span>
+            <span class="s2">"vec3 ray = vec3((gl_FragCoord.xy - resolution.xy / 2.0) * scale, 1);"</span><span class="p">,</span>
+
+            <span class="s2">"#ifdef AUTO_CAMERA"</span><span class="p">,</span>
+            <span class="s2">"float yaw = cos(time) * -0.25 + 0.1;"</span><span class="p">,</span>
+            <span class="s2">"float angle = time * 0.5;"</span><span class="p">,</span>
+            <span class="s2">"#else"</span><span class="p">,</span>
+            <span class="s2">"float yaw = mouse.y - 0.15;"</span><span class="p">,</span>
+            <span class="s2">"float angle = mouse.x * 8.0;"</span><span class="p">,</span>
+            <span class="s2">"#endif"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 from = (vec3(sin(angle), 0, cos(angle)) * cos(yaw) + vec3(0, sin(yaw) * 1.0, 0)) * 5.0;"</span><span class="p">,</span>
+            <span class="s2">"//vec3 from = origin + vec3((mouse.xy - vec2(0.5,0.0)) * vec2(15.0, 3.0), -5);"</span><span class="p">,</span>
+            <span class="s2">"vec3 to = vec3(0, -1, 0);"</span><span class="p">,</span>
+            <span class="s2">"vec3 up = vec3(0, 1, 0);"</span><span class="p">,</span>
+            <span class="s2">"vec3 dir = normalize(to - from);"</span><span class="p">,</span>
+            <span class="s2">"vec3 left = normalize(cross(up, dir));"</span><span class="p">,</span>
+            <span class="s2">"mat3 rot = mat3(left, cross(dir, left), dir);"</span><span class="p">,</span>
+
+            <span class="s2">"gl_FragColor = trace(from, rot * normalize(ray));"</span><span class="p">,</span>
+        <span class="s2">"}"</span>
+    <span class="p">];</span>
+
+
+    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/filters/sphere%20tracer.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

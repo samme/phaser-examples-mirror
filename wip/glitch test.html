@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/glitch test.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/glitch test
+</h1>
+<a href="/js/wip/glitch%20test.js">source: wip/glitch test.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture1'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar_sanity_train.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture2'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar-face_of_nature.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture3'</span><span class="p">,</span> <span class="s1">'assets/pics/destop-rewarding.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture4'</span><span class="p">,</span> <span class="s1">'assets/pics/unknown-the_starwars_pic.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">pic1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'picture1'</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">pic2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'picture2'</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">pic3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'picture3'</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">pic4</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'picture4'</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">pics</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">pic1</span><span class="p">,</span> <span class="nx">pic2</span><span class="p">,</span> <span class="nx">pic3</span><span class="p">,</span> <span class="nx">pic4</span> <span class="p">];</span>
+
+    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="nx">pics</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">pic</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="nx">pic</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+        <span class="nx">pic</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">1000</span> <span class="o">+</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="mi">500</span><span class="p">),</span> <span class="k">this</span><span class="p">.</span><span class="nx">showPicture</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">pic</span><span class="p">);</span>
+        <span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="p">});</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">showPicture</span><span class="p">(</span><span class="nx">pic</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">pic</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">pic</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="nx">pic</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">pic</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">removePicture</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">pic</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">removePicture</span><span class="p">(</span><span class="nx">pic</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">pic</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">showPicture</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">pic</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/glitch%20test.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

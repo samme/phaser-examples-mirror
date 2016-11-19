@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>animation/phaser_dragonbones.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  animation/phaser_dragonbones
+</h1>
+<a href="/js/animation/phaser_dragonbones.js">source: animation/phaser_dragonbones.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">dragonBones</span><span class="p">;</span>
+<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">dragonBones</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">display</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">PhaserDisplayBridge</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="kd">function</span> <span class="nx">PhaserDisplayBridge</span><span class="p">()</span> <span class="p">{</span>
+            <span class="p">}</span>
+
+            <span class="nx">PhaserDisplayBridge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getVisible</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_display</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">visible</span> <span class="p">:</span> <span class="kc">false</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserDisplayBridge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setVisible</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="nx">value</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserDisplayBridge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getDisplay</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_display</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserDisplayBridge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setDisplay</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_display</span> <span class="o">==</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="kd">var</span> <span class="nx">parent</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">parent</span><span class="p">;</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">parent</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">getChildIndex</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">)</span>
+                    <span class="p">}</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">removeDisplay</span><span class="p">()</span>
+                <span class="p">}</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_display</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">addDisplay</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserDisplayBridge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">dispose</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_display</span> <span class="o">=</span> <span class="kc">null</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserDisplayBridge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">updateTransform</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">matrix</span><span class="p">,</span> <span class="nx">transform</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// apply the matrix to the phaser / pixi display object</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">matrix</span><span class="p">.</span><span class="nx">tx</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">matrix</span><span class="p">.</span><span class="nx">ty</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="nx">transform</span><span class="p">.</span><span class="nx">skewX</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">scaleX</span> <span class="o">=</span> <span class="nx">transform</span><span class="p">.</span><span class="nx">scaleX</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">scaleY</span> <span class="o">=</span> <span class="nx">transform</span><span class="p">.</span><span class="nx">scaleY</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserDisplayBridge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">updateColor</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">aOffset</span><span class="p">,</span> <span class="nx">rOffset</span><span class="p">,</span> <span class="nx">gOffset</span><span class="p">,</span> <span class="nx">bOffset</span><span class="p">,</span> <span class="nx">aMultiplier</span><span class="p">,</span> <span class="nx">rMultiplier</span><span class="p">,</span> <span class="nx">gMultiplier</span><span class="p">,</span> <span class="nx">bMultiplier</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="nx">aMultiplier</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserDisplayBridge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addDisplay</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">parent</span> <span class="o">=</span> <span class="nx">container</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">parent</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="k">typeof</span> <span class="nx">index</span> <span class="o">===</span> <span class="s2">"undefined"</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">parent</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">)</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="nx">parent</span><span class="p">.</span><span class="nx">addChildAt</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserDisplayBridge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">removeDisplay</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_display</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">parent</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_display</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserDisplayBridge</span><span class="p">.</span><span class="nx">RADIAN_TO_ANGLE</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">/</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">PhaserDisplayBridge</span>
+        <span class="p">})();</span>
+        <span class="nx">display</span><span class="p">.</span><span class="nx">PhaserDisplayBridge</span> <span class="o">=</span> <span class="nx">PhaserDisplayBridge</span>
+    <span class="p">})(</span><span class="nx">dragonBones</span><span class="p">.</span><span class="nx">display</span> <span class="o">||</span> <span class="p">(</span><span class="nx">dragonBones</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="p">{}));</span>
+    <span class="kd">var</span> <span class="nx">display</span> <span class="o">=</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">display</span><span class="p">;</span>
+    <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">textures</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">PhaserBonesAtlas</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="kd">function</span> <span class="nx">PhaserBonesAtlas</span><span class="p">(</span><span class="nx">image</span><span class="p">,</span> <span class="nx">textureAtlasRawData</span><span class="p">,</span> <span class="nx">scale</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">scale</span> <span class="o">===</span> <span class="s2">"undefined"</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">scale</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="p">}</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_regions</span> <span class="o">=</span> <span class="p">{};</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">image</span> <span class="o">=</span> <span class="nx">image</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">scale</span> <span class="o">=</span> <span class="nx">scale</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">atlasId</span> <span class="o">=</span> <span class="nx">textureAtlasRawData</span><span class="p">.</span><span class="nx">atlasId</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">parseData</span><span class="p">(</span><span class="nx">textureAtlasRawData</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="nx">PhaserBonesAtlas</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">dispose</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">image</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_regions</span> <span class="o">=</span> <span class="kc">null</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserBonesAtlas</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getRegion</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">subTextureName</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_regions</span><span class="p">[</span><span class="nx">subTextureName</span><span class="p">]</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserBonesAtlas</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">parseData</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">textureAtlasRawData</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">textureAtlasData</span> <span class="o">=</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">DataParser</span><span class="p">.</span><span class="nx">parseTextureAtlasData</span><span class="p">(</span><span class="nx">textureAtlasRawData</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">);</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">textureAtlasData</span><span class="p">.</span><span class="nx">__name</span><span class="p">;</span>
+                <span class="k">delete</span> <span class="nx">textureAtlasData</span><span class="p">.</span><span class="nx">__name</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">subTextureName</span> <span class="k">in</span> <span class="nx">textureAtlasData</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">_regions</span><span class="p">[</span><span class="nx">subTextureName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">textureAtlasData</span><span class="p">[</span><span class="nx">subTextureName</span><span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+            <span class="k">return</span> <span class="nx">PhaserBonesAtlas</span>
+        <span class="p">})();</span>
+        <span class="nx">textures</span><span class="p">.</span><span class="nx">PhaserBonesAtlas</span> <span class="o">=</span> <span class="nx">PhaserBonesAtlas</span>
+    <span class="p">})(</span><span class="nx">dragonBones</span><span class="p">.</span><span class="nx">textures</span> <span class="o">||</span> <span class="p">(</span><span class="nx">dragonBones</span><span class="p">.</span><span class="nx">textures</span> <span class="o">=</span> <span class="p">{}));</span>
+    <span class="kd">var</span> <span class="nx">textures</span> <span class="o">=</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">textures</span><span class="p">;</span>
+    <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">factorys</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">PhaserBonesFactory</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">_super</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">__extends</span><span class="p">(</span><span class="nx">PhaserBonesFactory</span><span class="p">,</span> <span class="nx">_super</span><span class="p">);</span>
+            <span class="kd">function</span> <span class="nx">PhaserBonesFactory</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">_super</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="nx">PhaserBonesFactory</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_generateArmature</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">display</span> <span class="o">=</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+                <span class="kd">var</span> <span class="nx">armature</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">Armature</span><span class="p">(</span><span class="nx">display</span><span class="p">);</span>
+                <span class="k">return</span> <span class="nx">armature</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserBonesFactory</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_generateSlot</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">slot</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">Slot</span><span class="p">(</span><span class="k">new</span> <span class="nx">display</span><span class="p">.</span><span class="nx">PhaserDisplayBridge</span><span class="p">());</span>
+                <span class="k">return</span> <span class="nx">slot</span>
+            <span class="p">};</span>
+            <span class="nx">PhaserBonesFactory</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_generateDisplay</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">textureAtlas</span><span class="p">,</span> <span class="nx">frameName</span><span class="p">,</span> <span class="nx">pivotX</span><span class="p">,</span> <span class="nx">pivotY</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">//get reference to the image object</span>
+                <span class="kd">var</span> <span class="nx">imageRef</span> <span class="o">=</span> <span class="nx">textureAtlas</span><span class="p">.</span><span class="nx">image</span><span class="p">;</span>
+                <span class="c1">//create a sprite</span>
+                <span class="kd">var</span> <span class="nx">image</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">(</span><span class="nx">dragonBones</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                <span class="c1">//fetch the id of the atlas image</span>
+                <span class="kd">var</span> <span class="nx">imgName</span> <span class="o">=</span> <span class="nx">textureAtlas</span><span class="p">.</span><span class="nx">atlasId</span><span class="p">;</span>
+                <span class="c1">//set the 'key' property</span>
+                <span class="nx">image</span><span class="p">.</span><span class="nx">key</span> <span class="o">=</span> <span class="nx">imgName</span><span class="p">;</span>
+                <span class="c1">//apply the texture</span>
+                <span class="nx">image</span><span class="p">.</span><span class="nx">setTexture</span><span class="p">(</span><span class="nx">imageRef</span><span class="p">);</span>
+                <span class="c1">//set the sprite frame from the texture atlas</span>
+                <span class="nx">image</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">loadFrameData</span><span class="p">(</span><span class="nx">image</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getFrameData</span><span class="p">(</span><span class="nx">imgName</span><span class="p">));</span>
+                <span class="c1">//and the frameName... (restoring the .png that was stripped earlier)</span>
+                <span class="nx">image</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="nx">frameName</span> <span class="o">+</span> <span class="s2">".png"</span><span class="p">;</span>
+                <span class="c1">//set anchor point</span>
+                <span class="nx">image</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="nx">pivotX</span> <span class="o">/</span> <span class="nx">image</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">pivotY</span> <span class="o">/</span> <span class="nx">image</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+                <span class="k">return</span> <span class="nx">image</span>
+            <span class="p">};</span>
+            <span class="k">return</span> <span class="nx">PhaserBonesFactory</span>
+        <span class="p">})(</span><span class="nx">factorys</span><span class="p">.</span><span class="nx">BaseFactory</span><span class="p">);</span>
+        <span class="nx">factorys</span><span class="p">.</span><span class="nx">PhaserBonesFactory</span> <span class="o">=</span> <span class="nx">PhaserBonesFactory</span>
+    <span class="p">})(</span><span class="nx">dragonBones</span><span class="p">.</span><span class="nx">factorys</span> <span class="o">||</span> <span class="p">(</span><span class="nx">dragonBones</span><span class="p">.</span><span class="nx">factorys</span> <span class="o">=</span> <span class="p">{}));</span>
+    <span class="kd">var</span> <span class="nx">factorys</span> <span class="o">=</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">factorys</span>
+<span class="p">})(</span><span class="nx">dragonBones</span> <span class="o">||</span> <span class="p">(</span><span class="nx">dragonBones</span> <span class="o">=</span> <span class="p">{}));</span>
+<span class="cm">/*
+* generate a dragonbones atlas out of a TexturePacker JSONArray format atlas
+*/</span>
+<span class="nx">dragonBones</span><span class="p">.</span><span class="nx">makeBonesAtlas</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">atlasJson</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">partsList</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">bonesAtlas</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="nx">bonesAtlas</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="nx">bonesAtlas</span><span class="p">.</span><span class="nx">SubTexture</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="kd">var</span> <span class="nx">subTextures</span> <span class="o">=</span> <span class="nx">atlasJson</span><span class="p">.</span><span class="nx">frames</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">partsList</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="nx">subTextures</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">partName</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">txData</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">filename</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">subTexture</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">frame</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">hasExtension</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">n</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">partName</span> <span class="o">=</span> <span class="nx">partsList</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="nx">hasExtension</span> <span class="o">=</span> <span class="nx">partName</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/.png/i</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">hasExtension</span><span class="p">){</span>
+            <span class="nx">filename</span> <span class="o">=</span> <span class="nx">partName</span><span class="p">;</span>
+            <span class="nx">partName</span> <span class="o">=</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">filename</span> <span class="o">=</span> <span class="nx">partName</span> <span class="o">+</span> <span class="s2">".png"</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">k</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">txData</span> <span class="o">=</span> <span class="nx">subTextures</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">txData</span><span class="p">.</span><span class="nx">filename</span> <span class="o">===</span> <span class="nx">filename</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">frame</span> <span class="o">=</span> <span class="nx">txData</span><span class="p">.</span><span class="nx">frame</span><span class="p">;</span>
+                <span class="nx">subTexture</span> <span class="o">=</span> <span class="p">{</span><span class="na">name</span><span class="p">:</span> <span class="nx">partName</span><span class="p">};</span>
+                <span class="nx">subTexture</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+                <span class="nx">subTexture</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+                <span class="nx">subTexture</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">w</span><span class="p">;</span>
+                <span class="nx">subTexture</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">h</span><span class="p">;</span>
+                <span class="nx">bonesAtlas</span><span class="p">.</span><span class="nx">SubTexture</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">subTexture</span><span class="p">;</span>
+                <span class="k">break</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">bonesAtlas</span>
+<span class="p">};</span>
+<span class="cm">/*
+* utility method to create a phaser armature
+*/</span>
+<span class="nx">dragonBones</span><span class="p">.</span><span class="nx">makePhaserArmature</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">armatureName</span><span class="p">,</span> 
+                                    <span class="nx">skeletonId</span><span class="p">,</span> 
+                                    <span class="nx">animationId</span><span class="p">,</span> 
+                                    <span class="nx">skeletonData</span><span class="p">,</span> 
+                                    <span class="nx">atlasJson</span><span class="p">,</span>
+                                    <span class="nx">texture</span><span class="p">,</span>
+                                    <span class="nx">partsList</span><span class="p">,</span>
+                                    <span class="nx">atlasId</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//generate a dragonBones format input data out of the JSONArray atlas</span>
+    <span class="kd">var</span> <span class="nx">textureData</span> <span class="o">=</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">makeBonesAtlas</span><span class="p">(</span><span class="nx">atlasJson</span><span class="p">,</span> <span class="nx">skeletonId</span><span class="p">,</span> <span class="nx">partsList</span><span class="p">);</span>
+    <span class="nx">textureData</span><span class="p">.</span><span class="nx">atlasId</span> <span class="o">=</span> <span class="nx">atlasId</span><span class="p">;</span><span class="c1">// set the is</span>
+    <span class="c1">//pass skeleton data to factory</span>
+    <span class="kd">var</span> <span class="nx">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">factorys</span><span class="p">.</span><span class="nx">PhaserBonesFactory</span><span class="p">();</span>
+    <span class="nx">factory</span><span class="p">.</span><span class="nx">addSkeletonData</span><span class="p">(</span><span class="nx">dragonBones</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">DataParser</span><span class="p">.</span><span class="nx">parseSkeletonData</span><span class="p">(</span><span class="nx">skeletonData</span><span class="p">));</span>
+    <span class="c1">//generate atlas from the texture data</span>
+    <span class="kd">var</span> <span class="nx">atlas</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">textures</span><span class="p">.</span><span class="nx">PhaserBonesAtlas</span><span class="p">(</span><span class="nx">texture</span><span class="p">,</span> <span class="nx">textureData</span><span class="p">);</span>
+    <span class="c1">//pass atlas to factory</span>
+    <span class="nx">factory</span><span class="p">.</span><span class="nx">addTextureAtlas</span><span class="p">(</span><span class="nx">atlas</span><span class="p">);</span>
+    <span class="c1">// generate the armature</span>
+    <span class="kd">var</span> <span class="nx">armature</span> <span class="o">=</span> <span class="nx">factory</span><span class="p">.</span><span class="nx">buildArmature</span><span class="p">(</span><span class="nx">armatureName</span><span class="p">,</span> <span class="nx">animationId</span><span class="p">,</span> <span class="nx">skeletonId</span><span class="p">);</span>
+    <span class="c1">//link it to the world clock</span>
+    <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">WorldClock</span><span class="p">.</span><span class="nx">clock</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">armature</span><span class="p">);</span>
+    <span class="c1">//play the requested timeline</span>
+    <span class="nx">armature</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">gotoAndPlay</span><span class="p">(</span><span class="nx">animationId</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">armature</span>
+<span class="p">};</span></code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/animation/phaser_dragonbones.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

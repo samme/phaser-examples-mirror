@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/sprites.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/sprites
+</h1>
+<a href="/js/wip/sprites.js">source: wip/sprites.js</a><pre class="highlight javascript"><code><span class="p">{</span>
+<span class="s2">"frames"</span><span class="p">:</span> <span class="p">{</span>
+	<span class="s2">"menu_button.png"</span><span class="p">:</span> <span class="p">{</span>
+		<span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"x"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span><span class="mi">139</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span><span class="mi">83</span><span class="p">},</span>
+		<span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"x"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">"y"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">"w"</span><span class="p">:</span><span class="mi">139</span><span class="p">,</span><span class="s2">"h"</span><span class="p">:</span><span class="mi">83</span><span class="p">},</span>
+		<span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"w"</span><span class="p">:</span><span class="mi">139</span><span class="p">,</span><span class="s2">"h"</span><span class="p">:</span><span class="mi">83</span><span class="p">}</span>
+	<span class="p">},</span>
+	<span class="s2">"slider.png"</span><span class="p">:</span> <span class="p">{</span>
+		<span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"x"</span><span class="p">:</span><span class="mi">142</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span><span class="mi">26</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span><span class="mi">48</span><span class="p">},</span>
+		<span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"x"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">"y"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">"w"</span><span class="p">:</span><span class="mi">26</span><span class="p">,</span><span class="s2">"h"</span><span class="p">:</span><span class="mi">48</span><span class="p">},</span>
+		<span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"w"</span><span class="p">:</span><span class="mi">26</span><span class="p">,</span><span class="s2">"h"</span><span class="p">:</span><span class="mi">48</span><span class="p">}</span>
+	<span class="p">}</span>
+
+<span class="p">},</span>
+<span class="s2">"meta"</span><span class="p">:</span> <span class="p">{</span>
+	<span class="s2">"image"</span><span class="p">:</span> <span class="s2">"sprites.png"</span><span class="p">,</span>
+	<span class="s2">"size"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"w"</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">128</span><span class="p">},</span>
+	<span class="s2">"scale"</span><span class="p">:</span> <span class="s2">"1"</span>
+<span class="p">}</span>
+<span class="p">}</span></code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/sprites.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

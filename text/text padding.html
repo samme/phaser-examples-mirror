@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>text/text padding.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  text/text padding
+</h1>
+<a href="/js/text/text%20padding.js">source: text/text padding.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="c1">//  The Google WebFont Loader will look for this object, so create it before loading the script.</span>
+<span class="nx">WebFontConfig</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="c1">//  'active' means all requested fonts have finished loading</span>
+    <span class="c1">//  We set a 1 second delay before calling 'createText'.</span>
+    <span class="c1">//  For some reason if we don't the browser cannot render the text the first time it's created.</span>
+    <span class="na">active</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span><span class="p">,</span> <span class="nx">createText</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span> <span class="p">},</span>
+
+    <span class="c1">//  The Google Fonts we want to load (specify as many as you like in the array)</span>
+    <span class="na">google</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">families</span><span class="p">:</span> <span class="p">[</span><span class="s1">'Fontdiner Swanky'</span><span class="p">]</span>
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  Load the Google WebFont Loader script</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">script</span><span class="p">(</span><span class="s1">'webfont'</span><span class="p">,</span> <span class="s1">'//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">grd</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">setBackgroundColor</span><span class="p">(</span><span class="mh">0x2d2d2d</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">createText</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s2">"- phaser -\nrocking with\ngoogle web fonts"</span><span class="p">);</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+
+    <span class="nx">text</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'Fontdiner Swanky'</span><span class="p">;</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">fontSize</span> <span class="o">=</span> <span class="mi">60</span><span class="p">;</span>
+
+    <span class="c1">//  If we don't set the padding the font gets cut off</span>
+    <span class="c1">//  Comment out the line below to see the effect</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">padding</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+
+    <span class="nx">grd</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">createLinearGradient</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">text</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    <span class="nx">grd</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'#8ED6FF'</span><span class="p">);</span>   
+    <span class="nx">grd</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'#004CB3'</span><span class="p">);</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="nx">grd</span><span class="p">;</span>
+
+    <span class="nx">text</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'center'</span><span class="p">;</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">stroke</span> <span class="o">=</span> <span class="s1">'#000000'</span><span class="p">;</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">strokeThickness</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+
+    <span class="nx">text</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
+
+    <span class="nx">text</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">over</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">out</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="nx">grd</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">over</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s1">'#ff00ff'</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/text/text%20padding.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

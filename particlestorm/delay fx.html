@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>particlestorm/delay fx.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  particlestorm/delay fx
+</h1>
+<a href="/js/particlestorm/delay%20fx.js">source: particlestorm/delay fx.js</a><pre class="highlight javascript"><code><span class="cm">/**
+* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+* @copyright    2015 Photon Storm Ltd.
+* @license      {@link http://choosealicense.com/licenses/no-license/|No License}
+* 
+* @description  This example requires the Particle Storm Plugin to run.
+*               For more details please see http://phaser.io/shop/plugins/particlestorm
+*/</span>
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">manager</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">forceSingleUpdate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/particlestorm/logo-flat.png'</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="s1">'assets/particlestorm/particles/'</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">images</span><span class="p">([</span><span class="s1">'block1'</span><span class="p">,</span> <span class="s1">'block2'</span><span class="p">,</span> <span class="s1">'block3'</span><span class="p">,</span> <span class="s1">'block4'</span><span class="p">,</span> <span class="s1">'block5'</span><span class="p">,</span> <span class="s1">'spark'</span><span class="p">]);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">manager</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">ParticleStorm</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">ignoreForce</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">image</span><span class="p">:</span> <span class="p">[</span><span class="s1">'block1'</span><span class="p">,</span> <span class="s1">'block2'</span><span class="p">,</span> <span class="s1">'block3'</span><span class="p">,</span> <span class="s1">'block4'</span><span class="p">,</span> <span class="s1">'block5'</span><span class="p">],</span>
+        <span class="na">emit</span><span class="p">:</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"child"</span><span class="p">,</span> <span class="na">at</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">time</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">]</span> <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="kd">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">lifespan</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span>
+        <span class="na">image</span><span class="p">:</span> <span class="s1">'spark'</span><span class="p">,</span>
+        <span class="na">vx</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span>
+        <span class="na">vy</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span> <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'child'</span><span class="p">,</span> <span class="nx">child</span><span class="p">);</span>
+
+    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createEmitter</span><span class="p">();</span>
+
+    <span class="nx">emitter</span><span class="p">.</span><span class="nx">force</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">;</span>
+
+    <span class="nx">emitter</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+
+    <span class="c1">//  Here there is a 2000ms delay before the first particle starts.</span>
+    <span class="c1">//  Then 120ms for every particle after that.</span>
+    <span class="c1">//  The xStep places the particles 32px apart horizontally, so the start</span>
+    <span class="c1">//  in sequence.</span>
+    <span class="c1">//  The repeat -1 means to repeat this emit forever.</span>
+    <span class="c1">//  This demo will emit children as the particles 'die'.</span>
+    <span class="nx">emitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="p">{</span> <span class="na">total</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="na">xStep</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="na">delay</span><span class="p">:</span> <span class="p">{</span> <span class="na">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">step</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="na">visible</span><span class="p">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="na">repeat</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="na">frequency</span><span class="p">:</span> <span class="mi">4000</span> <span class="p">});</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">487</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">emitter</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">522</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/particlestorm/delay%20fx.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

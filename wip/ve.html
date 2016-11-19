@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/ve.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/ve
+</h1>
+<a href="/js/wip/ve.js">source: wip/ve.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">worldwidth</span><span class="o">=</span><span class="mi">900</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">worldheight</span><span class="o">=</span><span class="mi">500</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">gummi</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">constraintcount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">hitSprite</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+
+<span class="kd">var</span> <span class="nx">BootState</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">},</span>
+    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+             <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">scaleMode</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">ScaleManager</span><span class="p">.</span><span class="nx">SHOW_ALL</span><span class="p">;</span>
+             <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">maxWidth</span> <span class="o">=</span> <span class="nx">worldwidth</span><span class="p">;</span>
+             <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">maxHeight</span> <span class="o">=</span> <span class="nx">worldheight</span><span class="p">;</span>
+             <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">pageAlignHorizontally</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+             <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">pageAlignVertically</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+             <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setScreenSize</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'preload'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+<span class="kd">var</span> <span class="nx">PreloadState</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'gummi'</span><span class="p">,</span> <span class="s1">'wip/gummi.png'</span><span class="p">);</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cow'</span><span class="p">,</span> <span class="s1">'wip/cow48.png'</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+       <span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'menu'</span><span class="p">);</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+
+<span class="c1">/////   MENU START ////////</span>
+<span class="kd">var</span> <span class="nx">Menu</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">setupMenuEvironment</span><span class="p">();</span>
+        <span class="nx">setupMouseAnchor</span><span class="p">();</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">moveSpring</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="p">},</span>
+
+    <span class="na">moveSpring</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">isDown</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// console.log(arguments);</span>
+
+        <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span><span class="o">+</span><span class="nx">x</span><span class="p">;</span>
+        <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span><span class="o">+</span><span class="nx">y</span><span class="p">;</span>
+
+        <span class="c1">// updateSpringAssets(isDown);</span>
+
+        <span class="c1">// gummi.angle = angleBetween(mouseAnchor,hitSprite)+90;</span>
+        <span class="c1">// gummi.height = distanceBetween(mouseAnchor, hitSprite);</span>
+        <span class="c1">// gummi.x = hitSprite.x;</span>
+        <span class="c1">// gummi.y = hitSprite.y;</span>
+
+    <span class="p">},</span>
+
+    <span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// mouseAnchor.body.x = game.camera.x+game.input.x;</span>
+        <span class="c1">// mouseAnchor.body.y = game.camera.y+game.input.y;</span>
+        <span class="nx">updateSpringAssets</span><span class="p">();</span>
+        <span class="nx">gummi</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="nx">angleBetween</span><span class="p">(</span><span class="nx">mouseAnchor</span><span class="p">,</span><span class="nx">hitSprite</span><span class="p">)</span><span class="o">+</span><span class="mi">90</span><span class="p">;</span>
+        <span class="nx">gummi</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">distanceBetween</span><span class="p">(</span><span class="nx">mouseAnchor</span><span class="p">,</span> <span class="nx">hitSprite</span><span class="p">);</span>
+        <span class="nx">gummi</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">hitSprite</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+        <span class="nx">gummi</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">hitSprite</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    <span class="p">},</span>
+
+    <span class="na">render</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="s1">'n/a'</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">hitSprite</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">n</span> <span class="o">=</span> <span class="nx">hitSprite</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'hs: '</span> <span class="o">+</span> <span class="nx">n</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">cow</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteInfo</span><span class="p">(</span><span class="nx">cow</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+        <span class="p">}</span>
+
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">setupMenuEvironment</span><span class="p">(){</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">P2JS</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">defaultRestitution</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="p">;</span>
+     <span class="nx">setupSpringCow</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="c1">/////   MENU END  ////////</span>
+
+
+
+
+
+
+<span class="kd">function</span> <span class="nx">setupMouseAnchor</span><span class="p">(){</span>
+     <span class="c1">//create mouseAnchor to connect with</span>
+    <span class="nx">mouseAnchor</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">visible</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">mouseAnchor</span><span class="p">,</span><span class="kc">false</span><span class="p">);</span>
+    <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+    <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+    <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">sensor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">gummi</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'gummi'</span><span class="p">);</span>
+    <span class="nx">gummi</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="nx">gummi</span><span class="p">.</span><span class="nx">height</span><span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="nx">gummi</span><span class="p">.</span><span class="nx">visible</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
+    <span class="nx">gummi</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="c1">//     finishlines.add(gummi);</span>
+<span class="p">}</span>
+
+
+
+<span class="kd">function</span> <span class="nx">setupSpringCow</span><span class="p">(</span><span class="nx">cow</span><span class="p">){</span>
+    <span class="nx">cow</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="s1">'cow'</span><span class="p">)</span>
+    <span class="nx">cow</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span><span class="s2">"springcow"</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">cow</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+    <span class="c1">// cow.body.static = true;</span>
+    <span class="nx">cow</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+    <span class="nx">cow</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">gravityScale</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+
+
+
+<span class="kd">function</span> <span class="nx">checkHit</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">){</span>  <span class="c1">//gets actual P2 bodies and returns its SPRITE</span>
+    <span class="kd">var</span> <span class="nx">hitObjects</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">hitTest</span><span class="p">({</span><span class="na">x</span><span class="p">:</span> <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">y</span><span class="p">});</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">hitObjects</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">hitObjects</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">parent</span><span class="p">.</span><span class="nx">sprite</span> <span class="o">&amp;&amp;</span> <span class="nx">hitObjects</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">parent</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">name</span> <span class="o">==</span><span class="s2">"springcow"</span>   <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">hitObjects</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">parent</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">onAir</span><span class="p">)</span> <span class="p">{</span> 
+            <span class="nx">hitSprite</span><span class="o">=</span><span class="nx">hitObjects</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">parent</span><span class="p">.</span><span class="nx">sprite</span><span class="p">;</span> 
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>  
+        <span class="p">}</span>
+ <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">clearAllTies</span><span class="p">(){</span>
+    <span class="nx">constraintcount</span> <span class="o">=</span> <span class="mi">0</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="nx">mouseAnchor</span> <span class="o">&amp;&amp;</span> <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span> <span class="p">{</span><span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">mouseAnchor</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;}</span> <span class="c1">//reset mouseAnchor to avoid selecting something at a position from the former frame</span>
+    <span class="kd">var</span> <span class="nx">allSprings</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">getSprings</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">allSprings</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>       <span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;=</span><span class="nx">allSprings</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">removeSpring</span><span class="p">(</span><span class="nx">allSprings</span><span class="p">[</span><span class="nx">i</span><span class="p">]);}</span>   <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kd">function</span> <span class="nx">distanceBetween</span><span class="p">(</span><span class="nx">spriteA</span><span class="p">,</span><span class="nx">spriteB</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">dx</span> <span class="o">=</span> <span class="nx">spriteA</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">spriteB</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>  <span class="c1">//distance ship X to enemy X</span>
+    <span class="kd">var</span> <span class="nx">dy</span> <span class="o">=</span> <span class="nx">spriteA</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">spriteB</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>  <span class="c1">//distance ship Y to enemy Y</span>
+    <span class="kd">var</span> <span class="nx">dist</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">dx</span><span class="o">*</span><span class="nx">dx</span> <span class="o">+</span> <span class="nx">dy</span><span class="o">*</span><span class="nx">dy</span><span class="p">);</span>     <span class="c1">//pythagoras ^^  (get the distance to each other)</span>
+    <span class="k">return</span> <span class="nx">dist</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">angleBetween</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">angle</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="nx">obj2</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">obj1</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">obj1</span><span class="p">.</span><span class="nx">x</span><span class="p">))</span><span class="o">*</span> <span class="mi">180</span><span class="o">/</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span> <span class="c1">//return radians * 180/Math.PI; // returns degrees</span>
+    <span class="k">return</span> <span class="nx">angle</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="c1">//----------------------------------//</span>
+<span class="c1">//          UPDATE LOOP             //</span>
+<span class="c1">//----------------------------------//</span>
+
+
+<span class="c1">// functions running in UPDATE loop</span>
+<span class="kd">function</span> <span class="nx">updateSpringAssets</span><span class="p">(</span><span class="nx">isDown</span><span class="p">){</span>  <span class="c1">//hitSprite is the sprite you just hit (if its draggable by springs) and set by the checkHit function</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">isDown</span> <span class="o">&amp;&amp;</span> <span class="nx">constraintcount</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">checkHit</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pointer1</span><span class="p">.</span><span class="nx">isDown</span> <span class="o">&amp;&amp;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pointer2</span><span class="p">.</span><span class="nx">isDown</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="nx">follow</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="nx">constraintcount</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+
+
+
+        <span class="nx">hitSprite</span><span class="p">.</span><span class="nx">spring</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">createSpring</span><span class="p">(</span><span class="nx">hitSprite</span><span class="p">,</span> <span class="nx">mouseAnchor</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//bodyA, bodyB, restLength, stiffness, damping, worldA, worldB, localA, localB</span>
+
+        <span class="nx">gummi</span><span class="p">.</span><span class="nx">visible</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>
+   <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">){</span>  <span class="c1">// clear ties on mouseup and follow one of the assets  or players </span>
+        <span class="nx">gummi</span><span class="p">.</span><span class="nx">visible</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">constraintcount</span> <span class="o">!==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="nx">clearAllTies</span><span class="p">();</span> <span class="p">}</span>   <span class="c1">// don't run it 60 times per second - only if neccesary</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hitSprite</span><span class="p">){</span> <span class="nx">follow</span> <span class="o">=</span> <span class="nx">hitSprite</span><span class="p">;</span> <span class="p">}</span> <span class="c1">//highest priority - follow hitobject in case there is one.. </span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+
+
+
+
+
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="nx">worldwidth</span><span class="p">,</span> <span class="nx">worldheight</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{});</span>
+
+<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'boot'</span><span class="p">,</span> <span class="nx">BootState</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'preload'</span><span class="p">,</span> <span class="nx">PreloadState</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'menu'</span><span class="p">,</span> <span class="nx">Menu</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/ve.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

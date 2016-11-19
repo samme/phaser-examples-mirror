@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>loader/load tilemap json.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  loader/load tilemap json
+</h1>
+<a href="/js/loader/load%20tilemap%20json.js">source: loader/load tilemap json.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  Tilemaps are split into two parts: The actual map data (usually stored in a CSV or JSON file) </span>
+    <span class="c1">//  and the tileset/s used to render the map.</span>
+
+    <span class="c1">//  Here we'll load the tilemap data. The first parameter is a unique key for the map data.</span>
+
+    <span class="c1">//  The second is a URL to the JSON file the map data is stored in. This is actually optional, you can pass the JSON object as the 3rd</span>
+    <span class="c1">//  parameter if you already have it loaded (maybe via a 3rd party source or pre-generated). In which case pass 'null' as the URL and</span>
+    <span class="c1">//  the JSON object as the 3rd parameter.</span>
+
+    <span class="c1">//  The final one tells Phaser the foramt of the map data, in this case it's a JSON file exported from the Tiled map editor.</span>
+    <span class="c1">//  This could be Phaser.Tilemap.CSV too.</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'mario'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/maps/super_mario.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">TILED_JSON</span><span class="p">);</span>
+
+    <span class="c1">//  Next we load the tileset. This is just an image, loaded in via the normal way we load images:</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tiles'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/super_mario.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">map</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">layer</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#787878'</span><span class="p">;</span>
+
+    <span class="c1">//  The 'mario' key here is the Loader key given in game.load.tilemap</span>
+    <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'mario'</span><span class="p">);</span>
+
+    <span class="c1">//  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)</span>
+    <span class="c1">//  The second parameter maps this name to the Phaser.Cache key 'tiles'</span>
+    <span class="nx">map</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'SuperMarioBros-World1-1'</span><span class="p">,</span> <span class="s1">'tiles'</span><span class="p">);</span>
+    
+    <span class="c1">//  Creates a layer from the World1 layer in the map data.</span>
+    <span class="c1">//  A Layer is effectively like a Phaser.Sprite, so is added to the display list.</span>
+    <span class="nx">layer</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="s1">'World1'</span><span class="p">);</span>
+
+    <span class="c1">//  This resizes the game world to match the layer dimensions</span>
+    <span class="nx">layer</span><span class="p">.</span><span class="nx">resizeWorld</span><span class="p">();</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/loader/load%20tilemap%20json.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>create/more sprites.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  create/more sprites
+</h1>
+<a href="/js/create/more%20sprites.js">source: create/more sprites.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">pixelWidth</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">pixelHeight</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">chick</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">'...55.......'</span><span class="p">,</span>
+        <span class="s1">'.....5......'</span><span class="p">,</span>
+        <span class="s1">'...7888887..'</span><span class="p">,</span>
+        <span class="s1">'..788888887.'</span><span class="p">,</span>
+        <span class="s1">'..888088808.'</span><span class="p">,</span>
+        <span class="s1">'..888886666.'</span><span class="p">,</span>
+        <span class="s1">'..8888644444'</span><span class="p">,</span>
+        <span class="s1">'..8888645555'</span><span class="p">,</span>
+        <span class="s1">'888888644444'</span><span class="p">,</span>
+        <span class="s1">'88788776555.'</span><span class="p">,</span>
+        <span class="s1">'78788788876.'</span><span class="p">,</span>
+        <span class="s1">'56655677776.'</span><span class="p">,</span>
+        <span class="s1">'456777777654'</span><span class="p">,</span>
+        <span class="s1">'.4........4.'</span>
+    <span class="p">];</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'chick'</span><span class="p">,</span> <span class="nx">chick</span><span class="p">,</span> <span class="nx">pixelWidth</span><span class="p">,</span> <span class="nx">pixelHeight</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">burd</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="s1">'..E.............'</span><span class="p">,</span>
+      <span class="s1">'.DEEEEEEDDD.....'</span><span class="p">,</span>
+      <span class="s1">'..EEEEEEDDD.....'</span><span class="p">,</span>
+      <span class="s1">'..EE00EE77778666'</span><span class="p">,</span>
+      <span class="s1">'..EEEEEE77777666'</span><span class="p">,</span>
+      <span class="s1">'..EEEE7777777666'</span><span class="p">,</span>
+      <span class="s1">'..EEEE7655567666'</span><span class="p">,</span>
+      <span class="s1">'EEEEEE7777757666'</span><span class="p">,</span>
+      <span class="s1">'EEEEEEDD555.7666'</span><span class="p">,</span>
+      <span class="s1">'..DEEEEEDDD.....'</span><span class="p">,</span>
+      <span class="s1">'..EEEEEEDDD.....'</span><span class="p">,</span>
+      <span class="s1">'.7EEEEEEDDD.6...'</span><span class="p">,</span>
+      <span class="s1">'.77EEEEEDDD66...'</span><span class="p">,</span>
+      <span class="s1">'..77......66....'</span>
+    <span class="p">];</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'burd'</span><span class="p">,</span> <span class="nx">burd</span><span class="p">,</span> <span class="nx">pixelWidth</span><span class="p">,</span> <span class="nx">pixelHeight</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">alien</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="s1">'....44........'</span><span class="p">,</span>
+      <span class="s1">'....44........'</span><span class="p">,</span>
+      <span class="s1">'......5.......'</span><span class="p">,</span>
+      <span class="s1">'......5.......'</span><span class="p">,</span>
+      <span class="s1">'....ABBBBA....'</span><span class="p">,</span>
+      <span class="s1">'...ABBBBBBA...'</span><span class="p">,</span>
+      <span class="s1">'..ABB8228BBA..'</span><span class="p">,</span>
+      <span class="s1">'..BB882288BB..'</span><span class="p">,</span>
+      <span class="s1">'.ABB885588BBA.'</span><span class="p">,</span>
+      <span class="s1">'BBBB885588BBBB'</span><span class="p">,</span>
+      <span class="s1">'BBBB788887BBBB'</span><span class="p">,</span>
+      <span class="s1">'.ABBB7777BBBA.'</span><span class="p">,</span>
+      <span class="s1">'.ABBBBBBBBBBA.'</span><span class="p">,</span>
+      <span class="s1">'.AABBBBBBBBAA.'</span><span class="p">,</span>
+      <span class="s1">'.AAAAAAAAAAAA.'</span><span class="p">,</span>
+      <span class="s1">'.5AAAAAAAAAA5.'</span>
+    <span class="p">];</span>
+    
+    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'alien'</span><span class="p">,</span> <span class="nx">alien</span><span class="p">,</span> <span class="nx">pixelWidth</span><span class="p">,</span> <span class="nx">pixelHeight</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">ufo</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="s1">'....DDDDDDDD....'</span><span class="p">,</span>
+      <span class="s1">'...DDEEDDDDDD...'</span><span class="p">,</span>
+      <span class="s1">'..DDDEEDDDDDDD..'</span><span class="p">,</span>
+      <span class="s1">'..DDDDDDDDDDDD..'</span><span class="p">,</span>
+      <span class="s1">'..DDDD5555DDDD..'</span><span class="p">,</span>
+      <span class="s1">'..DDD555555DDD..'</span><span class="p">,</span>
+      <span class="s1">'..DDD555555DDD..'</span><span class="p">,</span>
+      <span class="s1">'..DDD555555DDD..'</span><span class="p">,</span>
+      <span class="s1">'..334244333333..'</span><span class="p">,</span>
+      <span class="s1">'.33344443333333.'</span><span class="p">,</span>
+      <span class="s1">'3333444433333333'</span><span class="p">,</span>
+      <span class="s1">'....5...5..5....'</span><span class="p">,</span>
+      <span class="s1">'...5....5...5...'</span><span class="p">,</span>
+      <span class="s1">'.66....66....66.'</span><span class="p">,</span>
+      <span class="s1">'.66....66....66.'</span>
+    <span class="p">];</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'ufo'</span><span class="p">,</span> <span class="nx">ufo</span><span class="p">,</span> <span class="nx">pixelWidth</span><span class="p">,</span> <span class="nx">pixelHeight</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">star</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="s1">'.....828.....'</span><span class="p">,</span>
+      <span class="s1">'....72227....'</span><span class="p">,</span>
+      <span class="s1">'....82228....'</span><span class="p">,</span>
+      <span class="s1">'...7222227...'</span><span class="p">,</span>
+      <span class="s1">'2222222222222'</span><span class="p">,</span>
+      <span class="s1">'8222222222228'</span><span class="p">,</span>
+      <span class="s1">'.72222222227.'</span><span class="p">,</span>
+      <span class="s1">'..787777787..'</span><span class="p">,</span>
+      <span class="s1">'..877777778..'</span><span class="p">,</span>
+      <span class="s1">'.78778887787.'</span><span class="p">,</span>
+      <span class="s1">'.27887.78872.'</span><span class="p">,</span>
+      <span class="s1">'.787.....787.'</span>
+    <span class="p">];</span>
+    
+    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'star'</span><span class="p">,</span> <span class="nx">star</span><span class="p">,</span> <span class="nx">pixelWidth</span><span class="p">,</span> <span class="nx">pixelHeight</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">ship</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="s1">'.....DEEEEEED...'</span><span class="p">,</span>
+      <span class="s1">'.....EEEEEFFE...'</span><span class="p">,</span>
+      <span class="s1">'.....EEEDDFFE...'</span><span class="p">,</span>
+      <span class="s1">'334..EEDDDDEE...'</span><span class="p">,</span>
+      <span class="s1">'3333.EEDDDDEE...'</span><span class="p">,</span>
+      <span class="s1">'33333EEDDDDEE...'</span><span class="p">,</span>
+      <span class="s1">'.FF2222222222F..'</span><span class="p">,</span>
+      <span class="s1">'.F222222222222F.'</span><span class="p">,</span>
+      <span class="s1">'.22222222222222F'</span><span class="p">,</span>
+      <span class="s1">'4443322222222222'</span><span class="p">,</span>
+      <span class="s1">'44433FFFFFFFFFFF'</span><span class="p">,</span>
+      <span class="s1">'.111FFFFFFFFFFF.'</span><span class="p">,</span>
+      <span class="s1">'.11FFFFFFFFFFF..'</span><span class="p">,</span>
+      <span class="s1">'.1FFFFFFFFFF1...'</span><span class="p">,</span>
+      <span class="s1">'...3333.........'</span><span class="p">,</span>
+      <span class="s1">'...333..........'</span>
+    <span class="p">];</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'ship'</span><span class="p">,</span> <span class="nx">ship</span><span class="p">,</span> <span class="nx">pixelWidth</span><span class="p">,</span> <span class="nx">pixelHeight</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">cat</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="s1">'....443...443.'</span><span class="p">,</span>
+      <span class="s1">'...4433..4433.'</span><span class="p">,</span>
+      <span class="s1">'..44333.48333.'</span><span class="p">,</span>
+      <span class="s1">'88888888244444'</span><span class="p">,</span>
+      <span class="s1">'44444444433333'</span><span class="p">,</span>
+      <span class="s1">'44444444433333'</span><span class="p">,</span>
+      <span class="s1">'44044404433333'</span><span class="p">,</span>
+      <span class="s1">'44488844433333'</span><span class="p">,</span>
+      <span class="s1">'44400044433333'</span><span class="p">,</span>
+      <span class="s1">'44F202F4433333'</span><span class="p">,</span>
+      <span class="s1">'44202024433333'</span><span class="p">,</span>
+      <span class="s1">'44F222F4433333'</span><span class="p">,</span>
+      <span class="s1">'44444444433333'</span><span class="p">,</span>
+      <span class="s1">'4433...4433.33'</span><span class="p">,</span>
+      <span class="s1">'4433...4433.33'</span>
+    <span class="p">];</span>
+    
+    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'cat'</span><span class="p">,</span> <span class="nx">cat</span><span class="p">,</span> <span class="nx">pixelWidth</span><span class="p">,</span> <span class="nx">pixelHeight</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">joypad</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="s1">'........65....5.'</span><span class="p">,</span>
+      <span class="s1">'.......5..5..5..'</span><span class="p">,</span>
+      <span class="s1">'.......5...55...'</span><span class="p">,</span>
+      <span class="s1">'.......5........'</span><span class="p">,</span>
+      <span class="s1">'.51FFFFFFFFFF15.'</span><span class="p">,</span>
+      <span class="s1">'51FFFFFFFFEEFF15'</span><span class="p">,</span>
+      <span class="s1">'1FF55FFFFFEEFFF1'</span><span class="p">,</span>
+      <span class="s1">'FF5555FFFFFFF33F'</span><span class="p">,</span>
+      <span class="s1">'FF0000FFAAFFF33F'</span><span class="p">,</span>
+      <span class="s1">'FF1001FFAAFFFFFF'</span><span class="p">,</span>
+      <span class="s1">'FFF11FFFFFF88FFF'</span><span class="p">,</span>
+      <span class="s1">'2FFFFF2222F88FF2'</span><span class="p">,</span>
+      <span class="s1">'1222221111222221'</span><span class="p">,</span>
+      <span class="s1">'11FFF111111FFF11'</span><span class="p">,</span>
+      <span class="s1">'.1FFF1....1FFF1.'</span><span class="p">,</span>
+      <span class="s1">'..111......111..'</span>
+    <span class="p">];</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'joypad'</span><span class="p">,</span> <span class="nx">joypad</span><span class="p">,</span> <span class="nx">pixelWidth</span><span class="p">,</span> <span class="nx">pixelHeight</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">joystick</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="s1">'..............'</span><span class="p">,</span>
+      <span class="s1">'....533335....'</span><span class="p">,</span>
+      <span class="s1">'....348333....'</span><span class="p">,</span>
+      <span class="s1">'....344333....'</span><span class="p">,</span>
+      <span class="s1">'....333533....'</span><span class="p">,</span>
+      <span class="s1">'....533335....'</span><span class="p">,</span>
+      <span class="s1">'......55......'</span><span class="p">,</span>
+      <span class="s1">'......33......'</span><span class="p">,</span>
+      <span class="s1">'......33......'</span><span class="p">,</span>
+      <span class="s1">'......55......'</span><span class="p">,</span>
+      <span class="s1">'....551155....'</span><span class="p">,</span>
+      <span class="s1">'.343556655343.'</span><span class="p">,</span>
+      <span class="s1">'61111111111116'</span><span class="p">,</span>
+      <span class="s1">'50000000000005'</span><span class="p">,</span>
+      <span class="s1">'50000000000005'</span><span class="p">,</span>
+      <span class="s1">'55555555555555'</span><span class="p">,</span>
+      <span class="s1">'.555......555.'</span>
+    <span class="p">];</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'joystick'</span><span class="p">,</span> <span class="nx">joystick</span><span class="p">,</span> <span class="nx">pixelWidth</span><span class="p">,</span> <span class="nx">pixelHeight</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'chick'</span><span class="p">).</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'burd'</span><span class="p">).</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'alien'</span><span class="p">).</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="s1">'ufo'</span><span class="p">).</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="s1">'star'</span><span class="p">).</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="s1">'ship'</span><span class="p">).</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">).</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'joystick'</span><span class="p">).</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'joypad'</span><span class="p">).</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/create/more%20sprites.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

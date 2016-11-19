@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="octopus.png">
+	<!-- Created with Adobe Flash CS6 version 12.0.0.481 -->
+	<!-- http://www.adobe.com/products/flash.html -->
+	<SubTexture name="octopus instance 10000" x="2" y="340" width="144" height="156" frameX="0" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10001" x="2" y="340" width="144" height="156" frameX="0" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10002" x="2" y="2" width="139" height="167" frameX="-3" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10003" x="2" y="2" width="139" height="167" frameX="-3" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10004" x="2" y="171" width="136" height="167" frameX="-5" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10005" x="2" y="171" width="136" height="167" frameX="-5" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10006" x="140" y="171" width="119" height="167" frameX="-14" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10007" x="140" y="171" width="119" height="167" frameX="-14" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10008" x="148" y="340" width="107" height="168" frameX="-19" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10009" x="148" y="340" width="107" height="168" frameX="-19" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10010" x="148" y="340" width="107" height="168" frameX="-19" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10011" x="148" y="340" width="107" height="168" frameX="-19" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10012" x="148" y="340" width="107" height="168" frameX="-19" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10013" x="148" y="340" width="107" height="168" frameX="-19" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10014" x="148" y="340" width="107" height="168" frameX="-19" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10015" x="148" y="340" width="107" height="168" frameX="-19" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10016" x="148" y="340" width="107" height="168" frameX="-19" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10017" x="140" y="171" width="119" height="167" frameX="-14" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10018" x="140" y="171" width="119" height="167" frameX="-14" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10019" x="2" y="171" width="136" height="167" frameX="-5" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10020" x="2" y="171" width="136" height="167" frameX="-5" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10021" x="2" y="2" width="139" height="167" frameX="-3" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10022" x="2" y="2" width="139" height="167" frameX="-3" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10023" x="2" y="340" width="144" height="156" frameX="0" frameY="0" frameWidth="144" frameHeight="168"/>
+	<SubTexture name="octopus instance 10024" x="2" y="340" width="144" height="156" frameX="0" frameY="0" frameWidth="144" frameHeight="168"/>
+</TextureAtlas>

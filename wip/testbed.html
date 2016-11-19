@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/testbed.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/testbed
+</h1>
+<a href="/js/wip/testbed.js">source: wip/testbed.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  To load an audio file use the following structure.</span>
+    <span class="c1">//  As with all load operations the first parameter is a unique key, which must be unique between all audio files.</span>
+
+    <span class="c1">//  The second parameter is an array containing the same audio file but in different formats.</span>
+    <span class="c1">//  In this example the music is provided as an mp3 and a ogg (Firefox will want the ogg for example)</span>
+
+    <span class="c1">//  The loader works by checking if the browser can support the first file type in the list (mp3 in this case). If it can, it loads it, otherwise</span>
+    <span class="c1">//  it moves to the next file in the list (the ogg). If it can't load any of them the file will error.</span>
+
+    <span class="c1">//  Both work now :)</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">,</span> <span class="s1">'assets/video/output.webm'</span><span class="p">);</span>
+    <span class="c1">// game.load.video('chrome', 'assets/video/chrome.webm');</span>
+
+    <span class="c1">// game.load.video('chrome', 'http://gametest.mobi/insideout/fear/v5/assets/hd/videos/intro.mp4?t=' + Date.now());</span>
+
+    <span class="c1">// game.load.video('chrome', 'assets/video/liquid2.mp4');</span>
+    <span class="c1">// game.load.audio('boden', 'assets/audio/tommy_in_goa.mp3');</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">video</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">music</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'create'</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#232323'</span><span class="p">;</span>
+
+    <span class="c1">// console.log(game.cache.getVideo('chrome'));</span>
+
+    <span class="nx">video</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">);</span>
+
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">video</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+
+    <span class="nx">video</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+
+    <span class="c1">// music = game.sound.play('boden');</span>
+
+    <span class="c1">// game.input.onDown.add(play, this);</span>
+    <span class="c1">// game.input.onDown.add(pause, this);</span>
+    <span class="c1">// game.input.onDown.add(speed, this);</span>
+    <span class="c1">// game.input.onDown.add(seek, this);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">play</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// ffmpeg -i %02d.png -i audio.wav output.webm</span>
+
+    <span class="c1">// console.log('play');</span>
+    <span class="c1">// video.play(true, 1);</span>
+    <span class="c1">// video.play();</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">pause</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">video</span><span class="p">.</span><span class="nx">paused</span> <span class="o">=</span> <span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">paused</span><span class="p">)</span> <span class="p">?</span> <span class="kc">false</span> <span class="p">:</span> <span class="kc">true</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">speed</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">video</span><span class="p">.</span><span class="nx">playbackRate</span><span class="o">++</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">seek</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">video</span><span class="p">.</span><span class="nx">currentTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// sprite.rotation += 0.01;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// if (music.isDecoding)</span>
+    <span class="c1">// {</span>
+    <span class="c1">//     game.debug.text("Decoding MP3 ...", 300, 32);</span>
+    <span class="c1">// }</span>
+
+    <span class="c1">// game.debug.text(video.progress, 32, 32);</span>
+    <span class="c1">// game.debug.text(video.playing, 32, 32);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">currentTime</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">duration</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/testbed.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>filters/spiral galaxy.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  filters/spiral galaxy
+</h1>
+<a href="/js/filters/spiral%20galaxy.js">source: filters/spiral galaxy.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  From http://glslsandbox.com/e#17794.0</span>
+
+    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+
+        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+
+        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+
+        <span class="s2">"// https://www.shadertoy.com/view/MdXSzS"</span><span class="p">,</span>
+
+        <span class="s2">"void main()"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec2 uv = (gl_FragCoord.xy/resolution.xy)-.5;"</span><span class="p">,</span>
+
+            <span class="s2">"float time = time * .1 + ((.25+.05*sin(time*.1))/(length(uv.xy)+.07))* 2.2;"</span><span class="p">,</span>
+            <span class="s2">"float si = sin(time);"</span><span class="p">,</span>
+            <span class="s2">"float co = cos(time);"</span><span class="p">,</span>
+            <span class="s2">"mat2 ma = mat2(co, si, -si, co);"</span><span class="p">,</span>
+
+            <span class="s2">"float c = 0.0;"</span><span class="p">,</span>
+            <span class="s2">"float v1 = 0.0;"</span><span class="p">,</span>
+            <span class="s2">"float v2 = 0.0;"</span><span class="p">,</span>
+
+            <span class="s2">"for (int i = 0; i &lt; 100; i++)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"float s = float(i) * .035;"</span><span class="p">,</span>
+                <span class="s2">"vec3 p = s * vec3(uv, 0.0);"</span><span class="p">,</span>
+                <span class="s2">"p.xy *= ma;"</span><span class="p">,</span>
+                <span class="s2">"p += vec3(.22,.3, s-1.5-sin(time*.13)*.1);"</span><span class="p">,</span>
+                <span class="s2">"for (int i = 0; i &lt; 8; i++)"</span><span class="p">,</span>
+                <span class="s2">"{"</span><span class="p">,</span>
+                    <span class="s2">"p = abs(p) / dot(p,p) - 0.659;"</span><span class="p">,</span>
+                <span class="s2">"}"</span><span class="p">,</span>
+                <span class="s2">"v1 += dot(p,p)*.0015 * (1.8+sin(length(uv.xy*13.0)+.5-time*.2));"</span><span class="p">,</span>
+                <span class="s2">"v2 += dot(p,p)*.0015 * (1.5+sin(length(uv.xy*13.5)+2.2-time*.3));"</span><span class="p">,</span>
+                <span class="s2">"c = length(p.xy*.5) * .35;"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"float len = length(uv);"</span><span class="p">,</span>
+            <span class="s2">"v1 *= smoothstep(.7, .0, len);"</span><span class="p">,</span>
+            <span class="s2">"v2 *= smoothstep(.6, .0, len);"</span><span class="p">,</span>
+
+            <span class="s2">"float re = clamp(c, 0.0, 1.0);"</span><span class="p">,</span>
+            <span class="s2">"float gr = clamp((v1+c)*.25, 0.0, 1.0);"</span><span class="p">,</span>
+            <span class="s2">"float bl = clamp(v2, 0.0, 1.0);"</span><span class="p">,</span>
+            <span class="s2">"vec3 col = vec3(re, gr, bl) + smoothstep(0.15, .0, len) * .9;"</span><span class="p">,</span>
+
+            <span class="s2">"gl_FragColor=vec4(col, 1.0);"</span><span class="p">,</span>
+        <span class="s2">"}"</span>
+    <span class="p">];</span>
+
+    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/filters/spiral%20galaxy.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

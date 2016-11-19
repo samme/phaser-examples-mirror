@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>sprites/multi texture example.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  sprites/multi texture example
+</h1>
+<a href="/js/sprites/multi%20texture%20example.js">source: sprites/multi texture example.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL_MULTI</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mushroom'</span><span class="p">,</span> <span class="s1">'assets/sprites/mushroom2.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'clown'</span><span class="p">,</span> <span class="s1">'assets/sprites/clown.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'beball'</span><span class="p">,</span> <span class="s1">'assets/sprites/beball1.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'coke'</span><span class="p">,</span> <span class="s1">'assets/sprites/cokecan.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'asuna'</span><span class="p">,</span> <span class="s1">'assets/sprites/asuna_by_vali233.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bikkuriman'</span><span class="p">,</span> <span class="s1">'assets/sprites/bikkuriman.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bsquad1'</span><span class="p">,</span> <span class="s1">'assets/sprites/bsquadron1.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bsquad2'</span><span class="p">,</span> <span class="s1">'assets/sprites/bsquadron2.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bsquad3'</span><span class="p">,</span> <span class="s1">'assets/sprites/bsquadron3.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'car'</span><span class="p">,</span> <span class="s1">'assets/sprites/car.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'carrot'</span><span class="p">,</span> <span class="s1">'assets/sprites/carrot.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'duck'</span><span class="p">,</span> <span class="s1">'assets/sprites/darkwing_crazy.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'diamond'</span><span class="p">,</span> <span class="s1">'assets/sprites/diamond.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'eggplant'</span><span class="p">,</span> <span class="s1">'assets/sprites/eggplant.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'firstaid'</span><span class="p">,</span> <span class="s1">'assets/sprites/firstaid.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'chick'</span><span class="p">,</span> <span class="s1">'assets/sprites/budbrain_chick.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bullet'</span><span class="p">,</span> <span class="s1">'assets/sprites/bullet.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bunny'</span><span class="p">,</span> <span class="s1">'assets/sprites/bunny.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'chick'</span><span class="p">,</span> <span class="s1">'assets/sprites/chick.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'chunk'</span><span class="p">,</span> <span class="s1">'assets/sprites/chunk.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'enemy'</span><span class="p">,</span> <span class="s1">'assets/sprites/enemy-bullet.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'spaceman'</span><span class="p">,</span> <span class="s1">'assets/sprites/exocet_spaceman.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'green_ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/green_ball.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ilkke'</span><span class="p">,</span> <span class="s1">'assets/sprites/ilkke.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'jets'</span><span class="p">,</span> <span class="s1">'assets/sprites/jets.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'kirito'</span><span class="p">,</span> <span class="s1">'assets/sprites/kirito_by_vali233.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'lemming'</span><span class="p">,</span> <span class="s1">'assets/sprites/lemming.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'loop'</span><span class="p">,</span> <span class="s1">'assets/sprites/loop.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'maggot'</span><span class="p">,</span> <span class="s1">'assets/sprites/maggot.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'master'</span><span class="p">,</span> <span class="s1">'assets/sprites/master.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">renderSession</span><span class="p">.</span><span class="nx">roundPixels</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'mushroom'</span><span class="p">,</span> <span class="s1">'clown'</span><span class="p">,</span> <span class="s1">'beball'</span><span class="p">,</span> <span class="s1">'coke'</span><span class="p">,</span> <span class="s1">'asuna'</span><span class="p">,</span> 
+    <span class="s1">'bikkuriman'</span><span class="p">,</span> <span class="s1">'bsquad1'</span><span class="p">,</span> <span class="s1">'bsquad2'</span><span class="p">,</span> <span class="s1">'bsquad3'</span><span class="p">,</span> <span class="s1">'car'</span><span class="p">,</span> 
+    <span class="s1">'carrot'</span><span class="p">,</span> <span class="s1">'duck'</span><span class="p">,</span> <span class="s1">'diamond'</span><span class="p">,</span> <span class="s1">'eggplant'</span><span class="p">,</span> <span class="s1">'firstaid'</span><span class="p">];</span>
+
+    <span class="kd">var</span> <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+
+    <span class="c1">//  Here we create just 210 sprites, each one using one of 15 different textures.</span>
+    <span class="c1">//  The sprites are interleaved, meaning the WebGL batch will flush</span>
+    <span class="c1">//  between every single sprite, because each one uses a different base texture.</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">15</span> <span class="o">*</span> <span class="mi">14</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">keys</span><span class="p">[</span><span class="nx">i</span> <span class="o">%</span> <span class="mi">15</span><span class="p">]);</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">group</span><span class="p">.</span><span class="nx">total</span><span class="p">);</span>
+
+    <span class="nx">group</span><span class="p">.</span><span class="nx">align</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CENTER</span><span class="p">);</span>
+
+    <span class="c1">//  Using just one single GPU texture (the default) the above scene, with just</span>
+    <span class="c1">//  210 sprites, will require 212 WebGL draw operations and a massive 1489 WebGL calls.</span>
+
+    <span class="c1">//  And using multiple GPU textures ...</span>
+    <span class="kd">var</span> <span class="nx">enabled</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">setTexturePriority</span><span class="p">(</span><span class="nx">keys</span><span class="p">);</span>
+
+    <span class="c1">//  So we can see which textures were batched (varies per GPU)</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">enabled</span><span class="p">);</span>
+
+    <span class="c1">//  The whole scene takes just 2 draw operations, one of which is clearing the screen,</span>
+    <span class="c1">//  and just 17 operations in total. The performance difference is staggering.</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/sprites/multi%20texture%20example.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

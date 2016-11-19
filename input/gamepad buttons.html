@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>input/gamepad buttons.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  input/gamepad buttons
+</h1>
+<a href="/js/input/gamepad%20buttons.js">source: input/gamepad buttons.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'xbox360'</span><span class="p">,</span> <span class="s1">'assets/controllers/xbox360.png'</span><span class="p">,</span> <span class="s1">'assets/controllers/xbox360.json'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">pad</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">buttonA</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">buttonB</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">buttonX</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">buttonY</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">buttonDPadLeft</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">buttonDPadRight</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">buttonDPadUp</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">buttonDPadDown</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">imageA</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">imageB</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">imageX</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">imageY</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">imageDPad</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+
+    <span class="c1">//  Add some images</span>
+    <span class="nx">imageA</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'xbox360'</span><span class="p">,</span> <span class="s1">'360_A'</span><span class="p">);</span>
+    <span class="nx">imageB</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'xbox360'</span><span class="p">,</span> <span class="s1">'360_B'</span><span class="p">);</span>
+    <span class="nx">imageX</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'xbox360'</span><span class="p">,</span> <span class="s1">'360_X'</span><span class="p">);</span>
+    <span class="nx">imageY</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'xbox360'</span><span class="p">,</span> <span class="s1">'360_Y'</span><span class="p">);</span>
+    <span class="nx">imageDPad</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'xbox360'</span><span class="p">,</span> <span class="s1">'360_Dpad'</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+
+    <span class="nx">pad</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">pad1</span><span class="p">;</span>
+
+    <span class="nx">pad</span><span class="p">.</span><span class="nx">addCallbacks</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">{</span> <span class="na">onConnect</span><span class="p">:</span> <span class="nx">addButtons</span> <span class="p">});</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">addButtons</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  We can't do this until we know that the gamepad has been connected and is started</span>
+
+    <span class="nx">buttonA</span> <span class="o">=</span> <span class="nx">pad</span><span class="p">.</span><span class="nx">getButton</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_A</span><span class="p">);</span>
+    <span class="nx">buttonB</span> <span class="o">=</span> <span class="nx">pad</span><span class="p">.</span><span class="nx">getButton</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_B</span><span class="p">);</span>
+    <span class="nx">buttonX</span> <span class="o">=</span> <span class="nx">pad</span><span class="p">.</span><span class="nx">getButton</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_X</span><span class="p">);</span>
+    <span class="nx">buttonY</span> <span class="o">=</span> <span class="nx">pad</span><span class="p">.</span><span class="nx">getButton</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_Y</span><span class="p">);</span>
+
+    <span class="nx">buttonA</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonB</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonX</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonY</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="nx">buttonA</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonB</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonX</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonY</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="c1">//  These won't work in Firefox, sorry! It uses totally different button mappings</span>
+
+    <span class="nx">buttonDPadLeft</span> <span class="o">=</span> <span class="nx">pad</span><span class="p">.</span><span class="nx">getButton</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_LEFT</span><span class="p">);</span>
+    <span class="nx">buttonDPadRight</span> <span class="o">=</span> <span class="nx">pad</span><span class="p">.</span><span class="nx">getButton</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_RIGHT</span><span class="p">);</span>
+    <span class="nx">buttonDPadUp</span> <span class="o">=</span> <span class="nx">pad</span><span class="p">.</span><span class="nx">getButton</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_UP</span><span class="p">);</span>
+    <span class="nx">buttonDPadDown</span> <span class="o">=</span> <span class="nx">pad</span><span class="p">.</span><span class="nx">getButton</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_DOWN</span><span class="p">);</span>
+
+    <span class="nx">buttonDPadLeft</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonDPadRight</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonDPadUp</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonDPadDown</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="nx">buttonDPadLeft</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonDPadRight</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonDPadUp</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">buttonDPadDown</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">onDown</span><span class="p">(</span><span class="nx">button</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_A</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageA</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_B</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageB</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_X</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageX</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_Y</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageY</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_LEFT</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageDPad</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'360_Dpad_Left'</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_RIGHT</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageDPad</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'360_Dpad_Right'</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_UP</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageDPad</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'360_Dpad_Up'</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_DOWN</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageDPad</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'360_Dpad_Down'</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">onUp</span><span class="p">(</span><span class="nx">button</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_A</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageA</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_B</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageB</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_X</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageX</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">buttonCode</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_Y</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">imageY</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="nx">imageDPad</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'360_Dpad'</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/input/gamepad%20buttons.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>games/sliding puzzle.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  games/sliding puzzle
+</h1>
+<a href="/js/games/sliding%20puzzle.js">source: games/sliding puzzle.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">PIECE_WIDTH</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="nx">PIECE_HEIGHT</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="nx">BOARD_COLS</span><span class="p">,</span>
+    <span class="nx">BOARD_ROWS</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">piecesGroup</span><span class="p">,</span>
+    <span class="nx">piecesAmount</span><span class="p">,</span>
+    <span class="nx">shuffledIndexArray</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s2">"background"</span><span class="p">,</span> <span class="s2">"assets/games/sliding-puzzle/bl.jpg"</span><span class="p">,</span> <span class="nx">PIECE_WIDTH</span><span class="p">,</span> <span class="nx">PIECE_HEIGHT</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">prepareBoard</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">prepareBoard</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">piecesIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span>
+        <span class="nx">piece</span><span class="p">;</span>
+
+    <span class="nx">BOARD_COLS</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="nx">PIECE_WIDTH</span><span class="p">);</span>
+    <span class="nx">BOARD_ROWS</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="nx">PIECE_HEIGHT</span><span class="p">);</span>
+
+    <span class="nx">piecesAmount</span> <span class="o">=</span> <span class="nx">BOARD_COLS</span> <span class="o">*</span> <span class="nx">BOARD_ROWS</span><span class="p">;</span>
+
+    <span class="nx">shuffledIndexArray</span> <span class="o">=</span> <span class="nx">createShuffledIndexArray</span><span class="p">();</span>
+
+    <span class="nx">piecesGroup</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">BOARD_ROWS</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">BOARD_COLS</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">shuffledIndexArray</span><span class="p">[</span><span class="nx">piecesIndex</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nx">piece</span> <span class="o">=</span> <span class="nx">piecesGroup</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">j</span> <span class="o">*</span> <span class="nx">PIECE_WIDTH</span><span class="p">,</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">PIECE_HEIGHT</span><span class="p">,</span> <span class="s2">"background"</span><span class="p">,</span> <span class="nx">shuffledIndexArray</span><span class="p">[</span><span class="nx">piecesIndex</span><span class="p">]);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span> <span class="c1">//initial position of black piece</span>
+                <span class="nx">piece</span> <span class="o">=</span> <span class="nx">piecesGroup</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">j</span> <span class="o">*</span> <span class="nx">PIECE_WIDTH</span><span class="p">,</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">PIECE_HEIGHT</span><span class="p">);</span>
+                <span class="nx">piece</span><span class="p">.</span><span class="nx">black</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">piece</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'piece'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'x'</span> <span class="o">+</span> <span class="nx">j</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+            <span class="nx">piece</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">=</span> <span class="nx">piecesIndex</span><span class="p">;</span>
+            <span class="nx">piece</span><span class="p">.</span><span class="nx">destIndex</span> <span class="o">=</span> <span class="nx">shuffledIndexArray</span><span class="p">[</span><span class="nx">piecesIndex</span><span class="p">];</span>
+            <span class="nx">piece</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="nx">piece</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">selectPiece</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+            <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">=</span> <span class="nx">j</span><span class="p">;</span>
+            <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+            <span class="nx">piecesIndex</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">selectPiece</span><span class="p">(</span><span class="nx">piece</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">blackPiece</span> <span class="o">=</span> <span class="nx">canMove</span><span class="p">(</span><span class="nx">piece</span><span class="p">);</span>
+
+    <span class="c1">//if there is a black piece in neighborhood</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">blackPiece</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">movePiece</span><span class="p">(</span><span class="nx">piece</span><span class="p">,</span> <span class="nx">blackPiece</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">canMove</span><span class="p">(</span><span class="nx">piece</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">foundBlackElem</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+    <span class="nx">piecesGroup</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">posX</span> <span class="o">===</span> <span class="p">(</span><span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">posY</span> <span class="o">===</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">black</span> <span class="o">||</span>
+            <span class="nx">element</span><span class="p">.</span><span class="nx">posX</span> <span class="o">===</span> <span class="p">(</span><span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">posY</span> <span class="o">===</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">black</span> <span class="o">||</span>
+            <span class="nx">element</span><span class="p">.</span><span class="nx">posY</span> <span class="o">===</span> <span class="p">(</span><span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">posX</span> <span class="o">===</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">black</span> <span class="o">||</span>
+            <span class="nx">element</span><span class="p">.</span><span class="nx">posY</span> <span class="o">===</span> <span class="p">(</span><span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">posX</span> <span class="o">===</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">black</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">foundBlackElem</span> <span class="o">=</span> <span class="nx">element</span><span class="p">;</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="k">return</span> <span class="nx">foundBlackElem</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">movePiece</span><span class="p">(</span><span class="nx">piece</span><span class="p">,</span> <span class="nx">blackPiece</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">tmpPiece</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">posX</span><span class="p">:</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span>
+        <span class="na">posY</span><span class="p">:</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span><span class="p">,</span>
+        <span class="na">currentIndex</span><span class="p">:</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">currentIndex</span>
+    <span class="p">};</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">piece</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span><span class="na">x</span><span class="p">:</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">*</span> <span class="nx">PIECE_WIDTH</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">*</span> <span class="nx">PIECE_HEIGHT</span><span class="p">},</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+    <span class="c1">//change places of piece and blackPiece</span>
+    <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">=</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posX</span><span class="p">;</span>
+    <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">=</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posY</span><span class="p">;</span>
+    <span class="nx">piece</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">=</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">currentIndex</span><span class="p">;</span>
+    <span class="nx">piece</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span><span class="s1">'piece'</span> <span class="o">+</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'x'</span> <span class="o">+</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+
+    <span class="c1">//piece is the new black</span>
+    <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">=</span> <span class="nx">tmpPiece</span><span class="p">.</span><span class="nx">posX</span><span class="p">;</span>
+    <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">=</span> <span class="nx">tmpPiece</span><span class="p">.</span><span class="nx">posY</span><span class="p">;</span>
+    <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">=</span> <span class="nx">tmpPiece</span><span class="p">.</span><span class="nx">currentIndex</span><span class="p">;</span>
+    <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span><span class="s1">'piece'</span> <span class="o">+</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posX</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'x'</span> <span class="o">+</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posY</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+
+    <span class="c1">//after every move check if puzzle is completed</span>
+    <span class="nx">checkIfFinished</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">checkIfFinished</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">isFinished</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">piecesGroup</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">!==</span> <span class="nx">element</span><span class="p">.</span><span class="nx">destIndex</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">isFinished</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">isFinished</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">showFinishedText</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">showFinishedText</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"40px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#000"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span><span class="p">};</span>
+
+    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s2">"Congratulations! \nYou made it!"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+
+    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">createShuffledIndexArray</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">indexArray</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">piecesAmount</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">indexArray</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">shuffle</span><span class="p">(</span><span class="nx">indexArray</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">shuffle</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+        <span class="nx">temp</span><span class="p">,</span>
+        <span class="nx">index</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">index</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">counter</span><span class="p">);</span>
+
+        <span class="nx">counter</span><span class="o">--</span><span class="p">;</span>
+
+        <span class="nx">temp</span> <span class="o">=</span> <span class="nx">array</span><span class="p">[</span><span class="nx">counter</span><span class="p">];</span>
+        <span class="nx">array</span><span class="p">[</span><span class="nx">counter</span><span class="p">]</span> <span class="o">=</span> <span class="nx">array</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
+        <span class="nx">array</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="o">=</span> <span class="nx">temp</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>
+    
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/games/sliding%20puzzle.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

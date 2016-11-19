@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>virtualjoystick/buttons.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  virtualjoystick/buttons
+</h1>
+<a href="/js/virtualjoystick/buttons.js">source: virtualjoystick/buttons.js</a><pre class="highlight javascript"><code><span class="cm">/**
+* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+* @copyright    2015 Photon Storm Ltd.
+* @license      {@link http://choosealicense.com/licenses/no-license/|No License}
+* 
+* @description  This example requires the Phaser Virtual Joystick Plugin to run.
+*               For more details please see http://phaser.io/shop/plugins/virtualjoystick
+*/</span>
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">PhaserGame</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">fx</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">buttonA</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">buttonB</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">buttonC</span><span class="p">;</span>
+
+<span class="p">};</span>
+
+<span class="nx">PhaserGame</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'generic'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/generic-joystick.png'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/generic-joystick.json'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bg'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/barbarian_loading.png'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'sfx'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'assets/virtualjoystick/magical_horror_audiosprite.mp3'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/magical_horror_audiosprite.ogg'</span> <span class="p">]);</span>
+
+    <span class="p">},</span>
+
+    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="kd">var</span> <span class="nx">bg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'bg'</span><span class="p">);</span>
+        <span class="nx">bg</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">fx</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'sfx'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">fx</span><span class="p">.</span><span class="nx">allowMultiple</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">fx</span><span class="p">.</span><span class="nx">addMarker</span><span class="p">(</span><span class="s1">'charm'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">fx</span><span class="p">.</span><span class="nx">addMarker</span><span class="p">(</span><span class="s1">'curse'</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">fx</span><span class="p">.</span><span class="nx">addMarker</span><span class="p">(</span><span class="s1">'fireball'</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">fx</span><span class="p">.</span><span class="nx">addMarker</span><span class="p">(</span><span class="s1">'spell'</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">fx</span><span class="p">.</span><span class="nx">addMarker</span><span class="p">(</span><span class="s1">'soundscape'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">18.8</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">pad</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">VirtualJoystick</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">buttonA</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">520</span><span class="p">,</span> <span class="s1">'generic'</span><span class="p">,</span> <span class="s1">'button1-up'</span><span class="p">,</span> <span class="s1">'button1-down'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">buttonA</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pressButtonA</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">buttonA</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">A</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">buttonB</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'generic'</span><span class="p">,</span> <span class="s1">'button2-up'</span><span class="p">,</span> <span class="s1">'button2-down'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">buttonB</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pressButtonB</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">buttonB</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">B</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">buttonC</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">520</span><span class="p">,</span> <span class="s1">'generic'</span><span class="p">,</span> <span class="s1">'button3-up'</span><span class="p">,</span> <span class="s1">'button3-down'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">buttonC</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pressButtonC</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">buttonC</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">C</span><span class="p">);</span>
+
+    <span class="p">},</span>
+
+    <span class="na">pressButtonA</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">fx</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'charm'</span><span class="p">);</span>
+
+    <span class="p">},</span>
+
+    <span class="na">pressButtonB</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">fx</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'spell'</span><span class="p">);</span>
+
+    <span class="p">},</span>
+
+    <span class="na">pressButtonC</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">fx</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'fireball'</span><span class="p">);</span>
+
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Game'</span><span class="p">,</span> <span class="nx">PhaserGame</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/virtualjoystick/buttons.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

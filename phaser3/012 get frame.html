@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>phaser3/012 get frame.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  phaser3/012 get frame
+</h1>
+<a href="/js/phaser3/012%20get%20frame.js">source: phaser3/012 get frame.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'set0'</span><span class="p">,</span> <span class="s1">'assets/atlas/megasetHD-0.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'set1'</span><span class="p">,</span> <span class="s1">'assets/atlas/megasetHD-1.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'set2'</span><span class="p">,</span> <span class="s1">'assets/atlas/megasetHD-2.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'set3'</span><span class="p">,</span> <span class="s1">'assets/atlas/megasetHD-3.png'</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'data0'</span><span class="p">,</span> <span class="s1">'assets/atlas/megasetHD-0.json'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'data1'</span><span class="p">,</span> <span class="s1">'assets/atlas/megasetHD-1.json'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'data2'</span><span class="p">,</span> <span class="s1">'assets/atlas/megasetHD-2.json'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'data3'</span><span class="p">,</span> <span class="s1">'assets/atlas/megasetHD-3.json'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">manager</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">texture</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">frame</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">anchor</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">();</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">manager</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">TextureManager</span><span class="p">(</span><span class="nx">game</span><span class="p">);</span>
+
+    <span class="nx">texture</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">addAtlasJSONArray</span><span class="p">(</span>
+        <span class="s1">'megaset'</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getImage</span><span class="p">(</span><span class="s1">'set0'</span><span class="p">),</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getImage</span><span class="p">(</span><span class="s1">'set1'</span><span class="p">),</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getImage</span><span class="p">(</span><span class="s1">'set2'</span><span class="p">),</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getImage</span><span class="p">(</span><span class="s1">'set3'</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">'data0'</span><span class="p">),</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">'data1'</span><span class="p">),</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">'data2'</span><span class="p">),</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">'data3'</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">);</span>
+
+    <span class="c1">//  This frame is in the 1st atlas file (set0/data0)</span>
+    <span class="c1">// frame = texture.get('aya_touhou_teng_soldier');</span>
+
+    <span class="c1">//  This frame is in the 2nd atlas file (set1/data1)</span>
+    <span class="c1">// frame = texture.get('oz_pov_melting_disk');</span>
+
+    <span class="c1">//  This frame is in the 3rd atlas file (set2/data2)</span>
+    <span class="c1">// frame = texture.get('budbrain_chick');</span>
+
+    <span class="c1">//  This frame is in the 4th atlas file (set3/data3)</span>
+    <span class="c1">// frame = texture.get('shocktroopers_toy');</span>
+
+    <span class="c1">// frame = manager.get('megaset', 'aya_touhou_teng_soldier');</span>
+    <span class="nx">frame</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">getFrame</span><span class="p">(</span><span class="s1">'megaset'</span><span class="p">,</span> <span class="s1">'aya_touhou_teng_soldier'</span><span class="p">);</span>
+
+    <span class="c1">// console.log(texture);</span>
+    <span class="c1">// console.log(texture.frames);</span>
+    <span class="c1">// console.log(frame);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">dx</span> <span class="o">=</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">anchor</span><span class="p">.</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">dy</span> <span class="o">=</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span>
+        <span class="nx">frame</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">image</span><span class="p">,</span>
+        <span class="nx">frame</span><span class="p">.</span><span class="nx">cutX</span><span class="p">,</span>
+        <span class="nx">frame</span><span class="p">.</span><span class="nx">cutY</span><span class="p">,</span>
+        <span class="nx">frame</span><span class="p">.</span><span class="nx">cutWidth</span><span class="p">,</span>
+        <span class="nx">frame</span><span class="p">.</span><span class="nx">cutHeight</span><span class="p">,</span>
+        <span class="nx">x</span> <span class="o">+</span> <span class="nx">dx</span><span class="p">,</span>
+        <span class="nx">y</span> <span class="o">+</span> <span class="nx">dy</span><span class="p">,</span>
+        <span class="nx">frame</span><span class="p">.</span><span class="nx">cutWidth</span><span class="p">,</span>
+        <span class="nx">frame</span><span class="p">.</span><span class="nx">cutHeight</span>
+    <span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/phaser3/012%20get%20frame.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

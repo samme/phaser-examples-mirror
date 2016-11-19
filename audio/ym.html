@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>audio/ym.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  audio/ym
+</h1>
+<a href="/js/audio/ym.js">source: audio/ym.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">musicIndex</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nx">ym</span><span class="p">,</span> <span class="nx">oldValues</span><span class="p">,</span> <span class="nx">values</span><span class="p">,</span> <span class="nx">vu1</span><span class="p">,</span> <span class="nx">vu2</span><span class="p">,</span> <span class="nx">vu3</span><span class="p">,</span> <span class="nx">moveData</span><span class="p">,</span>
+    <span class="nx">vuGroup</span><span class="p">,</span> <span class="nx">musicListGroup</span><span class="p">,</span> <span class="nx">selector</span><span class="p">,</span> <span class="nx">currentPlayingSelector</span><span class="p">,</span>
+    <span class="nx">cursors</span><span class="p">,</span> <span class="nx">time</span><span class="p">,</span> <span class="nx">spacebar</span><span class="p">;</span>
+
+<span class="c1">// define a list of songs</span>
+<span class="kd">var</span> <span class="nx">musics</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">'A prehistoric tale 7'</span><span class="p">,</span>
+        <span class="na">author</span><span class="p">:</span> <span class="s1">'Madmax'</span><span class="p">,</span>
+        <span class="na">file</span><span class="p">:</span> <span class="s1">'assets/audio/ym/A_Prehistoric_Tale_7.ym'</span>
+    <span class="p">},</span>
+
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">'Copperkaahbaahnaah'</span><span class="p">,</span>
+        <span class="na">author</span><span class="p">:</span> <span class="s1">'Big Alec'</span><span class="p">,</span>
+        <span class="na">file</span><span class="p">:</span> <span class="s1">'assets/audio/ym/big_alec-copperkaahbaahnaah.ym'</span>
+    <span class="p">},</span>
+
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">'Thundercats'</span><span class="p">,</span>
+        <span class="na">author</span><span class="p">:</span> <span class="s1">'David Whittaker'</span><span class="p">,</span>
+        <span class="na">file</span><span class="p">:</span> <span class="s1">'assets/audio/ym/david_whittaker-thundercats.ym'</span>
+    <span class="p">},</span>
+
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">'Giga Dist'</span><span class="p">,</span>
+        <span class="na">author</span><span class="p">:</span> <span class="s1">'Count0'</span><span class="p">,</span>
+        <span class="na">file</span><span class="p">:</span> <span class="s1">'assets/audio/ym/count0-giga_dist.ym'</span>
+    <span class="p">},</span>
+
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">'Comic Bakery'</span><span class="p">,</span>
+        <span class="na">author</span><span class="p">:</span> <span class="s1">'Madmax'</span><span class="p">,</span>
+        <span class="na">file</span><span class="p">:</span> <span class="s1">'assets/audio/ym/mad_max-comic_bakery.ym'</span>
+    <span class="p">},</span>
+
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">'Do you speak russian'</span><span class="p">,</span>
+        <span class="na">author</span><span class="p">:</span> <span class="s1">'Jess'</span><span class="p">,</span>
+        <span class="na">file</span><span class="p">:</span> <span class="s1">'assets/audio/ym/jess-do_you_speak_russian.ym'</span>
+    <span class="p">},</span>
+
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">'Turrican1 1'</span><span class="p">,</span>
+        <span class="na">author</span><span class="p">:</span> <span class="s1">'Madmax'</span><span class="p">,</span>
+        <span class="na">file</span><span class="p">:</span> <span class="s1">'assets/audio/ym/mad_max-turrican1-1.ym'</span>
+    <span class="p">},</span>
+
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">'Wings of death 1'</span><span class="p">,</span>
+        <span class="na">author</span><span class="p">:</span> <span class="s1">'Madmax'</span><span class="p">,</span>
+        <span class="na">file</span><span class="p">:</span> <span class="s1">'assets/audio/ym/mad_max-wings_of_death1.ym'</span>
+    <span class="p">}</span>
+
+<span class="p">]</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// load our YM plugin</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">script</span><span class="p">(</span><span class="s1">'YM'</span><span class="p">,</span> <span class="s1">'_plugins/YM.js'</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/demoscene/atari.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bg'</span><span class="p">,</span> <span class="s1">'assets/skies/sky2.png'</span><span class="p">);</span>
+
+    <span class="c1">// load all songs</span>
+    <span class="nx">musics</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">music</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">binary</span><span class="p">(</span><span class="nx">music</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">music</span><span class="p">.</span><span class="nx">file</span><span class="p">);</span>
+    <span class="p">});</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">musicsList</span><span class="p">,</span> <span class="nx">style</span><span class="p">,</span> <span class="nx">list</span><span class="p">;</span>
+
+    <span class="c1">// sinusoid vu meter moves</span>
+    <span class="nx">moveData</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tween</span><span class="p">({</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">300</span> <span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">"Sine.easeIn"</span><span class="p">).</span><span class="nx">yoyo</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+
+    <span class="c1">// prepare background</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'bg'</span><span class="p">);</span>
+    <span class="nx">vuGroup</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
+    <span class="nx">musicListGroup</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+
+    <span class="c1">// display music list</span>
+    <span class="nx">musicsList</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+    <span class="nx">musics</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">music</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">musicsList</span> <span class="o">+=</span> <span class="nx">music</span><span class="p">.</span><span class="nx">author</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="nx">music</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">"\n"</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"18px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">};</span>
+    <span class="nx">list</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">musicsList</span><span class="p">,</span> <span class="nx">style</span><span class="p">,</span> <span class="nx">musicListGroup</span><span class="p">);</span>
+    <span class="nx">list</span><span class="p">.</span><span class="nx">lineSpacing</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+    <span class="nx">list</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="nx">musicListGroup</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">380</span><span class="p">;</span>
+
+    <span class="c1">// selectors graphics</span>
+    <span class="nx">currentPlayingSelector</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">musicListGroup</span><span class="p">);</span>
+    <span class="nx">currentPlayingSelector</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFFFFFF</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">);</span>
+    <span class="nx">currentPlayingSelector</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">21</span><span class="p">);</span>
+
+    <span class="nx">selector</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">musicListGroup</span><span class="p">);</span>
+    <span class="nx">selector</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFFFFFF</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">);</span>
+    <span class="nx">selector</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">21</span><span class="p">);</span>
+
+    <span class="c1">// prepare vu-meter</span>
+    <span class="nx">vu1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">vuGroup</span><span class="p">);</span>
+    <span class="nx">vu2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="nx">vuGroup</span><span class="p">);</span>
+    <span class="nx">vu3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="nx">vuGroup</span><span class="p">);</span>
+
+    <span class="nx">vu1</span><span class="p">.</span><span class="nx">movePosIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nx">vu2</span><span class="p">.</span><span class="nx">movePosIndex</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+    <span class="nx">vu3</span><span class="p">.</span><span class="nx">movePosIndex</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
+
+    <span class="nx">vuGroup</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">70</span><span class="p">;</span>
+
+    <span class="nx">changeSong</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="nx">moveSelector</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    <span class="nx">spacebar</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span><span class="p">);</span>
+
+    <span class="nx">time</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">time</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">moveSelector</span> <span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">selector</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">index</span> <span class="o">*</span> <span class="mi">26</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">changeSong</span> <span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// load song data from game cache</span>
+    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span>  <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getBinary</span><span class="p">(</span><span class="nx">musics</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">name</span><span class="p">);</span>
+
+    <span class="c1">// console.log(data);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ym</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// create our YM instance</span>
+        <span class="nx">ym</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">YM</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// stop the song, prepare with new data</span>
+        <span class="nx">ym</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+        <span class="nx">ym</span><span class="p">.</span><span class="nx">clearsong</span><span class="p">();</span>
+        <span class="nx">ym</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// used for display of the vu meter</span>
+    <span class="nx">oldValues</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">];</span>
+    <span class="nx">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">];</span>
+
+    <span class="c1">// ATARI rulez ;)</span>
+    <span class="nx">ym</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+
+    <span class="c1">// move "current playing" selector</span>
+    <span class="c1">// currentPlayingSelector.y = (index * 25);</span>
+    <span class="nx">currentPlayingSelector</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">selector</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// draw one vu meter</span>
+<span class="kd">function</span> <span class="nx">buildVu</span> <span class="p">(</span><span class="nx">vu</span><span class="p">,</span> <span class="nx">colorbg</span><span class="p">,</span> <span class="nx">color</span><span class="p">,</span> <span class="nx">width</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">height</span> <span class="o">=</span> <span class="mi">75</span><span class="p">,</span>
+        <span class="nx">offsetY</span> <span class="o">=</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="nx">width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="nx">colorbg</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="nx">color</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="nx">offsetY</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="nx">offsetY</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="nx">offsetY</span> <span class="o">-</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="nx">width</span> <span class="o">+</span> <span class="nx">offsetY</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="nx">width</span> <span class="o">+</span> <span class="nx">offsetY</span> <span class="o">+</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">);</span>
+    <span class="nx">vu</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">height</span> <span class="o">-</span> <span class="mi">25</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">25</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// max vu meter width</span>
+    <span class="kd">var</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">;</span>
+
+    <span class="c1">// smooth the vu meter real values</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">ym</span><span class="p">.</span><span class="nx">vu</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">ym</span><span class="p">.</span><span class="nx">vu</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nx">max</span> <span class="o">/</span> <span class="mi">40</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// draw the vu meter for each channel</span>
+    <span class="nx">buildVu</span><span class="p">(</span><span class="nx">vu3</span><span class="p">,</span> <span class="mh">0xab124f</span><span class="p">,</span> <span class="mh">0xe9128d</span><span class="p">,</span> <span class="nx">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="nx">buildVu</span><span class="p">(</span><span class="nx">vu2</span><span class="p">,</span> <span class="mh">0x8d126e</span><span class="p">,</span> <span class="mh">0xca12ab</span><span class="p">,</span> <span class="nx">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="nx">buildVu</span><span class="p">(</span><span class="nx">vu1</span><span class="p">,</span> <span class="mh">0x6e128d</span><span class="p">,</span> <span class="mh">0xab12ca</span><span class="p">,</span> <span class="nx">values</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+
+    <span class="c1">// vu meter moves</span>
+    <span class="p">[</span><span class="nx">vu1</span><span class="p">,</span> <span class="nx">vu2</span><span class="p">,</span> <span class="nx">vu3</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">vu</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">p</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">vu</span><span class="p">.</span><span class="nx">movePosIndex</span> <span class="o">&gt;=</span> <span class="nx">moveData</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">vu</span><span class="p">.</span><span class="nx">movePosIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nx">p</span> <span class="o">=</span>  <span class="nx">moveData</span><span class="p">[</span><span class="nx">vu</span><span class="p">.</span><span class="nx">movePosIndex</span><span class="p">];</span>
+
+        <span class="nx">vu</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+
+        <span class="nx">vu</span><span class="p">.</span><span class="nx">movePosIndex</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="p">});</span>
+
+    <span class="c1">// keep track of old vu meter values for next iteration</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">oldValues</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">ym</span><span class="p">.</span><span class="nx">vu</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="c1">// handle cursors for song selection</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">time</span> <span class="o">-</span> <span class="nx">time</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span> <span class="o">&amp;&amp;</span> <span class="nx">musicIndex</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">musicIndex</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="nx">moveSelector</span><span class="p">(</span><span class="nx">musicIndex</span><span class="p">);</span>
+            <span class="nx">time</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">time</span><span class="p">;</span>
+
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span> <span class="o">&amp;&amp;</span> <span class="nx">musicIndex</span> <span class="o">&lt;</span> <span class="nx">musics</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">musicIndex</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="nx">moveSelector</span><span class="p">(</span><span class="nx">musicIndex</span><span class="p">);</span>
+            <span class="nx">time</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">time</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">spacebar</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">changeSong</span><span class="p">(</span><span class="nx">musicIndex</span><span class="p">);</span>
+            <span class="nx">time</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">time</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// some info can be get from the ym instance</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Title  : '</span> <span class="o">+</span> <span class="nx">ym</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">title</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">24</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Author : '</span> <span class="o">+</span> <span class="nx">ym</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">author</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Comment: '</span> <span class="o">+</span> <span class="nx">ym</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">comment</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">56</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'vu1: '</span> <span class="o">+</span> <span class="nx">ym</span><span class="p">.</span><span class="nx">vu</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">72</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'vu2: '</span> <span class="o">+</span> <span class="nx">ym</span><span class="p">.</span><span class="nx">vu</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">88</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'vu3: '</span> <span class="o">+</span> <span class="nx">ym</span><span class="p">.</span><span class="nx">vu</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">104</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/audio/ym.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

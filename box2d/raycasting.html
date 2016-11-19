@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>box2d/raycasting.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  box2d/raycasting
+</h1>
+<a href="/js/box2d/raycasting.js">source: box2d/raycasting.js</a><pre class="highlight javascript"><code><span class="cm">/**
+* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
+* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+* @copyright    2015 Photon Storm Ltd.
+* @license      {@link http://choosealicense.com/licenses/no-license/|No License}
+* 
+* @description  This example requires the Phaser Box2D Plugin to run.
+*               For more details please see http://phaser.io/shop/plugins/box2d
+*/</span>
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'contra2'</span><span class="p">,</span> <span class="s1">'assets/pics/contra2.png'</span><span class="p">);</span>
+
+    <span class="c1">// Load physics data exported from PhysicsEditor</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">physics</span><span class="p">(</span><span class="s1">'physicsData'</span><span class="p">,</span> <span class="s1">'assets/physics/sprites.json'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="nx">_raycastType</span> <span class="o">=</span> 
+<span class="p">{</span>
+    <span class="na">CLOSEST</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">ALL</span>     <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="na">FILTERED</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">caption</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">raycastType</span> <span class="o">=</span> <span class="nx">_raycastType</span><span class="p">.</span><span class="nx">FILTERED</span><span class="p">;</span> <span class="c1">// will roll over to CLOSEST in create()</span>
+<span class="kd">var</span> <span class="nx">staticBodies</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+    
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+
+    <span class="c1">// Enable Box2D physics</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>
+    
+    <span class="c1">// 'contra' sprites</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">100</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'contra2'</span><span class="p">);</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="mi">360</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+    
+        <span class="c1">// Clear the shapes and load the 'contra2' polygon from the physicsData JSON file in the cache</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clearFixtures</span><span class="p">();</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">loadPolygon</span><span class="p">(</span><span class="s1">'physicsData'</span><span class="p">,</span> <span class="s1">'contra2'</span><span class="p">,</span> <span class="nx">sprite</span><span class="p">);</span>
+        
+        <span class="nx">staticBodies</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Some kinematic bodies to illustrate filtering in callback</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">kinematic</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">rotateLeft</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'Raycasting. Use the mouse to move the destination of the ray. Click to change test type.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
+    <span class="nx">caption</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
+    
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">changeRaycastType</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">changeRaycastType</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">changeRaycastType</span><span class="p">()</span> <span class="p">{</span>
+    
+    <span class="nx">raycastType</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nx">raycastType</span> <span class="o">&gt;</span> <span class="nx">_raycastType</span><span class="p">.</span><span class="nx">FILTERED</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">raycastType</span> <span class="o">=</span> <span class="nx">_raycastType</span><span class="p">.</span><span class="nx">CLOSEST</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nx">caption</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'Current test type: '</span><span class="o">+</span>
+        <span class="p">(</span><span class="nx">raycastType</span> <span class="o">==</span> <span class="nx">_raycastType</span><span class="p">.</span><span class="nx">ALL</span> <span class="p">?</span> <span class="s1">'all hits'</span> <span class="p">:</span>
+        <span class="nx">raycastType</span> <span class="o">==</span> <span class="nx">_raycastType</span><span class="p">.</span><span class="nx">FILTERED</span> <span class="p">?</span> <span class="s1">'filtered to only top and bottom static bodies'</span> <span class="p">:</span> <span class="s1">'closest hit only'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ * You can define a function like this to filter the hits you want
+ *
+ * @param {Phaser.Physics.Box2D.Body} body - the body the ray hit
+ * @param {box2d.b2Fixture} fixture - the fixture the ray hit
+ * @param {object} point - the location (pixels) the ray hit
+ * @param {object} normal - the normal of the fixture surface at the location the ray hit
+ * @return {boolean} return true if this hit should be used, false to ignore it
+ */</span>
+<span class="kd">function</span> <span class="nx">filterRaycastHit</span><span class="p">(</span><span class="nx">body</span><span class="p">,</span> <span class="nx">fixture</span><span class="p">,</span> <span class="nx">point</span><span class="p">,</span> <span class="nx">normal</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">body</span> <span class="o">==</span> <span class="nx">staticBodies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">||</span> <span class="nx">body</span> <span class="o">==</span> <span class="nx">staticBodies</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">line</span><span class="p">(</span><span class="nx">x1</span><span class="p">,</span> <span class="nx">y1</span><span class="p">,</span> <span class="nx">x2</span><span class="p">,</span> <span class="nx">y2</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">x1</span><span class="p">,</span> <span class="nx">y1</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">x2</span><span class="p">,</span> <span class="nx">y2</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">box2dWorld</span><span class="p">();</span>
+    
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    
+    <span class="c1">// Draw ray in faint white</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="s1">'rgba(255,255,255,0.25)'</span><span class="p">;</span>  
+    <span class="nx">line</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+    
+    <span class="c1">// Cast a ray from a fixed point on the left side, to the mouse cursor position</span>
+    <span class="kd">var</span> <span class="nx">closestOnly</span> <span class="o">=</span> <span class="p">(</span><span class="nx">raycastType</span> <span class="o">==</span> <span class="nx">_raycastType</span><span class="p">.</span><span class="nx">CLOSEST</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">filterFunction</span> <span class="o">=</span> <span class="p">(</span><span class="nx">raycastType</span> <span class="o">==</span> <span class="nx">_raycastType</span><span class="p">.</span><span class="nx">FILTERED</span> <span class="p">?</span> <span class="nx">filterRaycastHit</span> <span class="p">:</span> <span class="kc">null</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">raycastOutput</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">raycast</span><span class="p">(</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">closestOnly</span><span class="p">,</span> <span class="nx">filterFunction</span> <span class="p">);</span>
+    
+    <span class="c1">// Loop through and render all raycast intersection points</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineWidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">raycastOutput</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">hit</span> <span class="o">=</span> <span class="nx">raycastOutput</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+
+        <span class="c1">// Draw unobstructed part of ray in solid white</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="s1">'rgba(255,255,255,1)'</span><span class="p">;</span>
+        <span class="nx">line</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">hit</span><span class="p">.</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">hit</span><span class="p">.</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+    
+        <span class="c1">// Draw intersection normal in yellow</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="s1">'rgba(255,255,0,1)'</span><span class="p">;</span>
+        <span class="nx">line</span><span class="p">(</span><span class="nx">hit</span><span class="p">.</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">hit</span><span class="p">.</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">hit</span><span class="p">.</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">30</span> <span class="o">*</span> <span class="nx">hit</span><span class="p">.</span><span class="nx">normal</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">hit</span><span class="p">.</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">30</span> <span class="o">*</span> <span class="nx">hit</span><span class="p">.</span><span class="nx">normal</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/box2d/raycasting.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

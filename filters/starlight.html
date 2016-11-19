@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>filters/starlight.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  filters/starlight
+</h1>
+<a href="/js/filters/starlight.js">source: filters/starlight.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  From http://glslsandbox.com/e#18043.4</span>
+
+    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+
+        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+
+        <span class="s2">"// Posted by Trisomie21"</span><span class="p">,</span>
+        <span class="s2">"// modified by @hintz"</span><span class="p">,</span>
+
+        <span class="s2">"// from http://glsl.heroku.com/e#5248.0"</span><span class="p">,</span>
+        <span class="s2">"#define BLADES 6.0"</span><span class="p">,</span>
+        <span class="s2">"#define BIAS 0.1"</span><span class="p">,</span>
+        <span class="s2">"#define SHARPNESS 3.0"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 star(vec2 position, float t)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float d2D = 4.0 / length(position) + t * 5.0;"</span><span class="p">,</span>
+            <span class="s2">"float a2D = atan(position.y, position.x);"</span><span class="p">,</span>
+            <span class="s2">"float qq = d2D * 0.1 + sin(d2D) * 0.2 * cos(a2D * 3.0) + sin(d2D * 0.2) * 0.3 * cos(a2D * 8.0)"</span><span class="p">,</span>
+            <span class="s2">"+ max(0.0, sin(d2D * 0.1 + 10.0) - 0.5) * cos(a2D * 20.0 + sin(d2D * 0.2) * 5.0)"</span><span class="p">,</span>
+            <span class="s2">"+ max(0.0, sin(d2D * 0.03 + 18.0) - 0.5) * cos(a2D * 5.0 + sin(d2D * 0.2) * 5.0);"</span><span class="p">,</span>
+            <span class="s2">"vec3 color = vec3(sin(qq * 2.0), sin(qq * 3.0), sin(qq * 5.0));"</span><span class="p">,</span>
+
+            <span class="s2">"color = color * 0.2;"</span><span class="p">,</span>
+
+            <span class="s2">"float blade = clamp(pow(sin(atan(position.y,position.x )*BLADES)+BIAS, SHARPNESS), 0.0, 1.0);"</span><span class="p">,</span>
+
+            <span class="s2">"color += mix(vec3(-0.34, -0.5, -1.0), vec3(0.0, -0.5, -1.0), (position.y + 1.0) * 0.25);"</span><span class="p">,</span>
+            <span class="s2">"color += (vec3(0.95, 0.65, 0.30) * 1.0 / distance(vec2(0.0), position) * 0.075);"</span><span class="p">,</span>
+            <span class="s2">"color += vec3(0.95, 0.45, 0.30) * min(1.0, blade *0.7) * (1.0 / distance(vec2(0.0, 0.0), position)*0.075);"</span><span class="p">,</span>
+
+            <span class="s2">"return color;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+
+        <span class="s2">"// Tweaked from http://glsl.heroku.com/e#4982.0"</span><span class="p">,</span>
+        <span class="s2">"float hash(float n) { return fract(sin(n)*43758.5453); }"</span><span class="p">,</span>
+
+        <span class="s2">"float noise(in vec2 x)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec2 p = floor(x);"</span><span class="p">,</span>
+            <span class="s2">"vec2 f = fract(x);"</span><span class="p">,</span>
+            <span class="s2">"f = f*f*(3.0-2.0*f);"</span><span class="p">,</span>
+            <span class="s2">"float n = p.x + p.y*57.0;"</span><span class="p">,</span>
+            <span class="s2">"float res = mix(mix(hash(n+0.0), hash(n+1.0),f.x), mix(hash(n+57.0), hash(n+58.0),f.x),f.y);"</span><span class="p">,</span>
+
+            <span class="s2">"return res;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 cloud(vec2 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float f = 0.0;"</span><span class="p">,</span>
+            <span class="s2">"f += 0.50000*noise(p*1.0*10.0);"</span><span class="p">,</span>
+            <span class="s2">"f += 0.25000*noise(p*2.0*10.0);"</span><span class="p">,</span>
+            <span class="s2">"f += 0.12500*noise(p*4.0*10.0);"</span><span class="p">,</span>
+            <span class="s2">"f += 0.06250*noise(p*8.0*10.0);"</span><span class="p">,</span>
+            <span class="s2">"f *= f;"</span><span class="p">,</span>
+
+            <span class="s2">"return vec3(f*.65, f*.45, f)*.6;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"const float LAYERS = 7.0;"</span><span class="p">,</span>
+        <span class="s2">"const float SPEED  = 0.005;"</span><span class="p">,</span>
+        <span class="s2">"const float SCALE  = 8.0;"</span><span class="p">,</span>
+        <span class="s2">"const float DENSITY    = 0.5;"</span><span class="p">,</span>
+        <span class="s2">"const float BRIGHTNESS = 2.0;"</span><span class="p">,</span>
+        <span class="s2">"vec2 ORIGIN    = resolution.xy*.5;"</span><span class="p">,</span>
+
+        <span class="s2">"float rand(vec2 co){ return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453); }"</span><span class="p">,</span>
+
+        <span class="s2">"void main(void)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec2   pos = gl_FragCoord.xy - ORIGIN;"</span><span class="p">,</span>
+            <span class="s2">"float dist = length(pos) / resolution.y;"</span><span class="p">,</span>
+            <span class="s2">"vec2 coord = vec2(pow(dist, 0.1), atan(pos.x, pos.y) / (3.1415926*2.0));"</span><span class="p">,</span>
+
+            <span class="s2">"// Nebulous cloud"</span><span class="p">,</span>
+            <span class="s2">"vec3 color = cloud(pos/resolution);"</span><span class="p">,</span>
+
+            <span class="s2">"// Background stars"</span><span class="p">,</span>
+            <span class="s2">"float a = pow((1.0-dist), 20.0);"</span><span class="p">,</span>
+            <span class="s2">"float t = time*-0.05;"</span><span class="p">,</span>
+            <span class="s2">"float r = coord.x - (t*SPEED);"</span><span class="p">,</span>
+            <span class="s2">"float c = fract(a+coord.y + 0.0*0.543);"</span><span class="p">,</span>
+            <span class="s2">"vec2  p = vec2(r, c*0.5)*4000.0;"</span><span class="p">,</span>
+            <span class="s2">"vec2 uv = fract(p)*2.0-1.0;"</span><span class="p">,</span>
+            <span class="s2">"float m = clamp((rand(floor(p))-0.9)*BRIGHTNESS, 0.0, 1.0);"</span><span class="p">,</span>
+            <span class="s2">"color +=  clamp((1.0-length(uv*2.0))*m*dist, 0.0, 1.0);"</span><span class="p">,</span>
+
+            <span class="s2">"// Flying stars into black hole"</span><span class="p">,</span>
+            <span class="s2">"for (float i = 1.0; i &lt; (LAYERS+1.0); ++i)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"float a = pow((1.0-dist),20.0);"</span><span class="p">,</span>
+                <span class="s2">"float t = i*10.0 + time*i*i;"</span><span class="p">,</span>
+                <span class="s2">"float r = coord.x - (t*SPEED);"</span><span class="p">,</span>
+                <span class="s2">"float c = fract(a+coord.y + i*.543);"</span><span class="p">,</span>
+                <span class="s2">"vec2  p = vec2(r, c*.5)*SCALE*(LAYERS/(i*i));"</span><span class="p">,</span>
+                <span class="s2">"vec2 uv = fract(p)*2.0-1.0;"</span><span class="p">,</span>
+                <span class="s2">"float m = clamp((rand(floor(p))-DENSITY/i)*BRIGHTNESS, 0.0, 1.0);"</span><span class="p">,</span>
+                <span class="s2">"color +=  clamp(star(uv*0.5, time+i*10.0)*m*dist, 0.0, 1.0);"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+
+            <span class="s2">"gl_FragColor = vec4(color, 1.0);"</span><span class="p">,</span>
+        <span class="s2">"}"</span>
+    <span class="p">];</span>
+
+    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/filters/starlight.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

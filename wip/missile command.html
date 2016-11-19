@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/missile command.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/missile command
+</h1>
+<a href="/js/wip/missile%20command.js">source: wip/missile command.js</a><pre class="highlight javascript"><code><span class="c1">//  The in-bound missiles</span>
+
+<span class="nx">MissileLauncher</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">,</span> <span class="nx">cities</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">cities</span> <span class="o">=</span> <span class="nx">cities</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">missiles</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">loop</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">launch</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+	<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="nx">MissileLauncher</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+	<span class="na">launch</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Missile</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">);</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">missiles</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">m</span><span class="p">);</span>
+
+		<span class="nx">m</span><span class="p">.</span><span class="nx">launch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cities</span><span class="p">.</span><span class="nx">getRandom</span><span class="p">(),</span> <span class="mi">10000</span><span class="p">);</span>
+
+	<span class="p">},</span>
+
+	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">missiles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">missiles</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">alive</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">missiles</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">update</span><span class="p">();</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+	<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="nx">Missile</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="nx">Missile</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+	<span class="na">launch</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="nx">speed</span><span class="p">;</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="nx">target</span><span class="p">;</span>
+
+    	<span class="kd">var</span> <span class="nx">destination</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="p">};</span>
+
+	    <span class="kd">var</span> <span class="nx">tween</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">destination</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">target</span><span class="p">.</span><span class="nx">hitX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">target</span><span class="p">.</span><span class="nx">hitY</span> <span class="p">},</span> <span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">);</span>
+    
+    	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">x</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">alive</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#ff0000'</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="o">++</span><span class="p">;</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+				<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'hit target?'</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="k">else</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">x</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
+			<span class="p">}</span>
+
+		<span class="p">}</span>
+
+	<span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="nx">Missile</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Missile</span><span class="p">;</span>
+
+<span class="c1">//	The rockets you fire at the missiles</span>
+
+<span class="nx">Rocket</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">launchX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">launchY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">destX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">destY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">line</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">silo</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="nx">Rocket</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+	<span class="na">launch</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">silo</span><span class="p">,</span> <span class="nx">destX</span><span class="p">,</span> <span class="nx">destY</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">silo</span> <span class="o">=</span> <span class="nx">silo</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">launchX</span> <span class="o">=</span> <span class="nx">silo</span><span class="p">.</span><span class="nx">launchX</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">launchY</span> <span class="o">=</span> <span class="nx">silo</span><span class="p">.</span><span class="nx">launchY</span><span class="p">;</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">destX</span> <span class="o">=</span> <span class="nx">destX</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">destY</span> <span class="o">=</span> <span class="nx">destY</span><span class="p">;</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">line</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">launchX</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">launchY</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">launchX</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">launchY</span><span class="p">);</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">distance</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">destX</span><span class="p">,</span> <span class="nx">destY</span><span class="p">)</span> <span class="o">*</span> <span class="nx">speed</span><span class="p">);</span>
+
+    	<span class="kd">var</span> <span class="nx">destination</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">launchX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">launchY</span> <span class="p">};</span>
+
+	    <span class="kd">var</span> <span class="nx">tween</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">destination</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">destX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">destY</span> <span class="p">},</span> <span class="k">this</span><span class="p">.</span><span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">);</span>
+
+    	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">alive</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="s1">'marker'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">destX</span> <span class="o">-</span> <span class="mi">4</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">destY</span> <span class="o">-</span> <span class="mi">4</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="s1">'#0000ff'</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineWidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#ffffff'</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="o">++</span><span class="p">;</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">silo</span><span class="p">.</span><span class="nx">addExplosion</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="k">else</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">x</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+	<span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="nx">Rocket</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Rocket</span><span class="p">;</span>
+
+
+<span class="c1">//	The resulting explosions</span>
+
+<span class="nx">Explosion</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">maxRadius</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="mi">750</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="nx">Explosion</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+	<span class="na">explode</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">circle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Circle</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+	    <span class="kd">var</span> <span class="nx">tween</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">radius</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">maxRadius</span> <span class="p">},</span> <span class="k">this</span><span class="p">.</span><span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">);</span>
+		<span class="nx">tween</span><span class="p">.</span><span class="nx">yoyo</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+	    <span class="nx">tween</span><span class="p">.</span><span class="nx">interpolation</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">catmullRomInterpolation</span><span class="p">);</span>
+
+	    <span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    
+    	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">alive</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#ffff00'</span><span class="p">;</span>
+
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">.</span><span class="nx">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="o">++</span><span class="p">;</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="k">else</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">.</span><span class="nx">radius</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">radius</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+	<span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="nx">Explosion</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Explosion</span><span class="p">;</span>
+
+
+
+
+<span class="nx">City</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">game</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="mi">440</span><span class="p">,</span> <span class="s1">'city'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">hitX</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">32</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">hitY</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">30</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="nx">City</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+<span class="nx">City</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">City</span><span class="p">;</span>
+
+
+<span class="nx">Silo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">bmd1</span><span class="p">,</span> <span class="nx">bmd2</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">rocketsBMD</span> <span class="o">=</span> <span class="nx">bmd1</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">explosionBMD</span> <span class="o">=</span> <span class="nx">bmd2</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">launchX</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">launchY</span> <span class="o">=</span> <span class="mi">432</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">armory</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">rockets</span> <span class="o">=</span> <span class="p">[];</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">explosions</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="nx">Silo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Silo</span><span class="p">;</span>
+
+<span class="nx">Silo</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+	<span class="na">launch</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">armory</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">rocket</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rocket</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rocketsBMD</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">rockets</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">rocket</span><span class="p">);</span>
+
+			<span class="nx">rocket</span><span class="p">.</span><span class="nx">launch</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">speed</span><span class="p">);</span>
+		<span class="p">}</span>
+
+	<span class="p">},</span>
+
+	<span class="na">addExplosion</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+
+		<span class="kd">var</span> <span class="nx">explosion</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Explosion</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">explosionBMD</span><span class="p">);</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">explosions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">explosion</span><span class="p">);</span>
+
+		<span class="nx">explosion</span><span class="p">.</span><span class="nx">explode</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+
+	<span class="p">},</span>
+
+	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">rockets</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">rockets</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">alive</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">rockets</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">update</span><span class="p">();</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">explosions</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">explosions</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">alive</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">explosions</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">update</span><span class="p">();</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+	<span class="p">}</span>
+
+<span class="p">}</span>
+
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">640</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'title'</span><span class="p">,</span> <span class="s1">'assets/games/missilecommand/title-page.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'land'</span><span class="p">,</span> <span class="s1">'assets/games/missilecommand/land.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'marker'</span><span class="p">,</span> <span class="s1">'assets/games/missilecommand/marker.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'missile'</span><span class="p">,</span> <span class="s1">'assets/games/missilecommand/missile.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/skies/cavern2.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'city'</span><span class="p">,</span> <span class="s1">'assets/games/missilecommand/city.png'</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">36</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">rocketsBitmap</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">rocketsLayer</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">explosionsBitmap</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">explosionsLayer</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">missilesBitmap</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">missilesLayer</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">missileLauncher</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">land</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">cities</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">rocketSpeed</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">missileSpeed</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">missileDelay</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">m1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">silo1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">silo2</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+	<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
+
+	<span class="nx">rocketsBitmap</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+	<span class="nx">missilesBitmap</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+	<span class="nx">explosionsBitmap</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+	<span class="nx">rocketsLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">rocketsBitmap</span><span class="p">);</span>
+	<span class="nx">missilesLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">missilesBitmap</span><span class="p">);</span>
+	<span class="nx">explosionsLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">explosionsBitmap</span><span class="p">);</span>
+
+	<span class="nx">land</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">432</span><span class="p">,</span> <span class="s1">'land'</span><span class="p">);</span>
+
+	<span class="nx">cities</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+
+	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">8</span><span class="p">));</span>
+	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">168</span><span class="p">));</span>
+	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">246</span><span class="p">));</span>
+	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">324</span><span class="p">));</span>
+	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">402</span><span class="p">));</span>
+	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">568</span><span class="p">));</span>
+
+	<span class="nx">silo1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silo</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">rocketsBitmap</span><span class="p">,</span> <span class="nx">explosionsBitmap</span><span class="p">,</span> <span class="mi">118</span><span class="p">);</span>
+	<span class="nx">silo2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silo</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">rocketsBitmap</span><span class="p">,</span> <span class="nx">explosionsBitmap</span><span class="p">,</span> <span class="mi">518</span><span class="p">);</span>
+
+	<span class="nx">missileLauncher</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MissileLauncher</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">missilesBitmap</span><span class="p">,</span> <span class="nx">cities</span><span class="p">);</span>
+
+	<span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">launchRocket</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">launchRocket</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">320</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">silo1</span><span class="p">.</span><span class="nx">launch</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">rocketSpeed</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">else</span>
+	<span class="p">{</span>
+		<span class="nx">silo2</span><span class="p">.</span><span class="nx">launch</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">rocketSpeed</span><span class="p">);</span>
+	<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="nx">rocketsBitmap</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+	<span class="nx">explosionsBitmap</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+
+	<span class="nx">missileLauncher</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+	<span class="nx">silo1</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+	<span class="nx">silo2</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/missile%20command.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

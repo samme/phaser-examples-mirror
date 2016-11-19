@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/record webm.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/record webm
+</h1>
+<a href="/js/wip/record%20webm.js">source: wip/record webm.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">video</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">recorder</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">video</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+    <span class="nx">video</span><span class="p">.</span><span class="nx">onAccess</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">camAllowed</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">video</span><span class="p">.</span><span class="nx">onError</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">camBlocked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">camAllowed</span><span class="p">(</span><span class="nx">video</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'--&gt; camera was allowed'</span><span class="p">,</span> <span class="nx">video</span><span class="p">);</span>
+
+    <span class="nx">video</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">video</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+
+    <span class="c1">// sprite.x = 640;</span>
+    <span class="c1">// sprite.scale.x = -1;</span>
+
+    <span class="nx">recorder</span> <span class="o">=</span> <span class="nx">RecordRTC</span><span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">videoStream</span><span class="p">,</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="s1">'video'</span> <span class="p">});</span>
+
+    <span class="nx">video</span><span class="p">.</span><span class="nx">onAccess</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">camAllowed</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">video</span><span class="p">.</span><span class="nx">onError</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">camBlocked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">recorder</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">LocalStartRecording</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">LocalStartRecording</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'startRecording'</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">LocalStopRecording</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="nx">recorder</span><span class="p">.</span><span class="nx">startRecording</span><span class="p">();</span>
+
+    <span class="c1">// debugger;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="nx">LocalStopRecording</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'startRecording'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">LocalStopRecording</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">fileName</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">99999999</span><span class="p">)</span> <span class="o">+</span> <span class="mi">99999999</span><span class="p">;</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'stopRecording'</span><span class="p">,</span> <span class="nx">fileName</span><span class="p">);</span>
+    
+    <span class="nx">recorder</span><span class="p">.</span><span class="nx">stopRecording</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">sendRecording</span><span class="p">(</span><span class="nx">recorder</span><span class="p">.</span><span class="nx">getBlob</span><span class="p">(),</span> <span class="nx">fileName</span> <span class="o">+</span> <span class="s1">'.webm'</span><span class="p">);</span>
+    <span class="p">});</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">sendRecording</span><span class="p">(</span><span class="nx">blob</span><span class="p">,</span> <span class="nx">fileName</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'sendRecording'</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">formData</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FormData</span><span class="p">();</span>
+    <span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'video-filename'</span><span class="p">,</span> <span class="nx">fileName</span><span class="p">);</span>
+    <span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'video-blob'</span><span class="p">,</span> <span class="nx">blob</span><span class="p">);</span>
+    
+    <span class="c1">// var _this = this;</span>
+
+    <span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+
+    <span class="nx">request</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="nx">request</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+
+            <span class="c1">// var result = JSON.parse(request.responseText);</span>
+        <span class="p">}</span>
+
+    <span class="p">};</span>
+
+    <span class="nx">request</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s1">'POST'</span><span class="p">,</span> <span class="s2">"http://192.168.0.100/disney-inside-out/api/Save.php"</span><span class="p">);</span>
+    <span class="nx">request</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">formData</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">camBlocked</span><span class="p">(</span><span class="nx">video</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'camera was blocked'</span><span class="p">,</span> <span class="nx">video</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">stopCam</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'camera stopped'</span><span class="p">);</span>
+
+    <span class="nx">video</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/record%20webm.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

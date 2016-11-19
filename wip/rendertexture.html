@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/rendertexture.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/rendertexture
+</h1>
+<a href="/js/wip/rendertexture.js">source: wip/rendertexture.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mushroom'</span><span class="p">,</span> <span class="s1">'assets/sprites/mushroom2.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">mushroom</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">texture</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">image</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">renderTexture</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="nx">texture</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">renderTexture</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'mousetrail'</span><span class="p">);</span>
+
+	<span class="c1">//	We create a sprite (rather than using the factory) so it doesn't get added to the display, as we only need its texture data.</span>
+	<span class="nx">mushroom</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'mushroom'</span><span class="p">);</span>
+	<span class="nx">mushroom</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+
+	<span class="c1">//	This is the sprite that is drawn to the display. We've given it the renderTexture as its texture.</span>
+
+	<span class="c1">// renderTexture = new PIXI.RenderTexture(800, 600);</span>
+
+	<span class="nx">image</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">texture</span><span class="p">);</span>
+	<span class="c1">// image.setTexture(renderTexture);</span>
+	<span class="c1">// image.setTexture(texture);</span>
+
+	<span class="c1">// game.input.onDown.add(tint, this);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">tint</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="c1">// image.tint = Math.random() * 0xFFFFFF;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">isZero</span><span class="p">())</span>
+	<span class="p">{</span>
+		<span class="c1">//	Here we draw the mushroom sprite to the renderTexture at the pointer coordinates.</span>
+		<span class="c1">//	The 'false' parameter 2nd from the end tells it not to clear itself, causing the trail effect you see.</span>
+		<span class="nx">texture</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">mushroom</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">position</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+		<span class="c1">// renderTexture.render(mushroom, game.input.activePointer.position, false);</span>
+	<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/rendertexture.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

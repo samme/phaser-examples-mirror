@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>display/ellipse.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  display/ellipse
+</h1>
+<a href="/js/display/ellipse.js">source: display/ellipse.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">graphics</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">);</span>
+
+    <span class="c1">// var ellipse = new Phaser.Ellipse(100, 100, 200, 60);</span>
+
+    <span class="c1">//  Our first arc will be a line only</span>
+    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mh">0xffd900</span><span class="p">);</span>
+
+    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawEllipse</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">60</span><span class="p">);</span>
+
+    <span class="c1">// graphics.arc(0, 0, 135, game.math.degToRad(0), game.math.degToRad(90), false);</span>
+    
+    <span class="c1">//  As we wish to draw a 2nd arc on the SAME Graphics object, we need to move the drawing operation</span>
+    <span class="c1">// graphics.moveTo(-100, -100);</span>
+
+    <span class="c1">//  This will reset the lineStyle</span>
+    <span class="c1">// graphics.lineStyle(0);</span>
+
+    <span class="c1">//  And this draws a filled arc</span>
+    <span class="c1">// graphics.beginFill(0xFF3300);</span>
+
+    <span class="c1">//  Note the 'true' at the end, this tells it to draw anticlockwise</span>
+    <span class="c1">// graphics.arc(-100, -100, 135, game.math.degToRad(0), game.math.degToRad(90), true);</span>
+
+    <span class="c1">// graphics.endFill();</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/display/ellipse.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

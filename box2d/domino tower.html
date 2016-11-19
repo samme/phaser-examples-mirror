@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>box2d/domino tower.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  box2d/domino tower
+</h1>
+<a href="/js/box2d/domino%20tower.js">source: box2d/domino tower.js</a><pre class="highlight javascript"><code><span class="cm">/**
+* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
+* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+* @copyright    2015 Photon Storm Ltd.
+* @license      {@link http://choosealicense.com/licenses/no-license/|No License}
+* 
+* @description  This example requires the Phaser Box2D Plugin to run.
+*               For more details please see http://phaser.io/shop/plugins/box2d
+*/</span>
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'platform'</span><span class="p">,</span> <span class="s1">'assets/sprites/platform.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser_tiny.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="nx">_debugType</span> <span class="o">=</span> 
+<span class="p">{</span>
+    <span class="na">NONE</span>    <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">SOME</span>    <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="na">WORLD</span>   <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="na">INFO</span>    <span class="p">:</span> <span class="mi">3</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">caption</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">debugType</span> <span class="o">=</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">INFO</span><span class="p">;</span> <span class="c1">// will roll over to NONE in create()</span>
+<span class="kd">var</span> <span class="nx">spritesToDebug</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="kd">var</span> <span class="nx">topSprite</span><span class="p">;</span> <span class="c1">// after create(), will be the last created sprite</span>
+<span class="kd">var</span> <span class="nx">triggerSprite</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">// sprite of rightmost body, removal which will cause collapse</span>
+<span class="kd">var</span> <span class="nx">stepCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+    
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+
+    <span class="c1">// Enable Box2D physics</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+
+    <span class="c1">//game.physics.box2d.debugDraw.aabbs = true;</span>
+    
+    <span class="c1">// Static platform for boxes to fall on</span>
+    <span class="kd">var</span> <span class="nx">platformSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="s1">'platform'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">platformSprite</span><span class="p">);</span>
+    <span class="nx">platformSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    
+    <span class="kd">var</span> <span class="nx">spriteWidth</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">spriteHeight</span> <span class="o">=</span> <span class="mi">35</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">spacingX</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="nx">spriteHeight</span> <span class="o">-</span> <span class="nx">spriteWidth</span><span class="p">));</span>
+    <span class="kd">var</span> <span class="nx">baseLayerCount</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">startX</span> <span class="o">=</span> <span class="mi">400</span> <span class="o">-</span> <span class="p">(</span><span class="nx">baseLayerCount</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="nx">spacingX</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">startY</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">// Create tower of dominos.</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">baseLayerCount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="kd">var</span> <span class="nx">layerType</span> <span class="o">=</span> <span class="nx">count</span> <span class="o">%</span> <span class="mi">3</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">baseLayerCount</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">xpos</span> <span class="o">=</span> <span class="nx">startX</span> <span class="o">+</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">spacingX</span><span class="p">;</span>
+            <span class="nx">topSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">xpos</span><span class="p">,</span> <span class="nx">startY</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">topSprite</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">layerType</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="nx">topSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.25</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="nx">spritesToDebug</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="p">{</span> <span class="na">sprite</span><span class="p">:</span> <span class="nx">topSprite</span><span class="p">,</span> <span class="na">color</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getRandomColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span> <span class="p">}</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">layerType</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">x</span> <span class="o">&gt;</span> <span class="nx">baseLayerCount</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="c1">// end pieces</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">layerType</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">topSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">startX</span> <span class="o">-</span> <span class="nx">spriteHeight</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nx">spriteWidth</span><span class="p">,</span> <span class="nx">startY</span> <span class="o">+</span> <span class="nx">spriteWidth</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">topSprite</span><span class="p">);</span>
+            <span class="nx">topSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
+
+            <span class="nx">topSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">startX</span> <span class="o">+</span> <span class="p">(</span><span class="nx">baseLayerCount</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">spacingX</span> <span class="o">+</span> <span class="p">(</span><span class="nx">spriteHeight</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nx">spriteWidth</span><span class="p">),</span> <span class="nx">startY</span> <span class="o">+</span> <span class="nx">spriteWidth</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">topSprite</span><span class="p">);</span>
+            <span class="nx">topSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">triggerSprite</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="nx">triggerSprite</span> <span class="o">=</span> <span class="nx">topSprite</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">layerType</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">case</span> <span class="mi">0</span><span class="p">:</span> <span class="c1">// upright</span>
+                <span class="nx">startY</span> <span class="o">-=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="nx">spriteWidth</span> <span class="o">+</span> <span class="nx">spriteHeight</span><span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="nx">startX</span> <span class="o">+=</span> <span class="nx">spriteHeight</span> <span class="o">-</span> <span class="nx">spriteWidth</span><span class="p">;</span>
+                <span class="nx">startY</span> <span class="o">-=</span> <span class="nx">spriteWidth</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="nx">startY</span> <span class="o">-=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="nx">spriteWidth</span> <span class="o">+</span> <span class="nx">spriteHeight</span><span class="p">);</span>
+                <span class="nx">baseLayerCount</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">count</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">count</span> <span class="o">&gt;</span> <span class="mi">27</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="nx">caption</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
+    <span class="nx">changeDebugType</span><span class="p">();</span>
+    
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">changeDebugType</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">changeDebugType</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">debugType</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">debugType</span> <span class="o">&gt;</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">INFO</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">debugType</span> <span class="o">=</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">NONE</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">caption</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'Click to toggle debug display (currently: '</span><span class="o">+</span>
+        <span class="p">(</span><span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">SOME</span> <span class="p">?</span> <span class="s1">'some'</span> <span class="p">:</span>
+        <span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">WORLD</span> <span class="p">?</span> <span class="s1">'world'</span> <span class="p">:</span>
+        <span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">INFO</span> <span class="p">?</span> <span class="s1">'info'</span> <span class="p">:</span> <span class="s1">'none'</span><span class="p">)</span> <span class="o">+</span><span class="s1">')'</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">stepCount</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">stepCount</span> <span class="o">==</span> <span class="mi">180</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// three seconds</span>
+        <span class="nx">triggerSprite</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">SOME</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">spritesToDebug</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="nx">i</span><span class="o">--</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">body</span><span class="p">(</span><span class="nx">spritesToDebug</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">spritesToDebug</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">color</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">WORLD</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">box2dWorld</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">INFO</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">bodyInfo</span><span class="p">(</span><span class="nx">topSprite</span><span class="p">,</span> <span class="nx">topSprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">20</span><span class="p">,</span> <span class="nx">topSprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">20</span><span class="p">);</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">body</span><span class="p">(</span><span class="nx">topSprite</span><span class="p">,</span> <span class="s1">'rgb(0,255,0)'</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/box2d/domino%20tower.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

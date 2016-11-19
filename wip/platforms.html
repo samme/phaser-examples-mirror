@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/platforms.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/platforms
+</h1>
+<a href="/js/wip/platforms.js">source: wip/platforms.js</a><pre class="highlight javascript"><code>
+<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'dude'</span><span class="p">,</span> <span class="s1">'assets/games/starstruck/dude.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">48</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'background'</span><span class="p">,</span> <span class="s1">'assets/games/starstruck/background2.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'box'</span><span class="p">,</span> <span class="s1">'assets/sprites/block.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">player</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">facing</span> <span class="o">=</span> <span class="s1">'left'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">jumpTimer</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">jumpButton</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">boxes</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#000000'</span><span class="p">;</span>
+
+    <span class="nx">bg</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'background'</span><span class="p">);</span>
+    <span class="nx">bg</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mf">20.0</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">setBoundsToWorld</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">friction</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enableBodySleeping</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">solver</span><span class="p">.</span><span class="nx">stiffness</span> <span class="o">=</span> <span class="mi">1</span><span class="nx">e20</span><span class="p">;</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">solver</span><span class="p">.</span><span class="nx">relaxation</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="c1">//  Materials</span>
+    <span class="kd">var</span> <span class="nx">groundMaterial</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">createMaterial</span><span class="p">(</span><span class="s1">'ground'</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">characterMaterial</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">createMaterial</span><span class="p">(</span><span class="s1">'character'</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">boxMaterial</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">createMaterial</span><span class="p">(</span><span class="s1">'box'</span><span class="p">);</span>
+
+    <span class="nx">player</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">400</span><span class="p">,</span> <span class="s1">'dude'</span><span class="p">);</span>
+    <span class="nx">player</span><span class="p">.</span><span class="nx">physicsEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">fixedRotation</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setMaterial</span><span class="p">(</span><span class="nx">characterMaterial</span><span class="p">);</span>
+    <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">mass</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">damping</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+
+    <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'left'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'turn'</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'right'</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+    <span class="nx">boxes</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">box</span> <span class="o">=</span> <span class="nx">boxes</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1700</span><span class="p">),</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span> <span class="s1">'box'</span><span class="p">);</span>
+        <span class="nx">box</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">realInRange</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">));</span>
+        <span class="nx">box</span><span class="p">.</span><span class="nx">physicsEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">allowSleep</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">mass</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setMaterial</span><span class="p">(</span><span class="nx">boxMaterial</span><span class="p">);</span>
+        <span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">fixedRotation</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//  Set the material along the ground</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">setWorldMaterial</span><span class="p">(</span><span class="nx">groundMaterial</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">groundCharacterCM</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">createContactMaterial</span><span class="p">(</span><span class="nx">groundMaterial</span><span class="p">,</span> <span class="nx">characterMaterial</span><span class="p">,</span> <span class="p">{</span> <span class="na">friction</span><span class="p">:</span> <span class="mf">0.0</span> <span class="p">});</span> <span class="c1">// no friction between character and ground</span>
+    <span class="kd">var</span> <span class="nx">boxCharacterCM</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">createContactMaterial</span><span class="p">(</span><span class="nx">boxMaterial</span><span class="p">,</span> <span class="nx">characterMaterial</span><span class="p">,</span> <span class="p">{</span> <span class="na">friction</span><span class="p">:</span> <span class="mf">0.0</span> <span class="p">});</span> <span class="c1">// No friction between character and boxes</span>
+    <span class="kd">var</span> <span class="nx">boxGroundCM</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">createContactMaterial</span><span class="p">(</span><span class="nx">boxMaterial</span><span class="p">,</span> <span class="nx">groundMaterial</span><span class="p">,</span> <span class="p">{</span> <span class="na">friction</span><span class="p">:</span> <span class="mf">0.6</span> <span class="p">});</span> <span class="c1">// Between boxes and ground</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">player</span><span class="p">);</span>
+
+    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    <span class="nx">jumpButton</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">bg</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">facing</span> <span class="o">!=</span> <span class="s1">'left'</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'left'</span><span class="p">);</span>
+            <span class="nx">facing</span> <span class="o">=</span> <span class="s1">'left'</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">facing</span> <span class="o">!=</span> <span class="s1">'right'</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'right'</span><span class="p">);</span>
+            <span class="nx">facing</span> <span class="o">=</span> <span class="s1">'right'</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">facing</span> <span class="o">!=</span> <span class="s1">'idle'</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">facing</span> <span class="o">==</span> <span class="s1">'left'</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="nx">player</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="nx">player</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nx">facing</span> <span class="o">=</span> <span class="s1">'idle'</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nx">jumpButton</span><span class="p">.</span><span class="nx">isDown</span> <span class="o">&amp;&amp;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="nx">jumpTimer</span> <span class="o">&amp;&amp;</span> <span class="nx">checkIfCanJump</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+        <span class="nx">jumpTimer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="mi">750</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">checkIfCanJump</span><span class="p">(){</span>
+<span class="kd">var</span> <span class="nx">yAxis</span> <span class="o">=</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">vec2</span><span class="p">.</span><span class="nx">fromValues</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">narrowphase</span><span class="p">.</span><span class="nx">contactEquations</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">narrowphase</span><span class="p">.</span><span class="nx">contactEquations</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">bi</span> <span class="o">===</span> <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">data</span> <span class="o">||</span> <span class="nx">c</span><span class="p">.</span><span class="nx">bj</span> <span class="o">===</span> <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">data</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">vec2</span><span class="p">.</span><span class="nx">dot</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">ni</span><span class="p">,</span><span class="nx">yAxis</span><span class="p">);</span> <span class="c1">// Normal dot Y-axis</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">bi</span> <span class="o">===</span> <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="nx">d</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">d</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span> <span class="nx">result</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kd">function</span> <span class="nx">render</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// if (player.debug)</span>
+    <span class="c1">// {</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">physicsBody</span><span class="p">(</span><span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+    <span class="c1">//     game.debug.bodyInfo(player, 16, 24);</span>
+    <span class="c1">// }</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/platforms.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

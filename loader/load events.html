@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>loader/load events.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  loader/load events
+</h1>
+<a href="/js/loader/load%20events.js">source: loader/load events.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'button'</span><span class="p">,</span> <span class="s1">'assets/buttons/button_sprite_sheet.png'</span><span class="p">,</span> <span class="mi">193</span><span class="p">,</span> <span class="mi">71</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">button</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">80</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#182d3b'</span><span class="p">;</span>
+
+    <span class="c1">//	You can listen for each of these events from Phaser.Loader</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">onLoadStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">loadStart</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">onFileComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">fileComplete</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">onLoadComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">loadComplete</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="c1">//	Just to kick things off</span>
+    <span class="nx">button</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span> <span class="o">-</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1">//	Progress report</span>
+    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'Click to start load'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">start</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture1'</span><span class="p">,</span> <span class="s1">'assets/pics/mighty_no_09_cover_art_by_robduenas.jpg'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture2'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar_dragonsun.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture3'</span><span class="p">,</span> <span class="s1">'assets/pics/trsipic1_lazur.jpg'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture4'</span><span class="p">,</span> <span class="s1">'assets/pics/archmage_in_your_face.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture5'</span><span class="p">,</span> <span class="s1">'assets/pics/acryl_bladerunner.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture6'</span><span class="p">,</span> <span class="s1">'assets/pics/acryl_bobablast.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture7'</span><span class="p">,</span> <span class="s1">'assets/pics/alex-bisleys_horsy_5.png'</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+
+    <span class="nx">button</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">loadStart</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s2">"Loading ..."</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="c1">//	This callback is sent the following parameters:</span>
+<span class="kd">function</span> <span class="nx">fileComplete</span><span class="p">(</span><span class="nx">progress</span><span class="p">,</span> <span class="nx">cacheKey</span><span class="p">,</span> <span class="nx">success</span><span class="p">,</span> <span class="nx">totalLoaded</span><span class="p">,</span> <span class="nx">totalFiles</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s2">"File Complete: "</span> <span class="o">+</span> <span class="nx">progress</span> <span class="o">+</span> <span class="s2">"% - "</span> <span class="o">+</span> <span class="nx">totalLoaded</span> <span class="o">+</span> <span class="s2">" out of "</span> <span class="o">+</span> <span class="nx">totalFiles</span><span class="p">);</span>
+
+	<span class="kd">var</span> <span class="nx">newImage</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">cacheKey</span><span class="p">);</span>
+
+	<span class="nx">newImage</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.3</span><span class="p">);</span>
+
+	<span class="nx">x</span> <span class="o">+=</span> <span class="nx">newImage</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="mi">20</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">700</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">x</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+		<span class="nx">y</span> <span class="o">+=</span> <span class="mi">332</span><span class="p">;</span>
+	<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">loadComplete</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s2">"Load Complete"</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/loader/load%20events.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

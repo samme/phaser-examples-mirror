@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/TweenGroup.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/TweenGroup
+</h1>
+<a href="/js/wip/TweenGroup.js">source: wip/TweenGroup.js</a><pre class="highlight javascript"><code><span class="cm">/**
+* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+* @copyright    2013 Photon Storm Ltd.
+* @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+*/</span>
+
+<span class="cm">/**
+* TweenGroup constructor
+* Create a new &lt;code&gt;TweenGroup&lt;/code&gt;.
+*
+* @class Phaser.TweenGroup
+* @constructor
+* @param {Phaser.Game} game - Current game instance.
+* @param {number} delay - Delay before this tween will start, defaults to 0 (no delay).
+* @param {number} repeat - How many time should the TweenGroup repeat itself. Infinity can be used for infinite repetition.
+* @param {Phaser.Tween} yoyo - Whether this TweenGroup will reverse on completion.
+* @param {boolean} autoStart - Whether this TweenGroup will start automatically or not.
+*/</span>
+<span class="nx">Phaser</span><span class="p">.</span><span class="nx">TweenGroup</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">delay</span><span class="p">,</span> <span class="nx">repeat</span><span class="p">,</span> <span class="nx">yoyo</span><span class="p">,</span> <span class="nx">autoStart</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="nx">autoStart</span> <span class="o">=</span> <span class="nx">autoStart</span> <span class="o">||</span> <span class="kc">true</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {Phaser.Game} game - A reference to the currently running Game.
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {number} _duration - Description.
+	* @private
+	* @default
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_duration</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {number} _repeat - Description.
+	* @private
+	* @default
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_repeat</span> <span class="o">=</span> <span class="nx">repeat</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {boolean} _yoyo - Description.
+	* @private
+	* @default
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_yoyo</span> <span class="o">=</span> <span class="nx">yoyo</span> <span class="o">||</span> <span class="kc">false</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {boolean} _reversed - Description.
+	* @private
+	* @default
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_reversed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {number} _delayTime - Description.
+	* @private
+	* @default
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_delayTime</span> <span class="o">=</span> <span class="nx">delay</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {Description} _startTime - Description.
+	* @private
+	* @default null
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_startTime</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {Description} _onStartCallback - Description.
+	* @private
+	* @default
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_onStartCallback</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {boolean} _onStartCallbackFired - Description.
+	* @private
+	* @default
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_onStartCallbackFired</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {Description} _onUpdateCallback - Description.
+	* @private
+	* @default null
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_onUpdateCallback</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {Description} _onCompleteCallback - Description.
+	* @private
+	* @default null
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_onCompleteCallback</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {boolean} _paused - Description.
+	* @private
+	* @default false
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_paused</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+	
+	<span class="cm">/**
+	* @property {number} _pausedTime - Description.
+	* @private
+	* @default
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_pausedTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {boolean} pendingDelete - If this TweenGroup is ready to be deleted by the TweenManager.
+	* @default
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">pendingDelete</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+	
+	<span class="cm">/**
+	* @property {Phaser.Signal} onStart - Description.
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">onStart</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Signal</span><span class="p">();</span>
+
+	<span class="cm">/**
+	* @property {Phaser.Signal} onComplete - Description.
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">onComplete</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Signal</span><span class="p">();</span>
+
+	<span class="cm">/**
+	* @property {boolean} isRunning - Description.
+	* @default
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">isRunning</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {number} _time - Description.
+	* @private
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="cm">/**
+	* @property {array} _tweens - Description.
+	* @private
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_tweens</span> <span class="o">=</span> <span class="p">[];</span>
+
+	<span class="cm">/**
+	* @property {array} _add - Description.
+	* @private
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_add</span> <span class="o">=</span> <span class="p">[];</span>
+
+	<span class="cm">/**
+	* @property {boolean} _dirty - Description.
+	* @private
+	*/</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_dirty</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">autoStart</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+	<span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="nx">Phaser</span><span class="p">.</span><span class="nx">TweenGroup</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+	<span class="cm">/**
+	* Create and configure a tween that will be added to this group
+	*
+	* @method Phaser.TweenGroup#to
+	* @param {object} object - Object to tween.
+	* @param {object} properties - Properties you want to tween.
+	* @param {number} duration - Duration of this tween.
+	* @param {function} ease - Easing function.
+	* @param {boolean} autoStart - Whether this tween will start automatically or not.
+	* @param {number} delay - Delay before this tween will start, defaults to 0 (no delay).
+	* @param {boolean} repeat - Should the tween automatically restart once complete? (ignores any chained tweens).
+	* @param {Phaser.Tween} yoyo - Description.
+	* @return {Phaser.TweenGroup} Itself.
+	*/</span>
+	<span class="na">to</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">object</span><span class="p">,</span> <span class="nx">properties</span><span class="p">,</span> <span class="nx">duration</span><span class="p">,</span> <span class="nx">ease</span><span class="p">,</span> <span class="nx">autoStart</span><span class="p">,</span> <span class="nx">delay</span><span class="p">,</span> <span class="nx">repeat</span><span class="p">,</span> <span class="nx">yoyo</span> <span class="p">)</span> <span class="p">{</span>
+
+		<span class="kd">var</span> <span class="nx">tween</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tween</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">);</span>
+		<span class="nx">tween</span><span class="p">.</span><span class="nx">to</span><span class="p">(</span><span class="nx">properties</span><span class="p">,</span> <span class="nx">duration</span><span class="p">,</span> <span class="nx">ease</span><span class="p">,</span> <span class="nx">autoStart</span><span class="p">,</span> <span class="nx">delay</span><span class="p">,</span> <span class="nx">repeat</span><span class="p">,</span> <span class="nx">yoyo</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tween</span><span class="p">);</span>
+
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Starts the TweenGroup.
+	*
+	* @method Phaser.TweenGroup#start
+	* @return {Phaser.TweenGroup} Itself.
+	*/</span>
+	<span class="na">start</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">tweens</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">onStart</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">();</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">isRunning</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_onStartCallbackFired</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_startTime</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_delayTime</span><span class="p">;</span>
+
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Stops the TweenGroup if running and removes it from the TweenManager. If there are any onComplete callbacks or events they are not dispatched.
+	*
+	* @method Phaser.TweenGroup#stop
+	* @return {Phaser.TweenGroup} Itself.
+	*/</span>
+	<span class="na">stop</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">tweens</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">isRunning</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Sets a delay time before this tween will start.
+	*
+	* @method Phaser.TweenGroup#delay
+	* @param {number} amount - The amount of the delay in ms.
+	* @return {Phaser.TweenGroup} Itself.
+	*/</span>
+	<span class="na">delay</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">amount</span> <span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_delayTime</span> <span class="o">=</span> <span class="nx">amount</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Sets the number of times this tween will repeat.
+	*
+	* @method Phaser.TweenGroup#repeat
+	* @param {number} times - How many times to repeat.
+	* @return {Phaser.TweenGroup} Itself.
+	*/</span>
+	<span class="na">repeat</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">times</span> <span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_repeat</span> <span class="o">=</span> <span class="nx">times</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* A tween that has yoyo set to true will run through from start to finish, then reverse from finish to start.
+	* Used in combination with repeat you can create endless loops.
+	*
+	* @method Phaser.TweenGroup#yoyo
+	* @param {boolean} yoyo - Set to true to yoyo this tween.
+	* @return {Phaser.TweenGroup} Itself.
+	*/</span>
+	<span class="na">yoyo</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">yoyo</span> <span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_yoyo</span> <span class="o">=</span> <span class="nx">yoyo</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Sets a callback to be fired when the tween starts. Note: callback will be called in the context of the global scope.
+	*
+	* @method Phaser.TweenGroup#onStartCallback
+	* @param {function} callback - The callback to invoke on start.
+	* @return {Phaser.TweenGroup} Itself.
+	*/</span>
+	<span class="na">onStartCallback</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">callback</span> <span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_onStartCallback</span> <span class="o">=</span> <span class="nx">callback</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Sets a callback to be fired each time this tween updates. Note: callback will be called in the context of the global scope.
+	*
+	* @method Phaser.TweenGroup#onUpdateCallback
+	* @param {function} callback - The callback to invoke each time this tween is updated.
+	* @return {Phaser.TweenGroup} Itself.
+	*/</span>
+	<span class="na">onUpdateCallback</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">callback</span> <span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_onUpdateCallback</span> <span class="o">=</span> <span class="nx">callback</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Sets a callback to be fired when the tween completes. Note: callback will be called in the context of the global scope.
+	*
+	* @method Phaser.TweenGroup#onCompleteCallback
+	* @param {function} callback - The callback to invoke on completion.
+	* @return {Phaser.TweenGroup} Itself.
+	*/</span>
+	<span class="na">onCompleteCallback</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">callback</span> <span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_onCompleteCallback</span> <span class="o">=</span> <span class="nx">callback</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Pauses the tween. 
+	*
+	* @method Phaser.TweenGroup#pause
+	*/</span>
+	<span class="na">pause</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_paused</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_pausedTime</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Resumes a paused tween.
+	*
+	* @method Phaser.TweenGroup#resume
+	*/</span>
+	<span class="na">resume</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_paused</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_startTime</span> <span class="o">+=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">_pausedTime</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Core tween update function called by the TweenManager. Does not need to be invoked directly.
+	*
+	* @method Phaser.TweenGroup#update
+	* @param {number} time - A timestamp passed in by the TweenManager.
+	* @return {boolean} false if the tween has completed and should be deleted from the manager, otherwise true (still active).
+	*/</span>
+	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">time</span> <span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+			<span class="nx">numTweens</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tweens</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+			<span class="nx">tween</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+		<span class="kd">var</span> <span class="nx">rtime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+		<span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_onStartCallbackFired</span> <span class="o">===</span> <span class="kc">false</span> <span class="p">)</span> <span class="p">{</span>
+
+			<span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_onStartCallback</span> <span class="o">!==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">_onStartCallback</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+			<span class="p">}</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">onStart</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">_onStartCallbackFired</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_dirty</span> <span class="o">&amp;&amp;</span> <span class="nx">numTweens</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+
+			<span class="kd">var</span> <span class="nx">max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">numTweens</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">tween</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tweens</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
+
+				<span class="k">if</span> <span class="p">(</span> <span class="nx">max</span> <span class="o">&lt;</span> <span class="p">(</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_startTime</span> <span class="o">+</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_duration</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+					<span class="nx">max</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_startTime</span> <span class="o">+</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_duration</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">_duration</span> <span class="o">=</span> <span class="nx">max</span><span class="p">;</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">_dirty</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+		<span class="p">}</span>
+
+		<span class="k">while</span> <span class="p">(</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">numTweens</span> <span class="p">)</span> <span class="p">{</span>
+
+			<span class="nx">tween</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tweens</span><span class="p">[</span> <span class="nx">i</span> <span class="p">];</span>
+
+			<span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="nx">time</span> <span class="o">&lt;</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_startTime</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="nx">time</span> <span class="o">&gt;</span> <span class="p">(</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_startTime</span> <span class="o">+</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_duration</span> <span class="p">))</span> <span class="o">||</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_paused</span><span class="p">)</span> <span class="p">{</span>
+
+				<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+				<span class="k">continue</span><span class="p">;</span>
+
+			<span class="p">}</span>
+
+			<span class="nx">rtime</span> <span class="o">=</span> <span class="nx">time</span> <span class="o">-</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_startTime</span><span class="p">;</span>
+
+			<span class="nx">tween</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span> <span class="nx">rtime</span> <span class="p">);</span>
+
+			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_onUpdateCallback</span> <span class="o">!==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">_onUpdateCallback</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="p">(</span> <span class="nx">time</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_duration</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_reversed</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="p">(</span> <span class="nx">time</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_reversed</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+			<span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_onCompleteCallback</span> <span class="o">!==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_onCompleteCallback</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+			<span class="p">}</span>
+
+			<span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_repeat</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+
+				<span class="k">if</span> <span class="p">(</span> <span class="nb">isFinite</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">_repeat</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_repeat</span><span class="o">--</span><span class="p">;</span>
+				<span class="p">}</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_yoyo</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_reversed</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_reversed</span><span class="p">;</span>
+				<span class="p">}</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">_startTime</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_delayTime</span><span class="p">;</span>
+
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="p">}</span>
+
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_add</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_tweens</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tweens</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_add</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_add</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Add a new tween into the TweenGroup.
+	*
+	* @method Phaser.TweenGroup#add
+	* @param {Phaser.Tween} tween - The tween object you want to add.
+	* @returns {Phaser.Tween} The tween object you added to the group.
+	*/</span>
+	<span class="na">add</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">tween</span> <span class="p">)</span> <span class="p">{</span>
+
+		<span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">isRunning</span> <span class="p">)</span> <span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_add</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">tween</span> <span class="p">);</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_tweens</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">tween</span> <span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="nx">tween</span><span class="p">.</span><span class="nx">_startTime</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_duration</span> <span class="o">+</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_delayTime</span><span class="p">;</span>
+
+		<span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_startTime</span> <span class="o">+</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_duration</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_duration</span> <span class="p">)</span> <span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_duration</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_startTime</span> <span class="o">+</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">_duration</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_dirty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+	<span class="p">},</span>
+
+	<span class="cm">/**
+	* Remove a tween from this TweenGroup.
+	*
+	* @method Phaser.TweenGroup#remove
+	* @param {Phaser.Tween} tween - The tween object you want to remove.
+	*/</span>
+	<span class="na">remove</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">tween</span> <span class="p">)</span> <span class="p">{</span>
+
+		<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tweens</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span> <span class="nx">tween</span> <span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span> <span class="nx">i</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">{</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">_tweens</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">pendingDelete</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_dirty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+	<span class="p">}</span>
+	
+<span class="p">};</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/TweenGroup.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

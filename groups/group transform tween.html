@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>groups/group transform tween.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  groups/group transform tween
+</h1>
+<a href="/js/groups/group%20transform%20tween.js">source: groups/group transform tween.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">robot</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">eye</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">body</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">leftArm</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">rightArm</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">leftLeg</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">rightLeg</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'eye'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/eye.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'body'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/body.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'arm-l'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/arm-l.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'arm-r'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/arm-r.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'leg-l'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/leg-l.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'leg-r'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/leg-r.png'</span><span class="p">);</span>
+    
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// Use groups of sprites to create a big robot.</span>
+    <span class="c1">// Robot itself, you can subclass group class in a real game.</span>
+    <span class="nx">robot</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+
+    <span class="c1">// Robot components.</span>
+    <span class="nx">leftArm</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="s1">'arm-l'</span><span class="p">);</span>
+    <span class="nx">rightArm</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">549</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="s1">'arm-r'</span><span class="p">);</span>
+    <span class="nx">leftLeg</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">325</span><span class="p">,</span> <span class="s1">'leg-l'</span><span class="p">);</span>
+    <span class="nx">rightLeg</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">410</span><span class="p">,</span> <span class="mi">325</span><span class="p">,</span> <span class="s1">'leg-r'</span><span class="p">);</span>
+    <span class="nx">body</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">219</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'body'</span><span class="p">);</span>
+    <span class="nx">eye</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">335</span><span class="p">,</span> <span class="mi">173</span><span class="p">,</span><span class="s1">'eye'</span><span class="p">);</span>
+
+    <span class="c1">// Tween the robot's size, so all the components also scaled.</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">robot</span><span class="p">.</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span><span class="na">x</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Back</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">false</span><span class="p">).</span><span class="nx">yoyo</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'The robot is a group and every component is a sprite.'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/groups/group%20transform%20tween.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

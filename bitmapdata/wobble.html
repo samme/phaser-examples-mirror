@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>bitmapdata/wobble.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  bitmapdata/wobble
+</h1>
+<a href="/js/bitmapdata/wobble.js">source: bitmapdata/wobble.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/shinyball.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">waveSize</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">wavePixelChunk</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">waveData</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">waveDataCounter</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="c1">//	Create our BitmapData object at a size of 32x64</span>
+	<span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+
+    <span class="c1">//  And apply it to 100 randomly positioned sprites</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">//  Populate the wave with some data</span>
+	<span class="nx">waveData</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">sinCosGenerator</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="c1">//	Clear the BitmapData</span>
+	<span class="nx">bmd</span><span class="p">.</span><span class="nx">cls</span><span class="p">();</span>
+
+	<span class="nx">updateWobblyBall</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+<span class="c1">//  This creates a simple sine-wave effect running through our BitmapData.</span>
+<span class="c1">//  This is then duplicated across all 100 sprites using it, meaning we only have to calculate it and upload it to the GPU once.</span>
+
+<span class="kd">function</span> <span class="nx">updateWobblyBall</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">copyRect</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">w</span><span class="p">:</span> <span class="nx">wavePixelChunk</span><span class="p">,</span> <span class="na">h</span><span class="p">:</span> <span class="mi">32</span> <span class="p">};</span>
+	<span class="kd">var</span> <span class="nx">copyPoint</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">};</span>
+
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">;</span> <span class="nx">x</span> <span class="o">+=</span> <span class="nx">wavePixelChunk</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">copyPoint</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+		<span class="nx">copyPoint</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">waveSize</span> <span class="o">+</span> <span class="p">(</span><span class="nx">waveSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nx">waveData</span><span class="p">.</span><span class="nx">sin</span><span class="p">[</span><span class="nx">s</span><span class="p">];</span>
+
+		<span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getImage</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">),</span> <span class="nx">copyRect</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">copyRect</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">copyRect</span><span class="p">.</span><span class="nx">w</span><span class="p">,</span> <span class="nx">copyRect</span><span class="p">.</span><span class="nx">h</span><span class="p">,</span> <span class="nx">copyPoint</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">copyPoint</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">copyRect</span><span class="p">.</span><span class="nx">w</span><span class="p">,</span> <span class="nx">copyRect</span><span class="p">.</span><span class="nx">h</span><span class="p">);</span>
+			
+		<span class="nx">copyRect</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">wavePixelChunk</span><span class="p">;</span>
+			
+		<span class="nx">s</span><span class="o">++</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="c1">//	Now all the pixel data has been redrawn we render it to the BitmapData object.</span>
+	<span class="c1">//	In CANVAS mode this doesn't do anything, but on WebGL it pushes the new texture to the GPU.</span>
+	<span class="c1">//	If your game is exclusively running under Canvas you can safely ignore this step.</span>
+	<span class="nx">bmd</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+
+	<span class="c1">//	Cycle through the wave data - this is what causes the image to "undulate"</span>
+	<span class="nx">Phaser</span><span class="p">.</span><span class="nx">ArrayUtils</span><span class="p">.</span><span class="nx">rotate</span><span class="p">(</span><span class="nx">waveData</span><span class="p">.</span><span class="nx">sin</span><span class="p">);</span>
+	
+	<span class="nx">waveDataCounter</span><span class="o">++</span><span class="p">;</span>
+	
+	<span class="k">if</span> <span class="p">(</span><span class="nx">waveDataCounter</span> <span class="o">===</span> <span class="nx">waveData</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">waveDataCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/bitmapdata/wobble.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

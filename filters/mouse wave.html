@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>filters/mouse wave.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  filters/mouse wave
+</h1>
+<a href="/js/filters/mouse%20wave.js">source: filters/mouse wave.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  From http://glslsandbox.com/e#18418.1</span>
+
+    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+
+        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+
+        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+
+        <span class="s2">"#define PI 3.1415926535897932384626433832795"</span><span class="p">,</span>
+
+        <span class="s2">"float rand(vec2 v)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"return fract(sin(dot(v.xy,vec2(33.9898,78.233))) * 43758.5453);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"void main()"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+
+            <span class="s2">"vec2 pos = (gl_FragCoord.xy / resolution) * 2. - 1.;"</span><span class="p">,</span>
+
+            <span class="s2">"float m = mouse.y * 2. - 1.;"</span><span class="p">,</span>
+
+            <span class="s2">"float amp = 0.50;          // amplitud"</span><span class="p">,</span>
+            <span class="s2">"float offset = m * .01 * 50. * time;   // periodo en segundos"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 color;"</span><span class="p">,</span>
+
+            <span class="s2">"const float wide = 0.5;"</span><span class="p">,</span>
+
+            <span class="s2">"for(float n = -wide; n &lt;= wide; n += .05){"</span><span class="p">,</span>
+
+                <span class="s2">"float rnd1 = rand(vec2(1.,n));"</span><span class="p">,</span>
+                <span class="s2">"float rnd2 = rand(vec2(n,1.));"</span><span class="p">,</span>
+                <span class="s2">"float rnd3 = rand(vec2(n,n));"</span><span class="p">,</span>
+
+                <span class="s2">"float r = 0.006 / abs(sin(PI * pos.x * pow(3., rnd1) + offset * rnd1) + ((pos.y + (rnd1 * n)) / amp));"</span><span class="p">,</span>
+                <span class="s2">"float g = 0.006 / abs(sin(PI * pos.x * pow(3., rnd2) + offset * rnd2) + ((pos.y + (rnd2 * n)) / amp));"</span><span class="p">,</span>
+                <span class="s2">"float b = 0.006 / abs(sin(PI * pos.x * pow(3., rnd3) + offset * rnd3) + ((pos.y + (rnd3 * n)) / amp));"</span><span class="p">,</span>
+
+                <span class="s2">"color += vec3(r, g, b);"</span><span class="p">,</span>
+
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"gl_FragColor = vec4(color, 1);"</span><span class="p">,</span>
+        <span class="s2">"}"</span>
+    <span class="p">];</span>
+
+    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/filters/mouse%20wave.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

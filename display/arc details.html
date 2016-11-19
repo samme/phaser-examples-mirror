@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>display/arc details.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  display/arc details
+</h1>
+<a href="/js/display/arc%20details.js">source: display/arc details.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">info</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">graphics1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">graphics2</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">angle</span> <span class="o">=</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">0</span> <span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x2d2d2d</span><span class="p">;</span>
+
+    <span class="nx">graphics1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">graphics2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"24px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">};</span>
+
+    <span class="nx">info</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'Arc'</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">130</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'Clockwise'</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">530</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'Anticlockwise'</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">angle</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">max</span><span class="p">:</span> <span class="mi">360</span> <span class="p">},</span> <span class="mi">6000</span><span class="p">,</span> <span class="s2">"Linear"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">info</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Arc maxAngle: "</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">angle</span><span class="p">.</span><span class="nx">max</span><span class="p">);</span>
+
+    <span class="nx">graphics1</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+    <span class="nx">graphics1</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0xffffff</span><span class="p">);</span>
+    <span class="nx">graphics1</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0x00bff3</span><span class="p">);</span>
+    <span class="nx">graphics1</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="nx">angle</span><span class="p">.</span><span class="nx">min</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">degToRad</span><span class="p">(</span><span class="nx">angle</span><span class="p">.</span><span class="nx">max</span><span class="p">),</span> <span class="kc">false</span><span class="p">);</span>
+    <span class="nx">graphics1</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+
+    <span class="nx">graphics2</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+    <span class="nx">graphics2</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0xffffff</span><span class="p">);</span>
+    <span class="nx">graphics2</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xa000f3</span><span class="p">);</span>
+    <span class="nx">graphics2</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="nx">angle</span><span class="p">.</span><span class="nx">min</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">degToRad</span><span class="p">(</span><span class="nx">angle</span><span class="p">.</span><span class="nx">max</span><span class="p">),</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">128</span><span class="p">);</span>
+    <span class="nx">graphics2</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+
+<span class="p">}</span></code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/display/arc%20details.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

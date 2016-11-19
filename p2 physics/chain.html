@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>p2 physics/chain.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  p2 physics/chain
+</h1>
+<a href="/js/p2%20physics/chain.js">source: p2 physics/chain.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'clouds'</span><span class="p">,</span> <span class="s1">'assets/misc/clouds.jpg'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'chain'</span><span class="p">,</span> <span class="s1">'assets/sprites/chain.png'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">26</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'clouds'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">P2JS</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1200</span><span class="p">;</span>
+
+    <span class="c1">//  Length, xAnchor, yAnchor</span>
+    <span class="nx">createRope</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">createRope</span><span class="p">(</span><span class="nx">length</span><span class="p">,</span> <span class="nx">xAnchor</span><span class="p">,</span> <span class="nx">yAnchor</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">lastRect</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">height</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>        <span class="c1">//  Height for the physics body - your image height is 8px</span>
+    <span class="kd">var</span> <span class="nx">width</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>         <span class="c1">//  This is the width for the physics body. If too small the rectangles will get scrambled together.</span>
+    <span class="kd">var</span> <span class="nx">maxForce</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">;</span>   <span class="c1">//  The force that holds the rectangles together.</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">xAnchor</span><span class="p">;</span>                    <span class="c1">//  All rects are on the same x position</span>
+        <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">yAnchor</span> <span class="o">+</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="nx">height</span><span class="p">);</span>     <span class="c1">//  Every new rect is positioned below the last</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">//  Add sprite (and switch frame every 2nd time)</span>
+            <span class="nx">newRect</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s1">'chain'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>   
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="nx">newRect</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s1">'chain'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+            <span class="nx">lastRect</span><span class="p">.</span><span class="nx">bringToTop</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="c1">//  Enable physicsbody</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">newRect</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+        <span class="c1">//  Set custom rectangle</span>
+        <span class="nx">newRect</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">newRect</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>  
+            <span class="c1">//  Anchor the first one created</span>
+            <span class="nx">newRect</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>      <span class="c1">//  Give it a push :) just for fun</span>
+            <span class="nx">newRect</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">mass</span> <span class="o">=</span> <span class="nx">length</span> <span class="o">/</span> <span class="nx">i</span><span class="p">;</span>     <span class="c1">//  Reduce mass for evey rope element</span>
+        <span class="p">}</span>
+
+        <span class="c1">//  After the first rectangle is created we can add the constraint</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">lastRect</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">createRevoluteConstraint</span><span class="p">(</span><span class="nx">newRect</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">],</span> <span class="nx">lastRect</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="nx">maxForce</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nx">lastRect</span> <span class="o">=</span> <span class="nx">newRect</span><span class="p">;</span>
+
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/p2%20physics/chain.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

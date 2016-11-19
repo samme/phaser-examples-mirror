@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/shared state.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/shared state
+</h1>
+<a href="/js/wip/shared%20state.js">source: wip/shared state.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">PewPew</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="c1">//  Our global Sprite, shared between States</span>
+    <span class="na">spaceship</span><span class="p">:</span> <span class="kc">null</span>
+
+<span class="p">};</span>
+
+<span class="nx">PewPew</span><span class="p">.</span><span class="nx">Preloader</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+
+<span class="nx">PewPew</span><span class="p">.</span><span class="nx">Preloader</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'chunk'</span><span class="p">,</span> <span class="s1">'assets/sprites/chunk.png'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'arrow'</span><span class="p">,</span> <span class="s1">'assets/sprites/asteroids_ship.png'</span><span class="p">);</span>
+
+    <span class="p">},</span>
+
+    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="s1">'arrow'</span><span class="p">);</span>
+        <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">);</span>
+
+        <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.8</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'State1'</span><span class="p">);</span>
+
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="nx">PewPew</span><span class="p">.</span><span class="nx">State1</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{};</span>
+
+<span class="nx">PewPew</span><span class="p">.</span><span class="nx">State1</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+
+        <span class="c1">//  If the spaceship is already in the World we don't add it again</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">parent</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">existing</span><span class="p">(</span><span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">launch</span><span class="p">();</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">changeState</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="p">},</span>
+
+    <span class="na">launch</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mi">200</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mi">200</span><span class="p">);</span>
+        <span class="p">}</span>
+
+    <span class="p">},</span>
+
+    <span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span><span class="p">;</span>
+
+    <span class="p">},</span>
+
+    <span class="na">changeState</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'State2'</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="nx">PewPew</span><span class="p">.</span><span class="nx">State2</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{};</span>
+
+<span class="nx">PewPew</span><span class="p">.</span><span class="nx">State2</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#844112'</span><span class="p">;</span>
+
+        <span class="c1">//  If the spaceship is already in the World we don't add it again</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">parent</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">existing</span><span class="p">(</span><span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">changeState</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="p">},</span>
+
+    <span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="nx">PewPew</span><span class="p">.</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span><span class="p">;</span>
+
+    <span class="p">},</span>
+
+    <span class="na">changeState</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'State1'</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+
+<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Preloader'</span><span class="p">,</span> <span class="nx">PewPew</span><span class="p">.</span><span class="nx">Preloader</span><span class="p">);</span>
+<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'State1'</span><span class="p">,</span> <span class="nx">PewPew</span><span class="p">.</span><span class="nx">State1</span><span class="p">);</span>
+<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'State2'</span><span class="p">,</span> <span class="nx">PewPew</span><span class="p">.</span><span class="nx">State2</span><span class="p">);</span>
+
+<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'Preloader'</span><span class="p">);</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/shared%20state.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

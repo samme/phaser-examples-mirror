@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/earcut1.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  wip/earcut1
+</h1>
+<a href="/js/wip/earcut1.js">source: wip/earcut1.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">create</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">graphics</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1">// poly with 4 points</span>
+    <span class="kd">var</span> <span class="nx">points</span> <span class="o">=</span> <span class="p">[</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">38</span><span class="p">,</span><span class="mi">21</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">83</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">108</span><span class="p">,</span><span class="mi">48</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)]</span>
+
+    <span class="c1">// a poly with more than 4 points breaks the rendering of the shape</span>
+    <span class="c1">// comment out the line bewlow line and issue disappears</span>
+    <span class="nx">points</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">))</span>
+
+    <span class="c1">// fills break</span>
+    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0x00FF00</span><span class="p">)</span>
+
+    <span class="c1">// outline seems to be ok </span>
+    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mh">0xFF0000</span><span class="p">)</span>
+
+    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawPolygon</span><span class="p">(</span><span class="nx">points</span><span class="p">)</span>    
+    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">()</span>
+
+    <span class="nx">graphics</span><span class="p">.</span><span class="nx">cacheAsBitmap</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="c1">// create our render texture to the size of the game        </span>
+    <span class="kd">var</span> <span class="nx">renderTexture</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RenderTexture</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span>
+
+    <span class="c1">// we could use graphics width/height but it reports wrong</span>
+    <span class="c1">//var renderTexture = new Phaser.RenderTexture(this.game, graphics.width, graphics.height)</span>
+
+    <span class="c1">// render graphic to the texture    </span>
+    <span class="c1">// neither of these methods work    </span>
+    <span class="nx">renderTexture</span><span class="p">.</span><span class="nx">renderXY</span><span class="p">(</span><span class="nx">graphics</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="kc">true</span><span class="p">)</span>
+    <span class="c1">// this.renderTexture.render(graphics, null, true);</span>
+
+    <span class="c1">// add the texture to a sprite</span>
+    <span class="kd">var</span> <span class="nx">myRenderedSprite</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">renderTexture</span><span class="p">)</span>
+    <span class="nx">myRenderedSprite</span><span class="p">.</span><span class="nx">x</span><span class="o">=</span><span class="mi">400</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/wip/earcut1.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

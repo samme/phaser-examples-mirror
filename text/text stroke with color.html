@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>text/text stroke with color.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  text/text stroke with color
+</h1>
+<a href="/js/text/text%20stroke%20with%20color.js">source: text/text stroke with color.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">setBackgroundColor</span><span class="p">(</span><span class="mh">0x2d2d2d</span><span class="p">);</span>
+
+    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'- phaser text stroke -'</span><span class="p">);</span>
+
+    <span class="c1">//	Center align</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'center'</span><span class="p">;</span>
+
+    <span class="c1">//	Font style</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'Arial Black'</span><span class="p">;</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">fontSize</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">fontWeight</span> <span class="o">=</span> <span class="s1">'bold'</span><span class="p">;</span>
+
+    <span class="c1">//	Stroke color and thickness</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">stroke</span> <span class="o">=</span> <span class="s1">'#000000'</span><span class="p">;</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">strokeThickness</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s1">'#43d637'</span><span class="p">;</span>
+
+    <span class="c1">//  And now we'll color in some of the letters</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">addColor</span><span class="p">(</span><span class="s1">'#ff00ff'</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">addColor</span><span class="p">(</span><span class="s1">'#43d637'</span><span class="p">,</span> <span class="mi">13</span><span class="p">);</span>
+
+    <span class="c1">//  This allows us to color the stroke instead of the letters</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">addStrokeColor</span><span class="p">(</span><span class="s1">'#ff0000'</span><span class="p">,</span> <span class="mi">13</span><span class="p">);</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">addStrokeColor</span><span class="p">(</span><span class="s1">'#000000'</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/text/text%20stroke%20with%20color.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

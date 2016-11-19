@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>filters/fireball.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  filters/fireball
+</h1>
+<a href="/js/filters/fireball.js">source: filters/fireball.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  From http://glslsandbox.com/e#20112.1</span>
+
+    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+
+        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+
+        <span class="s2">"// Yuldashev Mahmud Effect took from shaderToy mahmud9935@gmail.com"</span><span class="p">,</span>
+
+        <span class="s2">"float snoise(vec3 uv, float res)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"const vec3 s = vec3(1e0, 1e2, 1e3);"</span><span class="p">,</span>
+
+            <span class="s2">"uv *= res;"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 uv0 = floor(mod(uv, res))*s;"</span><span class="p">,</span>
+            <span class="s2">"vec3 uv1 = floor(mod(uv+vec3(1.), res))*s;"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 f = fract(uv); f = f*f*(3.0-2.0*f);"</span><span class="p">,</span>
+
+            <span class="s2">"vec4 v = vec4(uv0.x+uv0.y+uv0.z, uv1.x+uv0.y+uv0.z,"</span><span class="p">,</span>
+            <span class="s2">"uv0.x+uv1.y+uv0.z, uv1.x+uv1.y+uv0.z);"</span><span class="p">,</span>
+
+            <span class="s2">"vec4 r = fract(sin(v*1e-1)*1e3);"</span><span class="p">,</span>
+            <span class="s2">"float r0 = mix(mix(r.x, r.y, f.x), mix(r.z, r.w, f.x), f.y);"</span><span class="p">,</span>
+
+            <span class="s2">"r = fract(sin((v + uv1.z - uv0.z)*1e-1)*1e3);"</span><span class="p">,</span>
+            <span class="s2">"float r1 = mix(mix(r.x, r.y, f.x), mix(r.z, r.w, f.x), f.y);"</span><span class="p">,</span>
+
+            <span class="s2">"return mix(r0, r1, f.z)*2.-1.;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"void main( void ) {"</span><span class="p">,</span>
+
+            <span class="s2">"vec2 p = -.5 + gl_FragCoord.xy / resolution.xy;"</span><span class="p">,</span>
+            <span class="s2">"p.x *= resolution.x/resolution.y;"</span><span class="p">,</span>
+
+            <span class="s2">"float color = 3.0 - (3.*length(2.*p));"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 coord = vec3(atan(p.x,p.y)/6.2832+.5, length(p)*.4, .5);"</span><span class="p">,</span>
+
+            <span class="s2">"for(int i = 1; i &lt;= 7; i++)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"float power = pow(2.0, float(i));"</span><span class="p">,</span>
+                <span class="s2">"color += (1.5 / power) * snoise(coord + vec3(0.,-time*.05, time*.01), power*16.);"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"gl_FragColor = vec4( color, pow(max(color,0.),2.)*0.4, pow(max(color,0.),3.)*0.15 , 1.0);"</span><span class="p">,</span>
+
+        <span class="s2">"}"</span>
+    <span class="p">];</span>
+
+    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/filters/fireball.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

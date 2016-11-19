@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>input/gamepad tanks.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  input/gamepad tanks
+</h1>
+<a href="/js/input/gamepad%20tanks.js">source: input/gamepad tanks.js</a><pre class="highlight javascript"><code><span class="c1">// Try this demo on Chrome with an XBOX 360 controller.</span>
+<span class="c1">// Steer with left analog, accelerate/brake with analog triggers,</span>
+<span class="c1">// fire with A and steer turret with left and right 'bumper' (shoulder) buttons.</span>
+
+<span class="nx">EnemyTank</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">game</span><span class="p">,</span> <span class="nx">player</span><span class="p">,</span> <span class="nx">bullets</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">health</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">player</span> <span class="o">=</span> <span class="nx">player</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">bullets</span> <span class="o">=</span> <span class="nx">bullets</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">fireRate</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nextFire</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s1">'enemy'</span><span class="p">,</span> <span class="s1">'shadow'</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">tank</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s1">'enemy'</span><span class="p">,</span> <span class="s1">'tank1'</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">turret</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s1">'enemy'</span><span class="p">,</span> <span class="s1">'turret'</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">turret</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">index</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">immovable</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">angle</span><span class="p">();</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">velocityFromRotation</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">rotation</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
+
+<span class="p">};</span>
+
+<span class="nx">EnemyTank</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">damage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">health</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">health</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">turret</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+
+<span class="p">};</span>
+
+<span class="nx">EnemyTank</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">update</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">rotation</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">turret</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">turret</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">turret</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">angleBetween</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">player</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">distanceBetween</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tank</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">player</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">nextFire</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">bullets</span><span class="p">.</span><span class="nx">countDead</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">nextFire</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">fireRate</span><span class="p">;</span>
+
+            <span class="kd">var</span> <span class="nx">bullet</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">bullets</span><span class="p">.</span><span class="nx">getFirstDead</span><span class="p">();</span>
+
+            <span class="nx">bullet</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">turret</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">turret</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+
+            <span class="nx">bullet</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">moveToObject</span><span class="p">(</span><span class="nx">bullet</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">player</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'tank'</span><span class="p">,</span> <span class="s1">'assets/games/tanks/tanks.png'</span><span class="p">,</span> <span class="s1">'assets/games/tanks/tanks.json'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'enemy'</span><span class="p">,</span> <span class="s1">'assets/games/tanks/enemy-tanks.png'</span><span class="p">,</span> <span class="s1">'assets/games/tanks/tanks.json'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/games/tanks/logo-gamepad.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bullet'</span><span class="p">,</span> <span class="s1">'assets/games/tanks/bullet.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'earth'</span><span class="p">,</span> <span class="s1">'assets/games/tanks/scorched_earth.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'kaboom'</span><span class="p">,</span> <span class="s1">'assets/games/tanks/explosion.png'</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'controller-indicator'</span><span class="p">,</span> <span class="s1">'assets/misc/controller-indicator.png'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">land</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">shadow</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">tank</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">turret</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">enemies</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">enemyBullets</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">explosions</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">logo</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">currentSpeed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">bullets</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">fireRate</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">nextFire</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">indicator</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">pad1</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">turretOffset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  Resize our game world to be a 2000 x 2000 square</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">);</span>
+
+    <span class="c1">//  Our tiled scrolling background</span>
+    <span class="nx">land</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'earth'</span><span class="p">);</span>
+    <span class="nx">land</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="c1">//  The base of our tank</span>
+    <span class="nx">tank</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'tank'</span><span class="p">,</span> <span class="s1">'tank1'</span><span class="p">);</span>
+    <span class="nx">tank</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="nx">tank</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'move'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'tank1'</span><span class="p">,</span> <span class="s1">'tank2'</span><span class="p">,</span> <span class="s1">'tank3'</span><span class="p">,</span> <span class="s1">'tank4'</span><span class="p">,</span> <span class="s1">'tank5'</span><span class="p">,</span> <span class="s1">'tank6'</span><span class="p">],</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="c1">// tank.play('move');</span>
+
+    <span class="c1">//  This will force it to decelerate and limit its speed</span>
+    <span class="nx">tank</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">linearDamping</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">;</span>
+    <span class="nx">tank</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">maxVelocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
+    <span class="nx">tank</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="c1">//  Finally the turret that we place on-top of the tank body</span>
+    <span class="nx">turret</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'tank'</span><span class="p">,</span> <span class="s1">'turret'</span><span class="p">);</span>
+    <span class="nx">turret</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+
+    <span class="c1">//  The enemies bullet group</span>
+    <span class="nx">enemyBullets</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    <span class="nx">enemyBullets</span><span class="p">.</span><span class="nx">createMultiple</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s1">'bullet'</span><span class="p">);</span>
+    <span class="nx">enemyBullets</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'anchor.x'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="nx">enemyBullets</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'anchor.y'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="nx">enemyBullets</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'outOfBoundsKill'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+    <span class="c1">//  Create some baddies to waste :)</span>
+    <span class="nx">enemies</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">enemies</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">EnemyTank</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">game</span><span class="p">,</span> <span class="nx">tank</span><span class="p">,</span> <span class="nx">enemyBullets</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="c1">//  A shadow below our tank</span>
+    <span class="nx">shadow</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'tank'</span><span class="p">,</span> <span class="s1">'shadow'</span><span class="p">);</span>
+    <span class="nx">shadow</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+
+    <span class="c1">//  Our bullet group</span>
+    <span class="nx">bullets</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    <span class="nx">bullets</span><span class="p">.</span><span class="nx">createMultiple</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="s1">'bullet'</span><span class="p">);</span>
+    <span class="nx">bullets</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'anchor.x'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="nx">bullets</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'anchor.y'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="nx">bullets</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'outOfBoundsKill'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+    <span class="c1">//  Explosion pool</span>
+    <span class="nx">explosions</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">explosionAnimation</span> <span class="o">=</span> <span class="nx">explosions</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'kaboom'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">false</span><span class="p">);</span>
+        <span class="nx">explosionAnimation</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+        <span class="nx">explosionAnimation</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'kaboom'</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">tank</span><span class="p">.</span><span class="nx">bringToTop</span><span class="p">();</span>
+    <span class="nx">turret</span><span class="p">.</span><span class="nx">bringToTop</span><span class="p">();</span>
+
+    <span class="nx">logo</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
+    <span class="nx">logo</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">tank</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">deadzone</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">focusOnXY</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="nx">pad1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">pad1</span><span class="p">;</span>
+    <span class="nx">pad1</span><span class="p">.</span><span class="nx">addCallbacks</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">{</span><span class="na">onDown</span><span class="p">:</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">removeLogo</span><span class="p">();</span>
+    <span class="p">}});</span>
+
+    <span class="nx">indicator</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="s1">'controller-indicator'</span><span class="p">);</span>
+    <span class="nx">indicator</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">indicator</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="nx">indicator</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">indicator</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+
+    <span class="c1">// showing you can set the deadZone for all pads</span>
+    <span class="c1">// you can also set it like game.input.gamepad.pad1.deadZone = 0.25</span>
+    <span class="c1">// default is 0.26 and is sensible enough for an xbox 360 controller as the</span>
+    <span class="c1">// axes seems to hickup at quite high values at times (your mileage may vary)</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">setDeadZones</span><span class="p">(</span><span class="mf">0.25</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">removeLogo</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">removeLogo</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">logo</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// Pad "connected or not" indicator</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">supported</span> <span class="o">&amp;&amp;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">active</span> <span class="o">&amp;&amp;</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">connected</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">indicator</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">indicator</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">enemyBullets</span><span class="p">,</span> <span class="nx">tank</span><span class="p">,</span> <span class="nx">bulletHitPlayer</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">enemies</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">enemies</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">alive</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">enemies</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">update</span><span class="p">();</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">tank</span><span class="p">,</span> <span class="nx">enemies</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">tank</span><span class="p">);</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">bullets</span><span class="p">,</span> <span class="nx">enemies</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">tank</span><span class="p">,</span> <span class="nx">bulletHitEnemy</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">axis</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_STICK_LEFT_X</span><span class="p">)</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">tank</span><span class="p">.</span><span class="nx">angle</span> <span class="o">-=</span> <span class="mi">4</span> <span class="o">*</span> <span class="o">-</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">axis</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_STICK_LEFT_X</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">axis</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_STICK_LEFT_X</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.3</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">tank</span><span class="p">.</span><span class="nx">angle</span> <span class="o">+=</span> <span class="mi">4</span> <span class="o">*</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">axis</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_STICK_LEFT_X</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="nx">rightTriggerValue</span> <span class="o">=</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">buttonValue</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_RIGHT_TRIGGER</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">rightTriggerValue</span> <span class="o">&amp;&amp;</span> <span class="nx">rightTriggerValue</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">currentSpeed</span> <span class="o">=</span> <span class="mi">300</span> <span class="o">*</span> <span class="nx">rightTriggerValue</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">currentSpeed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">currentSpeed</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="nx">leftTriggerValue</span> <span class="o">=</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">buttonValue</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_LEFT_TRIGGER</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">leftTriggerValue</span> <span class="o">&amp;&amp;</span> <span class="nx">leftTriggerValue</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">currentSpeed</span> <span class="o">=</span> <span class="mi">150</span> <span class="o">*</span> <span class="o">-</span><span class="nx">leftTriggerValue</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">currentSpeed</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">currentSpeed</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+            <span class="nx">currentSpeed</span> <span class="o">=</span> <span class="p">(</span><span class="nx">currentSpeed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">currentSpeed</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="c1">//    if (currentSpeed &gt; 0)</span>
+<span class="c1">//    {</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">velocityFromRotation</span><span class="p">(</span><span class="nx">tank</span><span class="p">.</span><span class="nx">rotation</span><span class="p">,</span> <span class="nx">currentSpeed</span><span class="p">,</span> <span class="nx">tank</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
+<span class="c1">//    }</span>
+
+    <span class="nx">land</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    <span class="nx">land</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+
+    <span class="c1">//  Position all the parts and align rotations</span>
+    <span class="nx">shadow</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">tank</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    <span class="nx">shadow</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">tank</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    <span class="nx">shadow</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="nx">tank</span><span class="p">.</span><span class="nx">rotation</span><span class="p">;</span>
+
+    <span class="nx">turret</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">tank</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    <span class="nx">turret</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">tank</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_LEFT_BUMPER</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">turretOffset</span> <span class="o">-=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_RIGHT_BUMPER</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">turretOffset</span> <span class="o">+=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">turret</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="nx">tank</span><span class="p">.</span><span class="nx">rotation</span><span class="p">;</span>
+    <span class="nx">turret</span><span class="p">.</span><span class="nx">angle</span> <span class="o">+=</span> <span class="nx">turretOffset</span><span class="p">;</span>
+<span class="c1">//    turret.rotation = game.physics.angleToPointer(turret);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_A</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="nx">fire</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">bulletHitPlayer</span> <span class="p">(</span><span class="nx">tank</span><span class="p">,</span> <span class="nx">bullet</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">bullet</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">bulletHitEnemy</span> <span class="p">(</span><span class="nx">tank</span><span class="p">,</span> <span class="nx">bullet</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">bullet</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+
+    <span class="kd">var</span> <span class="nx">destroyed</span> <span class="o">=</span> <span class="nx">enemies</span><span class="p">[</span><span class="nx">tank</span><span class="p">.</span><span class="nx">name</span><span class="p">].</span><span class="nx">damage</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">destroyed</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">explosionAnimation</span> <span class="o">=</span> <span class="nx">explosions</span><span class="p">.</span><span class="nx">getFirstDead</span><span class="p">();</span>
+        <span class="nx">explosionAnimation</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">tank</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">tank</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+        <span class="nx">explosionAnimation</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'kaboom'</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">fire</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="nx">nextFire</span> <span class="o">&amp;&amp;</span> <span class="nx">bullets</span><span class="p">.</span><span class="nx">countDead</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">nextFire</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="nx">fireRate</span><span class="p">;</span>
+
+        <span class="kd">var</span> <span class="nx">bullet</span> <span class="o">=</span> <span class="nx">bullets</span><span class="p">.</span><span class="nx">getFirstDead</span><span class="p">();</span>
+
+        <span class="nx">bullet</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">turret</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">turret</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+        <span class="nx">bullet</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="nx">turret</span><span class="p">.</span><span class="nx">rotation</span><span class="p">;</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">velocityFromAngle</span><span class="p">(</span><span class="nx">bullet</span><span class="p">.</span><span class="nx">angle</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="nx">bullet</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/input/gamepad%20tanks.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

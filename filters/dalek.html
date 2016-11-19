@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>filters/dalek.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  filters/dalek
+</h1>
+<a href="/js/filters/dalek.js">source: filters/dalek.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  From http://glslsandbox.com/e#19880.0</span>
+
+    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+
+        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+
+        <span class="s2">"#define pi 3.1415927"</span><span class="p">,</span>
+
+        <span class="s2">"//various primitives, thanks IQ! http://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm"</span><span class="p">,</span>
+
+        <span class="s2">"float Sphere( vec3 p, vec3 c, float r )"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"return length(p-c) - r;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Box( vec3 p, vec3 b )"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec3 d = abs(p) - b;"</span><span class="p">,</span>
+            <span class="s2">"return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0));"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float BevelBox(vec3 p, vec3 size, float box_r)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec3 box_edge = size - box_r*0.5;"</span><span class="p">,</span>
+            <span class="s2">"vec3 dd = abs(p) - box_edge;"</span><span class="p">,</span>
+
+            <span class="s2">"//in (dd -ve)"</span><span class="p">,</span>
+            <span class="s2">"float maxdd = max(max(dd.x,dd.y),dd.z);"</span><span class="p">,</span>
+            <span class="s2">"//0 away result if outside"</span><span class="p">,</span>
+            <span class="s2">"maxdd = min(maxdd,0.0);"</span><span class="p">,</span>
+
+            <span class="s2">"//out (+ve);"</span><span class="p">,</span>
+            <span class="s2">"dd = max(dd,0.0);"</span><span class="p">,</span>
+            <span class="s2">"float ddd = (length(dd)-box_r);"</span><span class="p">,</span>
+
+            <span class="s2">"//combine the in &amp; out cases"</span><span class="p">,</span>
+            <span class="s2">"ddd += maxdd;"</span><span class="p">,</span>
+            <span class="s2">"return ddd;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float CylinderXY( vec3 p, vec3 c ) {"</span><span class="p">,</span>
+            <span class="s2">"return length(p.xy-c.xy)-c.z;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float CylinderXZ( vec3 p, vec3 c ) {"</span><span class="p">,</span>
+            <span class="s2">"return length(p.xz-c.xy)-c.z;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float CylinderYZ( vec3 p, vec3 c ) {"</span><span class="p">,</span>
+            <span class="s2">"return length(p.yz-c.xy)-c.z;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float udHexPrism( vec2 p, float h ) {"</span><span class="p">,</span>
+            <span class="s2">"vec2 q = abs(p);"</span><span class="p">,</span>
+            <span class="s2">"return max(q.x+q.y*0.57735,q.y*1.1547)-h;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 RotX(vec3 p, float t) {"</span><span class="p">,</span>
+            <span class="s2">"float c = cos(t); float s = sin(t);"</span><span class="p">,</span>
+            <span class="s2">"return vec3(p.x,"</span><span class="p">,</span>
+            <span class="s2">"p.y*c+p.z*s,"</span><span class="p">,</span>
+            <span class="s2">"-p.y*s+p.z*c);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 RotY(vec3 p, float t) {"</span><span class="p">,</span>
+            <span class="s2">"float c = cos(t); float s = sin(t);"</span><span class="p">,</span>
+            <span class="s2">"return vec3(p.x*c+p.z*s,"</span><span class="p">,</span>
+            <span class="s2">"p.y,"</span><span class="p">,</span>
+            <span class="s2">"-p.x*s+p.z*c);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 RotZ(vec3 p, float t) {"</span><span class="p">,</span>
+            <span class="s2">"float c = cos(t); float s = sin(t);"</span><span class="p">,</span>
+            <span class="s2">"return vec3(p.x*c+p.y*s,"</span><span class="p">,</span>
+            <span class="s2">"-p.x*s+p.y*c,"</span><span class="p">,</span>
+            <span class="s2">"p.z);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"//initiate time corridor... (aka begin original work)"</span><span class="p">,</span>
+
+        <span class="s2">"float Plate(vec3 p, float h)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"p = RotX(p,-pi*0.0625);"</span><span class="p">,</span>
+
+            <span class="s2">"float hh = 0.25;"</span><span class="p">,</span>
+            <span class="s2">"float w = 0.5 * hh;"</span><span class="p">,</span>
+            <span class="s2">"float bev = 0.02;"</span><span class="p">,</span>
+
+            <span class="s2">"float base = BevelBox(p-vec3(0.0,0.0,0),vec3(w,h,w), bev);"</span><span class="p">,</span>
+            <span class="s2">"float scallop = BevelBox(RotX(p,-pi*0.0625)-vec3(0.,-.6*h,0.6*hh),vec3(w,2.*h,w)*0.5, bev);"</span><span class="p">,</span>
+            <span class="s2">"base = max(base,-scallop);"</span><span class="p">,</span>
+
+            <span class="s2">"float hole_size = 0.03;"</span><span class="p">,</span>
+            <span class="s2">"float hole_off = h * 0.8;"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 reflect_y_p = vec3(p.x,abs(p.y),p.z);"</span><span class="p">,</span>
+
+            <span class="s2">"// float hole = CylinderXY( reflect_y_p, vec3(0.,hole_off,hole_size));"</span><span class="p">,</span>
+            <span class="s2">"// base = max(base,-hole);"</span><span class="p">,</span>
+
+            <span class="s2">"float rivet = Sphere( reflect_y_p, vec3(0.,hole_off,w), hole_size );"</span><span class="p">,</span>
+
+            <span class="s2">"base = min(base,rivet);"</span><span class="p">,</span>
+            <span class="s2">"return base;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float PlateRing(vec3 p, float polar_t, float polar_r)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float h = abs(polar_t) &lt; pi*(3.0/8.) ? 0.25 : 0.5;"</span><span class="p">,</span>
+
+            <span class="s2">"polar_t = mod(polar_t,pi*(1./8.)) - pi*(1./8.)*0.5;"</span><span class="p">,</span>
+            <span class="s2">"vec3 q = vec3(polar_r * sin(polar_t), p.y, polar_r*cos(polar_t));"</span><span class="p">,</span>
+            <span class="s2">"q -= vec3(0.,-(h-0.25),1.0);"</span><span class="p">,</span>
+
+            <span class="s2">"return Plate(q,h);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Whisk(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"p = abs(p);"</span><span class="p">,</span>
+            <span class="s2">"float r = 0.075;"</span><span class="p">,</span>
+            <span class="s2">"float c = min(0.4-p.x,0.1) * r * 12.0;"</span><span class="p">,</span>
+            <span class="s2">"return length(p.zy - vec2(c,c)) - r*0.25;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Gun( vec3 p )"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"p -= vec3(1.7,-.55,-0.70);"</span><span class="p">,</span>
+
+            <span class="s2">"float d = Whisk(p);"</span><span class="p">,</span>
+            <span class="s2">"d = min( d, Whisk(RotX(p,pi*0.25)) );"</span><span class="p">,</span>
+            <span class="s2">"float barrel = length(p.zy)-0.05;"</span><span class="p">,</span>
+
+            <span class="s2">"barrel = max( barrel, abs(p.x)-0.5); //clip"</span><span class="p">,</span>
+
+            <span class="s2">"barrel = max( barrel, -(length(p.zy)-0.025));"</span><span class="p">,</span>
+            <span class="s2">"return min(d,barrel);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"const float suck_end = 1.0;"</span><span class="p">,</span>
+
+
+        <span class="s2">"float Plunger(vec3 p )"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"p -= vec3(1.7,-.55,0.70);"</span><span class="p">,</span>
+            <span class="s2">"float barrel = length(p.zy)-0.075;"</span><span class="p">,</span>
+            <span class="s2">"barrel = max( barrel, abs(p.x)-0.75);  //clip!"</span><span class="p">,</span>
+
+            <span class="s2">"float sucker = Sphere(p, vec3(suck_end,0.0,0.0), 0.3);"</span><span class="p">,</span>
+            <span class="s2">"sucker = max(sucker, -Sphere(p, vec3(suck_end,0.0,0.0), 0.25));"</span><span class="p">,</span>
+            <span class="s2">"sucker = max(sucker, p.x-0.9); //clip"</span><span class="p">,</span>
+            <span class="s2">"return min(barrel,sucker);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float GunPort(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"p.z = abs(p.z);"</span><span class="p">,</span>
+
+            <span class="s2">"float w = 0.225;"</span><span class="p">,</span>
+            <span class="s2">"float d = 0.5;"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 c = vec3(.75-0.25,-.55,0.70);"</span><span class="p">,</span>
+
+            <span class="s2">"float s = Sphere(p, c+vec3(.35+0.25,0,0), w * 0.66);"</span><span class="p">,</span>
+
+            <span class="s2">"p.x += 0.2 * p.y;"</span><span class="p">,</span>
+            <span class="s2">"float bev = 0.02;"</span><span class="p">,</span>
+            <span class="s2">"float b = BevelBox(p-c,vec3(d,w,w), bev);"</span><span class="p">,</span>
+
+            <span class="s2">"return min(b,s);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float DarkBits(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"//core body"</span><span class="p">,</span>
+            <span class="s2">"float b = CylinderXZ(p, vec3(0.,0.,0.8-0.15*p.y));"</span><span class="p">,</span>
+            <span class="s2">"b = max(b,abs(p.y)-1.2); //clip!"</span><span class="p">,</span>
+
+            <span class="s2">"//sucker"</span><span class="p">,</span>
+            <span class="s2">"vec3 sucker_p = p - vec3(1.7,-.55,0.70);"</span><span class="p">,</span>
+            <span class="s2">"float sucker = Sphere(sucker_p, vec3(suck_end,0.0,0.0), 0.3);"</span><span class="p">,</span>
+
+            <span class="s2">"//bulb"</span><span class="p">,</span>
+            <span class="s2">"vec3 stalk_p = RotZ(p,pi*0.05);"</span><span class="p">,</span>
+            <span class="s2">"float bulb_d = Sphere(stalk_p,vec3(2.4,1.1,0.0),0.2);"</span><span class="p">,</span>
+            <span class="s2">"bulb_d = max(bulb_d,stalk_p.x-2.5); //clip"</span><span class="p">,</span>
+
+            <span class="s2">"//gun ports"</span><span class="p">,</span>
+            <span class="s2">"p.z = abs(p.z);"</span><span class="p">,</span>
+
+            <span class="s2">"float w = 0.225;"</span><span class="p">,</span>
+            <span class="s2">"float d = 0.5;"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 c = vec3(.75-0.25,-.55,0.70);"</span><span class="p">,</span>
+
+            <span class="s2">"float s = Sphere(p, c+vec3(.35+0.25,0,0), w * 0.66);"</span><span class="p">,</span>
+
+
+            <span class="s2">"return min(min(bulb_d,s),min(b,sucker));"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Balls(vec3 p, float polar_t, float polar_r)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"p.y += 2.45;"</span><span class="p">,</span>
+
+            <span class="s2">"float ang_reps = 6.;"</span><span class="p">,</span>
+            <span class="s2">"polar_t = mod(polar_t,pi*(1./ang_reps)) - pi*(1./ang_reps)*0.5;"</span><span class="p">,</span>
+            <span class="s2">"vec3 q = vec3(polar_r * sin(polar_t), p.y, polar_r*cos(polar_t));"</span><span class="p">,</span>
+
+            <span class="s2">"float k = .5;"</span><span class="p">,</span>
+            <span class="s2">"q.y = mod( q.y, k ) - 0.5 * k;"</span><span class="p">,</span>
+
+            <span class="s2">"float balls = Sphere(q,vec3(0.0,0,1.25 - 0.1*floor(p.y*2.)),0.2);"</span><span class="p">,</span>
+
+            <span class="s2">"balls = max(balls,abs(p.y)-1.); //clip!"</span><span class="p">,</span>
+            <span class="s2">"return balls;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Body(vec3 p) {"</span><span class="p">,</span>
+            <span class="s2">"vec3 q = p;"</span><span class="p">,</span>
+            <span class="s2">"p=RotY(p,pi*1.0/12.0);"</span><span class="p">,</span>
+            <span class="s2">"float taper = 1.0+0.1*p.y;"</span><span class="p">,</span>
+
+            <span class="s2">"taper -= p.y &lt; -3.5 ? .2 * clamp(-(p.y+3.5),0.,0.1) : 0.;"</span><span class="p">,</span>
+            <span class="s2">"p.xz *= taper;"</span><span class="p">,</span>
+
+            <span class="s2">"float w = 1.15; ///taper;"</span><span class="p">,</span>
+            <span class="s2">"float d = udHexPrism(p.zx,w);"</span><span class="p">,</span>
+            <span class="s2">"d = max(d, udHexPrism(p.xz,w));"</span><span class="p">,</span>
+
+            <span class="s2">"d /= taper;"</span><span class="p">,</span>
+
+            <span class="s2">"q.y += +2.45;"</span><span class="p">,</span>
+
+            <span class="s2">"d = max(d,abs(q.y)-1.5); //clip!"</span><span class="p">,</span>
+            <span class="s2">"return d;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Belt(vec3 p, float polar_t, float polar_r) {"</span><span class="p">,</span>
+
+            <span class="s2">"//belt"</span><span class="p">,</span>
+            <span class="s2">"float r = p.y + 1.05;"</span><span class="p">,</span>
+            <span class="s2">"float d = CylinderXZ(p, vec3(0.,0.,1.25-0.15*r) );"</span><span class="p">,</span>
+            <span class="s2">"vec3 q = p;"</span><span class="p">,</span>
+            <span class="s2">"q.y += 1.05;"</span><span class="p">,</span>
+            <span class="s2">"d = max(d,abs(q.y)-0.125); //clip!"</span><span class="p">,</span>
+
+            <span class="s2">"//core body"</span><span class="p">,</span>
+            <span class="s2">"float b = CylinderXZ(p, vec3(0.,0.,0.8-0.15*p.y));"</span><span class="p">,</span>
+            <span class="s2">"b = max(b,abs(p.y)-1.2); //clip!"</span><span class="p">,</span>
+
+            <span class="s2">"//buckle"</span><span class="p">,</span>
+            <span class="s2">"d = min(d, BevelBox(p+vec3(-0.8,0.60,0.),vec3(.2,.2,.4+0.2*p.y),0.05) );"</span><span class="p">,</span>
+
+            <span class="s2">"d = min(d,b);"</span><span class="p">,</span>
+            <span class="s2">"return d;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Grill(vec3 p, float polar_t, float polar_r)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"p += vec3(0.,-0.5,0.);"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 c = p;"</span><span class="p">,</span>
+            <span class="s2">"float k = .25;"</span><span class="p">,</span>
+            <span class="s2">"c.y = mod( c.y + 0.1, k ) - 0.5 * k;"</span><span class="p">,</span>
+
+            <span class="s2">"float b = CylinderXZ(c,vec3(0.,0.,0.9));"</span><span class="p">,</span>
+            <span class="s2">"b = max(b,abs(c.y)-0.025); //clip each ring"</span><span class="p">,</span>
+
+            <span class="s2">"b = max(b,abs(p.y)-0.5); //clip the repetitions"</span><span class="p">,</span>
+
+            <span class="s2">"float ang_reps = 4.;"</span><span class="p">,</span>
+            <span class="s2">"polar_t = mod(polar_t,pi*(1./ang_reps)) - pi*(1./ang_reps)*0.5;"</span><span class="p">,</span>
+            <span class="s2">"vec3 q = vec3(polar_r * cos(polar_t), p.y, polar_r*sin(polar_t));"</span><span class="p">,</span>
+
+            <span class="s2">"q = RotZ(q,pi*0.06);"</span><span class="p">,</span>
+
+            <span class="s2">"float d = BevelBox(q,vec3(0.8,0.5,.05),.045);"</span><span class="p">,</span>
+            <span class="s2">"return min(d,b);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Head(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float d = Sphere(p,vec3(0.,0.66,0.),1.0);"</span><span class="p">,</span>
+            <span class="s2">"d = max(d,-p.y+1.0); //clip!"</span><span class="p">,</span>
+            <span class="s2">"return d;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Eye(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"//stalk"</span><span class="p">,</span>
+            <span class="s2">"p = RotZ(p,pi*0.05);"</span><span class="p">,</span>
+            <span class="s2">"float d = CylinderYZ(p,vec3(1.1,0.,0.1));"</span><span class="p">,</span>
+            <span class="s2">"d = max(d,-p.x); //clip"</span><span class="p">,</span>
+
+            <span class="s2">"//bulb"</span><span class="p">,</span>
+            <span class="s2">"d = min(d, Sphere(p,vec3(2.4,1.1,0.0),0.2) );"</span><span class="p">,</span>
+
+            <span class="s2">"d = max(d,p.x-2.5); //clip"</span><span class="p">,</span>
+
+            <span class="s2">"//lens"</span><span class="p">,</span>
+            <span class="s2">"d = min(d, Sphere(p,vec3(2.4,1.1,0.0),0.15) );"</span><span class="p">,</span>
+
+            <span class="s2">"//mount"</span><span class="p">,</span>
+            <span class="s2">"d = min(d, BevelBox(p+vec3(-0.9,-1.1,0.),vec3(.2,.2,.4-0.2*p.y),0.05) );"</span><span class="p">,</span>
+            <span class="s2">"return d;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Lens(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"p = RotZ(p,pi*0.05);"</span><span class="p">,</span>
+            <span class="s2">"return Sphere(p,vec3(2.4,1.1,0.0),0.15);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Ears(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"p.z = abs(p.z);"</span><span class="p">,</span>
+
+
+            <span class="s2">"p = RotX(p, -pi * 0.25);"</span><span class="p">,</span>
+
+            <span class="s2">"float d = CylinderXY(p,vec3(0.0,.5,0.2-0.1*(p.z-0.5)));"</span><span class="p">,</span>
+
+            <span class="s2">"d = max(d,p.z-1.75); //clip"</span><span class="p">,</span>
+
+            <span class="s2">"return d;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float floor_height = -4.0;"</span><span class="p">,</span>
+
+        <span class="s2">"float sdf( vec3 p )"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float polar_t = atan(p.z,p.x);"</span><span class="p">,</span>
+            <span class="s2">"float polar_r = length(p.xz);"</span><span class="p">,</span>
+
+            <span class="s2">"float d = 1e10;"</span><span class="p">,</span>
+            <span class="s2">"float d_bound = 2.5;"</span><span class="p">,</span>
+            <span class="s2">"if (polar_r &lt; d_bound) //optimize away this stuff if far away from bound cylinder"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"// if (p.y &lt; -1.0) //opt?"</span><span class="p">,</span>
+                <span class="s2">"d = min(d, Balls(p, polar_t, polar_r));"</span><span class="p">,</span>
+
+                <span class="s2">"d = min(d, Belt(p, polar_t, polar_r));"</span><span class="p">,</span>
+
+                <span class="s2">"d = min(d, PlateRing(p, polar_t, polar_r));"</span><span class="p">,</span>
+
+                <span class="s2">"// if (p.y &gt; 0.25) //opt?"</span><span class="p">,</span>
+                <span class="s2">"{"</span><span class="p">,</span>
+                    <span class="s2">"d = min(d, Grill(p, polar_t, polar_r));"</span><span class="p">,</span>
+                    <span class="s2">"d = min(d, Head(p));"</span><span class="p">,</span>
+                    <span class="s2">"d = min(d, Ears(p));"</span><span class="p">,</span>
+                <span class="s2">"}"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"// if (p.y &lt; -1.0) //opt ?"</span><span class="p">,</span>
+            <span class="s2">"d = min(d, Body(p));"</span><span class="p">,</span>
+            <span class="s2">"// else            //opt ? glitches shadows though"</span><span class="p">,</span>
+            <span class="s2">"if (abs(polar_t) &lt; pi * 0.5) //optimize away this stuff if far away from front"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"d = min(d, Eye(p));"</span><span class="p">,</span>
+                <span class="s2">"d = min(d,GunPort(p));"</span><span class="p">,</span>
+                <span class="s2">"d = min(d, Gun(p));"</span><span class="p">,</span>
+                <span class="s2">"d = min(d, Plunger(p));"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"//floor!"</span><span class="p">,</span>
+            <span class="s2">"d = min(d,p.y-floor_height);"</span><span class="p">,</span>
+            <span class="s2">"return d;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+
+        <span class="s2">"vec3 nor(vec3 X)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec2 e = vec2(0.01,0.0); //fatter filter looks like bevelled edges on hard CSG shapes"</span><span class="p">,</span>
+            <span class="s2">"#if 0"</span><span class="p">,</span>
+            <span class="s2">"//guh glitchy on silhouettes!"</span><span class="p">,</span>
+            <span class="s2">"float d = sdf(X);"</span><span class="p">,</span>
+            <span class="s2">"vec3 N = vec3(sdf(X-e.xyy),sdf(X-e.yxy),sdf(X-e.yyx) - vec3(d,d,d) );"</span><span class="p">,</span>
+            <span class="s2">"#else"</span><span class="p">,</span>
+            <span class="s2">"vec3 N = vec3(sdf(X-e.xyy),sdf(X-e.yxy),sdf(X-e.yyx)) -"</span><span class="p">,</span>
+            <span class="s2">"vec3(sdf(X+e.xyy),sdf(X+e.yxy),sdf(X+e.yyx));"</span><span class="p">,</span>
+            <span class="s2">"#endif"</span><span class="p">,</span>
+            <span class="s2">"return -normalize(N);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"float Ao(vec3 p, vec3 n, float d) {"</span><span class="p">,</span>
+            <span class="s2">"float vis = 0.0;"</span><span class="p">,</span>
+            <span class="s2">"for (int i=0; i&lt;6; i++)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"float d = sdf(p);"</span><span class="p">,</span>
+                <span class="s2">"//this made more sense to me as volume of sphere that is clear of stuff blocking light ??"</span><span class="p">,</span>
+                <span class="s2">"vis += d*d*d * (4.*pi/3.);"</span><span class="p">,</span>
+                <span class="s2">"p += n * d;"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+            <span class="s2">"return pow(clamp(vis,0.,1.),0.2);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"//thanks BRDF guys!"</span><span class="p">,</span>
+        <span class="s2">"//http://hal.inria.fr/docs/00/70/23/04/PDF/paper.pdf"</span><span class="p">,</span>
+
+        <span class="s2">"float gamma = //1.8;"</span><span class="p">,</span>
+        <span class="s2">"2.2;"</span><span class="p">,</span>
+        <span class="s2">"//2.0;"</span><span class="p">,</span>
+        <span class="s2">"float one_pi = 0.31830988618;"</span><span class="p">,</span>
+        <span class="s2">"float lightIntensity = 8.0;"</span><span class="p">,</span>
+
+        <span class="s2">"// gold-paint"</span><span class="p">,</span>
+        <span class="s2">"#if 1"</span><span class="p">,</span>
+        <span class="s2">"vec3 rho_d = vec3(0.147708, 0.0806975, 0.033172);"</span><span class="p">,</span>
+        <span class="s2">"vec3 rho_s = vec3(0.160592, 0.217282, 0.236425);"</span><span class="p">,</span>
+        <span class="s2">"vec3 alpha = vec3(0.122506, 0.108069, 0.12187);"</span><span class="p">,</span>
+        <span class="s2">"vec3 p = vec3(0.795078, 0.637578, 0.936117);"</span><span class="p">,</span>
+        <span class="s2">"vec3 F_0 = vec3(9.16095e-12, 1.81225e-12, 0.0024589);"</span><span class="p">,</span>
+        <span class="s2">"vec3 F_1 = vec3(-0.596835, -0.331147, -0.140729);"</span><span class="p">,</span>
+        <span class="s2">"vec3 K_ap = vec3(5.98176, 7.35539, 5.29722);"</span><span class="p">,</span>
+        <span class="s2">"vec3 sh_lambda = vec3(2.64832, 3.04253, 2.3013);"</span><span class="p">,</span>
+        <span class="s2">"vec3 sh_c = vec3(9.3111e-08, 8.80143e-08, 9.65288e-08);"</span><span class="p">,</span>
+        <span class="s2">"vec3 sh_k = vec3(24.3593, 24.4037, 25.3623);"</span><span class="p">,</span>
+        <span class="s2">"vec3 sh_theta0 = vec3(-0.284195, -0.277297, -0.245352);"</span><span class="p">,</span>
+        <span class="s2">"#endif"</span><span class="p">,</span>
+
+        <span class="s2">"float envAmount = 1.0;"</span><span class="p">,</span>
+
+        <span class="s2">"void dark_specular_fabric()"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"// dark-specular-fabric"</span><span class="p">,</span>
+            <span class="s2">"rho_d = vec3(0.0197229, 0.00949167, 0.00798414);"</span><span class="p">,</span>
+            <span class="s2">"rho_s = vec3(0.556218, 0.401495, 0.378651);"</span><span class="p">,</span>
+            <span class="s2">"alpha = vec3(0.140344, 0.106541, 0.166715);"</span><span class="p">,</span>
+            <span class="s2">"p = vec3(0.249059, 0.177611, 0.434167);"</span><span class="p">,</span>
+            <span class="s2">"F_0 = vec3(0.0351133, 0.0387177, 0.0370533);"</span><span class="p">,</span>
+            <span class="s2">"F_1 = vec3(0.0243153, 0.0293178, 0.0264913);"</span><span class="p">,</span>
+            <span class="s2">"K_ap = vec3(7.60492, 9.81673, 6.19307);"</span><span class="p">,</span>
+            <span class="s2">"sh_lambda = vec3(3.93869, 4.23097, 4.3775);"</span><span class="p">,</span>
+            <span class="s2">"sh_c = vec3(0.00122421, 0.00238545, 8.47126e-06);"</span><span class="p">,</span>
+            <span class="s2">"sh_k = vec3(13.889, 14.5743, 17.2049);"</span><span class="p">,</span>
+            <span class="s2">"sh_theta0 = vec3(0.114655, 0.210179, -0.227628);"</span><span class="p">,</span>
+            <span class="s2">"envAmount = 0.;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"void gold_paint()"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"rho_d = vec3(0.147708, 0.0806975, 0.033172);"</span><span class="p">,</span>
+            <span class="s2">"rho_s = vec3(0.160592, 0.217282, 0.236425);"</span><span class="p">,</span>
+            <span class="s2">"alpha = vec3(0.122506, 0.108069, 0.12187);"</span><span class="p">,</span>
+            <span class="s2">"p = vec3(0.795078, 0.637578, 0.936117);"</span><span class="p">,</span>
+            <span class="s2">"F_0 = vec3(9.16095e-12, 1.81225e-12, 0.0024589);"</span><span class="p">,</span>
+            <span class="s2">"F_1 = vec3(-0.596835, -0.331147, -0.140729);"</span><span class="p">,</span>
+            <span class="s2">"K_ap = vec3(5.98176, 7.35539, 5.29722);"</span><span class="p">,</span>
+            <span class="s2">"sh_lambda = vec3(2.64832, 3.04253, 2.3013);"</span><span class="p">,</span>
+            <span class="s2">"sh_c = vec3(9.3111e-08, 8.80143e-08, 9.65288e-08);"</span><span class="p">,</span>
+            <span class="s2">"sh_k = vec3(24.3593, 24.4037, 25.3623);"</span><span class="p">,</span>
+            <span class="s2">"sh_theta0 = vec3(-0.284195, -0.277297, -0.245352);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"void two_layer_silver()"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"rho_d = vec3(0.0657916, 0.0595705, 0.0581288);"</span><span class="p">,</span>
+            <span class="s2">"rho_s = vec3(1.55275, 2.00145, 1.93045);"</span><span class="p">,</span>
+            <span class="s2">"alpha = vec3(0.0149977, 0.0201665, 0.0225062);"</span><span class="p">,</span>
+            <span class="s2">"p = vec3(0.382631, 0.35975, 0.361657);"</span><span class="p">,</span>
+            <span class="s2">"F_0 = vec3(4.93242e-13, 1.00098e-14, 0.0103259);"</span><span class="p">,</span>
+            <span class="s2">"F_1 = vec3(-0.0401315, -0.0395054, -0.0312454);"</span><span class="p">,</span>
+            <span class="s2">"K_ap = vec3(50.1263, 38.8508, 34.9978);"</span><span class="p">,</span>
+            <span class="s2">"sh_lambda = vec3(3.41873, 3.77545, 3.78138);"</span><span class="p">,</span>
+            <span class="s2">"sh_c = vec3(6.09709e-08, 1.02036e-07, 1.01016e-07);"</span><span class="p">,</span>
+            <span class="s2">"sh_k = vec3(46.6236, 40.8229, 39.1812);"</span><span class="p">,</span>
+            <span class="s2">"sh_theta0 = vec3(0.183797, 0.139103, 0.117092);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"void specular_violet_phenolic()"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"rho_d = vec3(0.0686035, 0.0181856, 0.0210368);"</span><span class="p">,</span>
+            <span class="s2">"rho_s = vec3(0.108459, 0.0471612, 0.171691);"</span><span class="p">,</span>
+            <span class="s2">"alpha = vec3(0.00123271, 0.000443974, 0.00149517);"</span><span class="p">,</span>
+            <span class="s2">"p = vec3(0.657484, 0.546753, 0.653065);"</span><span class="p">,</span>
+            <span class="s2">"F_0 = vec3(0.0403569, 0.121081, 0.035323);"</span><span class="p">,</span>
+            <span class="s2">"F_1 = vec3(-0.0295013, 0.0563904, -0.0275623);"</span><span class="p">,</span>
+            <span class="s2">"K_ap = vec3(351.208, 1193.45, 294.897);"</span><span class="p">,</span>
+            <span class="s2">"sh_lambda = vec3(3.17585e-05, 1.3817, 2.44051e-05);"</span><span class="p">,</span>
+            <span class="s2">"sh_c = vec3(3.02028e-07, 6.19706e-08, 3.40809e-07);"</span><span class="p">,</span>
+            <span class="s2">"sh_k = vec3(31.3319, 234.879, 28.7237);"</span><span class="p">,</span>
+            <span class="s2">"sh_theta0 = vec3(-0.168991, 0.500354, -0.252626);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"void orange_paint()"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"rho_d = vec3(0.368088, 0.147113, 0.00692426);"</span><span class="p">,</span>
+            <span class="s2">"rho_s = vec3(0.524979, 0.116386, 0.199437);"</span><span class="p">,</span>
+            <span class="s2">"alpha = vec3(0.818115, 0.064743, 0.229391);"</span><span class="p">,</span>
+            <span class="s2">"p = vec3(1.44385, 0.0709512, 0.483597);"</span><span class="p">,</span>
+            <span class="s2">"F_0 = vec3(6.92565e-13, 0.106161, 0.102279);"</span><span class="p">,</span>
+            <span class="s2">"F_1 = vec3(-0.174318, 0.0934385, 0.0625648);"</span><span class="p">,</span>
+            <span class="s2">"K_ap = vec3(4.57466, 16.0185, 4.96427);"</span><span class="p">,</span>
+            <span class="s2">"sh_lambda = vec3(1.84547, 4.70387, 3.6232);"</span><span class="p">,</span>
+            <span class="s2">"sh_c = vec3(0.072629, 0.0299825, 0.000333551);"</span><span class="p">,</span>
+            <span class="s2">"sh_k = vec3(5.96872, 14.9466, 13.2194);"</span><span class="p">,</span>
+            <span class="s2">"sh_theta0 = vec3(0.222125, 0.438216, -0.0759733);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 Fresnel(vec3 F0, vec3 F1, float V_H)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"return F0 - V_H * F1  + (1. - F0)*pow(1. - V_H, 5.);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 D(vec3 _alpha, vec3 _p, float cos_h, vec3 _K)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float cos2 = cos_h*cos_h;"</span><span class="p">,</span>
+            <span class="s2">"float tan2 = (1.-cos2)/cos2;"</span><span class="p">,</span>
+            <span class="s2">"vec3 ax = _alpha + tan2/_alpha;"</span><span class="p">,</span>
+
+            <span class="s2">"ax = max(ax,0.); //bug?"</span><span class="p">,</span>
+
+            <span class="s2">"return one_pi * _K * exp(-ax)/(pow(ax,_p) * cos2 * cos2);"</span><span class="p">,</span>
+            <span class="s2">"// return vec3( 0.0 / (cos2 * cos2));"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 G1(float theta)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"theta = clamp(theta,-1.,1.); //bug?"</span><span class="p">,</span>
+            <span class="s2">"return 1.0 + sh_lambda * (1. - exp(sh_c * pow(max(acos(theta) - sh_theta0,0.), sh_k)));"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 shade(float inLight, float n_h, float n_l, float n_v, float v_h)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"return  one_pi * inLight * ( n_l * rho_d"</span><span class="p">,</span>
+            <span class="s2">"+ rho_s * D(alpha, p, n_h, K_ap) * G1(n_l) * G1 (n_v) * Fresnel(F_0, F_1, v_h));"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"vec3 brdf(vec3 lv, vec3 ev, vec3 n)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec3 halfVector = normalize(lv + ev);"</span><span class="p">,</span>
+
+            <span class="s2">"float v_h = dot(ev, halfVector);"</span><span class="p">,</span>
+            <span class="s2">"float n_h = dot(n, halfVector);"</span><span class="p">,</span>
+            <span class="s2">"float n_l = dot(n, lv);"</span><span class="p">,</span>
+            <span class="s2">"float inLight = 1.0;"</span><span class="p">,</span>
+            <span class="s2">"if (n_l &lt; 0.) inLight = 0.0;"</span><span class="p">,</span>
+            <span class="s2">"float n_v = dot(n, ev);"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 sh = shade(inLight, n_h, n_l, n_v, v_h);"</span><span class="p">,</span>
+            <span class="s2">"sh = clamp( sh, 0., 1.); //bug?"</span><span class="p">,</span>
+            <span class="s2">"vec3 retColor = lightIntensity * sh;"</span><span class="p">,</span>
+
+
+            <span class="s2">"return retColor;"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+
+        <span class="s2">"void ChooseMat(vec3 p)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"if (p.y &lt; -3.5 || (DarkBits(p)) &lt; 0.01)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"// black_soft_plastic();"</span><span class="p">,</span>
+                <span class="s2">"// blue_acrylic();"</span><span class="p">,</span>
+                <span class="s2">"dark_specular_fabric();"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"#if 1"</span><span class="p">,</span>
+
+            <span class="s2">"float polar_t = atan(p.z,p.x);"</span><span class="p">,</span>
+            <span class="s2">"float polar_r = length(p.xz);"</span><span class="p">,</span>
+            <span class="s2">"if ( abs(Balls(p, polar_t, polar_r)) &lt; 0.01)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"//     gold_paint();"</span><span class="p">,</span>
+                <span class="s2">"two_layer_silver();"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+            <span class="s2">"#endif"</span><span class="p">,</span>
+
+            <span class="s2">"if (Lens(p)&lt;0.01)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"specular_violet_phenolic();"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"if (Ears(p)&lt;0.01)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"orange_paint();"</span><span class="p">,</span>
+
+                <span class="s2">"lightIntensity+=max(sin(time*10.0),0.)*10.0;"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"void MakeViewRay(out vec3 viewP, out vec3 viewD)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec2 xy = gl_FragCoord.xy;"</span><span class="p">,</span>
+            <span class="s2">"xy.y=resolution.y-gl_FragCoord.y;"</span><span class="p">,</span>
+            <span class="s2">"vec2 filmUv = (xy + vec2(0.5,0.5))/resolution.xy;"</span><span class="p">,</span>
+
+            <span class="s2">"float tx = (2.0*filmUv.x - 1.0)*(resolution.x/resolution.y);"</span><span class="p">,</span>
+            <span class="s2">"float ty = (1.0 - 2.0*filmUv.y);"</span><span class="p">,</span>
+            <span class="s2">"float tz = 0.0;"</span><span class="p">,</span>
+
+            <span class="s2">"viewP = vec3(0.0, 0.0, 5.0);"</span><span class="p">,</span>
+            <span class="s2">"viewD = vec3(tx, ty, tz) - viewP;"</span><span class="p">,</span>
+
+            <span class="s2">"viewD = normalize(viewD);"</span><span class="p">,</span>
+
+            <span class="s2">"float t = pi*0.5 + sin(time);"</span><span class="p">,</span>
+
+            <span class="s2">"viewD=RotX(viewD,pi*0.1);"</span><span class="p">,</span>
+
+            <span class="s2">"viewP.y += 4.0;"</span><span class="p">,</span>
+            <span class="s2">"viewP.z += 12.0; // - sin(iGlobalTime)*8.0;"</span><span class="p">,</span>
+            <span class="s2">"viewP = RotY(viewP,t);"</span><span class="p">,</span>
+
+            <span class="s2">"viewD = RotY(viewD,t);"</span><span class="p">,</span>
+
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"//thanks again IQ http://www.iquilezles.org/www/articles/rmshadows/rmshadows.htm"</span><span class="p">,</span>
+        <span class="s2">"float shadow( in vec3 X, in vec3 n, in vec3 L )"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"float mint = 0.001;"</span><span class="p">,</span>
+            <span class="s2">"float maxt = 20.0;"</span><span class="p">,</span>
+
+            <span class="s2">"X += n*.01;"</span><span class="p">,</span>
+
+            <span class="s2">"float h=0.2;"</span><span class="p">,</span>
+            <span class="s2">"float sharpness = 25.;"</span><span class="p">,</span>
+            <span class="s2">"float soft=1.0;"</span><span class="p">,</span>
+            <span class="s2">"float t = mint;"</span><span class="p">,</span>
+            <span class="s2">"for (int i=0; i&lt;32; i++)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"float d = sdf(X + L*t);"</span><span class="p">,</span>
+                <span class="s2">"if( d&lt;-0.1 )"</span><span class="p">,</span>
+                <span class="s2">"return h; //t*h;"</span><span class="p">,</span>
+
+                <span class="s2">"soft = min( soft, (sharpness*d)*(1./t));"</span><span class="p">,</span>
+
+                <span class="s2">"if (t &gt; maxt) break;"</span><span class="p">,</span>
+                <span class="s2">"t += d * 0.9;"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+            <span class="s2">"return clamp(soft,h,1.0);"</span><span class="p">,</span>
+        <span class="s2">"}"</span><span class="p">,</span>
+
+        <span class="s2">"void main(void)"</span><span class="p">,</span>
+        <span class="s2">"{"</span><span class="p">,</span>
+            <span class="s2">"vec3 viewP, viewD;"</span><span class="p">,</span>
+            <span class="s2">"MakeViewRay(viewP, viewD);"</span><span class="p">,</span>
+
+            <span class="s2">"float t = 0.;"</span><span class="p">,</span>
+            <span class="s2">"float d;"</span><span class="p">,</span>
+
+            <span class="s2">"for (int i=0; i&lt;64; i++)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"vec3 X = viewP + viewD * t;"</span><span class="p">,</span>
+                <span class="s2">"d = sdf(X);"</span><span class="p">,</span>
+                <span class="s2">"if (abs(d) &lt; 0.00001) break; //near enough surface for normals to look OK."</span><span class="p">,</span>
+
+                <span class="s2">"#if 1"</span><span class="p">,</span>
+                <span class="s2">"if (t&gt;20.) //too far - won't converge: just go to ground plane."</span><span class="p">,</span>
+                <span class="s2">"{"</span><span class="p">,</span>
+                    <span class="s2">"t = (-viewP.y + floor_height) / (viewD.y);"</span><span class="p">,</span>
+                    <span class="s2">"break;"</span><span class="p">,</span>
+                <span class="s2">"}"</span><span class="p">,</span>
+                <span class="s2">"#endif"</span><span class="p">,</span>
+                <span class="s2">"t += d*0.9; //bounding volumes make the distance a bit wrong so slow down"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 X = viewP + viewD * t;"</span><span class="p">,</span>
+            <span class="s2">"vec3 n = nor(X);"</span><span class="p">,</span>
+
+            <span class="s2">"// vec3 c = vec3(i,i,i)*1.0/32.0;"</span><span class="p">,</span>
+            <span class="s2">"// vec3 c = vec3(t,t,t);"</span><span class="p">,</span>
+            <span class="s2">"// vec3 c = n*0.5+0.5;"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 lightDir = normalize(vec3(3,8,2));"</span><span class="p">,</span>
+
+            <span class="s2">"#if 1"</span><span class="p">,</span>
+            <span class="s2">"float ao = Ao(X+n*0.03, n, sdf(n*0.03+X));"</span><span class="p">,</span>
+            <span class="s2">"lightIntensity *= ao;"</span><span class="p">,</span>
+            <span class="s2">"#endif"</span><span class="p">,</span>
+
+            <span class="s2">"ChooseMat(X);"</span><span class="p">,</span>
+
+            <span class="s2">"float sha= 0.2;"</span><span class="p">,</span>
+            <span class="s2">"// if (dot(n,lightDir)&gt;0.)"</span><span class="p">,</span>
+            <span class="s2">"sha = shadow(X,n,lightDir);"</span><span class="p">,</span>
+            <span class="s2">"lightIntensity *= sha;"</span><span class="p">,</span>
+
+            <span class="s2">"#if 0"</span><span class="p">,</span>
+            <span class="s2">"gl_FragColor = vec4(vec3(sha,sha,sha),1.0);"</span><span class="p">,</span>
+            <span class="s2">"#else"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 c = brdf(lightDir, -viewD, n);"</span><span class="p">,</span>
+
+            <span class="s2">"lightDir = normalize(vec3(2,8,-3));"</span><span class="p">,</span>
+            <span class="s2">"if (dot(n,lightDir)&gt;0.)        sha = shadow(X,n,lightDir);"</span><span class="p">,</span>
+            <span class="s2">"lightIntensity = ao * 4. * sha;"</span><span class="p">,</span>
+
+            <span class="s2">"c += brdf(lightDir, -viewD, n) * vec3(1., 0.,0.7);"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 env = vec3(1.5, 0.5, 0.5);"</span><span class="p">,</span>
+            <span class="s2">"//textureCube(iChannel0,reflect(viewD,n)).xyz;"</span><span class="p">,</span>
+
+
+            <span class="s2">"// c += c * env * envAmount;"</span><span class="p">,</span>
+
+            <span class="s2">"// c = vec3(ao,ao,ao);"</span><span class="p">,</span>
+
+            <span class="s2">"// c = pow(c, vec3(1./gamma));"</span><span class="p">,</span>
+
+            <span class="s2">"// c = vec3(sha,sha,sha);"</span><span class="p">,</span>
+
+            <span class="s2">"// c = n*0.5+0.5;"</span><span class="p">,</span>
+
+            <span class="s2">"gl_FragColor = vec4(c,1.0);"</span><span class="p">,</span>
+            <span class="s2">"#endif"</span><span class="p">,</span>
+        <span class="s2">"}"</span>
+    <span class="p">];</span>
+
+    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/filters/dalek.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

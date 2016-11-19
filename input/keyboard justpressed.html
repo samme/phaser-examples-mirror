@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>input/keyboard justpressed.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  input/keyboard justpressed
+</h1>
+<a href="/js/input/keyboard%20justpressed.js">source: input/keyboard justpressed.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser-dude.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bullet'</span><span class="p">,</span> <span class="s1">'assets/misc/bullet0.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">bullet</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">bullets</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">bulletTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">//  Left, right and space key for controls</span>
+<span class="kd">var</span> <span class="nx">leftKey</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">rightKey</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">spaceKey</span><span class="p">;</span>
+
+<span class="c1">//  Helpful text display for justPressed functions.</span>
+<span class="kd">var</span> <span class="nx">textLeft</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">textRight</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">textSpace</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">textLeft2</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">textRight2</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">textSpace2</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+
+    <span class="nx">bullets</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+
+    <span class="nx">bullets</span><span class="p">.</span><span class="nx">enableBody</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">bullets</span><span class="p">.</span><span class="nx">physicsBodyType</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">;</span>
+
+    <span class="nx">bullets</span><span class="p">.</span><span class="nx">createMultiple</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">'bullet'</span><span class="p">);</span>
+    <span class="nx">bullets</span><span class="p">.</span><span class="nx">callAll</span><span class="p">(</span><span class="s1">'events.onOutOfBounds.add'</span><span class="p">,</span> <span class="s1">'events.onOutOfBounds'</span><span class="p">,</span> <span class="nx">resetBullet</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">bullets</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'checkWorldBounds'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+	
+	<span class="c1">//  Register the keys.</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">leftKey</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">LEFT</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">rightKey</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">RIGHT</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">spaceKey</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span><span class="p">);</span>
+
+    <span class="c1">//  Stop the following keys from propagating up to the browser</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKeyCapture</span><span class="p">([</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">LEFT</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">RIGHT</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span> <span class="p">]);</span>
+	
+	<span class="c1">//  Add some debugging text.</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">textLeft</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">"Left was pressed 250 ms ago? NO"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"16px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">});</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">textRight</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="s2">"Right was pressed 500 ms ago? NO"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"16px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">});</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">textSpace</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"Space was pressed 1000 ms ago? NO"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"16px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">});</span>
+	
+	<span class="k">this</span><span class="p">.</span><span class="nx">textLeft2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">"Is left still down? NO"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"16px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">});</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">textRight2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="s2">"Is right still down? NO"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"16px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">});</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">textSpace2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"Is space still down? NO"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"16px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">});</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="c1">//  If true, it means that this key is down. If not, it means that the key is not down (was released/not pressed)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">leftKey</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">200</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textLeft2</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Is left still down? YES"</span><span class="p">;</span>
+    <span class="p">}</span> 
+	<span class="k">else</span> 
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textLeft2</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Is left still down? NO"</span><span class="p">;</span>
+	<span class="p">}</span>
+	
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">rightKey</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textRight2</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Is right still down? YES"</span><span class="p">;</span>
+    <span class="p">}</span>
+	<span class="k">else</span> 
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textRight2</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Is right still down? NO"</span><span class="p">;</span>
+	<span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">spaceKey</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">fireBullet</span><span class="p">();</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textSpace2</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Is space still down? YES"</span><span class="p">;</span>
+    <span class="p">}</span>
+	<span class="k">else</span> 
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textSpace2</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Is space still down? NO"</span><span class="p">;</span>
+	<span class="p">}</span>
+	
+	<span class="c1">//  downDuration (previously called 'justPressed') does not schedule key pressing, it's merely indicative </span>
+    <span class="c1">//  of key states. </span>
+    <span class="c1">//  </span>
+    <span class="c1">//  In this case the downDuration function tells us that between this current time and 250 milliseconds ago, </span>
+    <span class="c1">//  this key was pressed (not the same as holding down) and if it was pressed between that slice of time, it returns</span>
+	<span class="c1">//  true, otherwise false.</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">leftKey</span><span class="p">.</span><span class="nx">downDuration</span><span class="p">(</span><span class="mi">250</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textLeft</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Left was pressed 250 ms ago? YES"</span><span class="p">;</span>
+	<span class="p">}</span> 
+	<span class="k">else</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textLeft</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Left was pressed 250 ms ago? NO"</span><span class="p">;</span>
+	<span class="p">}</span>
+	
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">rightKey</span><span class="p">.</span><span class="nx">downDuration</span><span class="p">(</span><span class="mi">500</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textRight</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Right was pressed 500 ms ago? YES"</span><span class="p">;</span>
+	<span class="p">}</span> 
+	<span class="k">else</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textRight</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Right was pressed 500 ms ago? NO"</span><span class="p">;</span>
+	<span class="p">}</span>
+	
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">spaceKey</span><span class="p">.</span><span class="nx">downDuration</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textSpace</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Space was pressed 1000 ms ago? YES"</span><span class="p">;</span>
+	<span class="p">}</span> 
+	<span class="k">else</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">textSpace</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Space was pressed 1000 ms ago? NO"</span><span class="p">;</span>
+	<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">fireBullet</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="nx">bulletTime</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">bullet</span> <span class="o">=</span> <span class="nx">bullets</span><span class="p">.</span><span class="nx">getFirstExists</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">bullet</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">bullet</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">8</span><span class="p">);</span>
+            <span class="nx">bullet</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">300</span><span class="p">;</span>
+            <span class="nx">bulletTime</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="mi">250</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="c1">//  Called if the bullet goes out of the screen</span>
+<span class="kd">function</span> <span class="nx">resetBullet</span> <span class="p">(</span><span class="nx">bullet</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">bullet</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+
+<span class="p">}</span>
+
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/input/keyboard%20justpressed.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

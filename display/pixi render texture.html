@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>display/pixi render texture.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  display/pixi render texture
+</h1>
+<a href="/js/display/pixi%20render%20texture.js">source: display/pixi render texture.js</a><pre class="highlight javascript"><code><span class="c1">//	Original version by @author Mat Groves http://matgroves.com/ @Doormat23 from the Pixi.js examples</span>
+<span class="c1">//	Ported to Phaser by Richard Davey</span>
+
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'spin1'</span><span class="p">,</span> <span class="s1">'assets/sprites/spinObj_01.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'spin2'</span><span class="p">,</span> <span class="s1">'assets/sprites/spinObj_02.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'spin3'</span><span class="p">,</span> <span class="s1">'assets/sprites/spinObj_03.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'spin4'</span><span class="p">,</span> <span class="s1">'assets/sprites/spinObj_04.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'spin5'</span><span class="p">,</span> <span class="s1">'assets/sprites/spinObj_05.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'spin6'</span><span class="p">,</span> <span class="s1">'assets/sprites/spinObj_06.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'spin7'</span><span class="p">,</span> <span class="s1">'assets/sprites/spinObj_07.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'spin8'</span><span class="p">,</span> <span class="s1">'assets/sprites/spinObj_08.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">renderTexture</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">renderTexture2</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">currentTexture</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">outputSprite</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">stuffContainer</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="c1">// create two render textures.. these dynamic textures will be used to draw the scene into itself</span>
+	<span class="nx">renderTexture</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">renderTexture</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'texture1'</span><span class="p">);</span>
+	<span class="nx">renderTexture2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">renderTexture</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'texture2'</span><span class="p">);</span>
+	<span class="nx">currentTexture</span> <span class="o">=</span> <span class="nx">renderTexture</span><span class="p">;</span>
+
+	<span class="c1">// create a new sprite that uses the render texture we created above</span>
+	<span class="nx">outputSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">currentTexture</span><span class="p">);</span>
+
+	<span class="c1">// align the sprite</span>
+	<span class="nx">outputSprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+	<span class="nx">outputSprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+
+	<span class="nx">stuffContainer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+	<span class="nx">stuffContainer</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">800</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+	<span class="nx">stuffContainer</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">600</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+
+	<span class="c1">// now create some items and randomly position them in the stuff container</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">stuffContainer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">400</span> <span class="o">-</span> <span class="mi">200</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">400</span> <span class="o">-</span> <span class="mi">200</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">pick</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getKeys</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Cache</span><span class="p">.</span><span class="nx">IMAGE</span><span class="p">)));</span>
+		<span class="nx">item</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="c1">// used for spinning!</span>
+	<span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="nx">stuffContainer</span><span class="p">.</span><span class="nx">addAll</span><span class="p">(</span><span class="s1">'rotation'</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+
+	<span class="nx">count</span> <span class="o">+=</span> <span class="mf">0.01</span><span class="p">;</span>
+
+	<span class="c1">// swap the buffers..</span>
+	<span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="nx">renderTexture</span><span class="p">;</span>
+	<span class="nx">renderTexture</span> <span class="o">=</span> <span class="nx">renderTexture2</span><span class="p">;</span>
+	<span class="nx">renderTexture2</span> <span class="o">=</span> <span class="nx">temp</span><span class="p">;</span>
+
+	<span class="c1">// set the new texture</span>
+	<span class="nx">outputSprite</span><span class="p">.</span><span class="nx">setTexture</span><span class="p">(</span><span class="nx">renderTexture</span><span class="p">);</span>
+
+	<span class="c1">// twist this up!</span>
+	<span class="nx">stuffContainer</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">-=</span> <span class="mf">0.01</span>
+	<span class="nx">outputSprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">outputSprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">y</span>  <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">count</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">;</span>
+
+	<span class="c1">// render the stage to the texture</span>
+	<span class="c1">// the true clears the texture before content is rendered</span>
+	<span class="nx">renderTexture2</span><span class="p">.</span><span class="nx">renderXY</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/display/pixi%20render%20texture.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

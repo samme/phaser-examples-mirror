@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>filters/retro plasma.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  filters/retro plasma
+</h1>
+<a href="/js/filters/retro%20plasma.js">source: filters/retro plasma.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// Oldskool plasma shader. (c) Victor Korsun, bitekas@gmail.com; 1996-2013.</span>
+
+    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+
+        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+
+        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
+
+        <span class="s2">"// Oldskool plasm shader. (c) Victor Korsun, bitekas@gmail.com; 1996-2013."</span><span class="p">,</span>
+        <span class="s2">"//"</span><span class="p">,</span>
+        <span class="s2">"// Attribution-ShareAlike CC License."</span><span class="p">,</span>
+
+        <span class="s2">"//----------------"</span><span class="p">,</span>
+        <span class="s2">"const int ps = 8; // use values &gt; 1..10 for oldskool"</span><span class="p">,</span>
+        <span class="s2">"//----------------"</span><span class="p">,</span>
+
+        <span class="s2">"void main( void ) {"</span><span class="p">,</span>
+
+            <span class="s2">"float x = gl_FragCoord.x / resolution.x * 640.;"</span><span class="p">,</span>
+            <span class="s2">"float y = gl_FragCoord.y / resolution.y * 480.;"</span><span class="p">,</span>
+
+            <span class="s2">"if (ps &gt; 0)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"x = float(int(x / float(ps)) * ps);"</span><span class="p">,</span>
+                <span class="s2">"y = float(int(y / float(ps)) * ps);"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"float mov0 = x+y+sin(time)*10.+sin(x/90.)*70.+time*2.;"</span><span class="p">,</span>
+            <span class="s2">"float mov1 = (mov0 / 5. + sin(mov0 / 30.))/ 10. + time * 3.;"</span><span class="p">,</span>
+            <span class="s2">"float mov2 = mov1 + sin(mov1)*5. + time*1.0;"</span><span class="p">,</span>
+            <span class="s2">"float cl1 = sin(sin(mov1/4. + time)+mov1);"</span><span class="p">,</span>
+            <span class="s2">"float c1 = cl1 +mov2/2.-mov1-mov2+time;"</span><span class="p">,</span>
+            <span class="s2">"float c2 = sin(c1+sin(mov0/100.+time)+sin(y/57.+time/50.)+sin((x+y)/200.)*2.);"</span><span class="p">,</span>
+            <span class="s2">"float c3 = abs(sin(c2+cos((mov1+mov2+c2) / 10.)+cos((mov2) / 10.)+sin(x/80.)));"</span><span class="p">,</span>
+
+            <span class="s2">"float dc = float(16-ps);"</span><span class="p">,</span>
+
+            <span class="s2">"if (ps &gt; 0)"</span><span class="p">,</span>
+            <span class="s2">"{"</span><span class="p">,</span>
+                <span class="s2">"cl1 = float(int(cl1*dc))/dc;"</span><span class="p">,</span>
+                <span class="s2">"c2 = float(int(c2*dc))/dc;"</span><span class="p">,</span>
+                <span class="s2">"c3 = float(int(c3*dc))/dc;"</span><span class="p">,</span>
+            <span class="s2">"}"</span><span class="p">,</span>
+
+            <span class="s2">"gl_FragColor = vec4( cl1,c2,c3,1.0);"</span><span class="p">,</span>
+
+        <span class="s2">"}"</span>
+    <span class="p">];</span>
+
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+
+    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/filters/retro%20plasma.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<base href="/">
+<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>filters/plane deformation.html</title><div id="phaser-example"></div>
+<button id="fullscreen">Full Screen</button>
+<h1>
+  filters/plane deformation
+</h1>
+<a href="/js/filters/plane%20deformation.js">source: filters/plane deformation.js</a><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cyberglow'</span><span class="p">,</span> <span class="s1">'assets/textures/cyberglow.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tron'</span><span class="p">,</span> <span class="s1">'assets/textures/tron.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'metal'</span><span class="p">,</span> <span class="s1">'assets/textures/metal.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'factory'</span><span class="p">,</span> <span class="s1">'assets/textures/factory.png'</span><span class="p">);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ooze'</span><span class="p">,</span> <span class="s1">'assets/textures/ooze.png'</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">//  Shader by cce (https://www.shadertoy.com/view/XsXGWM)</span>
+
+    <span class="c1">// "vec4 blips = texture2D(iChannel1, maa);",</span>
+    <span class="c1">// "vec4 mixer = texture2D(iChannel1, maa2);",</span>
+
+    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+
+        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+
+        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
+        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
+        <span class="s2">"uniform sampler2D iChannel0;"</span><span class="p">,</span>
+
+        <span class="s2">"void main( void ) {"</span><span class="p">,</span>
+
+            <span class="s2">"float t = time;"</span><span class="p">,</span>
+
+            <span class="s2">"vec2 uv = gl_FragCoord.xy / resolution.xy;"</span><span class="p">,</span>
+            <span class="s2">"vec2 texcoord = gl_FragCoord.xy / vec2(resolution.y);"</span><span class="p">,</span>
+
+            <span class="s2">"texcoord.y -= t*0.2;"</span><span class="p">,</span>
+
+            <span class="s2">"float zz = 1.0/(1.0-uv.y*1.7);"</span><span class="p">,</span>
+            <span class="s2">"texcoord.y -= zz * sign(zz);"</span><span class="p">,</span>
+
+            <span class="s2">"vec2 maa = texcoord.xy * vec2(zz, 1.0) - vec2(zz, 0.0) ;"</span><span class="p">,</span>
+            <span class="s2">"vec2 maa2 = (texcoord.xy * vec2(zz, 1.0) - vec2(zz, 0.0))*0.3 ;"</span><span class="p">,</span>
+            <span class="s2">"vec4 stone = texture2D(iChannel0, maa);"</span><span class="p">,</span>
+            <span class="s2">"vec4 blips = texture2D(iChannel0, maa);"</span><span class="p">,</span>
+            <span class="s2">"vec4 mixer = texture2D(iChannel0, maa2);"</span><span class="p">,</span>
+
+            <span class="s2">"float shade = abs(1.0/zz);"</span><span class="p">,</span>
+
+            <span class="s2">"vec3 outp = mix(shade*stone.rgb, mix(1.0, shade, abs(sin(t+maa.y-sin(maa.x))))*blips.rgb, min(1.0, pow(mixer.g*2.1, 2.0)));"</span><span class="p">,</span>
+            <span class="s2">"gl_FragColor = vec4(outp,1.0);"</span><span class="p">,</span>
+
+        <span class="s2">"}"</span>
+    <span class="p">];</span>
+
+    <span class="c1">//  Texture must be power-of-two sized or the filter will break</span>
+    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'cyberglow'</span><span class="p">);</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">customUniforms</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">iChannel0</span><span class="p">:</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="s1">'sampler2D'</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">texture</span><span class="p">,</span> <span class="na">textureData</span><span class="p">:</span> <span class="p">{</span> <span class="na">repeat</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">customUniforms</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+
+    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+
+<span class="p">}</span>
+</code></pre>
+<footer>
+  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
+  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
+<script src="/js/filters/plane%20deformation.js"></script>
+<script>
+  document.getElementById('fullscreen')
+    .addEventListener('click', function () {
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.startFullScreen();
+    });
+</script>
