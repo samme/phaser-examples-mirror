@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<base href="/">
-<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/001 crop.html</title><div id="phaser-example"></div>
+<link href="../css/site.css" rel="stylesheet" /><link href="../css/rouge.css" rel="stylesheet" /><title>wip/001 crop &ndash; Phaser Examples</title><div id="phaser-example"></div>
 <button id="fullscreen">Full Screen</button>
 <h1>
   wip/001 crop
 </h1>
-<a href="/js/wip/001%20crop.js">source: wip/001 crop.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+<a href="../js/bower_components/phaser-examples/examples/wip/001%20crop.js">source: wip/001 crop.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
 
 <span class="kd">var</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">text2</span><span class="p">,</span> <span class="nx">text3</span><span class="p">,</span> <span class="nx">text4</span><span class="p">,</span> <span class="nx">cropRect</span><span class="p">;</span>
 
@@ -63,7 +62,16 @@
   
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
-<script src="/js/wip/001%20crop.js"></script>
+<script>
+  var _reset = Phaser.Loader.prototype.reset;
+  
+  Phaser.Loader.prototype.reset = function (hard, clearEvents) {
+    result = _reset.call(this, hard, clearEvents);
+    this.path = "../";
+    return result;
+  };
+</script>
+<script src="../js/bower_components/phaser-examples/examples/wip/001%20crop.js"></script>
 <script>
   document.getElementById('fullscreen')
     .addEventListener('click', function () {

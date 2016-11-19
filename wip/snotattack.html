@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<base href="/">
-<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/snotattack.html</title><div id="phaser-example"></div>
+<link href="../css/site.css" rel="stylesheet" /><link href="../css/rouge.css" rel="stylesheet" /><title>wip/snotattack &ndash; Phaser Examples</title><div id="phaser-example"></div>
 <button id="fullscreen">Full Screen</button>
 <h1>
   wip/snotattack
 </h1>
-<a href="/js/wip/snotattack.js">source: wip/snotattack.js</a><pre class="highlight javascript"><code><span class="c1">//  Our Slime object. Consists of a head and a body.</span>
+<a href="../js/bower_components/phaser-examples/examples/wip/snotattack.js">source: wip/snotattack.js</a><pre class="highlight javascript"><code><span class="c1">//  Our Slime object. Consists of a head and a body.</span>
 
 <span class="nx">Slime</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">headGroup</span><span class="p">,</span> <span class="nx">bodyGroup</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
 
@@ -279,7 +278,16 @@
   
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
-<script src="/js/wip/snotattack.js"></script>
+<script>
+  var _reset = Phaser.Loader.prototype.reset;
+  
+  Phaser.Loader.prototype.reset = function (hard, clearEvents) {
+    result = _reset.call(this, hard, clearEvents);
+    this.path = "../";
+    return result;
+  };
+</script>
+<script src="../js/bower_components/phaser-examples/examples/wip/snotattack.js"></script>
 <script>
   document.getElementById('fullscreen')
     .addEventListener('click', function () {

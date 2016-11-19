@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<base href="/">
-<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/dom position.html</title><div id="phaser-example"></div>
+<link href="../css/site.css" rel="stylesheet" /><link href="../css/rouge.css" rel="stylesheet" /><title>wip/dom position &ndash; Phaser Examples</title><div id="phaser-example"></div>
 <button id="fullscreen">Full Screen</button>
 <h1>
   wip/dom position
 </h1>
-<a href="/js/wip/dom%20position.js">source: wip/dom position.js</a><pre class="highlight javascript"><code><span class="c1">//  Let's create a DOM element to position</span>
+<a href="../js/bower_components/phaser-examples/examples/wip/dom%20position.js">source: wip/dom position.js</a><pre class="highlight javascript"><code><span class="c1">//  Let's create a DOM element to position</span>
 
 <span class="nx">$</span><span class="p">(</span><span class="s2">"body"</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span> <span class="s2">"&lt;input type=\"text\" value=\"look at me!\" /&gt;"</span> <span class="p">);</span>
 
@@ -41,7 +40,16 @@
   
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
-<script src="/js/wip/dom%20position.js"></script>
+<script>
+  var _reset = Phaser.Loader.prototype.reset;
+  
+  Phaser.Loader.prototype.reset = function (hard, clearEvents) {
+    result = _reset.call(this, hard, clearEvents);
+    this.path = "../";
+    return result;
+  };
+</script>
+<script src="../js/bower_components/phaser-examples/examples/wip/dom%20position.js"></script>
 <script>
   document.getElementById('fullscreen')
     .addEventListener('click', function () {

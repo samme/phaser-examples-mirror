@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<base href="/">
-<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/physics config.html</title><div id="phaser-example"></div>
+<link href="../css/site.css" rel="stylesheet" /><link href="../css/rouge.css" rel="stylesheet" /><title>wip/physics config &ndash; Phaser Examples</title><div id="phaser-example"></div>
 <button id="fullscreen">Full Screen</button>
 <h1>
   wip/physics config
 </h1>
-<a href="/js/wip/physics%20config.js">source: wip/physics config.js</a><pre class="highlight javascript"><code><span class="c1">//  Here we'll use a Physics Configuration object to specify which physics systems should be started with the game.</span>
+<a href="../js/bower_components/phaser-examples/examples/wip/physics%20config.js">source: wip/physics config.js</a><pre class="highlight javascript"><code><span class="c1">//  Here we'll use a Physics Configuration object to specify which physics systems should be started with the game.</span>
 
 <span class="kd">var</span> <span class="nx">physicsConfig</span> <span class="o">=</span> <span class="p">{</span>
 
@@ -124,7 +123,16 @@
   
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
-<script src="/js/wip/physics%20config.js"></script>
+<script>
+  var _reset = Phaser.Loader.prototype.reset;
+  
+  Phaser.Loader.prototype.reset = function (hard, clearEvents) {
+    result = _reset.call(this, hard, clearEvents);
+    this.path = "../";
+    return result;
+  };
+</script>
+<script src="../js/bower_components/phaser-examples/examples/wip/physics%20config.js"></script>
 <script>
   document.getElementById('fullscreen')
     .addEventListener('click', function () {

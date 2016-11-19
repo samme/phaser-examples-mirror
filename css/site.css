@@ -38,7 +38,7 @@ code, pre {
 
 footer {
   font-size: 0.75rem;
-  color: #b8b8b8; }
+  color: #585858; }
 
 a {
   text-decoration: none; }
@@ -53,6 +53,6 @@ nav a {
 
 #phaser-example {
   height: 600px;
-  background: #282828 url(/assets/sprites/phaser1.png) no-repeat center; }
+  background: #282828 url(../assets/sprites/phaser1.png) no-repeat center; }
   #phaser-example canvas {
     margin: auto; }

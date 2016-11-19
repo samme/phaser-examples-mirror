@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<base href="/">
-<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/ve.html</title><div id="phaser-example"></div>
+<link href="../css/site.css" rel="stylesheet" /><link href="../css/rouge.css" rel="stylesheet" /><title>wip/ve &ndash; Phaser Examples</title><div id="phaser-example"></div>
 <button id="fullscreen">Full Screen</button>
 <h1>
   wip/ve
 </h1>
-<a href="/js/wip/ve.js">source: wip/ve.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">worldwidth</span><span class="o">=</span><span class="mi">900</span><span class="p">;</span>
+<a href="../js/bower_components/phaser-examples/examples/wip/ve.js">source: wip/ve.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">worldwidth</span><span class="o">=</span><span class="mi">900</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">worldheight</span><span class="o">=</span><span class="mi">500</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">gummi</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">constraintcount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -236,7 +235,16 @@
   
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
-<script src="/js/wip/ve.js"></script>
+<script>
+  var _reset = Phaser.Loader.prototype.reset;
+  
+  Phaser.Loader.prototype.reset = function (hard, clearEvents) {
+    result = _reset.call(this, hard, clearEvents);
+    this.path = "../";
+    return result;
+  };
+</script>
+<script src="../js/bower_components/phaser-examples/examples/wip/ve.js"></script>
 <script>
   document.getElementById('fullscreen')
     .addEventListener('click', function () {

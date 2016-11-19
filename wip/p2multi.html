@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<base href="/">
-<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>wip/p2multi.html</title><div id="phaser-example"></div>
+<link href="../css/site.css" rel="stylesheet" /><link href="../css/rouge.css" rel="stylesheet" /><title>wip/p2multi &ndash; Phaser Examples</title><div id="phaser-example"></div>
 <button id="fullscreen">Full Screen</button>
 <h1>
   wip/p2multi
 </h1>
-<a href="/js/wip/p2multi.js">source: wip/p2multi.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">state1</span> <span class="o">=</span> <span class="p">{</span>
+<a href="../js/bower_components/phaser-examples/examples/wip/p2multi.js">source: wip/p2multi.js</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">state1</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mario'</span><span class="p">,</span> <span class="s1">'wip/mariospritesheet-small.png'</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span>
         <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'paddle'</span><span class="p">,</span> <span class="s1">'wip/paddle.png'</span><span class="p">);</span> 
@@ -53,7 +52,16 @@
   
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
-<script src="/js/wip/p2multi.js"></script>
+<script>
+  var _reset = Phaser.Loader.prototype.reset;
+  
+  Phaser.Loader.prototype.reset = function (hard, clearEvents) {
+    result = _reset.call(this, hard, clearEvents);
+    this.path = "../";
+    return result;
+  };
+</script>
+<script src="../js/bower_components/phaser-examples/examples/wip/p2multi.js"></script>
 <script>
   document.getElementById('fullscreen')
     .addEventListener('click', function () {

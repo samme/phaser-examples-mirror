@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<base href="/">
-<link href="/css/site.css" rel="stylesheet" /><link href="/css/rouge.css" rel="stylesheet" /><title>particlestorm/text zone.html</title><div id="phaser-example"></div>
+<link href="../css/site.css" rel="stylesheet" /><link href="../css/rouge.css" rel="stylesheet" /><title>particlestorm/text zone &ndash; Phaser Examples</title><div id="phaser-example"></div>
 <button id="fullscreen">Full Screen</button>
 <h1>
   particlestorm/text zone
 </h1>
-<a href="/js/particlestorm/text%20zone.js">source: particlestorm/text zone.js</a><pre class="highlight javascript"><code><span class="cm">/**
+<a href="../js/bower_components/phaser-examples/examples/particlestorm/text%20zone.js">source: particlestorm/text zone.js</a><pre class="highlight javascript"><code><span class="cm">/**
 * @author       Richard Davey &lt;rich@photonstorm.com&gt;
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
@@ -102,7 +101,16 @@
   
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
-<script src="/js/particlestorm/text%20zone.js"></script>
+<script>
+  var _reset = Phaser.Loader.prototype.reset;
+  
+  Phaser.Loader.prototype.reset = function (hard, clearEvents) {
+    result = _reset.call(this, hard, clearEvents);
+    this.path = "../";
+    return result;
+  };
+</script>
+<script src="../js/bower_components/phaser-examples/examples/particlestorm/text%20zone.js"></script>
 <script>
   document.getElementById('fullscreen')
     .addEventListener('click', function () {
