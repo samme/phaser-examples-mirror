@@ -2,11 +2,24 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <link href="../css/site.css" rel="stylesheet" /><link href="../css/rouge.css" rel="stylesheet" /><title>phaser3/007 crop x &ndash; Phaser Examples</title><div id="phaser-example"></div>
-<button id="fullscreen">Full Screen</button>
+<button id="fullscreen">Full Screen</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
+  <option value="0">
+    Exact Fit
+  </option>
+  <option value="1">
+    No Scale
+  </option>
+  <option selected value="2">
+    Show All
+  </option>
+  <option value="3">
+    Resize
+  </option>
+</select>
 <h1>
   phaser3/007 crop x
 </h1>
-<a href="../js/bower_components/phaser-examples/examples/phaser3/007%20crop%20x.js">source: phaser3/007 crop x.js</a><pre class="highlight javascript"><code>
+<a href="../js/bower_components/phaser-examples/examples/phaser3/007%20crop%20x.js" title="phaser3/007 crop x.js">source</a><pre class="highlight javascript"><code>
 <span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
 
 <span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
@@ -70,20 +83,28 @@
 <span class="p">}</span>
 </code></pre>
 <footer>
-  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
-  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
   
-  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games.</p>
   
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
 <script>
+  var _boot  = Phaser.ScaleManager.prototype.boot;
   var _reset = Phaser.Loader.prototype.reset;
   
   Phaser.Loader.prototype.reset = function (hard, clearEvents) {
-    result = _reset.call(this, hard, clearEvents);
+    _reset.call(this, hard, clearEvents);
     this.path = "../";
-    return result;
+    console.log("load.path", this.path);
+  };
+  
+  Phaser.ScaleManager.prototype.boot = function () {
+    _boot.call(this);
+    this.pageAlignHorizontally = true;
+    this.pageAlignVertically = true;
+    this.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    console.log("scaleMode", this.scaleMode);
   };
 </script>
 <script src="../js/bower_components/phaser-examples/examples/phaser3/007%20crop%20x.js"></script>
@@ -92,5 +113,10 @@
     .addEventListener('click', function () {
       game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
       game.scale.startFullScreen();
+    });
+  
+  document.getElementById('scaleMode')
+    .addEventListener('change', function () {
+      game.scale.scaleMode = Number(this.value);
     });
 </script>

@@ -20,17 +20,20 @@ pre {
 li {
   margin: 0.25rem 0; }
 
-h1 {
-  font-size: 3rem; }
+h1, h2, h3, h4 {
+  line-height: 1.25; }
 
-h2 {
+h1 {
   font-size: 2rem; }
 
-h3 {
+h2 {
   font-size: 1.5rem; }
 
-h4 {
+h3 {
   font-size: 1rem; }
+
+h4 {
+  font-size: 0.75rem; }
 
 code, pre {
   font-family: Inconsolata, Menlo, monospace;
@@ -46,13 +49,28 @@ a {
     color: #7cafc2; }
   a:visited {
     color: #ba8baf; }
+  a:hover, a:focus {
+    color: #6a848d; }
+  a:active {
+    color: #4a646d; }
 
-nav a {
-  display: block;
-  padding: 0.25rem 1rem; }
+label {
+  font: caption; }
+
+nav {
+  font-size: 1.25rem; }
+  nav a {
+    display: block;
+    padding: 0.25rem 1rem;
+    font-weight: 500; }
 
 #phaser-example {
-  height: 600px;
-  background: #282828 url(../assets/sprites/phaser1.png) no-repeat center; }
-  #phaser-example canvas {
-    margin: auto; }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #282828 url(../assets/sprites/phaser.png) no-repeat center;
+  overflow: hidden; }
+  @media (min-height: 600px) {
+    #phaser-example {
+      height: 600px; } }

@@ -2,11 +2,24 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <link href="../css/site.css" rel="stylesheet" /><link href="../css/rouge.css" rel="stylesheet" /><title>particlestorm/firelight &ndash; Phaser Examples</title><div id="phaser-example"></div>
-<button id="fullscreen">Full Screen</button>
+<button id="fullscreen">Full Screen</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
+  <option value="0">
+    Exact Fit
+  </option>
+  <option value="1">
+    No Scale
+  </option>
+  <option selected value="2">
+    Show All
+  </option>
+  <option value="3">
+    Resize
+  </option>
+</select>
 <h1>
   particlestorm/firelight
 </h1>
-<a href="../js/bower_components/phaser-examples/examples/particlestorm/firelight.js">source: particlestorm/firelight.js</a><pre class="highlight javascript"><code><span class="cm">/**
+<a href="../js/bower_components/phaser-examples/examples/particlestorm/firelight.js" title="particlestorm/firelight.js">source</a><pre class="highlight javascript"><code><span class="cm">/**
 * @author       Richard Davey &lt;rich@photonstorm.com&gt;
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
@@ -102,20 +115,28 @@
 <span class="p">}</span>
 </code></pre>
 <footer>
-  <p>This is a copy of <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a>
-  (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
   
-  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games!</p>
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games.</p>
   
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
 <script>
+  var _boot  = Phaser.ScaleManager.prototype.boot;
   var _reset = Phaser.Loader.prototype.reset;
   
   Phaser.Loader.prototype.reset = function (hard, clearEvents) {
-    result = _reset.call(this, hard, clearEvents);
+    _reset.call(this, hard, clearEvents);
     this.path = "../";
-    return result;
+    console.log("load.path", this.path);
+  };
+  
+  Phaser.ScaleManager.prototype.boot = function () {
+    _boot.call(this);
+    this.pageAlignHorizontally = true;
+    this.pageAlignVertically = true;
+    this.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    console.log("scaleMode", this.scaleMode);
   };
 </script>
 <script src="../js/bower_components/phaser-examples/examples/particlestorm/firelight.js"></script>
@@ -124,5 +145,10 @@
     .addEventListener('click', function () {
       game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
       game.scale.startFullScreen();
+    });
+  
+  document.getElementById('scaleMode')
+    .addEventListener('change', function () {
+      game.scale.scaleMode = Number(this.value);
     });
 </script>
