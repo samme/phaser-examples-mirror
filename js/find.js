@@ -1,5 +1,5 @@
 (function() {
-  var $, $$, $find, $items, ANIMATE_INTERVAL, FIND_INPUT_MIN_LENGTH, _, animate, changed, findInput, findTarget, itemsByTitle, notesById, onSearchChanged, redraw, refresh, run;
+  var $, $$, $find, $items, ANIMATE_INTERVAL, FIND_INPUT_MIN_LENGTH, _, animate, changed, findInput, itemsByTitle, onSearchChanged, redraw, refresh, start;
 
   ANIMATE_INTERVAL = 100;
 
@@ -13,24 +13,13 @@
 
   $find = $$(".find");
 
-  $items = null;
+  $items = $("nav a");
 
   changed = false;
 
-  itemsByTitle = [];
-
   findInput = "";
 
-  findTarget = "nav a";
-
-  notesById = {};
-
-  run = function() {
-    refresh(false);
-    $find.addEventListener("change", onSearchChanged, false);
-    $find.addEventListener("input", onSearchChanged, false);
-    animate();
-  };
+  itemsByTitle = [];
 
   animate = function() {
     if (changed && (findInput === "" || findInput.length >= FIND_INPUT_MIN_LENGTH)) {
@@ -55,32 +44,25 @@
   };
 
   refresh = function(validate) {
-    var $item, hidden, i, len, title, titles, total, visible;
+    var $item, i, len, title;
     if (validate == null) {
       validate = false;
     }
     itemsByTitle.length = 0;
-    $items = $(findTarget);
-    if (validate) {
-      hidden = total = visible = 0;
-      titles = [];
-    }
     for (i = 0, len = $items.length; i < len; i++) {
       $item = $items[i];
       title = $item.textContent || "";
       itemsByTitle.push([title.toLowerCase(), $item]);
-      if (validate) {
-        titles.push(title);
-        total += 1;
-        if ($item.hidden) {
-          hidden += 1;
-        } else {
-          visible += 1;
-        }
-      }
     }
   };
 
-  run();
+  start = function() {
+    refresh();
+    $find.addEventListener("change", onSearchChanged, false);
+    $find.addEventListener("input", onSearchChanged, false);
+    animate();
+  };
+
+  start();
 
 }).call(this);
