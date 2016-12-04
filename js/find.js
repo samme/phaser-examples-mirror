@@ -1,5 +1,5 @@
 (function() {
-  var $, $$, $find, $items, ANIMATE_INTERVAL, FIND_INPUT_MIN_LENGTH, _, animate, changed, findInput, itemsByTitle, onSearchChanged, redraw, refresh, start;
+  var $, $$, $find, $items, ANIMATE_INTERVAL, FIND_INPUT_MIN_LENGTH, animate, changed, findInput, index, onSearchChanged, read, redraw, start;
 
   ANIMATE_INTERVAL = 100;
 
@@ -9,8 +9,6 @@
 
   $$ = document.querySelector.bind(document);
 
-  _ = document.getElementById.bind(document);
-
   $find = $$(".find");
 
   $items = $("nav a");
@@ -19,13 +17,13 @@
 
   findInput = "";
 
-  itemsByTitle = [];
+  index = [];
 
   animate = function() {
     if (changed && (findInput === "" || findInput.length >= FIND_INPUT_MIN_LENGTH)) {
       redraw();
     }
-    return setTimeout(animate, ANIMATE_INTERVAL);
+    setTimeout(animate, ANIMATE_INTERVAL);
   };
 
   onSearchChanged = function(event) {
@@ -33,31 +31,27 @@
     findInput = this.value.toLowerCase();
   };
 
+  read = function() {
+    var $item, i, len, title;
+    index.length = 0;
+    for (i = 0, len = $items.length; i < len; i++) {
+      $item = $items[i];
+      title = $item.textContent || "";
+      index.push([title.toLowerCase(), $item]);
+    }
+  };
+
   redraw = function() {
-    var i, item, itemWithTitle, len, title;
-    for (i = 0, len = itemsByTitle.length; i < len; i++) {
-      itemWithTitle = itemsByTitle[i];
-      title = itemWithTitle[0], item = itemWithTitle[1];
+    var i, item, len, ref, title;
+    for (i = 0, len = index.length; i < len; i++) {
+      ref = index[i], title = ref[0], item = ref[1];
       item.hidden = title.indexOf(findInput) === -1;
     }
     changed = false;
   };
 
-  refresh = function(validate) {
-    var $item, i, len, title;
-    if (validate == null) {
-      validate = false;
-    }
-    itemsByTitle.length = 0;
-    for (i = 0, len = $items.length; i < len; i++) {
-      $item = $items[i];
-      title = $item.textContent || "";
-      itemsByTitle.push([title.toLowerCase(), $item]);
-    }
-  };
-
   start = function() {
-    refresh();
+    read();
     $find.addEventListener("change", onSearchChanged, false);
     $find.addEventListener("input", onSearchChanged, false);
     animate();

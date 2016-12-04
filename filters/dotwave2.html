@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<link href="../css/site.css?1479795504" rel="stylesheet" /><link href="../css/rouge.css?1479795504" rel="stylesheet" /><title>filters/dotwave2 &ndash; Phaser Examples</title><div id="phaser-example"></div>
+<link href="../css/site.css?1480893463" rel="stylesheet" />
+<link href="../css/rouge.css?1480893463" rel="stylesheet" /><title>filters/dotwave2 &ndash; Phaser Examples</title><div id="phaser-example"></div>
 <div class="controls">
-  <button id="fullscreen">Full Screen</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
+  <button id="fullscreen">Full Screen</button> <button id="restart">Restart</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
     <option value="0">
       Exact Fit
     </option>
@@ -16,12 +17,14 @@
     <option value="3">
       Resize
     </option>
-  </select><label title="Enlarge the game container (on larger displays)"><input id="bigger" type="checkbox">Bigger</label>
+  </select> <label title="Enlarge the game container (on larger displays)"><input id="bigger" type="checkbox">Bigger</label>
 </div>
 <h1>
   filters/dotwave2
 </h1>
-<a href="../js/bower_components/phaser-examples/examples/filters/dotwave2.js?1479795504" title="filters/dotwave2.js">source</a> | <a href="../js/bower_components/phaser-examples/examples/filters/dotwave2.js?1479795504" download="" title="Download: filters/dotwave2.js" type="application/javascript">download</a><pre class="highlight javascript"><code>
+<div class="sourcelinks">
+  <a href="../js/bower_components/phaser-examples/examples/filters/dotwave2.js?1480893463" title="filters/dotwave2.js">source</a> • <a href="../js/bower_components/phaser-examples/examples/filters/dotwave2.js?1480893463" download="" title="Download: filters/dotwave2.js" type="application/javascript">download</a>
+</div><pre class="highlight javascript"><code>
 <span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
 
 <span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
@@ -79,44 +82,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
 <script>
   this.loadPath = "../";
-  
-  var _boot  = Phaser.ScaleManager.prototype.boot;
-  var _reset = Phaser.Loader.prototype.reset;
-  
-  Phaser.Loader.prototype.reset = function (hard, clearEvents) {
-    _reset.call(this, hard, clearEvents);
-    this.path = "../";
-    console.log("load.reset", "load.path", this.path);
-  };
-  
-  Phaser.ScaleManager.prototype.boot = function () {
-    _boot.call(this);
-    this.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    console.log("scale.boot", "scaleMode", this.scaleMode);
-  };
 </script>
-<script src="../js/bower_components/phaser-examples/examples/filters/dotwave2.js?1479795504"></script>
-<script>
-  var $ = document.getElementById.bind(document);
-  var $bigger = $('bigger');
-  var $phaserExample = $('phaser-example');
-  
-  $bigger.disabled = window.innerHeight <= 600 || window.innerWidth <= 800;
-  
-  $bigger
-    .addEventListener('change', function () {
-      $phaserExample.classList.toggle('bigger', this.checked);
-      game.scale.refresh()
-    });
-  
-  $('fullscreen')
-    .addEventListener('click', function () {
-      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
-      game.scale.startFullScreen();
-    });
-  
-  $('scaleMode')
-    .addEventListener('change', function () {
-      game.scale.scaleMode = Number(this.value);
-    });
-</script>
+<script src="../js/bower_components/phaser-examples/examples/filters/dotwave2.js?1480893463"></script>
+<script src="../js/example.js?1480893463"></script>

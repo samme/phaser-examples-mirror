@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<link href="../css/site.css?1479795499" rel="stylesheet" /><link href="../css/rouge.css?1479795499" rel="stylesheet" /><title>wip/bring top 2 &ndash; Phaser Examples</title><div id="phaser-example"></div>
+<link href="../css/site.css?1480893458" rel="stylesheet" />
+<link href="../css/rouge.css?1480893458" rel="stylesheet" /><title>wip/bring top 2 &ndash; Phaser Examples</title><div id="phaser-example"></div>
 <div class="controls">
-  <button id="fullscreen">Full Screen</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
+  <button id="fullscreen">Full Screen</button> <button id="restart">Restart</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
     <option value="0">
       Exact Fit
     </option>
@@ -16,12 +17,15 @@
     <option value="3">
       Resize
     </option>
-  </select><label title="Enlarge the game container (on larger displays)"><input id="bigger" type="checkbox">Bigger</label>
+  </select> <label title="Enlarge the game container (on larger displays)"><input id="bigger" type="checkbox">Bigger</label>
 </div>
 <h1>
   wip/bring top 2
 </h1>
-<a href="../js/bower_components/phaser-examples/examples/wip/bring%20top%202.js?1479795499" title="wip/bring top 2.js">source</a> | <a href="../js/bower_components/phaser-examples/examples/wip/bring%20top%202.js?1479795499" download="" title="Download: wip/bring top 2.js" type="application/javascript">download</a><pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">MainState</span> <span class="o">=</span> <span class="p">{</span>
+<div class="sourcelinks">
+  <a href="../js/bower_components/phaser-examples/examples/wip/bring%20top%202.js?1480893458" title="wip/bring top 2.js">source</a> • <a href="../js/bower_components/phaser-examples/examples/wip/bring%20top%202.js?1480893458" download="" title="Download: wip/bring top 2.js" type="application/javascript">download</a>
+</div><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">MainState</span> <span class="o">=</span> <span class="p">{</span>
 
     <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 
@@ -80,44 +84,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>
 <script>
   this.loadPath = "../";
-  
-  var _boot  = Phaser.ScaleManager.prototype.boot;
-  var _reset = Phaser.Loader.prototype.reset;
-  
-  Phaser.Loader.prototype.reset = function (hard, clearEvents) {
-    _reset.call(this, hard, clearEvents);
-    this.path = "../";
-    console.log("load.reset", "load.path", this.path);
-  };
-  
-  Phaser.ScaleManager.prototype.boot = function () {
-    _boot.call(this);
-    this.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    console.log("scale.boot", "scaleMode", this.scaleMode);
-  };
 </script>
-<script src="../js/bower_components/phaser-examples/examples/wip/bring%20top%202.js?1479795499"></script>
-<script>
-  var $ = document.getElementById.bind(document);
-  var $bigger = $('bigger');
-  var $phaserExample = $('phaser-example');
-  
-  $bigger.disabled = window.innerHeight <= 600 || window.innerWidth <= 800;
-  
-  $bigger
-    .addEventListener('change', function () {
-      $phaserExample.classList.toggle('bigger', this.checked);
-      game.scale.refresh()
-    });
-  
-  $('fullscreen')
-    .addEventListener('click', function () {
-      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
-      game.scale.startFullScreen();
-    });
-  
-  $('scaleMode')
-    .addEventListener('change', function () {
-      game.scale.scaleMode = Number(this.value);
-    });
-</script>
+<script src="../js/bower_components/phaser-examples/examples/wip/bring%20top%202.js?1480893458"></script>
+<script src="../js/example.js?1480893458"></script>
