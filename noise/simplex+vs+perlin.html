@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<link href="../css/site.css?1495763808" rel="stylesheet" />
+<link href="../css/rouge.css?1495763808" rel="stylesheet" /><title>noise/simplex+vs+perlin &ndash; Phaser Examples</title><div id="phaser-example"></div>
+<div class="controls">
+  <button id="fullscreen">Full Screen</button> <button id="restart">Restart</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
+    <option value="0">
+      Exact Fit
+    </option>
+    <option value="1">
+      No Scale
+    </option>
+    <option selected value="2">
+      Show All
+    </option>
+    <option value="3">
+      Resize
+    </option>
+  </select> <label title="Enlarge the game container (on larger displays)"><input id="bigger" type="checkbox">Bigger</label>
+</div>
+<h1>
+  noise/simplex+vs+perlin
+</h1>
+<div class="sourcelinks">
+  <a href="../js/bower_components/phaser-examples/examples/noise/simplex+vs+perlin.js?1495763808" title="noise/simplex+vs+perlin.js">source</a> • <a href="../js/bower_components/phaser-examples/examples/noise/simplex+vs+perlin.js?1495763808" download="" title="Download: noise/simplex+vs+perlin.js" type="application/javascript">download</a>
+</div><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">sprite</span><span class="p">,</span>
+    <span class="nx">bmd</span><span class="p">,</span>
+    <span class="nx">x</span><span class="p">,</span>
+    <span class="nx">y</span><span class="p">,</span>
+    <span class="nx">d</span><span class="p">,</span>
+    <span class="nx">simplexNoise</span><span class="p">,</span>
+    <span class="nx">perlinNoise</span><span class="p">,</span>
+    <span class="nx">simplexImageData</span><span class="p">,</span>
+    <span class="nx">perlinImageData</span><span class="p">,</span>
+    <span class="nx">step</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+
+
+
+<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">alphaMax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">alphaMin</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+  <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">;</span>
+  <span class="nx">simplexImageData</span> <span class="o">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nx">createImageData</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+  <span class="nx">perlinImageData</span> <span class="o">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nx">createImageData</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">bmd</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="nx">bmd</span><span class="p">.</span><span class="nx">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span> <span class="nx">x</span><span class="o">+=</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">simplexNoise</span> <span class="o">=</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">noise</span><span class="p">.</span><span class="nx">simplex</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="mf">0.005</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">*</span> <span class="mf">0.00025</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="nx">perlinNoise</span> <span class="o">=</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">noise</span><span class="p">.</span><span class="nx">perlin</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="mf">0.005</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">*</span> <span class="mf">0.00025</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="nx">d</span> <span class="o">=</span> <span class="nx">simplexImageData</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+    <span class="nx">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nx">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+    <span class="nx">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">simplexNoise</span> <span class="o">*</span> <span class="mi">128</span> <span class="o">+</span> <span class="mi">128</span><span class="p">;</span>
+    <span class="nx">d</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+    <span class="nx">ctx</span><span class="p">.</span><span class="nx">putImageData</span><span class="p">(</span><span class="nx">simplexImageData</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">simplexNoise</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+
+    <span class="nx">d</span> <span class="o">=</span> <span class="nx">perlinImageData</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+    <span class="nx">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+    <span class="nx">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nx">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">perlinNoise</span> <span class="o">*</span> <span class="mi">128</span> <span class="o">+</span> <span class="mi">128</span><span class="p">;;</span>
+    <span class="nx">d</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+    <span class="nx">ctx</span><span class="p">.</span><span class="nx">putImageData</span><span class="p">(</span><span class="nx">perlinImageData</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">perlinNoise</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">d</span> <span class="o">=</span> <span class="nx">simplexImageData</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+  <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Simplex Noise Line'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'rgb('</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">')'</span><span class="p">);</span>
+  <span class="nx">d</span> <span class="o">=</span> <span class="nx">perlinImageData</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+  <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Perlin Noise Line'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">'rgb('</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">')'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+<meta content="../" name="loadPath">
+<footer class="footer">
+  <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games.</p>
+  
+</footer>
+<script src="../js/bower_components/phaser-ce/build/phaser.js?1495763808"></script>
+<script>
+  this.loadPath = "../";
+</script>
+<script src="../js/bower_components/phaser-examples/examples/noise/simplex+vs+perlin.js?1495763808"></script>
+<script src="../js/example.js?1495763808"></script>

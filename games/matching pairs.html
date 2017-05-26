@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<link href="../css/site.css?1492145473" rel="stylesheet" />
-<link href="../css/rouge.css?1492145473" rel="stylesheet" /><title>games/matching pairs &ndash; Phaser Examples</title><div id="phaser-example"></div>
+<link href="../css/site.css?1495763806" rel="stylesheet" />
+<link href="../css/rouge.css?1495763806" rel="stylesheet" /><title>games/matching pairs &ndash; Phaser Examples</title><div id="phaser-example"></div>
 <div class="controls">
   <button id="fullscreen">Full Screen</button> <button id="restart">Restart</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
     <option value="0">
@@ -23,7 +23,7 @@
   games/matching pairs
 </h1>
 <div class="sourcelinks">
-  <a href="../js/bower_components/phaser-examples/examples/games/matching%20pairs.js?1492145473" title="games/matching pairs.js">source</a> • <a href="../js/bower_components/phaser-examples/examples/games/matching%20pairs.js?1492145473" download="" title="Download: games/matching pairs.js" type="application/javascript">download</a>
+  <a href="../js/bower_components/phaser-examples/examples/games/matching%20pairs.js?1495763806" title="games/matching pairs.js">source</a> • <a href="../js/bower_components/phaser-examples/examples/games/matching%20pairs.js?1495763806" download="" title="Download: games/matching pairs.js" type="application/javascript">download</a>
 </div><pre class="highlight javascript"><code>
 <span class="c1">// mods by Patrick OReilly </span>
 <span class="c1">// twitter: @pato_reilly</span>
@@ -44,6 +44,7 @@
 
 <span class="kd">var</span> <span class="nx">masterCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">squareCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">clickCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">square1Num</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">square2Num</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">savedSquareX1</span><span class="p">;</span>
@@ -140,6 +141,7 @@
                 <span class="nx">currentNum</span> <span class="o">=</span> <span class="nx">squareList</span><span class="p">[</span><span class="nx">currentTilePosition</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
             <span class="nx">flipOver</span><span class="p">();</span>
                 <span class="nx">squareCounter</span><span class="o">++</span><span class="p">;</span>
+                <span class="nx">clickCount</span><span class="o">++</span><span class="p">;</span>
             <span class="c1">// is the second tile of pair flipped?</span>
             <span class="k">if</span>  <span class="p">(</span><span class="nx">squareCounter</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> 
             <span class="p">{</span>
@@ -155,6 +157,9 @@
                     <span class="p">{</span>
                         <span class="c1">// go "win"</span>
                         <span class="nx">youWin</span> <span class="o">=</span> <span class="s1">'Got them all!'</span><span class="p">;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="nx">clickCount</span> <span class="o">==</span> <span class="mi">18</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="nx">youWin</span> <span class="o">=</span> <span class="s1">'Hard-mode achieved'</span><span class="p">;</span>
                     <span class="p">}</span>                       
                 <span class="p">}</span>
                 <span class="k">else</span>
@@ -243,6 +248,8 @@
 
     <span class="c1">//game.debug.text('squareCounter: ' + squareCounter, 620, 272, 'rgb(0,0,255)');</span>
     <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Matched Pairs: '</span> <span class="o">+</span> <span class="nx">masterCounter</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">304</span><span class="p">,</span> <span class="s1">'rgb(0,0,255)'</span><span class="p">);</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Matched Pairs: '</span> <span class="o">+</span> <span class="nx">clickCount</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="s1">'rgb(0,0,255)'</span><span class="p">);</span>
+
 
     <span class="c1">//game.debug.text('startList: ' + myString1, 620, 208, 'rgb(255,0,0)');</span>
     <span class="c1">//game.debug.text('squareList: ' + myString2, 620, 240, 'rgb(255,0,0)');</span>
@@ -264,9 +271,9 @@
   <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games.</p>
   
 </footer>
-<script src="../js/bower_components/phaser-ce/build/phaser.js?1492145473"></script>
+<script src="../js/bower_components/phaser-ce/build/phaser.js?1495763806"></script>
 <script>
   this.loadPath = "../";
 </script>
-<script src="../js/bower_components/phaser-examples/examples/games/matching%20pairs.js?1492145473"></script>
-<script src="../js/example.js?1492145473"></script>
+<script src="../js/bower_components/phaser-examples/examples/games/matching%20pairs.js?1495763806"></script>
+<script src="../js/example.js?1495763806"></script>

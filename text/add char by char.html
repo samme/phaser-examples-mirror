@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<link href="../css/site.css?1495763810" rel="stylesheet" />
+<link href="../css/rouge.css?1495763810" rel="stylesheet" /><title>text/add char by char &ndash; Phaser Examples</title><div id="phaser-example"></div>
+<div class="controls">
+  <button id="fullscreen">Full Screen</button> <button id="restart">Restart</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
+    <option value="0">
+      Exact Fit
+    </option>
+    <option value="1">
+      No Scale
+    </option>
+    <option selected value="2">
+      Show All
+    </option>
+    <option value="3">
+      Resize
+    </option>
+  </select> <label title="Enlarge the game container (on larger displays)"><input id="bigger" type="checkbox">Bigger</label>
+</div>
+<h1>
+  text/add char by char
+</h1>
+<div class="sourcelinks">
+  <a href="../js/bower_components/phaser-examples/examples/text/add%20char%20by%20char.js?1495763810" title="text/add char by char.js">source</a> • <a href="../js/bower_components/phaser-examples/examples/text/add%20char%20by%20char.js?1495763810" download="" title="Download: text/add char by char.js" type="application/javascript">download</a>
+</div><pre class="highlight javascript"><code>
+<span class="cm">/**
+ * @file Demonstrates how to add text character-by-character using Phaser.
+ * @author Melissa Viernes &lt;melissa.b.viernes@gmail.com&gt; @melkybee
+ */</span>
+
+<span class="c1">// Phaser game setup</span>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">}),</span>
+
+    <span class="c1">// Phaser text object</span>
+    <span class="nx">text</span><span class="p">,</span>
+    
+    <span class="c1">// Custom text to add onto the screen</span>
+    <span class="nx">txt</span> <span class="o">=</span> <span class="s1">'Hello world! :-)'</span><span class="p">,</span>
+    
+    <span class="c1">// Amount of time in between the characters being added</span>
+    <span class="nx">time</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    
+    <span class="c1">// Text style</span>
+    <span class="nx">txtStyle</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">font</span><span class="p">:</span> <span class="s1">'65px Arial'</span><span class="p">,</span>
+        <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ff0044'</span><span class="p">,</span>
+        <span class="na">align</span><span class="p">:</span> <span class="s1">'center'</span>
+    <span class="p">};</span>
+
+<span class="cm">/**
+ * Game state for create
+ */</span>
+<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Add text object to center of the world</span>
+    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="nx">txtStyle</span><span class="p">);</span>
+    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    
+    <span class="c1">// Add custom text, character by character</span>
+    <span class="nx">addCharByChar</span><span class="p">(</span><span class="nx">txt</span><span class="p">,</span> <span class="nx">time</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ * Add text, character by character
+ * @param {string} txt  - The custom text to add onto the screen.
+ * @param {Number} time - The amount of time (seconds) in between the characters being added.
+ */</span>
+<span class="kd">function</span> <span class="nx">addCharByChar</span><span class="p">(</span><span class="nx">txt</span><span class="p">,</span> <span class="nx">time</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span>
+        <span class="nx">txtLen</span> <span class="o">=</span> <span class="nx">txt</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+        <span class="nx">totalTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">txtLen</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// loop through each character of the custom text</span>
+        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span> <span class="o">*</span> <span class="nx">totalTime</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">txt</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="p">];</span>  <span class="c1">// add the next character</span>
+        <span class="p">},</span> <span class="p">{</span> <span class="na">text</span><span class="p">:</span> <span class="nx">text</span><span class="p">,</span> <span class="na">txt</span><span class="p">:</span> <span class="nx">txt</span><span class="p">,</span> <span class="na">i</span><span class="p">:</span> <span class="nx">i</span> <span class="p">});</span>  <span class="c1">// for scoping purposes</span>
+        <span class="nx">totalTime</span> <span class="o">+=</span> <span class="nx">time</span><span class="p">;</span>  <span class="c1">// the next character will appear at this time</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<meta content="../" name="loadPath">
+<footer class="footer">
+  <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games.</p>
+  
+</footer>
+<script src="../js/bower_components/phaser-ce/build/phaser.js?1495763810"></script>
+<script>
+  this.loadPath = "../";
+</script>
+<script src="../js/bower_components/phaser-examples/examples/text/add%20char%20by%20char.js?1495763810"></script>
+<script src="../js/example.js?1495763810"></script>
