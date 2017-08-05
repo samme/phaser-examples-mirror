@@ -47,4 +47,8 @@
     game.scale.scaleMode = Number(this.value);
   });
 
+  id('rendering').addEventListener('change', function() {
+    game.canvas.style.imageRendering = this.value;
+  });
+
 }).call(this);

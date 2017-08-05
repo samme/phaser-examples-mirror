@@ -5,8 +5,6 @@ body {
   text-align: center;
   color: #282828;
   background: #f8f8f8;
-  image-rendering: crisp-edges;
-  image-rendering: pixelated;
 }
 
 blockquote,
