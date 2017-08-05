@@ -693,7 +693,7 @@ module.exports={
   "description": "A JavaScript 2D physics engine.",
   "author": "Stefan Hedman <schteppe@gmail.com> (http://steffe.se)",
   "keywords": [
-    "p2.js?1495763788",
+    "p2.js?1496947405",
     "p2",
     "physics",
     "engine",
@@ -11975,7 +11975,7 @@ Utils.splice = function(array,index,howmany){
  *         <!-- Inject your preferred array type before loading p2.js -->
  *         P2_ARRAY_TYPE = Array;
  *     </script>
- *     <script src="p2.js?1495763788"></script>
+ *     <script src="p2.js?1496947405"></script>
  */
 if(typeof P2_ARRAY_TYPE !== 'undefined') {
     Utils.ARRAY_TYPE = P2_ARRAY_TYPE;
