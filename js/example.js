@@ -1,9 +1,9 @@
 (function() {
-  var $bigger, $phaserExample, boot, id, loadPath, reset;
+  var $bigger, $phaserExample, $userScale, boot, id, loadPath, reset;
 
   loadPath = this.loadPath;
 
-  console.log("loadPath", loadPath);
+  console.debug("loadPath", loadPath);
 
   boot = Phaser.ScaleManager.prototype.boot;
 
@@ -12,13 +12,13 @@
   Phaser.Loader.prototype.reset = function(hard, clearEvents) {
     reset.call(this, hard, clearEvents);
     this.path = loadPath;
-    console.log('load.reset()', 'load.path', this.path);
+    console.debug('load.reset()', 'load.path', this.path);
   };
 
   Phaser.ScaleManager.prototype.boot = function() {
     boot.call(this);
     this.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    console.log('scale.boot()', 'scaleMode', this.scaleMode);
+    console.debug('scale.boot()', 'scaleMode', this.scaleMode);
   };
 
   id = document.getElementById.bind(document);
@@ -26,6 +26,8 @@
   $phaserExample = id('phaser-example');
 
   $bigger = id('bigger');
+
+  $userScale = id('userScale');
 
   $bigger.disabled = window.innerHeight <= 600 || window.innerWidth <= 800;
 
@@ -44,7 +46,20 @@
   });
 
   id('scaleMode').addEventListener('change', function() {
-    game.scale.scaleMode = Number(this.value);
+    var value;
+    value = Number(this.value);
+    game.scale.scaleMode = value;
+    if (value === 4) {
+      $userScale.removeAttribute('disabled');
+    } else {
+      $userScale.setAttribute('disabled', '');
+    }
+  });
+
+  $userScale.addEventListener('change', function() {
+    var value;
+    value = Number(this.value);
+    game.scale.setUserScale(value, value);
   });
 
   id('rendering').addEventListener('change', function() {
