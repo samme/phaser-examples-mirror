@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<link href="../css/site.css?1507222804" rel="stylesheet" />
+<link href="../css/rouge.css?1507222804" rel="stylesheet" /><title>tilemaps/phaser tiled plugin &ndash; Phaser Examples</title><div id="phaser-example"></div>
+<div class="controls">
+  <button id="fullscreen">Full Screen</button> <button id="restart">Restart</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
+    <option value="0">
+      Exact Fit
+    </option>
+    <option value="1">
+      No Scale
+    </option>
+    <option selected value="2">
+      Show All
+    </option>
+    <option value="3">
+      Resize
+    </option>
+    <option value="4">
+      User Scale
+    </option>
+  </select> <label for="userScale">user scale:</label><select id="userScale">
+    <option>
+      0.1
+    </option>
+    <option>
+      0.25
+    </option>
+    <option>
+      0.5
+    </option>
+    <option>
+      0.75
+    </option>
+    <option selected>
+      1
+    </option>
+    <option>
+      2
+    </option>
+  </select> <label for="rendering">rendering:</label> <select id="rendering">
+    <option>
+      auto
+    </option>
+    <option>
+      crisp-edges
+    </option>
+    <option>
+      pixelated
+    </option>
+  </select> <label title="Enlarge the game container (on larger displays)"><input id="bigger" type="checkbox">Bigger</label>
+</div>
+<h1>
+  tilemaps/phaser tiled plugin
+</h1>
+<div class="sourcelinks">
+  <a href="../js/bower_components/phaser-examples/examples/tilemaps/phaser%20tiled%20plugin.js?1507222804" title="tilemaps/phaser tiled plugin.js">source</a> • <a href="../js/bower_components/phaser-examples/examples/tilemaps/phaser%20tiled%20plugin.js?1507222804" download="" title="Download: tilemaps/phaser tiled plugin.js" type="application/javascript">download</a>
+</div><pre class="highlight javascript"><code>
+<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">init</span><span class="p">:</span> <span class="nx">init</span><span class="p">,</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
+
+<span class="kd">var</span> <span class="nx">lastPos</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">pan</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">init</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Tiled</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">preload</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// game.load.pack('Ortho_1_16__16_large.json', '/phaser-tiled/testmaps/maps/tilemap-assets2.json', null, this);</span>
+    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">pack</span><span class="p">(</span><span class="s1">'Ortho_1_32__32_objects.json'</span><span class="p">,</span> <span class="s1">'/phaser-tiled/testmaps/maps/tilemap-assets2.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">create</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// var map = game.add.tiledmap('Ortho_1_16__16_large.json');</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tiledmap</span><span class="p">(</span><span class="s1">'Ortho_1_32__32_objects.json'</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">spawnObjects</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">type</span> <span class="o">!==</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">SPRITE</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+        <span class="nx">obj</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="nx">obj</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
+
+    <span class="p">});</span>
+
+    <span class="nx">lastPos</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">update</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">active</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">moveCamera</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pointer1</span><span class="p">.</span><span class="nx">active</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">moveCamera</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pointer1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">moveCamera</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">timeDown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">isDown</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">targetObject</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">pan</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">lastPos</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+            <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">lastPos</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nx">lastPos</span><span class="p">.</span><span class="nx">copyFrom</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">);</span>
+        <span class="nx">pan</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">isUp</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">pan</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<meta content="../" name="loadPath">
+<footer class="footer">
+  <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>
+  
+  <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games.</p>
+  
+</footer>
+<script src="../js/bower_components/phaser-ce/build/phaser.js?1507222804"></script>
+<script>
+  this.loadPath = "../";
+</script>
+<script src="../js/bower_components/phaser-examples/examples/tilemaps/phaser%20tiled%20plugin.js?1507222804"></script>
+<script src="../js/example.js?1507222804"></script>
