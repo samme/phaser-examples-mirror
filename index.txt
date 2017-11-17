@@ -1,4 +1,5 @@
 animation/animation events
+animation/aseprite animation
 animation/change frame
 animation/change texture on click
 animation/creature dragon multiple
