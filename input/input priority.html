@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<link href="../css/site.css?1515816171" rel="stylesheet" />
-<link href="../css/rouge.css?1515816171" rel="stylesheet" /><title>input/input priority &ndash; Phaser Examples</title><div id="phaser-example"></div>
+<link href="../css/site.css" rel="stylesheet" />
+<link href="../css/rouge.css" rel="stylesheet" />
+<title>input/input priority &ndash; Phaser Examples</title>
+<div id="phaser-example"></div>
 <div class="controls">
   <button id="fullscreen">Full Screen</button> <button id="restart">Restart</button> <label for="scaleMode">scale:</label> <select id="scaleMode">
     <option value="0">
       Exact Fit
     </option>
-    <option value="1">
+    <option selected value="1">
       No Scale
     </option>
-    <option selected value="2">
+    <option value="2">
       Show All
     </option>
     <option value="3">
@@ -21,9 +23,6 @@
       User Scale
     </option>
   </select> <label for="userScale">user scale:</label><select id="userScale">
-    <option>
-      0.1
-    </option>
     <option>
       0.25
     </option>
@@ -55,7 +54,7 @@
   input/input priority
 </h1>
 <div class="sourcelinks">
-  <a href="../js/bower_components/phaser-examples/examples/input/input%20priority.js?1515816171" title="input/input priority.js">source</a> • <a href="../js/bower_components/phaser-examples/examples/input/input%20priority.js?1515816171" download="" title="Download: input/input priority.js" type="application/javascript">download</a>
+  <a href="../js/bower_components/phaser-examples/examples/input/input%20priority.js" title="input/input priority.js">source</a> • <a href="../js/bower_components/phaser-examples/examples/input/input%20priority.js" download="" title="Download: input/input priority.js" type="application/javascript">download</a>
 </div><pre class="highlight javascript"><code>
 <span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
 
@@ -113,9 +112,9 @@
   <p>This license does <strong>not</strong> cover the graphics or audio files herein. None of them are to be used in commercial games.</p>
   
 </footer>
-<script src="../js/bower_components/phaser-ce/build/phaser.js?1515816171"></script>
 <script>
   this.loadPath = "../";
 </script>
-<script src="../js/bower_components/phaser-examples/examples/input/input%20priority.js?1515816171"></script>
-<script src="../js/example.js?1515816171"></script>
+<script src="../js/bower_components/phaser-ce/build/phaser.js" defer="defer"></script>
+<script src="../js/bower_components/phaser-examples/examples/input/input%20priority.js" defer="defer"></script>
+<script src="../js/example.js" defer="defer"></script>
