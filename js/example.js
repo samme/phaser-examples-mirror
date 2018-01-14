@@ -1,24 +1,16 @@
 (function() {
-  var $bigger, $phaserExample, $userScale, boot, id, loadPath, reset;
+  var $bigger, $phaserExample, $userScale, id, loadPath, reset;
 
   loadPath = this.loadPath;
 
   console.debug("loadPath", loadPath);
-
-  boot = Phaser.ScaleManager.prototype.boot;
 
   reset = Phaser.Loader.prototype.reset;
 
   Phaser.Loader.prototype.reset = function(hard, clearEvents) {
     reset.call(this, hard, clearEvents);
     this.path = loadPath;
-    console.debug('load.reset()', 'load.path', this.path);
-  };
-
-  Phaser.ScaleManager.prototype.boot = function() {
-    boot.call(this);
-    this.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    console.debug('scale.boot()', 'scaleMode', this.scaleMode);
+    console.debug('game.load.path', this.path);
   };
 
   id = document.getElementById.bind(document);
@@ -38,6 +30,7 @@
 
   id('fullscreen').addEventListener('click', function() {
     game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+    console.debug('game.scale.fullScreenScaleMode', game.scale.fullScreenScaleMode);
     game.scale.startFullScreen();
   });
 
