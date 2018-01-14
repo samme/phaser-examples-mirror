@@ -144,7 +144,7 @@ nav a:hover, nav a:focus {
   justify-content: center;
   height: 300px;
   max-height: 100vh;
-  background: #282828 url(../assets/skies/space3.png) repeat-x bottom/auto 100%;
+  background: #282828 url(../assets/skies/space2.png) repeat-x bottom/auto 100%;
   color: #f8f8f8;
 }
 .header h1 {
