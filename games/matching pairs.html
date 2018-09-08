@@ -54,7 +54,7 @@
   games/matching pairs
 </h1>
 <div class="sourcelinks">
-  <a href="../js/bower_components/phaser-examples/examples/games/matching%20pairs.js" title="games/matching pairs.js">source</a> • <a href="../js/bower_components/phaser-examples/examples/games/matching%20pairs.js" download="" title="Download: games/matching pairs.js" type="application/javascript">download</a>
+  <a href="/js/source/js/examples/games/matching%20pairs.js" title="games/matching pairs.js">source</a> • <a href="/js/source/js/examples/games/matching%20pairs.js" download="" title="Download: games/matching pairs.js" type="application/javascript">download</a>
 </div><pre class="highlight javascript"><code>
 <span class="c1">// mods by Patrick OReilly </span>
 <span class="c1">// twitter: @pato_reilly</span>
@@ -159,22 +159,23 @@
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">processClick</span><span class="p">()</span> <span class="p">{</span>
-   
+
     <span class="nx">currentTile</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">getTile</span><span class="p">(</span><span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">));</span>
     <span class="nx">currentTilePosition</span> <span class="o">=</span> <span class="p">((</span><span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">worldY</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">6</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="mi">6</span><span class="o">-</span><span class="p">(</span><span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">worldX</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
-        
+
     <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-        <span class="p">{</span>
+    <span class="p">{</span>
         <span class="c1">// check to make sure the tile is not already flipped</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">currentTile</span><span class="p">.</span><span class="nx">index</span> <span class="o">==</span> <span class="nx">tileBack</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="c1">// get the corresponding item out of squareList</span>
-                <span class="nx">currentNum</span> <span class="o">=</span> <span class="nx">squareList</span><span class="p">[</span><span class="nx">currentTilePosition</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+            <span class="nx">currentNum</span> <span class="o">=</span> <span class="nx">squareList</span><span class="p">[</span><span class="nx">currentTilePosition</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
             <span class="nx">flipOver</span><span class="p">();</span>
-                <span class="nx">squareCounter</span><span class="o">++</span><span class="p">;</span>
-                <span class="nx">clickCount</span><span class="o">++</span><span class="p">;</span>
+            <span class="nx">squareCounter</span><span class="o">++</span><span class="p">;</span>
+            <span class="nx">clickCount</span><span class="o">++</span><span class="p">;</span>
+
             <span class="c1">// is the second tile of pair flipped?</span>
-            <span class="k">if</span>  <span class="p">(</span><span class="nx">squareCounter</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> 
+            <span class="k">if</span>  <span class="p">(</span><span class="nx">squareCounter</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="c1">// reset squareCounter</span>
                 <span class="nx">squareCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -182,33 +183,34 @@
                 <span class="c1">// check for match</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">square1Num</span> <span class="o">==</span> <span class="nx">square2Num</span><span class="p">)</span>
                 <span class="p">{</span>
-                    <span class="nx">masterCounter</span><span class="o">++</span><span class="p">;</span>    
-                    
-                    <span class="k">if</span> <span class="p">(</span><span class="nx">masterCounter</span> <span class="o">==</span> <span class="mi">18</span><span class="p">)</span> 
+                    <span class="nx">masterCounter</span><span class="o">++</span><span class="p">;</span>
+
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">masterCounter</span> <span class="o">==</span> <span class="mi">18</span><span class="p">)</span>
                     <span class="p">{</span>
                         <span class="c1">// go "win"</span>
                         <span class="nx">youWin</span> <span class="o">=</span> <span class="s1">'Got them all!'</span><span class="p">;</span>
                         <span class="k">if</span> <span class="p">(</span><span class="nx">clickCount</span> <span class="o">==</span> <span class="mi">18</span><span class="p">)</span>
                         <span class="p">{</span>
                             <span class="nx">youWin</span> <span class="o">=</span> <span class="s1">'Hard-mode achieved'</span><span class="p">;</span>
-                    <span class="p">}</span>                       
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span>
+                    <span class="p">{</span>
+                        <span class="nx">savedSquareX2</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
+                        <span class="nx">savedSquareY2</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+                        <span class="nx">flipFlag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+                        <span class="nx">timeCheck</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">totalElapsedSeconds</span><span class="p">();</span>
+                    <span class="p">}</span>
                 <span class="p">}</span>
                 <span class="k">else</span>
                 <span class="p">{</span>
-                    <span class="nx">savedSquareX2</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
-                    <span class="nx">savedSquareY2</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-                        <span class="nx">flipFlag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-                        <span class="nx">timeCheck</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">totalElapsedSeconds</span><span class="p">();</span>
-                <span class="p">}</span>   
-            <span class="p">}</span>   
-            <span class="k">else</span>
-            <span class="p">{</span>
-                <span class="nx">savedSquareX1</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
-                <span class="nx">savedSquareY1</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+                    <span class="nx">savedSquareX1</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
+                    <span class="nx">savedSquareY1</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
                     <span class="nx">square1Num</span> <span class="o">=</span> <span class="nx">currentNum</span><span class="p">;</span>
-            <span class="p">}</span>           
-        <span class="p">}</span>           
-    <span class="p">}</span>    
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 <span class="p">}</span>
  
 <span class="kd">function</span> <span class="nx">flipOver</span><span class="p">()</span> <span class="p">{</span>
@@ -305,6 +307,6 @@
 <script>
   this.loadPath = "../";
 </script>
-<script src="../js/bower_components/phaser-ce/build/phaser.js" defer="defer"></script>
-<script src="../js/bower_components/phaser-examples/examples/games/matching%20pairs.js" defer="defer"></script>
+<script src="../js/node_modules/phaser-ce/build/phaser.js" defer="defer"></script>
+<script src="../js/source/js/examples/games/matching%2520pairs.js" defer="defer"></script>
 <script src="../js/example.js" defer="defer"></script>

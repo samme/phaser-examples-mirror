@@ -3,12 +3,13 @@ var game = new Phaser.Game(800, 600, Phaser.WEBGL, 'phaser-example', { preload: 
 function preload() {
 
     game.load.image('phaser', 'assets/sprites/phaser2.png');
-    game.load.script('gray', 'https://cdn.rawgit.com/photonstorm/phaser/master/v2/filters/Gray.js');
+    game.load.script('filter', 'https://cdn.rawgit.com/photonstorm/phaser-ce/master/filters/pixi/DotScreenFilter.js');
 
 }
 
 function create() {
 
+    //  Create a bunch of random sprites
     for (var i = 0; i < 8; i++)
     {
         var logo = game.add.sprite(game.world.randomX, -150 + game.world.randomY, 'phaser');
@@ -17,11 +18,7 @@ function create() {
         game.add.tween(logo).to({ y: "+300" }, 1000 + game.rnd.between(1000,2000), "Bounce.easeOut", true, 0, -1, true);
     }
 
-    // var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'phaser');
-    // logo.anchor.setTo(0.5, 0.5);
-
-    var gray = game.add.filter('Gray');
-
-    game.world.filters = [gray];
+    //  You can apply a filter to the entire world like this:
+    game.world.filters = [new PIXI.DotScreenFilter()];
 
 }
