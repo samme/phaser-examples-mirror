@@ -10,7 +10,6 @@
   Phaser.Loader.prototype.reset = function(hard, clearEvents) {
     reset.call(this, hard, clearEvents);
     this.path = loadPath;
-    console.debug('game.load.path', this.path);
   };
 
   id = document.getElementById.bind(document);
@@ -30,7 +29,6 @@
 
   id('fullscreen').addEventListener('click', function() {
     game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
-    console.debug('game.scale.fullScreenScaleMode', game.scale.fullScreenScaleMode);
     game.scale.startFullScreen();
   });
 

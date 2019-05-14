@@ -6,8 +6,8 @@ animation/creature dragon multiple
 animation/creature dragon
 animation/creature phoenix
 animation/destroy animation
-animation/dragon_bones
 animation/dragonBones
+animation/dragon_bones
 animation/dynamic animation
 animation/frame update
 animation/group creation
@@ -763,6 +763,7 @@ wip/01tilemap
 wip/01tween
 wip/03step
 wip/3dhut
+wip/TweenGroup
 wip/a01
 wip/a02
 wip/a03
@@ -969,7 +970,6 @@ wip/tween generate
 wip/tween swap
 wip/tween var
 wip/tweenalvin
-wip/TweenGroup
 wip/twokeys
 wip/ve
 world/fixed to camera
