@@ -55,64 +55,65 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/pixelpick%20atlas%20scaled.js" title="input/pixelpick atlas scaled.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/pixelpick%20atlas%20scaled.js" download="" title="Download: input/pixelpick atlas scaled.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'assets/pics/texturepacker_test.png'</span><span class="p">,</span> <span class="s1">'assets/pics/texturepacker_test.json'</span><span class="p">);</span>
+    game.load.atlas('atlas', 'assets/pics/texturepacker_test.png', 'assets/pics/texturepacker_test.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">chick</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">car</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mech</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cop</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+var chick;
+var car;
+var mech;
+var cop;
+var text;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#404040'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#404040';
 
-    <span class="c1">//  This demonstrates pixel perfect click detection even if using sprites in a texture atlas.</span>
+    //  This demonstrates pixel perfect click detection even if using sprites in a texture atlas.
 
-    <span class="nx">chick</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">);</span>
-    <span class="nx">chick</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'budbrain_chick.png'</span><span class="p">;</span>
-    <span class="nx">chick</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">chick</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pixelPerfectClick</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">chick</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">chick</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    chick = game.add.sprite(64, 64, 'atlas');
+    chick.frameName = 'budbrain_chick.png';
+    chick.inputEnabled = true;
+    chick.input.pixelPerfectClick = true;
+    chick.events.onInputDown.add(clicked, this);
+    chick.scale.set(2);
 
-    <span class="nx">cop</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">650</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">);</span>
-    <span class="nx">cop</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'ladycop.png'</span><span class="p">;</span>
-    <span class="nx">cop</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">cop</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pixelPerfectClick</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">cop</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">cop</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">);</span>
+    cop = game.add.sprite(650, 32, 'atlas');
+    cop.frameName = 'ladycop.png';
+    cop.inputEnabled = true;
+    cop.input.pixelPerfectClick = true;
+    cop.events.onInputDown.add(clicked, this);
+    cop.scale.set(1, 2.5);
 
-    <span class="nx">car</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">);</span>
-    <span class="nx">car</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'supercars_parsec.png'</span><span class="p">;</span>
-    <span class="nx">car</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">car</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pixelPerfectClick</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">car</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">car</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    car = game.add.sprite(100, 400, 'atlas');
+    car.frameName = 'supercars_parsec.png';
+    car.inputEnabled = true;
+    car.input.pixelPerfectClick = true;
+    car.events.onInputDown.add(clicked, this);
+    car.scale.set(0.5);
 
-    <span class="nx">mech</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">);</span>
-    <span class="nx">mech</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'titan_mech.png'</span><span class="p">;</span>
-    <span class="nx">mech</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">mech</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pixelPerfectClick</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">mech</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">mech</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    mech = game.add.sprite(240, 100, 'atlas');
+    mech.frameName = 'titan_mech.png';
+    mech.inputEnabled = true;
+    mech.input.pixelPerfectClick = true;
+    mech.events.onInputDown.add(clicked, this);
+    mech.scale.set(1.5, 1);
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">'Click a sprite'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
+    text = game.add.text(16, 16, 'Click a sprite', { fill: '#ffffff' });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">clicked</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+function clicked(sprite) {
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'You clicked '</span> <span class="o">+</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">frameName</span><span class="p">;</span>
+    text.text = 'You clicked ' + sprite.frameName;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

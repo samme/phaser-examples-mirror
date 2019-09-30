@@ -55,59 +55,60 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/demoscene/raster%20bounce.js" title="demoscene/raster bounce.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/demoscene/raster%20bounce.js" download="" title="Download: demoscene/raster bounce.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'raster'</span><span class="p">,</span> <span class="s1">'assets/demoscene/raster-blue.png'</span><span class="p">);</span>
+    game.load.image('raster', 'assets/demoscene/raster-blue.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">data</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">rasters</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">pos</span> <span class="o">=</span> <span class="p">[];</span>
+var data;
+var rasters;
+var pos = [];
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Generate our motion data</span>
-    <span class="nx">data</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tween</span><span class="p">({</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">300</span> <span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">In</span><span class="p">).</span><span class="nx">yoyo</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+    //  Generate our motion data
+    data = game.make.tween({ y: 0 }).to( { y: 300 }, 1000, Phaser.Easing.Sinusoidal.In).yoyo(true).generateData(60);
 
-    <span class="c1">//  A group of rasters</span>
-    <span class="nx">rasters</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    //  A group of rasters
+    rasters = game.add.group();
 
-    <span class="c1">//  The total number + spacing between each one</span>
-    <span class="kd">var</span> <span class="nx">total</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">offset</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+    //  The total number + spacing between each one
+    var total = 8;
+    var offset = 4;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">total</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">raster</span> <span class="o">=</span> <span class="nx">rasters</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'raster'</span><span class="p">);</span>
-        <span class="nx">raster</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-        <span class="nx">raster</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="nx">total</span><span class="p">);</span>
-        <span class="nx">pos</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="nx">offset</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < total; i++)
+    {
+        var raster = rasters.create(0, 0, 'raster');
+        raster.width = 800;
+        raster.alpha = (i + 1) * (1 / total);
+        pos.push(i * offset);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">rasters</span><span class="p">.</span><span class="nx">resetCursor</span><span class="p">();</span>
+    rasters.resetCursor();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">rasters</span><span class="p">.</span><span class="nx">total</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">pos</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+    for (var i = 0; i < rasters.total; i++)
+    {
+        pos[i]++;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">pos</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">===</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">pos</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (pos[i] === data.length)
+        {
+            pos[i] = 0;
+        }
 
-        <span class="nx">rasters</span><span class="p">.</span><span class="nx">cursor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">+</span> <span class="nx">data</span><span class="p">[</span><span class="nx">pos</span><span class="p">[</span><span class="nx">i</span><span class="p">]].</span><span class="nx">y</span><span class="p">;</span>
-        <span class="nx">rasters</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
-    <span class="p">}</span>
+        rasters.cursor.y = 100 + data[pos[i]].y;
+        rasters.next();
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

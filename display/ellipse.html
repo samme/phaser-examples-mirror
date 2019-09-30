@@ -55,37 +55,37 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/ellipse.js" title="display/ellipse.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/ellipse.js" download="" title="Download: display/ellipse.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">graphics</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">);</span>
+    var graphics = game.add.graphics(game.world.centerX, game.world.centerY);
 
-    <span class="c1">// var ellipse = new Phaser.Ellipse(100, 100, 200, 60);</span>
+    // var ellipse = new Phaser.Ellipse(100, 100, 200, 60);
 
-    <span class="c1">//  Our first arc will be a line only</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mh">0xffd900</span><span class="p">);</span>
+    //  Our first arc will be a line only
+    graphics.lineStyle(8, 0xffd900);
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawEllipse</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">60</span><span class="p">);</span>
+    graphics.drawEllipse(100, 100, 200, 60);
 
-    <span class="c1">// graphics.arc(0, 0, 135, game.math.degToRad(0), game.math.degToRad(90), false);</span>
+    // graphics.arc(0, 0, 135, game.math.degToRad(0), game.math.degToRad(90), false);
     
-    <span class="c1">//  As we wish to draw a 2nd arc on the SAME Graphics object, we need to move the drawing operation</span>
-    <span class="c1">// graphics.moveTo(-100, -100);</span>
+    //  As we wish to draw a 2nd arc on the SAME Graphics object, we need to move the drawing operation
+    // graphics.moveTo(-100, -100);
 
-    <span class="c1">//  This will reset the lineStyle</span>
-    <span class="c1">// graphics.lineStyle(0);</span>
+    //  This will reset the lineStyle
+    // graphics.lineStyle(0);
 
-    <span class="c1">//  And this draws a filled arc</span>
-    <span class="c1">// graphics.beginFill(0xFF3300);</span>
+    //  And this draws a filled arc
+    // graphics.beginFill(0xFF3300);
 
-    <span class="c1">//  Note the 'true' at the end, this tells it to draw anticlockwise</span>
-    <span class="c1">// graphics.arc(-100, -100, 135, game.math.degToRad(0), game.math.degToRad(90), true);</span>
+    //  Note the 'true' at the end, this tells it to draw anticlockwise
+    // graphics.arc(-100, -100, 135, game.math.degToRad(0), game.math.degToRad(90), true);
 
-    <span class="c1">// graphics.endFill();</span>
+    // graphics.endFill();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

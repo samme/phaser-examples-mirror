@@ -55,55 +55,56 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tile%20sprites/animated%20tiling%20sprite.js" title="tile sprites/animated tiling sprite.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tile%20sprites/animated%20tiling%20sprite.js" download="" title="Download: tile sprites/animated tiling sprite.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
+// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'disk'</span><span class="p">,</span> <span class="s1">'assets/sprites/p2.jpeg'</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.load.image('disk', 'assets/sprites/p2.jpeg');
+}
 
-<span class="kd">var</span> <span class="nx">tilesprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var tilesprite;
+var cursors;
+var count = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">tilesprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="s1">'disk'</span><span class="p">);</span>
+    tilesprite = game.add.tileSprite(0, 0, 512, 512, 'disk');
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">count</span> <span class="o">+=</span> <span class="mf">0.005</span>
+    count += 0.005
 
-    <span class="nx">tilesprite</span><span class="p">.</span><span class="nx">tileScale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">count</span><span class="p">);</span>
-    <span class="nx">tilesprite</span><span class="p">.</span><span class="nx">tileScale</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">count</span><span class="p">);</span>
+    tilesprite.tileScale.x = 2 + Math.sin(count);
+    tilesprite.tileScale.y = 2 + Math.cos(count);
     
-    <span class="nx">tilesprite</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="nx">tilesprite</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    tilesprite.tilePosition.x += 1;
+    tilesprite.tilePosition.y += 1;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">tilesprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">tilesprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        tilesprite.x -= 4;
+    }
+    else if (cursors.right.isDown)
+    {
+        tilesprite.x += 4;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">tilesprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">tilesprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        tilesprite.y -= 4;
+    }
+    else if (cursors.down.isDown)
+    {
+        tilesprite.y += 4;
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

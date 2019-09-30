@@ -55,179 +55,179 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/games/sliding%20puzzle.js" title="games/sliding puzzle.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/games/sliding%20puzzle.js" download="" title="Download: games/sliding puzzle.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">var</span> <span class="nx">PIECE_WIDTH</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
-    <span class="nx">PIECE_HEIGHT</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
-    <span class="nx">BOARD_COLS</span><span class="p">,</span>
-    <span class="nx">BOARD_ROWS</span><span class="p">;</span>
+var PIECE_WIDTH = 200,
+    PIECE_HEIGHT = 200,
+    BOARD_COLS,
+    BOARD_ROWS;
 
-<span class="kd">var</span> <span class="nx">piecesGroup</span><span class="p">,</span>
-    <span class="nx">piecesAmount</span><span class="p">,</span>
-    <span class="nx">shuffledIndexArray</span> <span class="o">=</span> <span class="p">[];</span>
+var piecesGroup,
+    piecesAmount,
+    shuffledIndexArray = [];
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s2">"background"</span><span class="p">,</span> <span class="s2">"assets/games/sliding-puzzle/bl.jpg"</span><span class="p">,</span> <span class="nx">PIECE_WIDTH</span><span class="p">,</span> <span class="nx">PIECE_HEIGHT</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.load.spritesheet("background", "assets/games/sliding-puzzle/bl.jpg", PIECE_WIDTH, PIECE_HEIGHT);
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">prepareBoard</span><span class="p">();</span>
-<span class="p">}</span>
+function create() {
+    prepareBoard();
+}
 
-<span class="kd">function</span> <span class="nx">prepareBoard</span><span class="p">()</span> <span class="p">{</span>
+function prepareBoard() {
 
-    <span class="kd">var</span> <span class="nx">piecesIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span>
-        <span class="nx">piece</span><span class="p">;</span>
+    var piecesIndex = 0,
+        i, j,
+        piece;
 
-    <span class="nx">BOARD_COLS</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="nx">PIECE_WIDTH</span><span class="p">);</span>
-    <span class="nx">BOARD_ROWS</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="nx">PIECE_HEIGHT</span><span class="p">);</span>
+    BOARD_COLS = Math.floor(game.world.width / PIECE_WIDTH);
+    BOARD_ROWS = Math.floor(game.world.height / PIECE_HEIGHT);
 
-    <span class="nx">piecesAmount</span> <span class="o">=</span> <span class="nx">BOARD_COLS</span> <span class="o">*</span> <span class="nx">BOARD_ROWS</span><span class="p">;</span>
+    piecesAmount = BOARD_COLS * BOARD_ROWS;
 
-    <span class="nx">shuffledIndexArray</span> <span class="o">=</span> <span class="nx">createShuffledIndexArray</span><span class="p">();</span>
+    shuffledIndexArray = createShuffledIndexArray();
 
-    <span class="nx">piecesGroup</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    piecesGroup = game.add.group();
 
-    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">BOARD_ROWS</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">BOARD_COLS</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">shuffledIndexArray</span><span class="p">[</span><span class="nx">piecesIndex</span><span class="p">])</span> <span class="p">{</span>
-                <span class="nx">piece</span> <span class="o">=</span> <span class="nx">piecesGroup</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">j</span> <span class="o">*</span> <span class="nx">PIECE_WIDTH</span><span class="p">,</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">PIECE_HEIGHT</span><span class="p">,</span> <span class="s2">"background"</span><span class="p">,</span> <span class="nx">shuffledIndexArray</span><span class="p">[</span><span class="nx">piecesIndex</span><span class="p">]);</span>
-            <span class="p">}</span>
-            <span class="k">else</span> <span class="p">{</span> <span class="c1">//initial position of black piece</span>
-                <span class="nx">piece</span> <span class="o">=</span> <span class="nx">piecesGroup</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">j</span> <span class="o">*</span> <span class="nx">PIECE_WIDTH</span><span class="p">,</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">PIECE_HEIGHT</span><span class="p">);</span>
-                <span class="nx">piece</span><span class="p">.</span><span class="nx">black</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="nx">piece</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'piece'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'x'</span> <span class="o">+</span> <span class="nx">j</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
-            <span class="nx">piece</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">=</span> <span class="nx">piecesIndex</span><span class="p">;</span>
-            <span class="nx">piece</span><span class="p">.</span><span class="nx">destIndex</span> <span class="o">=</span> <span class="nx">shuffledIndexArray</span><span class="p">[</span><span class="nx">piecesIndex</span><span class="p">];</span>
-            <span class="nx">piece</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-            <span class="nx">piece</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">selectPiece</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-            <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">=</span> <span class="nx">j</span><span class="p">;</span>
-            <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
-            <span class="nx">piecesIndex</span><span class="o">++</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    for (i = 0; i < BOARD_ROWS; i++)
+    {
+        for (j = 0; j < BOARD_COLS; j++)
+        {
+            if (shuffledIndexArray[piecesIndex]) {
+                piece = piecesGroup.create(j * PIECE_WIDTH, i * PIECE_HEIGHT, "background", shuffledIndexArray[piecesIndex]);
+            }
+            else { //initial position of black piece
+                piece = piecesGroup.create(j * PIECE_WIDTH, i * PIECE_HEIGHT);
+                piece.black = true;
+            }
+            piece.name = 'piece' + i.toString() + 'x' + j.toString();
+            piece.currentIndex = piecesIndex;
+            piece.destIndex = shuffledIndexArray[piecesIndex];
+            piece.inputEnabled = true;
+            piece.events.onInputDown.add(selectPiece, this);
+            piece.posX = j;
+            piece.posY = i;
+            piecesIndex++;
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">selectPiece</span><span class="p">(</span><span class="nx">piece</span><span class="p">)</span> <span class="p">{</span>
+function selectPiece(piece) {
 
-    <span class="kd">var</span> <span class="nx">blackPiece</span> <span class="o">=</span> <span class="nx">canMove</span><span class="p">(</span><span class="nx">piece</span><span class="p">);</span>
+    var blackPiece = canMove(piece);
 
-    <span class="c1">//if there is a black piece in neighborhood</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">blackPiece</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">movePiece</span><span class="p">(</span><span class="nx">piece</span><span class="p">,</span> <span class="nx">blackPiece</span><span class="p">);</span>
-    <span class="p">}</span>
+    //if there is a black piece in neighborhood
+    if (blackPiece) {
+        movePiece(piece, blackPiece);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">canMove</span><span class="p">(</span><span class="nx">piece</span><span class="p">)</span> <span class="p">{</span>
+function canMove(piece) {
 
-    <span class="kd">var</span> <span class="nx">foundBlackElem</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    var foundBlackElem = false;
 
-    <span class="nx">piecesGroup</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">posX</span> <span class="o">===</span> <span class="p">(</span><span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">posY</span> <span class="o">===</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">black</span> <span class="o">||</span>
-            <span class="nx">element</span><span class="p">.</span><span class="nx">posX</span> <span class="o">===</span> <span class="p">(</span><span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">posY</span> <span class="o">===</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">black</span> <span class="o">||</span>
-            <span class="nx">element</span><span class="p">.</span><span class="nx">posY</span> <span class="o">===</span> <span class="p">(</span><span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">posX</span> <span class="o">===</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">black</span> <span class="o">||</span>
-            <span class="nx">element</span><span class="p">.</span><span class="nx">posY</span> <span class="o">===</span> <span class="p">(</span><span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">posX</span> <span class="o">===</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">black</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">foundBlackElem</span> <span class="o">=</span> <span class="nx">element</span><span class="p">;</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">});</span>
+    piecesGroup.children.forEach(function(element) {
+        if (element.posX === (piece.posX - 1) && element.posY === piece.posY && element.black ||
+            element.posX === (piece.posX + 1) && element.posY === piece.posY && element.black ||
+            element.posY === (piece.posY - 1) && element.posX === piece.posX && element.black ||
+            element.posY === (piece.posY + 1) && element.posX === piece.posX && element.black) {
+            foundBlackElem = element;
+            return;
+        }
+    });
 
-    <span class="k">return</span> <span class="nx">foundBlackElem</span><span class="p">;</span>
-<span class="p">}</span>
+    return foundBlackElem;
+}
 
-<span class="kd">function</span> <span class="nx">movePiece</span><span class="p">(</span><span class="nx">piece</span><span class="p">,</span> <span class="nx">blackPiece</span><span class="p">)</span> <span class="p">{</span>
+function movePiece(piece, blackPiece) {
 
-    <span class="kd">var</span> <span class="nx">tmpPiece</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">posX</span><span class="p">:</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span>
-        <span class="na">posY</span><span class="p">:</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span><span class="p">,</span>
-        <span class="na">currentIndex</span><span class="p">:</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">currentIndex</span>
-    <span class="p">};</span>
+    var tmpPiece = {
+        posX: piece.posX,
+        posY: piece.posY,
+        currentIndex: piece.currentIndex
+    };
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">piece</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span><span class="na">x</span><span class="p">:</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">*</span> <span class="nx">PIECE_WIDTH</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">*</span> <span class="nx">PIECE_HEIGHT</span><span class="p">},</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(piece).to({x: blackPiece.posX * PIECE_WIDTH, y: blackPiece.posY * PIECE_HEIGHT}, 300, Phaser.Easing.Linear.None, true);
 
-    <span class="c1">//change places of piece and blackPiece</span>
-    <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">=</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posX</span><span class="p">;</span>
-    <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">=</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posY</span><span class="p">;</span>
-    <span class="nx">piece</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">=</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">currentIndex</span><span class="p">;</span>
-    <span class="nx">piece</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span><span class="s1">'piece'</span> <span class="o">+</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posX</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'x'</span> <span class="o">+</span> <span class="nx">piece</span><span class="p">.</span><span class="nx">posY</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+    //change places of piece and blackPiece
+    piece.posX = blackPiece.posX;
+    piece.posY = blackPiece.posY;
+    piece.currentIndex = blackPiece.currentIndex;
+    piece.name ='piece' + piece.posX.toString() + 'x' + piece.posY.toString();
 
-    <span class="c1">//piece is the new black</span>
-    <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posX</span> <span class="o">=</span> <span class="nx">tmpPiece</span><span class="p">.</span><span class="nx">posX</span><span class="p">;</span>
-    <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posY</span> <span class="o">=</span> <span class="nx">tmpPiece</span><span class="p">.</span><span class="nx">posY</span><span class="p">;</span>
-    <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">=</span> <span class="nx">tmpPiece</span><span class="p">.</span><span class="nx">currentIndex</span><span class="p">;</span>
-    <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span><span class="s1">'piece'</span> <span class="o">+</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posX</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'x'</span> <span class="o">+</span> <span class="nx">blackPiece</span><span class="p">.</span><span class="nx">posY</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+    //piece is the new black
+    blackPiece.posX = tmpPiece.posX;
+    blackPiece.posY = tmpPiece.posY;
+    blackPiece.currentIndex = tmpPiece.currentIndex;
+    blackPiece.name ='piece' + blackPiece.posX.toString() + 'x' + blackPiece.posY.toString();
 
-    <span class="c1">//after every move check if puzzle is completed</span>
-    <span class="nx">checkIfFinished</span><span class="p">();</span>
-<span class="p">}</span>
+    //after every move check if puzzle is completed
+    checkIfFinished();
+}
 
-<span class="kd">function</span> <span class="nx">checkIfFinished</span><span class="p">()</span> <span class="p">{</span>
+function checkIfFinished() {
 
-    <span class="kd">var</span> <span class="nx">isFinished</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    var isFinished = true;
 
-    <span class="nx">piecesGroup</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">!==</span> <span class="nx">element</span><span class="p">.</span><span class="nx">destIndex</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">isFinished</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">});</span>
+    piecesGroup.children.forEach(function(element) {
+        if (element.currentIndex !== element.destIndex) {
+            isFinished = false;
+            return;
+        }
+    });
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">isFinished</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">showFinishedText</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (isFinished) {
+        showFinishedText();
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">showFinishedText</span><span class="p">()</span> <span class="p">{</span>
+function showFinishedText() {
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"40px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#000"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span><span class="p">};</span>
+    var style = { font: "40px Arial", fill: "#000", align: "center"};
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s2">"Congratulations! \nYou made it!"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    var text = game.add.text(game.world.centerX, game.world.centerY, "Congratulations! \nYou made it!", style);
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    text.anchor.set(0.5);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createShuffledIndexArray</span><span class="p">()</span> <span class="p">{</span>
+function createShuffledIndexArray() {
 
-    <span class="kd">var</span> <span class="nx">indexArray</span> <span class="o">=</span> <span class="p">[];</span>
+    var indexArray = [];
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">piecesAmount</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">indexArray</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < piecesAmount; i++)
+    {
+        indexArray.push(i);
+    }
 
-    <span class="k">return</span> <span class="nx">shuffle</span><span class="p">(</span><span class="nx">indexArray</span><span class="p">);</span>
+    return shuffle(indexArray);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">shuffle</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+function shuffle(array) {
 
-    <span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
-        <span class="nx">temp</span><span class="p">,</span>
-        <span class="nx">index</span><span class="p">;</span>
+    var counter = array.length,
+        temp,
+        index;
 
-    <span class="k">while</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">index</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">counter</span><span class="p">);</span>
+    while (counter > 0)
+    {
+        index = Math.floor(Math.random() * counter);
 
-        <span class="nx">counter</span><span class="o">--</span><span class="p">;</span>
+        counter--;
 
-        <span class="nx">temp</span> <span class="o">=</span> <span class="nx">array</span><span class="p">[</span><span class="nx">counter</span><span class="p">];</span>
-        <span class="nx">array</span><span class="p">[</span><span class="nx">counter</span><span class="p">]</span> <span class="o">=</span> <span class="nx">array</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
-        <span class="nx">array</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="o">=</span> <span class="nx">temp</span><span class="p">;</span>
-    <span class="p">}</span>
+        temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
 
-    <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>
+    return array;
     
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

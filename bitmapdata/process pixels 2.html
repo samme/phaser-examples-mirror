@@ -55,52 +55,53 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bitmapdata/process%20pixels%202.js" title="bitmapdata/process pixels 2.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bitmapdata/process%20pixels%202.js" download="" title="Download: bitmapdata/process pixels 2.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'crystal'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar_dragonsun.png'</span><span class="p">);</span>
+    game.load.image('crystal', 'assets/pics/cougar_dragonsun.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
+var bmd;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'crystal'</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    bmd = game.make.bitmapData();
+    bmd.load('crystal');
+    bmd.addToWorld(game.world.centerX, game.world.centerY, 0.5, 0.5);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">startProcess</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	game.input.onDown.add(startProcess, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">startProcess</span> <span class="p">()</span> <span class="p">{</span>
+function startProcess () {
 
-	<span class="nx">bmd</span><span class="p">.</span><span class="nx">processPixelRGB</span><span class="p">(</span><span class="nx">forEachPixel</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	bmd.processPixelRGB(forEachPixel, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">forEachPixel</span> <span class="p">(</span><span class="nx">pixel</span><span class="p">)</span> <span class="p">{</span>
+function forEachPixel (pixel) {
 
-    <span class="cm">/**
+    /**
     * This callback will be sent a single object with 6 properties: `{ r: number, g: number, b: number, a: number, color: number, rgba: string }`.
     * Where r, g, b and a are integers between 0 and 255 representing the color component values for red, green, blue and alpha.
     * The `color` property is an Int32 of the full color. Note the endianess of this will change per system.
     * The `rgba` property is a CSS style rgba() string which can be used with context.fillStyle calls, among others.
     * The callback must return either `false`, in which case no change will be made to the pixel, or a new color object.
     * If a new color object is returned the pixel will be set to the r, g, b and a color values given within it.
-    */</span>
+    */
 
-    <span class="c1">//	Creates an almost greyscale effect</span>
-	<span class="nx">pixel</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="nx">pixel</span><span class="p">.</span><span class="nx">r</span><span class="p">;</span>
-	<span class="nx">pixel</span><span class="p">.</span><span class="nx">g</span> <span class="o">=</span> <span class="nx">pixel</span><span class="p">.</span><span class="nx">r</span><span class="p">;</span>
-	<span class="nx">pixel</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="nx">pixel</span><span class="p">.</span><span class="nx">r</span><span class="p">;</span>
+    //	Creates an almost greyscale effect
+	pixel.r = pixel.r;
+	pixel.g = pixel.r;
+	pixel.b = pixel.r;
 
-	<span class="k">return</span> <span class="nx">pixel</span><span class="p">;</span>
+	return pixel;
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

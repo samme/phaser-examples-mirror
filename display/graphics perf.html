@@ -55,30 +55,30 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/graphics%20perf.js" title="display/graphics perf.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/graphics%20perf.js" download="" title="Download: display/graphics perf.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">time</span><span class="p">(</span><span class="s1">'create'</span><span class="p">);</span>
+    console.time('create');
 
-    <span class="kd">var</span> <span class="nx">graphics</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var graphics = game.add.graphics(0, 0);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0x44447a</span><span class="p">);</span>
-        <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
-        <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-        <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">);</span>
-        <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">6</span><span class="p">);</span>
-        <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">7</span><span class="p">);</span>
-        <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
-        <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 1000; i++)
+    {
+        graphics.beginFill(0x44447a);
+        graphics.moveTo(i, i);
+        graphics.lineTo(i + 1, i + 1);
+        graphics.lineTo(i + 2, i + 4);
+        graphics.lineTo(i + 3, i + 6);
+        graphics.lineTo(i + 4, i + 7);
+        graphics.lineTo(i, i);
+        graphics.endFill();
+    }
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">timeEnd</span><span class="p">(</span><span class="s1">'create'</span><span class="p">);</span>
+    console.timeEnd('create');
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

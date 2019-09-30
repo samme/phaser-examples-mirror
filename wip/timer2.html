@@ -55,49 +55,49 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/timer2.js" title="wip/timer2.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/timer2.js" download="" title="Download: wip/timer2.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">});</span>
-<span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="kd">var</span> <span class="nx">explicitlyPaused</span> <span class="o">=</span> <span class="kc">false</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create});
+var counter = 0
+var explicitlyPaused = false
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#6688ee'</span><span class="p">;</span>
-    <span class="nx">timer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
-    <span class="nx">timer</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">step</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+function create() {
+    game.stage.backgroundColor = '#6688ee';
+    timer = game.time.create(false);
+    timer.repeat(Phaser.Timer.SECOND, 10, step, this);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">onPause</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">handleGamePaused</span><span class="p">)</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">onResume</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">handleGameResumed</span><span class="p">)</span>
+    game.onPause.add(handleGamePaused)
+    game.onResume.add(handleGameResumed)
 
-    <span class="c1">//prevent init tick error</span>
-    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-      <span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">()</span>  
-    <span class="p">},</span> <span class="mi">250</span><span class="p">)</span>
+    //prevent init tick error
+    setTimeout(function(){
+      timer.start()  
+    }, 250)
 
-<span class="p">}</span>
-<span class="kd">function</span> <span class="nx">handleGamePaused</span><span class="p">(){</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'game paused'</span><span class="p">)</span>
-<span class="p">}</span>
-<span class="kd">function</span> <span class="nx">handleGameResumed</span><span class="p">(){</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'game resumed'</span><span class="p">)</span>
-<span class="p">}</span>
+}
+function handleGamePaused(){
+  console.log('game paused')
+}
+function handleGameResumed(){
+  console.log('game resumed')
+}
 
-<span class="kd">function</span> <span class="nx">step</span><span class="p">(){</span>
-  <span class="nx">counter</span><span class="o">++</span> 
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'timer step'</span><span class="p">,</span> <span class="nx">counter</span><span class="p">)</span>
+function step(){
+  counter++ 
+  console.log('timer step', counter)
 
-  <span class="k">if</span><span class="p">(</span><span class="nx">counter</span> <span class="o">==</span> <span class="mi">3</span><span class="p">){</span>
-    <span class="nx">pauseTimer</span><span class="p">()</span>
-  <span class="p">}</span>
-  <span class="k">if</span><span class="p">(</span><span class="nx">counter</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">){</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'this should never happen! Paused since step #3'</span><span class="p">)</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-<span class="kd">function</span> <span class="nx">pauseTimer</span><span class="p">(){</span>
-  <span class="k">if</span><span class="p">(</span><span class="nx">explicitlyPaused</span><span class="p">)</span> <span class="k">return</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'pause timer triggered'</span><span class="p">)</span>
-  <span class="nx">explicitlyPaused</span> <span class="o">=</span> <span class="kc">true</span>
-  <span class="nx">timer</span><span class="p">.</span><span class="nx">pause</span><span class="p">()</span>
-<span class="p">}</span></code></pre>
+  if(counter == 3){
+    pauseTimer()
+  }
+  if(counter > 3){
+    console.log('this should never happen! Paused since step #3')
+  }
+}
+function pauseTimer(){
+  if(explicitlyPaused) return
+  console.log('pause timer triggered')
+  explicitlyPaused = true
+  timer.pause()
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

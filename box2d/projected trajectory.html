@@ -55,156 +55,156 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/box2d/projected%20trajectory.js" title="box2d/projected trajectory.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/box2d/projected%20trajectory.js" download="" title="Download: box2d/projected trajectory.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Chris Campbell <iforce2d@gmail.com>
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Box2D Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/box2d
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span><span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update:update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/shinyball.png'</span><span class="p">);</span>
+    game.load.image('ball', 'assets/sprites/shinyball.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">balls</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">launchX</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">launchY</span> <span class="o">=</span> <span class="mi">450</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">nextBall</span><span class="p">;</span>
+var balls = [];
+var launchX = 400;
+var launchY = 450;
+var nextBall;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#222222'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#222222';
     
-    <span class="c1">// Enable Box2D physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>
+    // Enable Box2D physics
+    game.physics.startSystem(Phaser.Physics.BOX2D);
+    game.physics.box2d.gravity.y = 500;
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">fireBall</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(fireBall, this);
     
-    <span class="nx">prepareNextBall</span><span class="p">();</span>
+    prepareNextBall();
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'Projected trajectory. Click to fire.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
+    game.add.text(5, 5, 'Projected trajectory. Click to fire.', { fill: '#ffffff', font: '14pt Arial' });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">prepareNextBall</span><span class="p">()</span> <span class="p">{</span>
+function prepareNextBall() {
     
-    <span class="kd">var</span> <span class="nx">ball</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">launchX</span><span class="p">,</span> <span class="nx">launchY</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">ball</span><span class="p">);</span>
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">sensor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    var ball = game.add.sprite(launchX, launchY, 'ball');
+    game.physics.box2d.enable(ball);
+    ball.body.sensor = true;
     
-    <span class="c1">// Temporarily disable gravity to stop the ball from </span>
-    <span class="c1">// falling off the screen until it is launched</span>
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">gravityScale</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    // Temporarily disable gravity to stop the ball from 
+    // falling off the screen until it is launched
+    ball.body.gravityScale = 0;
     
-    <span class="nx">nextBall</span> <span class="o">=</span> <span class="nx">ball</span><span class="p">;</span>
-<span class="p">}</span>
+    nextBall = ball;
+}
 
-<span class="c1">// Returns the velocity we will give to the ball on launch, for the</span>
-<span class="c1">// current position of the mouse</span>
-<span class="kd">function</span> <span class="nx">getLaunchVelocity</span><span class="p">()</span> <span class="p">{</span>
+// Returns the velocity we will give to the ball on launch, for the
+// current position of the mouse
+function getLaunchVelocity() {
     
-    <span class="kd">var</span> <span class="nx">dx</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">launchX</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">dy</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">launchY</span><span class="p">;</span>
+    var dx = game.input.mousePointer.x - launchX;
+    var dy = game.input.mousePointer.y - launchY;
     
-    <span class="c1">// Give it some more beans</span>
-    <span class="nx">dx</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="nx">dy</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span>
+    // Give it some more beans
+    dx *= 2;
+    dy *= 2;
     
-    <span class="k">return</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">dx</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">dy</span> <span class="p">};</span>    
-<span class="p">}</span>
+    return { x: dx, y: dy };    
+}
 
-<span class="c1">// Returns the location the projectile will be at time step n after launch</span>
-<span class="kd">function</span> <span class="nx">getTrajectoryPoint</span><span class="p">(</span><span class="nx">startX</span><span class="p">,</span> <span class="nx">startY</span><span class="p">,</span> <span class="nx">velocityX</span><span class="p">,</span> <span class="nx">velocityY</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+// Returns the location the projectile will be at time step n after launch
+function getTrajectoryPoint(startX, startY, velocityX, velocityY, n) {
 
-    <span class="c1">//velocity and gravity are given per second but we want time step values here</span>
-    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">60.0</span><span class="p">;</span> <span class="c1">// seconds per time step (at 60fps)</span>
+    //velocity and gravity are given per second but we want time step values here
+    var t = 1 / 60.0; // seconds per time step (at 60fps)
     
-    <span class="kd">var</span> <span class="nx">stepVelocityX</span> <span class="o">=</span> <span class="nx">t</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">pxm</span><span class="p">(</span> <span class="o">-</span><span class="nx">velocityX</span> <span class="p">);</span> <span class="c1">// m/s</span>
-    <span class="kd">var</span> <span class="nx">stepVelocityY</span> <span class="o">=</span> <span class="nx">t</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">pxm</span><span class="p">(</span> <span class="o">-</span><span class="nx">velocityY</span> <span class="p">);</span>
+    var stepVelocityX = t * game.physics.box2d.pxm( -velocityX ); // m/s
+    var stepVelocityY = t * game.physics.box2d.pxm( -velocityY );
     
-    <span class="kd">var</span> <span class="nx">stepGravityX</span> <span class="o">=</span> <span class="nx">t</span> <span class="o">*</span> <span class="nx">t</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">pxm</span><span class="p">(</span> <span class="o">-</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">x</span> <span class="p">);</span> <span class="c1">// m/s/s</span>
-    <span class="kd">var</span> <span class="nx">stepGravityY</span> <span class="o">=</span> <span class="nx">t</span> <span class="o">*</span> <span class="nx">t</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">pxm</span><span class="p">(</span> <span class="o">-</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="p">);</span>
+    var stepGravityX = t * t * game.physics.box2d.pxm( -game.physics.box2d.gravity.x ); // m/s/s
+    var stepGravityY = t * t * game.physics.box2d.pxm( -game.physics.box2d.gravity.y );
 
-    <span class="nx">startX</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">pxm</span><span class="p">(</span><span class="o">-</span><span class="nx">startX</span><span class="p">);</span>
-    <span class="nx">startY</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">pxm</span><span class="p">(</span><span class="o">-</span><span class="nx">startY</span><span class="p">);</span>
+    startX = game.physics.box2d.pxm(-startX);
+    startY = game.physics.box2d.pxm(-startY);
     
-    <span class="kd">var</span> <span class="nx">tpx</span> <span class="o">=</span> <span class="nx">startX</span> <span class="o">+</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">stepVelocityX</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="nx">n</span><span class="o">*</span><span class="nx">n</span><span class="o">+</span><span class="nx">n</span><span class="p">)</span> <span class="o">*</span> <span class="nx">stepGravityX</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">tpy</span> <span class="o">=</span> <span class="nx">startY</span> <span class="o">+</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">stepVelocityY</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="nx">n</span><span class="o">*</span><span class="nx">n</span><span class="o">+</span><span class="nx">n</span><span class="p">)</span> <span class="o">*</span> <span class="nx">stepGravityY</span><span class="p">;</span>
+    var tpx = startX + n * stepVelocityX + 0.5 * (n*n+n) * stepGravityX;
+    var tpy = startY + n * stepVelocityY + 0.5 * (n*n+n) * stepGravityY;
     
-    <span class="nx">tpx</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">mpx</span><span class="p">(</span><span class="o">-</span><span class="nx">tpx</span><span class="p">);</span>
-    <span class="nx">tpy</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">mpx</span><span class="p">(</span><span class="o">-</span><span class="nx">tpy</span><span class="p">);</span>
+    tpx = game.physics.box2d.mpx(-tpx);
+    tpy = game.physics.box2d.mpx(-tpy);
     
-    <span class="k">return</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">tpx</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">tpy</span> <span class="p">};</span>
+    return { x: tpx, y: tpy };
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">fireBall</span><span class="p">()</span> <span class="p">{</span>
+function fireBall() {
     
-    <span class="kd">var</span> <span class="nx">launchVelocity</span> <span class="o">=</span> <span class="nx">getLaunchVelocity</span><span class="p">();</span>
+    var launchVelocity = getLaunchVelocity();
     
-    <span class="c1">// Set initial velocity and re-enable gravity</span>
-    <span class="nx">nextBall</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">launchVelocity</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="nx">nextBall</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">launchVelocity</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-    <span class="nx">nextBall</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">gravityScale</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    // Set initial velocity and re-enable gravity
+    nextBall.body.velocity.x = launchVelocity.x;
+    nextBall.body.velocity.y = launchVelocity.y;
+    nextBall.body.gravityScale = 1;
     
-    <span class="nx">balls</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">nextBall</span><span class="p">);</span>
+    balls.push(nextBall);
     
-    <span class="nx">prepareNextBall</span><span class="p">();</span>
-<span class="p">}</span>
+    prepareNextBall();
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">// Destroy any balls that go off screen</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">balls</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">bullet</span> <span class="o">=</span> <span class="nx">balls</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    // Destroy any balls that go off screen
+    for (var i = balls.length - 1; i >= 0; i--)
+    {
+        var bullet = balls[i];
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">bullet</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">bullet</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">800</span> <span class="o">||</span> <span class="nx">bullet</span><span class="p">.</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="mi">600</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">bullet</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
-            <span class="nx">balls</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+        if (bullet.x < 0 || bullet.x > 800 || bullet.y > 600)
+        {
+            bullet.destroy();
+            balls.splice(i,1);
+        }
+    }
+}
 
-<span class="kd">function</span> <span class="nx">line</span><span class="p">(</span><span class="nx">x1</span><span class="p">,</span> <span class="nx">y1</span><span class="p">,</span> <span class="nx">x2</span><span class="p">,</span> <span class="nx">y2</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">x1</span><span class="p">,</span> <span class="nx">y1</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">x2</span><span class="p">,</span> <span class="nx">y2</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
-<span class="p">}</span>
+function line(x1, y1, x2, y2) {
+    game.debug.context.beginPath();
+    game.debug.context.moveTo(x1, y1);
+    game.debug.context.lineTo(x2, y2);
+    game.debug.context.stroke();
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="kd">var</span> <span class="nx">launchVelocity</span> <span class="o">=</span> <span class="nx">getLaunchVelocity</span><span class="p">();</span>
+    var launchVelocity = getLaunchVelocity();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    game.debug.start();
 
-    <span class="kd">var</span> <span class="nx">lastPos</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>    
+    var lastPos = null;    
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">180</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">6</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">trajectoryPoint</span> <span class="o">=</span> <span class="nx">getTrajectoryPoint</span><span class="p">(</span><span class="nx">launchX</span><span class="p">,</span> <span class="nx">launchY</span><span class="p">,</span> <span class="nx">launchVelocity</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">launchVelocity</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+    for (var i = 0; i < 180; i += 6)
+    {
+        var trajectoryPoint = getTrajectoryPoint(launchX, launchY, launchVelocity.x, launchVelocity.y, i);
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">lastPos</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">%</span> <span class="mi">12</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">line</span><span class="p">(</span><span class="nx">lastPos</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">lastPos</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">trajectoryPoint</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">trajectoryPoint</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-        <span class="p">}</span>
+        if (lastPos && i % 12 == 0)
+        {
+            line(lastPos.x, lastPos.y, trajectoryPoint.x, trajectoryPoint.y);
+        }
 
-        <span class="nx">lastPos</span> <span class="o">=</span> <span class="nx">trajectoryPoint</span><span class="p">;</span>
-    <span class="p">}</span>
+        lastPos = trajectoryPoint;
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>    
-<span class="p">}</span>
+    game.debug.stop();    
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

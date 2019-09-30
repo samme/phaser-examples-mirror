@@ -55,68 +55,69 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/blendmodes.js" title="wip/blendmodes.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/blendmodes.js" download="" title="Download: wip/blendmodes.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bg'</span><span class="p">,</span> <span class="s1">'assets/pics/color_wheel_swirl.png'</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'assets/pics/questar.png'</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mask1'</span><span class="p">,</span> <span class="s1">'assets/pics/mask-test.png'</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mask2'</span><span class="p">,</span> <span class="s1">'assets/pics/mask-test2.png'</span><span class="p">);</span>
+	game.load.image('bg', 'assets/pics/color_wheel_swirl.png');
+	game.load.image('pic', 'assets/pics/questar.png');
+	game.load.image('mask1', 'assets/pics/mask-test.png');
+	game.load.image('mask2', 'assets/pics/mask-test2.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">pic</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mask</span><span class="p">;</span>
+var pic;
+var mask;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="kd">var</span> <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+	var bmd = game.make.bitmapData(320, 200);
 
-	<span class="c1">// bmd.draw('pic');</span>
+	// bmd.draw('pic');
 
-	<span class="nx">bmd</span><span class="p">.</span><span class="nx">alphaMask</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'mask2'</span><span class="p">);</span>
+	bmd.alphaMask('pic', 'mask2');
 
-	<span class="nx">pic</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">);</span>
+	pic = game.add.sprite(0, 0, bmd);
 
-	<span class="c1">// game.add.image(-200, 0, 'bg');</span>
+	// game.add.image(-200, 0, 'bg');
 
-	<span class="c1">// mask = game.add.sprite(0, 0, 'mask1');</span>
+	// mask = game.add.sprite(0, 0, 'mask1');
 
-	<span class="c1">// pic = game.add.sprite(0, 0, 'pic');</span>
+	// pic = game.add.sprite(0, 0, 'pic');
 
-	<span class="c1">// mask.addChild(pic);</span>
+	// mask.addChild(pic);
 
-	<span class="c1">// pic.blendMode = Phaser.blendModes.NORMAL;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.ADD;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.MULTIPLY;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.SCREEN;</span>
-	<span class="c1">// mask.blendMode = Phaser.blendModes.OVERLAY;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.DARKEN;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.LIGHTEN;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.COLOR_DODGE;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.COLOR_BURN;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.HARD_LIGHT;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.SOFT_LIGHT;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.DIFFERENCE;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.EXCLUSION;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.HUE;</span>
-	<span class="c1">// pic.blendMode = PIXI.blendModes.SATURATION;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.COLOR;</span>
-	<span class="c1">// pic.blendMode = Phaser.blendModes.LUMINOSITY;</span>
+	// pic.blendMode = Phaser.blendModes.NORMAL;
+	// pic.blendMode = Phaser.blendModes.ADD;
+	// pic.blendMode = Phaser.blendModes.MULTIPLY;
+	// pic.blendMode = Phaser.blendModes.SCREEN;
+	// mask.blendMode = Phaser.blendModes.OVERLAY;
+	// pic.blendMode = Phaser.blendModes.DARKEN;
+	// pic.blendMode = Phaser.blendModes.LIGHTEN;
+	// pic.blendMode = Phaser.blendModes.COLOR_DODGE;
+	// pic.blendMode = Phaser.blendModes.COLOR_BURN;
+	// pic.blendMode = Phaser.blendModes.HARD_LIGHT;
+	// pic.blendMode = Phaser.blendModes.SOFT_LIGHT;
+	// pic.blendMode = Phaser.blendModes.DIFFERENCE;
+	// pic.blendMode = Phaser.blendModes.EXCLUSION;
+	// pic.blendMode = Phaser.blendModes.HUE;
+	// pic.blendMode = PIXI.blendModes.SATURATION;
+	// pic.blendMode = Phaser.blendModes.COLOR;
+	// pic.blendMode = Phaser.blendModes.LUMINOSITY;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

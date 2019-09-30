@@ -55,32 +55,33 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/geometry/center%20line.js" title="geometry/center line.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/geometry/center%20line.js" download="" title="Download: geometry/center line.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">line</span><span class="p">;</span>
+var line;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#124184';
 
-    <span class="nx">line</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+    line = new Phaser.Line(100, 100, 200, 200);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">line</span><span class="p">.</span><span class="nx">centerOn</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-    <span class="nx">line</span><span class="p">.</span><span class="nx">rotate</span><span class="p">(</span><span class="mf">0.05</span><span class="p">);</span>
+    line.centerOn(game.input.activePointer.x, game.input.activePointer.y);
+    line.rotate(0.05);
  
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">lineInfo</span><span class="p">(</span><span class="nx">line</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.geom(line);
+    game.debug.lineInfo(line, 32, 32);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

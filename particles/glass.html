@@ -55,39 +55,40 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particles/glass.js" title="particles/glass.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particles/glass.js" download="" title="Download: particles/glass.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">var</span> <span class="nx">emitter</span><span class="p">;</span>
+var emitter;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'glass'</span><span class="p">,</span> <span class="s1">'assets/particles/glass.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'water'</span><span class="p">,</span> <span class="s1">'assets/demoscene/blue-raster-floor.png'</span><span class="p">);</span>
+    game.load.image('glass', 'assets/particles/glass.png');
+    game.load.image('water', 'assets/demoscene/blue-raster-floor.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">344</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="s1">'water'</span><span class="p">);</span>
+    game.add.tileSprite(0, 344, 800, 256, 'water');
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">emitter</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+    emitter = game.add.emitter(game.world.centerX, 200);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">makeParticles</span><span class="p">(</span><span class="s1">'glass'</span><span class="p">);</span>
+    emitter.makeParticles('glass');
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">setXSpeed</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">setYSpeed</span><span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="o">-</span><span class="mi">250</span><span class="p">);</span>
+    emitter.setXSpeed(-200, 200);
+    emitter.setYSpeed(-150, -250);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">bringToTop</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">setAlpha</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">setScale</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">gravity</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
+    emitter.bringToTop = true;
+    emitter.setAlpha(0.1, 1, 500);
+    emitter.setScale(-2, 2, 1, 1, 3000, Phaser.Easing.Sinusoidal.InOut, true);
+    emitter.gravity = 300;
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
+    emitter.start(false, 5000, 700, 50);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

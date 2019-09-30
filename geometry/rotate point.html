@@ -55,40 +55,41 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/geometry/rotate%20point.js" title="geometry/rotate point.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/geometry/rotate%20point.js" download="" title="Download: geometry/rotate point.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span><span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', {create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">p1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">p2</span><span class="p">;</span>
+var p1;
+var p2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
-    <span class="nx">p2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+    p1 = new Phaser.Point(300, 300);
+    p2 = new Phaser.Point(400, 300);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">//  We'll rotate point 1 (the yellow point)</span>
-    <span class="c1">//  around point 2 (the red point) by 1 degree</span>
-    <span class="c1">//  every update.</span>
+    //  We'll rotate point 1 (the yellow point)
+    //  around point 2 (the red point) by 1 degree
+    //  every update.
 
-    <span class="c1">// rotate: function (x, y, angle, asDegrees, distance) {</span>
-    <span class="c1">// p1.rotate(p2.x, p2.y, 1, true, 200);</span>
-    <span class="nx">p1</span><span class="p">.</span><span class="nx">rotate</span><span class="p">(</span><span class="nx">p2</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    // rotate: function (x, y, angle, asDegrees, distance) {
+    // p1.rotate(p2.x, p2.y, 1, true, 200);
+    p1.rotate(p2.x, p2.y, 1, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'rgb(255,255,0)'</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">p1</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    game.context.fillStyle = 'rgb(255,255,0)';
+    game.context.fillRect(p1.x, p1.y, 4, 4);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'rgb(255,0,0)'</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">p2</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    game.context.fillStyle = 'rgb(255,0,0)';
+    game.context.fillRect(p2.x, p2.y, 4, 4);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

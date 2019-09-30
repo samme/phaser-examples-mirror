@@ -55,119 +55,120 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/geometry/line%20reflection.js" title="geometry/line reflection.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/geometry/line%20reflection.js" download="" title="Download: geometry/line reflection.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'balls'</span><span class="p">,</span> <span class="s1">'assets/sprites/balls.png'</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'arrow'</span><span class="p">,</span> <span class="s1">'assets/sprites/asteroids_ship.png'</span><span class="p">);</span>
+    game.load.spritesheet('balls', 'assets/sprites/balls.png', 17, 17);
+    game.load.image('arrow', 'assets/sprites/asteroids_ship.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">handle1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">handle2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">handle3</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">handle4</span><span class="p">;</span>
+var handle1;
+var handle2;
+var handle3;
+var handle4;
 
-<span class="kd">var</span> <span class="nx">line1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">line2</span><span class="p">;</span>
+var line1;
+var line2;
 
-<span class="kd">var</span> <span class="nx">arrow</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">normal</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">reflection</span><span class="p">;</span>
+var arrow;
+var normal;
+var reflection;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#124184';
 
-    <span class="nx">handle1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">235</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="s1">'balls'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">handle1</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">handle1</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">handle1</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    handle1 = game.add.sprite(235, 220, 'balls', 0);
+    handle1.anchor.set(0.5);
+    handle1.inputEnabled = true;
+    handle1.input.enableDrag(true);
 
-    <span class="nx">handle2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">377</span><span class="p">,</span> <span class="mi">437</span><span class="p">,</span> <span class="s1">'balls'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">handle2</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">handle2</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">handle2</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    handle2 = game.add.sprite(377, 437, 'balls', 0);
+    handle2.anchor.set(0.5);
+    handle2.inputEnabled = true;
+    handle2.input.enableDrag(true);
 
-    <span class="nx">handle3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'balls'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">handle3</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">handle3</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">handle3</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    handle3 = game.add.sprite(160, 300, 'balls', 1);
+    handle3.anchor.set(0.5);
+    handle3.inputEnabled = true;
+    handle3.input.enableDrag(true);
 
-    <span class="nx">handle4</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="s1">'balls'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">handle4</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">handle4</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">handle4</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    handle4 = game.add.sprite(450, 350, 'balls', 1);
+    handle4.anchor.set(0.5);
+    handle4.inputEnabled = true;
+    handle4.input.enableDrag(true);
 
-    <span class="nx">line1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span><span class="nx">handle1</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">handle1</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">handle2</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">handle2</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-    <span class="nx">line2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span><span class="nx">handle3</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">handle3</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">handle4</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">handle4</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+    line1 = new Phaser.Line(handle1.x, handle1.y, handle2.x, handle2.y);
+    line2 = new Phaser.Line(handle3.x, handle3.y, handle4.x, handle4.y);
 
-    <span class="nx">arrow</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'arrow'</span><span class="p">);</span>
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    arrow = game.add.sprite(0, 0, 'arrow');
+    arrow.anchor.set(0.5);
 
-    <span class="nx">normal</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">reflection</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    normal = new Phaser.Line(0, 0, 0, 0);
+    reflection = new Phaser.Line(0, 0, 0, 0);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="s1">'rgb(255,255,255)'</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">();</span>
+var c = 'rgb(255,255,255)';
+var p = new Phaser.Point();
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">line1</span><span class="p">.</span><span class="nx">fromSprite</span><span class="p">(</span><span class="nx">handle1</span><span class="p">,</span> <span class="nx">handle2</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="nx">line2</span><span class="p">.</span><span class="nx">fromSprite</span><span class="p">(</span><span class="nx">handle3</span><span class="p">,</span> <span class="nx">handle4</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    line1.fromSprite(handle1, handle2, false);
+    line2.fromSprite(handle3, handle4, false);
 
-    <span class="nx">p</span> <span class="o">=</span> <span class="nx">line1</span><span class="p">.</span><span class="nx">intersects</span><span class="p">(</span><span class="nx">line2</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    p = line1.intersects(line2, true);
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">p</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">c</span> <span class="o">=</span> <span class="s1">'rgb(0,255,0)'</span><span class="p">;</span>
+    if (p)
+    {
+        c = 'rgb(0,255,0)';
 
-        <span class="c1">//  Update the normal from the intersection point (100px length)</span>
-        <span class="nx">normal</span><span class="p">.</span><span class="nx">fromAngle</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">line2</span><span class="p">.</span><span class="nx">normalAngle</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+        //  Update the normal from the intersection point (100px length)
+        normal.fromAngle(p.x, p.y, line2.normalAngle, 100);
 
-        <span class="c1">//  Either of these is fine:</span>
-        <span class="c1">// var outgoing = Phaser.Line.reflect(line1, line2);</span>
-        <span class="kd">var</span> <span class="nx">outgoing</span> <span class="o">=</span> <span class="nx">line1</span><span class="p">.</span><span class="nx">reflect</span><span class="p">(</span><span class="nx">line2</span><span class="p">);</span>
+        //  Either of these is fine:
+        // var outgoing = Phaser.Line.reflect(line1, line2);
+        var outgoing = line1.reflect(line2);
 
-        <span class="nx">reflection</span><span class="p">.</span><span class="nx">fromAngle</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">outgoing</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+        reflection.fromAngle(p.x, p.y, outgoing, 200);
 
-        <span class="nx">arrow</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">reflection</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">arrow</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">reflection</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="nx">arrow</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="nx">reflection</span><span class="p">.</span><span class="nx">angle</span><span class="p">;</span>
-        <span class="nx">arrow</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">arrow</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">c</span> <span class="o">=</span> <span class="s1">'rgb(255,255,255)'</span><span class="p">;</span>
-    <span class="p">}</span>
+        arrow.x = reflection.end.x;
+        arrow.y = reflection.end.y;
+        arrow.rotation = reflection.angle;
+        arrow.visible = true;
+    }
+    else
+    {
+        arrow.visible = false;
+        c = 'rgb(255,255,255)';
+    }
  
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">line1</span><span class="p">,</span> <span class="s1">'#ff0000'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">line2</span><span class="p">,</span> <span class="s1">'#9999ff'</span><span class="p">);</span>
+    game.debug.geom(line1, '#ff0000');
+    game.debug.geom(line2, '#9999ff');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">lineInfo</span><span class="p">(</span><span class="nx">line1</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">lineInfo</span><span class="p">(</span><span class="nx">line2</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    game.debug.lineInfo(line1, 32, 32);
+    game.debug.lineInfo(line2, 32, 100);
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">p</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">normal</span><span class="p">,</span> <span class="s1">'#ffffff'</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">reflection</span><span class="p">,</span> <span class="s1">'#00ff00'</span><span class="p">);</span>
+    if (p)
+    {
+        game.debug.geom(normal, '#ffffff');
+        game.debug.geom(reflection, '#00ff00');
 
-        <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'rgb(255,0,255)'</span><span class="p">;</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
-    <span class="p">}</span>
+        game.context.fillStyle = 'rgb(255,0,255)';
+        game.context.fillRect(p.x - 2, p.y - 2, 5, 5);
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Drag the handles"</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">550</span><span class="p">);</span>
+    game.debug.text("Drag the handles", 32, 550);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

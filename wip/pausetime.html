@@ -55,63 +55,64 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/pausetime.js" title="wip/pausetime.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/pausetime.js" download="" title="Download: wip/pausetime.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">log</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">t</span><span class="p">;</span>
+var log = '';
+var t;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">log</span> <span class="o">+=</span> <span class="s1">'game started at '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="s1">'\n'</span><span class="p">;</span>
-	<span class="c1">// log += 'pagehide? ' + window['onpagehide'] + '\n';</span>
-	<span class="c1">// log += 'blur? ' + window['blur'] + '\n';</span>
+	log += 'game started at ' + this.time.now + '\n';
+	// log += 'pagehide? ' + window['onpagehide'] + '\n';
+	// log += 'blur? ' + window['blur'] + '\n';
 
-	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'game started at '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span><span class="p">);</span>
+	console.log('game started at ' + this.time.now);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+	game.stage.backgroundColor = '#2d2d2d';
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">onPause</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onGamePause</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">onResume</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onGameResume</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	game.onPause.add(onGamePause, this);
+	game.onResume.add(onGameResume, this);
 
-	<span class="nx">t</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="nx">log</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14px Arial'</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
+	t = game.add.text(32, 32, log, { font: '14px Arial', fill: '#ffffff' });
 
-	<span class="c1">// window.unload = function() { console.log('unload'); };</span>
+	// window.unload = function() { console.log('unload'); };
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onGamePause</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+function onGamePause(event) {
 
-	<span class="nx">log</span> <span class="o">+=</span> <span class="s1">'game paused at '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="s1">'\n'</span><span class="p">;</span>
-	<span class="nx">log</span> <span class="o">+=</span> <span class="s1">'event '</span> <span class="o">+</span> <span class="nx">event</span><span class="p">.</span><span class="nx">type</span> <span class="o">+</span> <span class="s1">'\n'</span><span class="p">;</span>
+	log += 'game paused at ' + this.time.now + '\n';
+	log += 'event ' + event.type + '\n';
 
-	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'game paused at '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span><span class="p">);</span>
+	console.log('game paused at ' + this.time.now);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onGameResume</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+function onGameResume(event) {
 
-	<span class="nx">log</span> <span class="o">+=</span> <span class="s1">'game un-paused at '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="s1">'\n'</span><span class="p">;</span>
-	<span class="nx">log</span> <span class="o">+=</span> <span class="s1">'was paused for '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">pauseDuration</span> <span class="o">+</span> <span class="s1">'\n'</span><span class="p">;</span>
-	<span class="nx">log</span> <span class="o">+=</span> <span class="s1">'event '</span> <span class="o">+</span> <span class="nx">event</span><span class="p">.</span><span class="nx">type</span> <span class="o">+</span> <span class="s1">'\n'</span><span class="p">;</span>
+	log += 'game un-paused at ' + this.time.now + '\n';
+	log += 'was paused for ' + game.time.pauseDuration + '\n';
+	log += 'event ' + event.type + '\n';
 
-	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'game un-paused at '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span><span class="p">);</span>
-	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'was paused for '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">pauseDuration</span><span class="p">);</span>
+	console.log('game un-paused at ' + this.time.now);
+	console.log('was paused for ' + game.time.pauseDuration);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="c1">// console.log('tick');</span>
+	// console.log('tick');
 
-	<span class="nx">t</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">log</span><span class="p">;</span>
+	t.text = log;
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'now: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+	game.debug.text('now: ' + game.time.now, 500, 32);
 
-	<span class="c1">// game.debug.text(log, 32, 64);</span>
-	<span class="c1">// game.debug.text('paused: ' + game.paused, 32, 64);</span>
+	// game.debug.text(log, 32, 64);
+	// game.debug.text('paused: ' + game.paused, 32, 64);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

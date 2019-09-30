@@ -55,116 +55,117 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/record%20webm.js" title="wip/record webm.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/record%20webm.js" download="" title="Download: wip/record webm.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">video</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">recorder</span><span class="p">;</span>
+var video;
+var sprite;
+var recorder;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">video</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    video = game.add.video(null, false);
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">onAccess</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">camAllowed</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">onError</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">camBlocked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    video.onAccess.add(camAllowed, this);
+    video.onError.add(camBlocked, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">camAllowed</span><span class="p">(</span><span class="nx">video</span><span class="p">)</span> <span class="p">{</span>
+function camAllowed(video) {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'--&gt; camera was allowed'</span><span class="p">,</span> <span class="nx">video</span><span class="p">);</span>
+    console.log('--> camera was allowed', video);
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+    video.play();
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">video</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    sprite = video.addToWorld();
 
-    <span class="c1">// sprite.x = 640;</span>
-    <span class="c1">// sprite.scale.x = -1;</span>
+    // sprite.x = 640;
+    // sprite.scale.x = -1;
 
-    <span class="nx">recorder</span> <span class="o">=</span> <span class="nx">RecordRTC</span><span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">videoStream</span><span class="p">,</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="s1">'video'</span> <span class="p">});</span>
+    recorder = RecordRTC(video.videoStream, { type: 'video' });
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">onAccess</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">camAllowed</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">onError</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">camBlocked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    video.onAccess.remove(camAllowed, this);
+    video.onError.remove(camBlocked, this);
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">recorder</span><span class="p">);</span>
+    console.log(recorder);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">LocalStartRecording</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.addOnce(LocalStartRecording, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function update() {
+}
 
-<span class="kd">function</span> <span class="nx">LocalStartRecording</span><span class="p">()</span> <span class="p">{</span>
+function LocalStartRecording() {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'startRecording'</span><span class="p">);</span>
+    console.log('startRecording');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">LocalStopRecording</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.addOnce(LocalStopRecording, this);
 
-    <span class="nx">recorder</span><span class="p">.</span><span class="nx">startRecording</span><span class="p">();</span>
+    recorder.startRecording();
 
-    <span class="c1">// debugger;</span>
+    // debugger;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="nx">LocalStopRecording</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.time.events.add(2000, LocalStopRecording, this);
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'startRecording'</span><span class="p">);</span>
+    console.log('startRecording');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">LocalStopRecording</span><span class="p">()</span> <span class="p">{</span>
+function LocalStopRecording() {
 
-    <span class="kd">var</span> <span class="nx">fileName</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">99999999</span><span class="p">)</span> <span class="o">+</span> <span class="mi">99999999</span><span class="p">;</span>
+    var fileName = Math.round(Math.random() * 99999999) + 99999999;
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'stopRecording'</span><span class="p">,</span> <span class="nx">fileName</span><span class="p">);</span>
+    console.log('stopRecording', fileName);
     
-    <span class="nx">recorder</span><span class="p">.</span><span class="nx">stopRecording</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">sendRecording</span><span class="p">(</span><span class="nx">recorder</span><span class="p">.</span><span class="nx">getBlob</span><span class="p">(),</span> <span class="nx">fileName</span> <span class="o">+</span> <span class="s1">'.webm'</span><span class="p">);</span>
-    <span class="p">});</span>
+    recorder.stopRecording(function() {
+        sendRecording(recorder.getBlob(), fileName + '.webm');
+    });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">sendRecording</span><span class="p">(</span><span class="nx">blob</span><span class="p">,</span> <span class="nx">fileName</span><span class="p">)</span> <span class="p">{</span>
+function sendRecording(blob, fileName) {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'sendRecording'</span><span class="p">);</span>
+    console.log('sendRecording');
 
-    <span class="kd">var</span> <span class="nx">formData</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FormData</span><span class="p">();</span>
-    <span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'video-filename'</span><span class="p">,</span> <span class="nx">fileName</span><span class="p">);</span>
-    <span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'video-blob'</span><span class="p">,</span> <span class="nx">blob</span><span class="p">);</span>
+    var formData = new FormData();
+    formData.append('video-filename', fileName);
+    formData.append('video-blob', blob);
     
-    <span class="c1">// var _this = this;</span>
+    // var _this = this;
 
-    <span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+    var request = new XMLHttpRequest();
 
-    <span class="nx">request</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    request.onreadystatechange = function() {
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="nx">request</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+        if (request.readyState === 4 && request.status === 200)
+        {
+            console.log(request.responseText);
 
-            <span class="c1">// var result = JSON.parse(request.responseText);</span>
-        <span class="p">}</span>
+            // var result = JSON.parse(request.responseText);
+        }
 
-    <span class="p">};</span>
+    };
 
-    <span class="nx">request</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s1">'POST'</span><span class="p">,</span> <span class="s2">"http://192.168.0.100/disney-inside-out/api/Save.php"</span><span class="p">);</span>
-    <span class="nx">request</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">formData</span><span class="p">);</span>
+    request.open('POST', "http://192.168.0.100/disney-inside-out/api/Save.php");
+    request.send(formData);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">camBlocked</span><span class="p">(</span><span class="nx">video</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+function camBlocked(video, error) {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'camera was blocked'</span><span class="p">,</span> <span class="nx">video</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+    console.log('camera was blocked', video, error);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">stopCam</span><span class="p">()</span> <span class="p">{</span>
+function stopCam() {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'camera stopped'</span><span class="p">);</span>
+    console.log('camera stopped');
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+    video.stop();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

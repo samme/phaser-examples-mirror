@@ -55,47 +55,48 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/align%20within%20sprite.js" title="sprites/align within sprite.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/align%20within%20sprite.js" download="" title="Download: sprites/align within sprite.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'leon'</span><span class="p">,</span> <span class="s1">'assets/pics/shocktroopers_leon.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'toy'</span><span class="p">,</span> <span class="s1">'assets/pics/shocktroopers_toy.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'assets/pics/spaceship.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'block'</span><span class="p">,</span> <span class="s1">'assets/sprites/block.png'</span><span class="p">);</span>
+    game.load.image('leon', 'assets/pics/shocktroopers_leon.png');
+    game.load.image('toy', 'assets/pics/shocktroopers_toy.png');
+    game.load.image('pic', 'assets/pics/spaceship.png');
+    game.load.image('block', 'assets/sprites/block.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">pic</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'pic'</span><span class="p">);</span>
+    var pic = game.add.sprite(0, 0, 'pic');
 
-    <span class="kd">var</span> <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'leon'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'toy'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">sprite3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'block'</span><span class="p">);</span>
+    var sprite1 = game.add.sprite(0, 0, 'leon');
+    var sprite2 = game.add.sprite(0, 0, 'toy');
+    var sprite3 = game.add.sprite(0, 0, 'block');
 
-    <span class="c1">//  center the picture in the world</span>
-    <span class="nx">pic</span><span class="p">.</span><span class="nx">alignIn</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">bounds</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CENTER</span><span class="p">);</span>
+    //  center the picture in the world
+    pic.alignIn(game.world.bounds, Phaser.CENTER);
 
-    <span class="c1">//  align the two sprites into the bottom corners of the picture</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">alignIn</span><span class="p">(</span><span class="nx">pic</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">BOTTOM_RIGHT</span><span class="p">);</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">alignIn</span><span class="p">(</span><span class="nx">pic</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">BOTTOM_LEFT</span><span class="p">);</span>
+    //  align the two sprites into the bottom corners of the picture
+    sprite1.alignIn(pic, Phaser.BOTTOM_RIGHT);
+    sprite2.alignIn(pic, Phaser.BOTTOM_LEFT);
 
-    <span class="c1">//  And align the block sprite into the top_center, but with a -10 pixel offset</span>
-    <span class="c1">// sprite3.alignIn(pic, Phaser.TOP_LEFT, -10, -10);</span>
-    <span class="nx">sprite3</span><span class="p">.</span><span class="nx">alignIn</span><span class="p">(</span><span class="nx">pic</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">TOP_CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">);</span>
-    <span class="c1">// sprite3.alignIn(pic, Phaser.TOP_RIGHT, -10, -10);</span>
+    //  And align the block sprite into the top_center, but with a -10 pixel offset
+    // sprite3.alignIn(pic, Phaser.TOP_LEFT, -10, -10);
+    sprite3.alignIn(pic, Phaser.TOP_CENTER, 0, -10);
+    // sprite3.alignIn(pic, Phaser.TOP_RIGHT, -10, -10);
 
-    <span class="c1">// sprite3.alignIn(pic, Phaser.LEFT_CENTER, -10, -10);</span>
-    <span class="c1">// sprite3.alignIn(pic, Phaser.CENTER, -10, -10);</span>
-    <span class="c1">// sprite3.alignIn(pic, Phaser.RIGHT_CENTER, -10, 0);</span>
+    // sprite3.alignIn(pic, Phaser.LEFT_CENTER, -10, -10);
+    // sprite3.alignIn(pic, Phaser.CENTER, -10, -10);
+    // sprite3.alignIn(pic, Phaser.RIGHT_CENTER, -10, 0);
 
-    <span class="c1">// sprite3.alignIn(pic, Phaser.BOTTOM_LEFT, -10, -10);</span>
-    <span class="c1">// sprite3.alignIn(pic, Phaser.BOTTOM_CENTER, 0, -10);</span>
-    <span class="c1">// sprite3.alignIn(pic, Phaser.BOTTOM_RIGHT, -10, -10);</span>
+    // sprite3.alignIn(pic, Phaser.BOTTOM_LEFT, -10, -10);
+    // sprite3.alignIn(pic, Phaser.BOTTOM_CENTER, 0, -10);
+    // sprite3.alignIn(pic, Phaser.BOTTOM_RIGHT, -10, -10);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

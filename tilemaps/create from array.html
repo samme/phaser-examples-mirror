@@ -55,86 +55,87 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tilemaps/create%20from%20array.js" title="tilemaps/create from array.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tilemaps/create%20from%20array.js" download="" title="Download: tilemaps/create from array.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  tiles are 16x16 each</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tiles'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/sci-fi-tiles.png'</span><span class="p">);</span>
+    //  tiles are 16x16 each
+    game.load.image('tiles', 'assets/tilemaps/tiles/sci-fi-tiles.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var cursors;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Create some map data dynamically</span>
-    <span class="c1">//  Map size is 128x128 tiles</span>
-    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+    //  Create some map data dynamically
+    //  Map size is 128x128 tiles
+    var data = '';
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">data</span> <span class="o">+=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
+    for (var y = 0; y < 128; y++)
+    {
+        for (var x = 0; x < 128; x++)
+        {
+            data += game.rnd.between(0, 20).toString();
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">127</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">data</span> <span class="o">+=</span> <span class="s1">','</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+            if (x < 127)
+            {
+                data += ',';
+            }
+        }
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">127</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">data</span> <span class="o">+=</span> <span class="s2">"\n"</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        if (y < 127)
+        {
+            data += "\n";
+        }
+    }
 
-    <span class="c1">// console.log(data);</span>
+    // console.log(data);
 
-    <span class="c1">//  Add data to the cache</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">addTilemap</span><span class="p">(</span><span class="s1">'dynamicMap'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">CSV</span><span class="p">);</span>
+    //  Add data to the cache
+    game.cache.addTilemap('dynamicMap', null, data, Phaser.Tilemap.CSV);
 
-    <span class="c1">//  Create our map (the 16x16 is the tile size)</span>
-    <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'dynamicMap'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    //  Create our map (the 16x16 is the tile size)
+    map = game.add.tilemap('dynamicMap', 16, 16);
 
-    <span class="c1">//  'tiles' = cache image key, 16x16 = tile size</span>
-    <span class="nx">map</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'tiles'</span><span class="p">,</span> <span class="s1">'tiles'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    //  'tiles' = cache image key, 16x16 = tile size
+    map.addTilesetImage('tiles', 'tiles', 16, 16);
 
-    <span class="c1">//  0 is important</span>
-    <span class="nx">layer</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    //  0 is important
+    layer = map.createLayer(0);
 
-    <span class="c1">//  Scroll it</span>
-    <span class="nx">layer</span><span class="p">.</span><span class="nx">resizeWorld</span><span class="p">();</span>
+    //  Scroll it
+    layer.resizeWorld();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span><span class="o">--</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span><span class="o">++</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        game.camera.x--;
+    }
+    else if (cursors.right.isDown)
+    {
+        game.camera.x++;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span><span class="o">--</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span><span class="o">++</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        game.camera.y--;
+    }
+    else if (cursors.down.isDown)
+    {
+        game.camera.y++;
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

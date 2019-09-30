@@ -55,63 +55,64 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/animation/aseprite%20animation.js" title="animation/aseprite animation.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/animation/aseprite%20animation.js" download="" title="Download: animation/aseprite animation.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span> <span class="p">()</span>
-<span class="p">{</span>
-    <span class="c1">//  Load the Aseprite atlas:</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'tank'</span><span class="p">,</span> <span class="s1">'assets/atlas/tank.png'</span><span class="p">,</span> <span class="s1">'assets/atlas/tank.json'</span><span class="p">);</span>
-<span class="p">}</span>
+function preload ()
+{
+    //  Load the Aseprite atlas:
+    game.load.atlas('tank', 'assets/atlas/tank.png', 'assets/atlas/tank.json');
+}
 
-<span class="kd">function</span> <span class="nx">create</span> <span class="p">()</span>
-<span class="p">{</span>
-    <span class="c1">//  A more suitable underwater background color</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#1873CE'</span><span class="p">;</span>
+function create ()
+{
+    //  A more suitable underwater background color
+    game.stage.backgroundColor = '#1873CE';
 
-    <span class="kd">var</span> <span class="nx">tank</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">'tank'</span><span class="p">);</span>
+    var tank = game.add.sprite(700, 250, 'tank');
 
-    <span class="nx">tank</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="nx">tank</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-    <span class="nx">tank</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    tank.anchor.x = 0.5;
+    tank.scale.set(4);
+    tank.smoothed = false;
 
-    <span class="c1">//  Aseprite exports frames with .ase on the end.</span>
-    <span class="c1">//  Create 2 animations:</span>
-    <span class="kd">var</span> <span class="nx">move</span> <span class="o">=</span> <span class="nx">tank</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'move'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Animation</span><span class="p">.</span><span class="nx">generateFrameNames</span><span class="p">(</span><span class="s1">'tank '</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'.ase'</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
-    <span class="kd">var</span> <span class="nx">turn</span> <span class="o">=</span> <span class="nx">tank</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'turn'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Animation</span><span class="p">.</span><span class="nx">generateFrameNames</span><span class="p">(</span><span class="s1">'tank '</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">'.ase'</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
+    //  Aseprite exports frames with .ase on the end.
+    //  Create 2 animations:
+    var move = tank.animations.add('move', Phaser.Animation.generateFrameNames('tank ', 0, 3, '.ase', 1));
+    var turn = tank.animations.add('turn', Phaser.Animation.generateFrameNames('tank ', 4, 8, '.ase', 1));
 
-    <span class="c1">//  Play it</span>
-    <span class="nx">move</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    //  Play it
+    move.play(30, true);
     
-    <span class="c1">//  Move the tank</span>
-    <span class="kd">var</span> <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">tank</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">100</span> <span class="p">},</span> <span class="mi">3000</span><span class="p">,</span> <span class="s1">'Linear'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    //  Move the tank
+    var tween = game.add.tween(tank).to({ x: 100 }, 3000, 'Linear', true);
 
-    <span class="c1">//  When the tween ends, play the turning animation</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    //  When the tween ends, play the turning animation
+    tween.onComplete.add(function () {
 
-        <span class="nx">turn</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+        turn.play(8, false);
 
-    <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+    }, this);
 
-    <span class="c1">//  Set-up a callback for when the turn animation completes (basically flip the tank and send it the other way)</span>
-    <span class="nx">turn</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    //  Set-up a callback for when the turn animation completes (basically flip the tank and send it the other way)
+    turn.onComplete.add(function () {
 
-        <span class="nx">tank</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        tank.scale.x *= -1;
 
-        <span class="nx">move</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        move.play(30, true);
 
-        <span class="kd">var</span> <span class="nx">destX</span> <span class="o">=</span> <span class="p">(</span><span class="nx">tank</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">)</span> <span class="p">?</span> <span class="mi">700</span> <span class="p">:</span> <span class="mi">100</span><span class="p">;</span>
+        var destX = (tank.x <= 100) ? 700 : 100;
 
-        <span class="kd">var</span> <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">tank</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="nx">destX</span> <span class="p">},</span> <span class="mi">3000</span><span class="p">,</span> <span class="s1">'Linear'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        var tween = game.add.tween(tank).to({ x: destX }, 3000, 'Linear', true);
 
-        <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        tween.onComplete.add(function () {
 
-            <span class="nx">turn</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+            turn.play(8, false);
 
-        <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+        }, this);
 
-    <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
-<span class="p">}</span>
+    }, this);
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,119 +55,119 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/virtualjoystick/shader%20motion.js" title="virtualjoystick/shader motion.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/virtualjoystick/shader%20motion.js" download="" title="Download: virtualjoystick/shader motion.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Virtual Joystick Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/virtualjoystick
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example');
 
-<span class="kd">var</span> <span class="nx">PhaserGame</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+var PhaserGame = function () {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">;</span>
+    this.pad;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">;</span>
+    this.stick;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">;</span>
+    this.filter;
 
-<span class="p">};</span>
+};
 
-<span class="nx">PhaserGame</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+PhaserGame.prototype = {
 
-    <span class="na">init</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    init: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">renderSession</span><span class="p">.</span><span class="nx">roundPixels</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+        this.game.renderer.renderSession.roundPixels = true;
+        this.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    preload: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'arcade'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/arcade-joystick.png'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/arcade-joystick.json'</span><span class="p">);</span>
+        this.load.atlas('arcade', 'assets/virtualjoystick/skins/arcade-joystick.png', 'assets/virtualjoystick/skins/arcade-joystick.json');
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">createShader</span><span class="p">();</span>
+        this.createShader();
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">pad</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">VirtualJoystick</span><span class="p">);</span>
+        this.pad = this.game.plugins.add(Phaser.VirtualJoystick);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addStick</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">alignBottomLeft</span><span class="p">();</span>
+        this.stick = this.pad.addStick(0, 0, 100, 'arcade');
+        this.stick.alignBottomLeft();
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    update: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">uniforms</span><span class="p">.</span><span class="nx">mouse</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">filterX</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">uniforms</span><span class="p">.</span><span class="nx">mouse</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">filterY</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+        this.filter.uniforms.mouse.value.x = this.stick.filterX;
+        this.filter.uniforms.mouse.value.y = this.stick.filterY;
+        this.filter.update();
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">createShader</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    createShader: function () {
 
-        <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">"precision mediump float;"</span><span class="p">,</span>
-            <span class="s2">"uniform float     time;"</span><span class="p">,</span>
-            <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
-            <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+        var fragmentSrc = [
+            "precision mediump float;",
+            "uniform float     time;",
+            "uniform vec2      resolution;",
+            "uniform vec2      mouse;",
 
-            <span class="s2">"const float Tau        = 6.2832;"</span><span class="p">,</span>
-            <span class="s2">"const float speed  = .02;"</span><span class="p">,</span>
-            <span class="s2">"const float density    = .04;"</span><span class="p">,</span>
-            <span class="s2">"const float shape  = .04;"</span><span class="p">,</span>
+            "const float Tau        = 6.2832;",
+            "const float speed  = .02;",
+            "const float density    = .04;",
+            "const float shape  = .04;",
 
-            <span class="s2">"float random( vec2 seed ) {"</span><span class="p">,</span>
-                <span class="s2">"return fract(sin(seed.x+seed.y*1e3)*1e5);"</span><span class="p">,</span>
-            <span class="s2">"}"</span><span class="p">,</span>
+            "float random( vec2 seed ) {",
+                "return fract(sin(seed.x+seed.y*1e3)*1e5);",
+            "}",
 
-            <span class="s2">"float Cell(vec2 coord) {"</span><span class="p">,</span>
-                <span class="s2">"vec2 cell = fract(coord) * vec2(.5,2.) - vec2(.0,.5);"</span><span class="p">,</span>
-                <span class="s2">"return (1.-length(cell*2.-1.))*step(random(floor(coord)),density)*2.;"</span><span class="p">,</span>
-            <span class="s2">"}"</span><span class="p">,</span>
+            "float Cell(vec2 coord) {",
+                "vec2 cell = fract(coord) * vec2(.5,2.) - vec2(.0,.5);",
+                "return (1.-length(cell*2.-1.))*step(random(floor(coord)),density)*2.;",
+            "}",
 
-            <span class="s2">"void main( void ) {"</span><span class="p">,</span>
+            "void main( void ) {",
 
-                <span class="s2">"vec2 p = gl_FragCoord.xy / resolution  - mouse;"</span><span class="p">,</span>
+                "vec2 p = gl_FragCoord.xy / resolution  - mouse;",
 
-                <span class="s2">"float a = fract(atan(p.x, p.y) / Tau);"</span><span class="p">,</span>
-                <span class="s2">"float d = length(p);"</span><span class="p">,</span>
+                "float a = fract(atan(p.x, p.y) / Tau);",
+                "float d = length(p);",
 
-                <span class="s2">"vec2 coord = vec2(pow(d, shape), a)*256.;"</span><span class="p">,</span>
-                <span class="s2">"vec2 delta = vec2(-time*speed*256., .5);"</span><span class="p">,</span>
-                <span class="s2">"//vec2 delta = vec2(-time*speed*256., cos(length(p)*10.)*2e0+time*5e-1); // wavy wavy"</span><span class="p">,</span>
+                "vec2 coord = vec2(pow(d, shape), a)*256.;",
+                "vec2 delta = vec2(-time*speed*256., .5);",
+                "//vec2 delta = vec2(-time*speed*256., cos(length(p)*10.)*2e0+time*5e-1); // wavy wavy",
 
-                <span class="s2">"float c = 0.;"</span><span class="p">,</span>
-                <span class="s2">"for(int i=0; i&lt;3; i++) {"</span><span class="p">,</span>
-                    <span class="s2">"coord += delta;"</span><span class="p">,</span>
-                    <span class="s2">"c = max(c, Cell(coord));"</span><span class="p">,</span>
-                <span class="s2">"}"</span><span class="p">,</span>
+                "float c = 0.;",
+                "for(int i=0; i<3; i++) {",
+                    "coord += delta;",
+                    "c = max(c, Cell(coord));",
+                "}",
 
-                <span class="s2">"gl_FragColor = vec4(c*d);"</span><span class="p">,</span>
-            <span class="s2">"}"</span>
-        <span class="p">];</span>
+                "gl_FragColor = vec4(c*d);",
+            "}"
+        ];
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+        this.filter = new Phaser.Filter(this.game, null, fragmentSrc);
+        this.filter.setResolution(this.game.width, this.game.height);
 
-        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+        var sprite = this.add.sprite();
+        sprite.width = this.game.width;
+        sprite.height = this.game.height;
 
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">filter</span> <span class="p">];</span>
+        sprite.filters = [ this.filter ];
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Game'</span><span class="p">,</span> <span class="nx">PhaserGame</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+game.state.add('Game', PhaserGame, true);
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

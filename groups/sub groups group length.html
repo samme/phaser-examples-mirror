@@ -55,78 +55,79 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/sub%20groups%20group%20length.js" title="groups/sub groups group length.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/sub%20groups%20group%20length.js" download="" title="Download: groups/sub groups group length.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="c1">// Groups for storing friends and enemies, may use for collision later.</span>
-<span class="kd">var</span> <span class="nx">friendAndFoe</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">enemies</span><span class="p">;</span>
+// Groups for storing friends and enemies, may use for collision later.
+var friendAndFoe;
+var enemies;
 
-<span class="c1">// Groups for teaming up stuff.</span>
-<span class="kd">var</span> <span class="nx">normalBaddies</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">purpleBaddies</span><span class="p">;</span>
+// Groups for teaming up stuff.
+var normalBaddies;
+var purpleBaddies;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ufo'</span><span class="p">,</span> <span class="s1">'assets/sprites/ufo.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'baddie'</span><span class="p">,</span> <span class="s1">'assets/sprites/space-baddie.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'purple-baddie'</span><span class="p">,</span> <span class="s1">'assets/sprites/space-baddie-purple.png'</span><span class="p">);</span>
+    game.load.image('ufo', 'assets/sprites/ufo.png');
+    game.load.image('baddie', 'assets/sprites/space-baddie.png');
+    game.load.image('purple-baddie', 'assets/sprites/space-baddie-purple.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// Create some local groups for later use.</span>
-    <span class="nx">friendAndFoe</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">enemies</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">normalBaddies</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">purpleBaddies</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    // Create some local groups for later use.
+    friendAndFoe = game.add.group();
+    enemies = game.add.group();
+    normalBaddies = game.add.group();
+    purpleBaddies = game.add.group();
 
     
-    <span class="nx">enemies</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">normalBaddies</span><span class="p">);</span>
-    <span class="nx">enemies</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">purpleBaddies</span><span class="p">);</span>
+    enemies.add(normalBaddies);
+    enemies.add(purpleBaddies);
 
 
-    <span class="c1">// Create a ufo as a friend sprite.</span>
-    <span class="nx">friendAndFoe</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="s1">'ufo'</span><span class="p">);</span>
+    // Create a ufo as a friend sprite.
+    friendAndFoe.create(200, 240, 'ufo');
 
-    <span class="c1">// Create some enemies.</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">createBaddie</span><span class="p">();</span>
-    <span class="p">}</span>
+    // Create some enemies.
+    for (var i = 0; i < 16; i++)
+    {
+        createBaddie();
+    }
 
-    <span class="c1">// Tap to create new baddie sprites.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onTap</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">createBaddie</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    // Tap to create new baddie sprites.
+    game.input.onTap.add(createBaddie, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createBaddie</span><span class="p">()</span> <span class="p">{</span>
+function createBaddie() {
 
-    <span class="kd">var</span> <span class="nx">baddie</span><span class="p">;</span>
+    var baddie;
 
-    <span class="c1">// Of course, the baddies created will belong to their respective groups</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">baddie</span> <span class="o">=</span> <span class="nx">purpleBaddies</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">360</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">120</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'purple-baddie'</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">baddie</span> <span class="o">=</span> <span class="nx">normalBaddies</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">360</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">120</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'baddie'</span><span class="p">);</span>
-    <span class="p">}</span>
+    // Of course, the baddies created will belong to their respective groups
+    if (Math.random() > 0.5)
+    {
+        baddie = purpleBaddies.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'purple-baddie');
+    }
+    else
+    {
+        baddie = normalBaddies.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'baddie');
+    }
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">style</span> <span class="o">=</span> <span class="s1">'#fff'</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Tap screen or click to create new baddies.'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">24</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'enemies: '</span> <span class="o">+</span> <span class="nx">enemies</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s1">' (actually '</span> <span class="o">+</span> <span class="nx">enemies</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s1">' groups)'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">48</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'normal baddies: '</span> <span class="o">+</span> <span class="nx">normalBaddies</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">60</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'purple baddies: '</span> <span class="o">+</span> <span class="nx">purpleBaddies</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">72</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'friends: '</span> <span class="o">+</span> <span class="nx">friendAndFoe</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">96</span><span class="p">);</span>
+    game.debug.style = '#fff';
+    game.debug.text('Tap screen or click to create new baddies.', 16, 24);
+    game.debug.text('enemies: ' + enemies.length + ' (actually ' + enemies.length + ' groups)', 16, 48);
+    game.debug.text('normal baddies: ' + normalBaddies.length, 16, 60);
+    game.debug.text('purple baddies: ' + purpleBaddies.length, 16, 72);
+    game.debug.text('friends: ' + friendAndFoe.length, 16, 96);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

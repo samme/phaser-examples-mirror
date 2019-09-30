@@ -55,80 +55,81 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/filters/lightwave.js" title="filters/lightwave.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/filters/lightwave.js" download="" title="Download: filters/lightwave.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var filter;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  From http://glslsandbox.com/e#18918.0</span>
-    <span class="c1">// Tenjix",</span>
+    //  From http://glslsandbox.com/e#18918.0
+    // Tenjix",
 
-    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+    var fragmentSrc = [
 
-        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+        "precision mediump float;",
 
-        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
-        <span class="s2">"uniform vec2     resolution;"</span><span class="p">,</span>
+        "uniform float     time;",
+        "uniform vec2     resolution;",
 
-        <span class="s2">"#define PI 3.1415926535897932384626433832795"</span><span class="p">,</span>
+        "#define PI 3.1415926535897932384626433832795",
 
-        <span class="s2">"const float position = 0.0;"</span><span class="p">,</span>
-        <span class="s2">"const float scale = 1.0;"</span><span class="p">,</span>
-        <span class="s2">"const float intensity = 1.0;"</span><span class="p">,</span>
+        "const float position = 0.0;",
+        "const float scale = 1.0;",
+        "const float intensity = 1.0;",
 
-        <span class="c1">// "varying vec2 surfacePosition;",</span>
-        <span class="c1">// "vec2 pos;",</span>
+        // "varying vec2 surfacePosition;",
+        // "vec2 pos;",
 
-        <span class="s2">"float band(vec2 pos, float amplitude, float frequency) {"</span><span class="p">,</span>
-            <span class="s2">"float wave = scale * amplitude * sin(1.0 * PI * frequency * pos.x + time) / 2.05;"</span><span class="p">,</span>
-            <span class="s2">"float light = clamp(amplitude * frequency * 0.02, 0.001 + 0.001 / scale, 5.0) * scale / abs(wave - pos.y);"</span><span class="p">,</span>
-            <span class="s2">"return light;"</span><span class="p">,</span>
-        <span class="s2">"}"</span><span class="p">,</span>
+        "float band(vec2 pos, float amplitude, float frequency) {",
+            "float wave = scale * amplitude * sin(1.0 * PI * frequency * pos.x + time) / 2.05;",
+            "float light = clamp(amplitude * frequency * 0.02, 0.001 + 0.001 / scale, 5.0) * scale / abs(wave - pos.y);",
+            "return light;",
+        "}",
 
-        <span class="s2">"void main() {"</span><span class="p">,</span>
+        "void main() {",
 
-            <span class="s2">"vec3 color = vec3(1.5, 0.5, 10.0);"</span><span class="p">,</span>
-            <span class="s2">"color = color == vec3(0.0)? vec3(10.5, 0.5, 1.0) : color;"</span><span class="p">,</span>
-            <span class="s2">"vec2 pos = (gl_FragCoord.xy / resolution.xy);"</span><span class="p">,</span>
-            <span class="s2">"pos.y += - 0.5;"</span><span class="p">,</span>
-            <span class="s2">"float spectrum = 0.0;"</span><span class="p">,</span>
-            <span class="s2">"const float lim = 28.0;"</span><span class="p">,</span>
-            <span class="s2">"#define time time*0.037 + pos.x*10."</span><span class="p">,</span>
-            <span class="s2">"for(float i = 0.0; i &lt; lim; i++){"</span><span class="p">,</span>
-                <span class="s2">"spectrum += band(pos, 1.0*sin(time*0.1/PI), 1.0*sin(time*i/lim))/pow(lim, 0.25);"</span><span class="p">,</span>
-            <span class="s2">"}"</span><span class="p">,</span>
+            "vec3 color = vec3(1.5, 0.5, 10.0);",
+            "color = color == vec3(0.0)? vec3(10.5, 0.5, 1.0) : color;",
+            "vec2 pos = (gl_FragCoord.xy / resolution.xy);",
+            "pos.y += - 0.5;",
+            "float spectrum = 0.0;",
+            "const float lim = 28.0;",
+            "#define time time*0.037 + pos.x*10.",
+            "for(float i = 0.0; i < lim; i++){",
+                "spectrum += band(pos, 1.0*sin(time*0.1/PI), 1.0*sin(time*i/lim))/pow(lim, 0.25);",
+            "}",
 
-            <span class="s2">"spectrum += band(pos, cos(10.7), 2.5);"</span><span class="p">,</span>
-            <span class="s2">"spectrum += band(pos, 0.4, sin(2.0));"</span><span class="p">,</span>
-            <span class="s2">"spectrum += band(pos, 0.05, 4.5);"</span><span class="p">,</span>
-            <span class="s2">"spectrum += band(pos, 0.1, 7.0);"</span><span class="p">,</span>
-            <span class="s2">"spectrum += band(pos, 0.1, 1.0);"</span><span class="p">,</span>
+            "spectrum += band(pos, cos(10.7), 2.5);",
+            "spectrum += band(pos, 0.4, sin(2.0));",
+            "spectrum += band(pos, 0.05, 4.5);",
+            "spectrum += band(pos, 0.1, 7.0);",
+            "spectrum += band(pos, 0.1, 1.0);",
 
-            <span class="s2">"gl_FragColor = vec4(color * spectrum, spectrum);"</span><span class="p">,</span>
+            "gl_FragColor = vec4(color * spectrum, spectrum);",
 
-        <span class="s2">"}"</span>
+        "}"
 
-    <span class="p">];</span>
+    ];
 
-    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    filter = new Phaser.Filter(game, null, fragmentSrc);
+    filter.setResolution(800, 600);
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+    sprite = game.add.sprite();
+    sprite.width = 800;
+    sprite.height = 600;
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+    sprite.filters = [ filter ];
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+    filter.update();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

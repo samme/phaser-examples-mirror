@@ -55,247 +55,247 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/games/matching%20pairs.js" title="games/matching pairs.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/games/matching%20pairs.js" download="" title="Download: games/matching pairs.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// mods by Patrick OReilly </span>
-<span class="c1">// twitter: @pato_reilly</span>
+</div>
+<pre class="highlight javascript"><code>// mods by Patrick OReilly 
+// twitter: @pato_reilly
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'matching'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/maps/phaser_tiles.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">TILED_JSON</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tiles'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/phaser_tiles.png'</span><span class="p">);</span><span class="c1">//, 100, 100, -1, 1, 1);    </span>
-<span class="p">}</span>
+    game.load.tilemap('matching', 'assets/tilemaps/maps/phaser_tiles.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('tiles', 'assets/tilemaps/tiles/phaser_tiles.png');//, 100, 100, -1, 1, 1);    
+}
 
-<span class="kd">var</span> <span class="nx">timeCheck</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">flipFlag</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+var timeCheck = 0;
+var flipFlag = false;
 
-<span class="kd">var</span> <span class="nx">startList</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">();</span>
-<span class="kd">var</span> <span class="nx">squareList</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">();</span>
+var startList = new Array();
+var squareList = new Array();
 
-<span class="kd">var</span> <span class="nx">masterCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">squareCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">clickCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">square1Num</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">square2Num</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">savedSquareX1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">savedSquareY1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">savedSquareX2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">savedSquareY2</span><span class="p">;</span>
+var masterCounter = 0;
+var squareCounter = 0;
+var clickCount = 0;
+var square1Num;
+var square2Num;
+var savedSquareX1;
+var savedSquareY1;
+var savedSquareX2;
+var savedSquareY2;
 
-<span class="kd">var</span> <span class="nx">map</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tileset</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">layer</span><span class="p">;</span>
+var map;
+var tileset;
+var layer;
 
-<span class="kd">var</span> <span class="nx">marker</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">currentTile</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">currentTilePosition</span><span class="p">;</span>
+var marker;
+var currentTile;
+var currentTilePosition;
 
-<span class="kd">var</span> <span class="nx">tileBack</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">timesUp</span> <span class="o">=</span> <span class="s1">'+'</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">youWin</span> <span class="o">=</span> <span class="s1">'+'</span><span class="p">;</span>
+var tileBack = 25;
+var timesUp = '+';
+var youWin = '+';
 
-<span class="kd">var</span> <span class="nx">myCountdownSeconds</span><span class="p">;</span>
+var myCountdownSeconds;
 
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-        <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'matching'</span><span class="p">);</span>
+        map = game.add.tilemap('matching');
 
-        <span class="nx">map</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'Desert'</span><span class="p">,</span> <span class="s1">'tiles'</span><span class="p">);</span>
+        map.addTilesetImage('Desert', 'tiles');
 
-        <span class="c1">//tileset = game.add.tileset('tiles');</span>
+        //tileset = game.add.tileset('tiles');
     
-        <span class="nx">layer</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="s1">'Ground'</span><span class="p">);</span><span class="c1">//.tilemapLayer(0, 0, 600, 600, tileset, map, 0);</span>
+        layer = map.createLayer('Ground');//.tilemapLayer(0, 0, 600, 600, tileset, map, 0);
 
-        <span class="c1">//layer.resizeWorld();</span>
+        //layer.resizeWorld();
 
-        <span class="nx">marker</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">();</span>
-        <span class="nx">marker</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x00FF00</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-        <span class="nx">marker</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+        marker = game.add.graphics();
+        marker.lineStyle(2, 0x00FF00, 1);
+        marker.drawRect(0, 0, 100, 100);
     
-    <span class="nx">randomizeTiles</span><span class="p">();</span>
+    randomizeTiles();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
     
-    <span class="nx">countDownTimer</span><span class="p">();</span>
+    countDownTimer();
     
-    <span class="k">if</span> <span class="p">(</span><span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">worldX</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">// to prevent the marker from going out of bounds</span>
-    <span class="p">{</span>
-        <span class="nx">marker</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">worldX</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">;</span>
-        <span class="nx">marker</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">worldY</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (layer.getTileX(game.input.activePointer.worldX) <= 5) // to prevent the marker from going out of bounds
+    {
+        marker.x = layer.getTileX(game.input.activePointer.worldX) * 100;
+        marker.y = layer.getTileY(game.input.activePointer.worldY) * 100;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">flipFlag</span> <span class="o">==</span> <span class="kc">true</span><span class="p">)</span> 
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">totalElapsedSeconds</span><span class="p">()</span> <span class="o">-</span> <span class="nx">timeCheck</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">flipBack</span><span class="p">();</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">processClick</span><span class="p">();</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    if (flipFlag == true) 
+    {
+        if (game.time.totalElapsedSeconds() - timeCheck > 0.5)
+        {
+            flipBack();
+        }
+    }
+    else
+    {
+        processClick();
+    }
+}
    
    
-<span class="kd">function</span> <span class="nx">countDownTimer</span><span class="p">()</span> <span class="p">{</span>
+function countDownTimer() {
   
-    <span class="kd">var</span> <span class="nx">timeLimit</span> <span class="o">=</span> <span class="mi">120</span><span class="p">;</span>
+    var timeLimit = 120;
   
-    <span class="nx">mySeconds</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">totalElapsedSeconds</span><span class="p">();</span>
-    <span class="nx">myCountdownSeconds</span> <span class="o">=</span> <span class="nx">timeLimit</span> <span class="o">-</span> <span class="nx">mySeconds</span><span class="p">;</span>
+    mySeconds = game.time.totalElapsedSeconds();
+    myCountdownSeconds = timeLimit - mySeconds;
     
-    <span class="k">if</span> <span class="p">(</span><span class="nx">myCountdownSeconds</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> 
-        <span class="p">{</span>
-        <span class="c1">// time is up</span>
-        <span class="nx">timesUp</span> <span class="o">=</span> <span class="s1">'Time is up!'</span><span class="p">;</span> 
-        <span class="nx">myCountdownSeconds</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    if (myCountdownSeconds <= 0) 
+        {
+        // time is up
+        timesUp = 'Time is up!'; 
+        myCountdownSeconds = 0;
 
-    <span class="p">}</span>
-<span class="p">}</span>
+    }
+}
 
-<span class="kd">function</span> <span class="nx">processClick</span><span class="p">()</span> <span class="p">{</span>
+function processClick() {
 
-    <span class="nx">currentTile</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">getTile</span><span class="p">(</span><span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">));</span>
-    <span class="nx">currentTilePosition</span> <span class="o">=</span> <span class="p">((</span><span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">worldY</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">6</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="mi">6</span><span class="o">-</span><span class="p">(</span><span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">worldX</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+    currentTile = map.getTile(layer.getTileX(marker.x), layer.getTileY(marker.y));
+    currentTilePosition = ((layer.getTileY(game.input.activePointer.worldY)+1)*6)-(6-(layer.getTileX(game.input.activePointer.worldX)+1));
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// check to make sure the tile is not already flipped</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">currentTile</span><span class="p">.</span><span class="nx">index</span> <span class="o">==</span> <span class="nx">tileBack</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="c1">// get the corresponding item out of squareList</span>
-            <span class="nx">currentNum</span> <span class="o">=</span> <span class="nx">squareList</span><span class="p">[</span><span class="nx">currentTilePosition</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
-            <span class="nx">flipOver</span><span class="p">();</span>
-            <span class="nx">squareCounter</span><span class="o">++</span><span class="p">;</span>
-            <span class="nx">clickCount</span><span class="o">++</span><span class="p">;</span>
+    if (game.input.mousePointer.isDown)
+    {
+        // check to make sure the tile is not already flipped
+        if (currentTile.index == tileBack)
+        {
+            // get the corresponding item out of squareList
+            currentNum = squareList[currentTilePosition-1];
+            flipOver();
+            squareCounter++;
+            clickCount++;
 
-            <span class="c1">// is the second tile of pair flipped?</span>
-            <span class="k">if</span>  <span class="p">(</span><span class="nx">squareCounter</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="c1">// reset squareCounter</span>
-                <span class="nx">squareCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-                <span class="nx">square2Num</span> <span class="o">=</span> <span class="nx">currentNum</span><span class="p">;</span>
-                <span class="c1">// check for match</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">square1Num</span> <span class="o">==</span> <span class="nx">square2Num</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="nx">masterCounter</span><span class="o">++</span><span class="p">;</span>
+            // is the second tile of pair flipped?
+            if  (squareCounter == 2)
+            {
+                // reset squareCounter
+                squareCounter = 0;
+                square2Num = currentNum;
+                // check for match
+                if (square1Num == square2Num)
+                {
+                    masterCounter++;
 
-                    <span class="k">if</span> <span class="p">(</span><span class="nx">masterCounter</span> <span class="o">==</span> <span class="mi">18</span><span class="p">)</span>
-                    <span class="p">{</span>
-                        <span class="c1">// go "win"</span>
-                        <span class="nx">youWin</span> <span class="o">=</span> <span class="s1">'Got them all!'</span><span class="p">;</span>
-                        <span class="k">if</span> <span class="p">(</span><span class="nx">clickCount</span> <span class="o">==</span> <span class="mi">18</span><span class="p">)</span>
-                        <span class="p">{</span>
-                            <span class="nx">youWin</span> <span class="o">=</span> <span class="s1">'Hard-mode achieved'</span><span class="p">;</span>
-                        <span class="p">}</span>
-                    <span class="p">}</span>
-                    <span class="k">else</span>
-                    <span class="p">{</span>
-                        <span class="nx">savedSquareX2</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
-                        <span class="nx">savedSquareY2</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-                        <span class="nx">flipFlag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-                        <span class="nx">timeCheck</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">totalElapsedSeconds</span><span class="p">();</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-                <span class="k">else</span>
-                <span class="p">{</span>
-                    <span class="nx">savedSquareX1</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
-                    <span class="nx">savedSquareY1</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-                    <span class="nx">square1Num</span> <span class="o">=</span> <span class="nx">currentNum</span><span class="p">;</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+                    if (masterCounter == 18)
+                    {
+                        // go "win"
+                        youWin = 'Got them all!';
+                        if (clickCount == 18)
+                        {
+                            youWin = 'Hard-mode achieved';
+                        }
+                    }
+                    else
+                    {
+                        savedSquareX2 = layer.getTileX(marker.x);
+                        savedSquareY2 = layer.getTileY(marker.y);
+                        flipFlag = true;
+                        timeCheck = game.time.totalElapsedSeconds();
+                    }
+                }
+                else
+                {
+                    savedSquareX1 = layer.getTileX(marker.x);
+                    savedSquareY1 = layer.getTileY(marker.y);
+                    square1Num = currentNum;
+                }
+            }
+        }
+    }
+}
  
-<span class="kd">function</span> <span class="nx">flipOver</span><span class="p">()</span> <span class="p">{</span>
+function flipOver() {
  
-    <span class="nx">map</span><span class="p">.</span><span class="nx">putTile</span><span class="p">(</span><span class="nx">currentNum</span><span class="p">,</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">));</span>
-<span class="p">}</span>
+    map.putTile(currentNum, layer.getTileX(marker.x), layer.getTileY(marker.y));
+}
  
-<span class="kd">function</span> <span class="nx">flipBack</span><span class="p">()</span> <span class="p">{</span>
+function flipBack() {
         
-    <span class="nx">flipFlag</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    flipFlag = false;
     
-    <span class="nx">map</span><span class="p">.</span><span class="nx">putTile</span><span class="p">(</span><span class="nx">tileBack</span><span class="p">,</span> <span class="nx">savedSquareX1</span><span class="p">,</span> <span class="nx">savedSquareY1</span><span class="p">);</span>
-    <span class="nx">map</span><span class="p">.</span><span class="nx">putTile</span><span class="p">(</span><span class="nx">tileBack</span><span class="p">,</span> <span class="nx">savedSquareX2</span><span class="p">,</span> <span class="nx">savedSquareY2</span><span class="p">);</span>
+    map.putTile(tileBack, savedSquareX1, savedSquareY1);
+    map.putTile(tileBack, savedSquareX2, savedSquareY2);
  
-<span class="p">}</span>
+}
  
-<span class="kd">function</span> <span class="nx">randomizeTiles</span><span class="p">()</span> <span class="p">{</span>
+function randomizeTiles() {
 
-    <span class="k">for</span> <span class="p">(</span><span class="nx">num</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">num</span> <span class="o">&lt;=</span> <span class="mi">18</span><span class="p">;</span> <span class="nx">num</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">startList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">num</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="p">(</span><span class="nx">num</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">num</span> <span class="o">&lt;=</span> <span class="mi">18</span><span class="p">;</span> <span class="nx">num</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">startList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">num</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (num = 1; num <= 18; num++)
+    {
+        startList.push(num);
+    }
+    for (num = 1; num <= 18; num++)
+    {
+        startList.push(num);
+    }
 
-    <span class="c1">// for debugging</span>
-    <span class="nx">myString1</span> <span class="o">=</span> <span class="nx">startList</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+    // for debugging
+    myString1 = startList.toString();
   
-    <span class="c1">// randomize squareList</span>
-    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span><span class="mi">36</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">randomPosition</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">startList</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    // randomize squareList
+    for (i = 1; i <=36; i++)
+    {
+        var randomPosition = game.rnd.integerInRange(0,startList.length - 1);
 
-        <span class="kd">var</span> <span class="nx">thisNumber</span> <span class="o">=</span> <span class="nx">startList</span><span class="p">[</span> <span class="nx">randomPosition</span> <span class="p">];</span>
+        var thisNumber = startList[ randomPosition ];
 
-        <span class="nx">squareList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">thisNumber</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">startList</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">thisNumber</span><span class="p">);</span>
+        squareList.push(thisNumber);
+        var a = startList.indexOf(thisNumber);
 
-        <span class="nx">startList</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span> <span class="nx">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="p">}</span>
+        startList.splice( a, 1);
+    }
     
-    <span class="c1">// for debugging</span>
-    <span class="nx">myString2</span> <span class="o">=</span> <span class="nx">squareList</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+    // for debugging
+    myString2 = squareList.toString();
   
-    <span class="k">for</span> <span class="p">(</span><span class="nx">col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">col</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="nx">col</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="nx">row</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">row</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="nx">row</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">map</span><span class="p">.</span><span class="nx">putTile</span><span class="p">(</span><span class="nx">tileBack</span><span class="p">,</span> <span class="nx">col</span><span class="p">,</span> <span class="nx">row</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    for (col = 0; col < 6; col++)
+    {
+        for (row = 0; row < 6; row++)
+        {
+            map.putTile(tileBack, col, row);
+        }
+    }
+}
 
-<span class="kd">function</span> <span class="nx">getHiddenTile</span><span class="p">()</span> <span class="p">{</span>
+function getHiddenTile() {
         
-    <span class="nx">thisTile</span> <span class="o">=</span> <span class="nx">squareList</span><span class="p">[</span><span class="nx">currentTilePosition</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
-    <span class="k">return</span> <span class="nx">thisTile</span><span class="p">;</span>
-<span class="p">}</span>
+    thisTile = squareList[currentTilePosition-1];
+    return thisTile;
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">timesUp</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="s1">'rgb(0,255,0)'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">youWin</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="s1">'rgb(0,255,0)'</span><span class="p">);</span>
+    game.debug.text(timesUp, 620, 208, 'rgb(0,255,0)');
+    game.debug.text(youWin, 620, 240, 'rgb(0,255,0)');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Time: '</span> <span class="o">+</span> <span class="nx">myCountdownSeconds</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">'rgb(0,255,0)'</span><span class="p">);</span>
+    game.debug.text('Time: ' + myCountdownSeconds, 620, 15, 'rgb(0,255,0)');
 
-    <span class="c1">//game.debug.text('squareCounter: ' + squareCounter, 620, 272, 'rgb(0,0,255)');</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Matched Pairs: '</span> <span class="o">+</span> <span class="nx">masterCounter</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">304</span><span class="p">,</span> <span class="s1">'rgb(0,0,255)'</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Matched Pairs: '</span> <span class="o">+</span> <span class="nx">clickCount</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="s1">'rgb(0,0,255)'</span><span class="p">);</span>
-
-
-    <span class="c1">//game.debug.text('startList: ' + myString1, 620, 208, 'rgb(255,0,0)');</span>
-    <span class="c1">//game.debug.text('squareList: ' + myString2, 620, 240, 'rgb(255,0,0)');</span>
+    //game.debug.text('squareCounter: ' + squareCounter, 620, 272, 'rgb(0,0,255)');
+    game.debug.text('Matched Pairs: ' + masterCounter, 620, 304, 'rgb(0,0,255)');
+        game.debug.text('Matched Pairs: ' + clickCount, 620, 320, 'rgb(0,0,255)');
 
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Tile: '</span> <span class="o">+</span> <span class="nx">map</span><span class="p">.</span><span class="nx">getTile</span><span class="p">(</span><span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">)).</span><span class="nx">index</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="s1">'rgb(255,0,0)'</span><span class="p">);</span>
+    //game.debug.text('startList: ' + myString1, 620, 208, 'rgb(255,0,0)');
+    //game.debug.text('squareList: ' + myString2, 620, 240, 'rgb(255,0,0)');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'LayerX: '</span> <span class="o">+</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">'rgb(255,0,0)'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'LayerY: '</span> <span class="o">+</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">),</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="s1">'rgb(255,0,0)'</span><span class="p">);</span>
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Tile Position: '</span> <span class="o">+</span> <span class="nx">currentTilePosition</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">144</span><span class="p">,</span> <span class="s1">'rgb(255,0,0)'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Hidden Tile: '</span> <span class="o">+</span> <span class="nx">getHiddenTile</span><span class="p">(),</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">176</span><span class="p">,</span> <span class="s1">'rgb(255,0,0)'</span><span class="p">);</span>
-<span class="p">}</span>
+    game.debug.text('Tile: ' + map.getTile(layer.getTileX(marker.x), layer.getTileY(marker.y)).index, 620, 48, 'rgb(255,0,0)');
+
+    game.debug.text('LayerX: ' + layer.getTileX(marker.x), 620, 80, 'rgb(255,0,0)');
+    game.debug.text('LayerY: ' + layer.getTileY(marker.y), 620, 112, 'rgb(255,0,0)');
+
+    game.debug.text('Tile Position: ' + currentTilePosition, 620, 144, 'rgb(255,0,0)');
+    game.debug.text('Hidden Tile: ' + getHiddenTile(), 620, 176, 'rgb(255,0,0)');
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

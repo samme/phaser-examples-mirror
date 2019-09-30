@@ -55,155 +55,156 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/create%20thumbnail.js" title="groups/create thumbnail.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/create%20thumbnail.js" download="" title="Download: groups/create thumbnail.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
- <span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+ function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/skies/sky1.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sonic'</span><span class="p">,</span> <span class="s1">'assets/sprites/sonic_havok_sanity.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'clown'</span><span class="p">,</span> <span class="s1">'assets/sprites/clown.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'leaf'</span><span class="p">,</span> <span class="s1">'assets/particles/leaf1.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mushroom'</span><span class="p">,</span> <span class="s1">'assets/sprites/mushroom2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'coin'</span><span class="p">,</span> <span class="s1">'assets/sprites/coin.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.xml'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'stack'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/shortStack.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/shortStack.xml'</span><span class="p">);</span>
+    game.load.image('sky', 'assets/skies/sky1.png');
+    game.load.image('sonic', 'assets/sprites/sonic_havok_sanity.png');
+    game.load.image('clown', 'assets/sprites/clown.png');
+    game.load.image('leaf', 'assets/particles/leaf1.png');
+    game.load.image('mushroom', 'assets/sprites/mushroom2.png');
+    game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);
+    game.load.bitmapFont('desyrel', 'assets/fonts/bitmapFonts/desyrel.png', 'assets/fonts/bitmapFonts/desyrel.xml');
+    game.load.bitmapFont('stack', 'assets/fonts/bitmapFonts/shortStack.png', 'assets/fonts/bitmapFonts/shortStack.xml');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">stage</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">thumbnail</span><span class="p">;</span>
+var stage;
+var thumbnail;
 
-<span class="kd">var</span> <span class="nx">text1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text2</span><span class="p">;</span>
+var text1;
+var text2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  The Stage is a BitmapData the size of the Game window</span>
-    <span class="nx">stage</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    //  The Stage is a BitmapData the size of the Game window
+    stage = game.make.bitmapData(800, 600);
 
-    <span class="c1">//  Thumbnail will hold our scaled-down version (+4px padding for the black border)</span>
-    <span class="nx">thumbnail</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="mi">154</span><span class="p">);</span>
+    //  Thumbnail will hold our scaled-down version (+4px padding for the black border)
+    thumbnail = game.make.bitmapData(204, 154);
 
-    <span class="c1">//  And thumbContainer is a Sprite with the thumbnail for its texture</span>
-    <span class="kd">var</span> <span class="nx">thumbContainer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">590</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">thumbnail</span><span class="p">);</span>
+    //  And thumbContainer is a Sprite with the thumbnail for its texture
+    var thumbContainer = game.make.sprite(590, 10, thumbnail);
 
-    <span class="c1">//  Note we add the thumbContainer to the Stage, not the World, to avoid it being captured itself</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">thumbContainer</span><span class="p">);</span>
-
-
+    //  Note we add the thumbContainer to the Stage, not the World, to avoid it being captured itself
+    game.stage.addChild(thumbContainer);
 
 
-    <span class="c1">//  Everything from this point on is just display stuff for our 'game' to show the capture working</span>
 
-    <span class="c1">//  A static image</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
 
-    <span class="c1">//  A Graphics object</span>
-    <span class="kd">var</span> <span class="nx">graphics</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    //  Everything from this point on is just display stuff for our 'game' to show the capture working
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFF3300</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0xffd900</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">220</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">220</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    //  A static image
+    game.add.image(0, 0, 'sky');
+
+    //  A Graphics object
+    var graphics = game.add.graphics(100, 100);
+
+    graphics.beginFill(0xFF3300);
+    graphics.lineStyle(10, 0xffd900, 1);
+    graphics.lineTo(250, 50);
+    graphics.lineTo(100, 100);
+    graphics.lineTo(250, 220);
+    graphics.lineTo(50, 220);
+    graphics.lineTo(50, 50);
+    graphics.endFill();
     
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0xFF0000</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFF700B</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    graphics.lineStyle(10, 0xFF0000, 0.8);
+    graphics.beginFill(0xFF700B, 1);
     
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">210</span><span class="p">,</span><span class="mi">300</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span><span class="mi">320</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">570</span><span class="p">,</span><span class="mi">350</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">quadraticCurveTo</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span><span class="mi">100</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">330</span><span class="p">,</span><span class="mi">120</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">410</span><span class="p">,</span><span class="mi">200</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">210</span><span class="p">,</span><span class="mi">300</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    graphics.moveTo(210,300);
+    graphics.lineTo(450,320);
+    graphics.lineTo(570,350);
+    graphics.quadraticCurveTo(600, 0, 480,100);
+    graphics.lineTo(330,120);
+    graphics.lineTo(410,200);
+    graphics.lineTo(210,300);
+    graphics.endFill();
 
-    <span class="c1">//  A Group of animated sprites</span>
-    <span class="kd">var</span> <span class="nx">coins</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    //  A Group of animated sprites
+    var coins = game.add.group();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">coins</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'coin'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 20; i++)
+    {
+        coins.create(game.world.randomX, game.world.randomY, 'coin', 0);
+    }
 
-    <span class="nx">coins</span><span class="p">.</span><span class="nx">callAll</span><span class="p">(</span><span class="s1">'animations.add'</span><span class="p">,</span> <span class="s1">'animations'</span><span class="p">,</span> <span class="s1">'spin'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">coins</span><span class="p">.</span><span class="nx">callAll</span><span class="p">(</span><span class="s1">'animations.play'</span><span class="p">,</span> <span class="s1">'animations'</span><span class="p">,</span> <span class="s1">'spin'</span><span class="p">);</span>
+    coins.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
+    coins.callAll('animations.play', 'animations', 'spin');
 
-    <span class="c1">//  A particle emitter</span>
-    <span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">emitter</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">makeParticles</span><span class="p">(</span><span class="s1">'leaf'</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">minParticleSpeed</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">maxParticleSpeed</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">minParticleScale</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">maxParticleScale</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">gravity</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">flow</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    //  A particle emitter
+    var emitter = game.add.emitter(game.world.centerX, 0, 100);
+    emitter.makeParticles('leaf');
+    emitter.minParticleSpeed.setTo(-300, 30);
+    emitter.maxParticleSpeed.setTo(300, 100);
+    emitter.minParticleScale = 0.1;
+    emitter.maxParticleScale = 0.5;
+    emitter.gravity = 250;
+    emitter.flow(2000, 500, 5, -1);
 
-    <span class="c1">//  Two BitmapText objects</span>
-    <span class="nx">text1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'BitmapText'</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
-    <span class="nx">text2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'stack'</span><span class="p">,</span> <span class="s1">'drawFull'</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    //  Two BitmapText objects
+    text1 = game.add.bitmapText(200, 100, 'desyrel', 'BitmapText', 64);
+    text2 = game.add.bitmapText(400, 400, 'stack', 'drawFull', 32);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">([</span> <span class="nx">text1</span><span class="p">,</span> <span class="nx">text2</span> <span class="p">]);</span>
+    game.physics.arcade.enable([ text1, text2 ]);
 
-    <span class="nx">text1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">text1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">text1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    text1.body.velocity.setTo(200, 200);
+    text1.body.collideWorldBounds = true;
+    text1.body.bounce.set(1);
 
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">);</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    text2.body.velocity.setTo(-100, -100);
+    text2.body.collideWorldBounds = true;
+    text2.body.bounce.set(1);
 
-    <span class="c1">//  A Sprite with children, one of them scaled</span>
-    <span class="kd">var</span> <span class="nx">sonic</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="s1">'sonic'</span><span class="p">);</span>
-    <span class="nx">sonic</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">130</span><span class="p">,</span> <span class="s1">'clown'</span><span class="p">));</span>
-    <span class="nx">sonic</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="mi">130</span><span class="p">,</span> <span class="s1">'clown'</span><span class="p">));</span>
-    <span class="kd">var</span> <span class="nx">clown3</span> <span class="o">=</span> <span class="nx">sonic</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">140</span><span class="p">,</span> <span class="mi">130</span><span class="p">,</span> <span class="s1">'clown'</span><span class="p">));</span>
-    <span class="nx">clown3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="nx">clown3</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    //  A Sprite with children, one of them scaled
+    var sonic = game.add.sprite(50, 280, 'sonic');
+    sonic.addChild(game.make.sprite(80, 130, 'clown'));
+    sonic.addChild(game.make.sprite(110, 130, 'clown'));
+    var clown3 = sonic.addChild(game.make.sprite(140, 130, 'clown'));
+    clown3.scale.set(2);
+    clown3.anchor.set(1, 1);
 
-    <span class="c1">//  Scaled and rotated</span>
-    <span class="kd">var</span> <span class="nx">mushroom</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'mushroom'</span><span class="p">);</span>
-    <span class="nx">mushroom</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="nx">mushroom</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">24</span><span class="p">;</span>
+    //  Scaled and rotated
+    var mushroom = game.add.sprite(500, 400, 'mushroom');
+    mushroom.scale.set(2);
+    mushroom.angle = 24;
 
-    <span class="c1">//  Inverse scale</span>
-    <span class="kd">var</span> <span class="nx">sonic2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'sonic'</span><span class="p">);</span>
-    <span class="nx">sonic2</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    //  Inverse scale
+    var sonic2 = game.add.sprite(400, 200, 'sonic');
+    sonic2.scale.set(2);
 
-    <span class="c1">// var subsonic = sonic2.addChild(game.make.sprite(100, 0, 'sonic'));</span>
-    <span class="c1">// subsonic.scale.x = -1;</span>
+    // var subsonic = sonic2.addChild(game.make.sprite(100, 0, 'sonic'));
+    // subsonic.scale.x = -1;
 
-    <span class="c1">//  A Text Object</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">440</span><span class="p">,</span> <span class="mi">530</span><span class="p">,</span> <span class="s2">"Click to capture"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"48px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ff0044"</span> <span class="p">});</span>
+    //  A Text Object
+    game.add.text(440, 530, "Click to capture", { font: "48px Arial", fill: "#ff0044" });
 
-    <span class="c1">//  Click to capture a thumbnail</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">makeThumbnail</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Click to capture a thumbnail
+    game.input.onDown.add(makeThumbnail, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">makeThumbnail</span><span class="p">()</span> <span class="p">{</span>
+function makeThumbnail() {
 
-    <span class="c1">//  Capture the game to our BitmapData</span>
-    <span class="nx">stage</span><span class="p">.</span><span class="nx">drawFull</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">);</span>
+    //  Capture the game to our BitmapData
+    stage.drawFull(game.world);
 
-    <span class="c1">//  Draw our black border rect</span>
-    <span class="nx">thumbnail</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">204</span><span class="p">,</span> <span class="mi">154</span><span class="p">,</span> <span class="s1">'#000'</span><span class="p">);</span>
+    //  Draw our black border rect
+    thumbnail.rect(0, 0, 204, 154, '#000');
 
-    <span class="c1">//  And copy the stage capture to our Thumbnail (offset by 2px for the black border)</span>
-    <span class="nx">thumbnail</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="nx">stage</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
+    //  And copy the stage capture to our Thumbnail (offset by 2px for the black border)
+    thumbnail.copy(stage, 0, 0, 800, 600, 2, 2, 200, 150);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">text1</span><span class="p">,</span> <span class="nx">text2</span><span class="p">);</span>
+    game.physics.arcade.collide(text1, text2);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

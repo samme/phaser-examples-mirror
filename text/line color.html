@@ -55,23 +55,23 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/line%20color.js" title="text/line color.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/line%20color.js" download="" title="Download: text/line color.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="kd">var</span> <span class="nx">textGroup</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+	var textGroup = game.add.group();
 
-	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">textGroup</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">64</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">*</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'here is a colored line of text'</span><span class="p">,</span>  <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="nx">generateHexColor</span><span class="p">()</span> <span class="p">}));</span>
-	<span class="p">}</span>
+	for (var i = 0; i < 10; i++)
+	{
+		textGroup.add(game.make.text(100, 64 + i * 32, 'here is a colored line of text',  { font: "32px Arial", fill: generateHexColor() }));
+	}
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">generateHexColor</span><span class="p">()</span> <span class="p">{</span> 
-    <span class="k">return</span> <span class="s1">'#'</span> <span class="o">+</span> <span class="p">((</span><span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">())</span> <span class="o">*</span> <span class="mh">0xFFFFFF</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">).</span><span class="nx">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
-<span class="p">}</span>
+function generateHexColor() { 
+    return '#' + ((0.5 + 0.5 * Math.random()) * 0xFFFFFF << 0).toString(16);
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

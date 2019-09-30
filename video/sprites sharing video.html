@@ -55,36 +55,37 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/video/sprites%20sharing%20video.js" title="video/sprites sharing video.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/video/sprites%20sharing%20video.js" download="" title="Download: video/sprites sharing video.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'liquid'</span><span class="p">,</span> <span class="s1">'assets/video/liquid512x512.mp4'</span><span class="p">);</span>
-    <span class="c1">// game.load.video('liquid', 'assets/video/liquid2.mp4');</span>
+    game.load.video('liquid', 'assets/video/liquid512x512.mp4');
+    // game.load.video('liquid', 'assets/video/liquid2.mp4');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">video</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">group</span><span class="p">;</span>
+var video;
+var group;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    group = game.add.group();
 
-    <span class="nx">video</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'liquid'</span><span class="p">);</span>
+    video = game.add.video('liquid');
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="nx">video</span><span class="p">);</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">realInRange</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">));</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">angle</span><span class="p">:</span> <span class="mi">360</span> <span class="p">},</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="mi">8000</span><span class="p">),</span> <span class="s2">"Sine.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 10; i++)
+    {
+        var sprite = group.create(game.world.randomX, game.world.randomY, video);
+        sprite.anchor.set(0.5);
+        sprite.scale.set(game.rnd.realInRange(0.2, 0.5));
+        game.add.tween(sprite).to( { angle: 360 }, game.rnd.between(4000, 8000), "Sine.easeInOut", true, 0, -1, true);
+    }
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    video.play(true);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

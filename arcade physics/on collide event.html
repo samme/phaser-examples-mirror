@@ -55,67 +55,67 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/arcade%20physics/on%20collide%20event.js" title="arcade physics/on collide event.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/arcade%20physics/on%20collide%20event.js" download="" title="Download: arcade physics/on collide event.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'space'</span><span class="p">,</span> <span class="s1">'assets/skies/space3.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'face'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalface78x92.png'</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">92</span><span class="p">);</span>
-<span class="p">}</span>
+    game.load.image('space', 'assets/skies/space3.png');
+    game.load.spritesheet('face', 'assets/sprites/metalface78x92.png', 78, 92);
+}
 
-<span class="kd">var</span> <span class="nx">face1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">face2</span><span class="p">;</span>
+var face1;
+var face2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'space'</span><span class="p">);</span>
+    game.add.sprite(0, 0, 'space');
 
-    <span class="nx">face1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'face'</span><span class="p">);</span>
-    <span class="nx">face2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'face'</span><span class="p">);</span>
+    face1 = game.add.sprite(0, 0, 'face');
+    face2 = game.add.sprite(500, 0, 'face');
 
-    <span class="c1">//  A simple animation that flashes the 'eyes' of the sprite</span>
-    <span class="nx">face1</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'flash'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="mi">24</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="nx">face2</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'flash'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="mi">24</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    //  A simple animation that flashes the 'eyes' of the sprite
+    face1.animations.add('flash', [0,1,2,3,2,1,0], 24, false);
+    face2.animations.add('flash', [0,1,2,3,2,1,0], 24, false);
 
-    <span class="c1">//  Set-up the physics bodies</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    //  Set-up the physics bodies
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">([</span><span class="nx">face1</span><span class="p">,</span> <span class="nx">face2</span><span class="p">]);</span>
+    game.physics.arcade.enable([face1, face2]);
     
-    <span class="nx">face1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">face1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    face1.body.velocity.setTo(200, 200);
+    face1.body.bounce.set(1);
     
-    <span class="nx">face2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">face2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    face2.body.velocity.setTo(-200, 200);
+    face2.body.bounce.set(1);
 
-    <span class="nx">face1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">face2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    face1.body.collideWorldBounds = true;
+    face2.body.collideWorldBounds = true;
 
-    <span class="c1">//   Usually you'd provide a callback to the `game.physics.arcade.collide` function,</span>
-    <span class="c1">//   which is passed the two sprites involved in the collision, which you can then</span>
-    <span class="c1">//   perform further processing on. However you can also use this signal:</span>
+    //   Usually you'd provide a callback to the `game.physics.arcade.collide` function,
+    //   which is passed the two sprites involved in the collision, which you can then
+    //   perform further processing on. However you can also use this signal:
 
-    <span class="nx">face1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">onCollide</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Signal</span><span class="p">();</span>
-    <span class="nx">face1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">onCollide</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">hitSprite</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    face1.body.onCollide = new Phaser.Signal();
+    face1.body.onCollide.add(hitSprite, this);
 
-    <span class="c1">//  You still need to call `collide` in your update function, and you can still use</span>
-    <span class="c1">//  a callback with it too, but this Signal provides for another level of notification.</span>
+    //  You still need to call `collide` in your update function, and you can still use
+    //  a callback with it too, but this Signal provides for another level of notification.
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">hitSprite</span> <span class="p">(</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">sprite2</span><span class="p">)</span> <span class="p">{</span>
+function hitSprite (sprite1, sprite2) {
 
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'flash'</span><span class="p">);</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'flash'</span><span class="p">);</span>
+    sprite1.play('flash');
+    sprite2.play('flash');
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span> <span class="p">()</span> <span class="p">{</span>
+function update () {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">face1</span><span class="p">,</span> <span class="nx">face2</span><span class="p">);</span>
+    game.physics.arcade.collide(face1, face2);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

@@ -55,99 +55,100 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/hitArea.js" title="wip/hitArea.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/hitArea.js" download="" title="Download: wip/hitArea.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mushroom'</span><span class="p">,</span> <span class="s1">'assets/sprites/mushroom2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/wizball.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'seacreatures'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.json'</span><span class="p">);</span>
+    game.load.image('mushroom', 'assets/sprites/mushroom2.png');
+    game.load.image('ball', 'assets/sprites/wizball.png');
+    game.load.atlas('seacreatures', 'assets/sprites/seacreatures_json.png', 'assets/sprites/seacreatures_json.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">image</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">image2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">jellyfish</span><span class="p">;</span>
+var image;
+var image2;
+var jellyfish;
 
-<span class="kd">var</span> <span class="nx">down</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">p</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">c</span><span class="p">;</span>
+var down;
+var p;
+var c;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">image</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'mushroom'</span><span class="p">);</span>
-    <span class="nx">image2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
+    image = game.add.image(200, 200, 'mushroom');
+    image2 = game.add.image(400, 200, 'ball');
 
-    <span class="c1">// image.rotation = 0.8;</span>
+    // image.rotation = 0.8;
 
-    <span class="nx">image</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    image.inputEnabled = true;
 
-    <span class="nx">image</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">image</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">over</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">image</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-
-
-
-    <span class="nx">image2</span><span class="p">.</span><span class="nx">hitArea</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Circle</span><span class="p">(</span><span class="nx">image2</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">image2</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">90</span><span class="p">);</span>
-    <span class="nx">image2</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-
-    <span class="nx">image2</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">image2</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">over</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">image2</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    image.events.onInputDown.add(clicked, this);
+    image.events.onInputOver.add(over, this);
+    image.events.onInputOut.add(out, this);
 
 
 
-    <span class="nx">jellyfish</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="s1">'seacreatures'</span><span class="p">,</span> <span class="s1">'octopus0000'</span><span class="p">);</span>
-    <span class="nx">jellyfish</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">jellyfish</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="c1">// jellyfish.pivot.set(jellyfish.width / 2, jellyfish.height / 2);</span>
-    <span class="nx">jellyfish</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">60</span><span class="p">;</span>
-    <span class="nx">jellyfish</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="nx">jellyfish</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pixelPerfectClick</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    image2.hitArea = new Phaser.Circle(image2.width / 2, image2.height / 2, 90);
+    image2.inputEnabled = true;
 
-    <span class="nx">jellyfish</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">jellyfish</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">over</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">jellyfish</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">over</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
-
-    <span class="nx">object</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
-
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">out</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
-
-    <span class="nx">object</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">clicked</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
-
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'boom'</span><span class="p">);</span>
-
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+    image2.events.onInputDown.add(clicked, this);
+    image2.events.onInputOver.add(over, this);
+    image2.events.onInputOut.add(out, this);
 
 
-<span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+    jellyfish = game.add.sprite(500, 450, 'seacreatures', 'octopus0000');
+    jellyfish.inputEnabled = true;
+    jellyfish.anchor.set(0.5);
+    // jellyfish.pivot.set(jellyfish.width / 2, jellyfish.height / 2);
+    jellyfish.angle = 60;
+    jellyfish.scale.set(2);
+    jellyfish.input.pixelPerfectClick = true;
 
-    <span class="c1">// var p = game.input.getLocalPosition(image);</span>
-    <span class="c1">// var p = game.input.getLocalPosition(image2);</span>
-    <span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">getLocalPosition</span><span class="p">(</span><span class="nx">jellyfish</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">);</span>
+    jellyfish.events.onInputDown.add(clicked, this);
+    jellyfish.events.onInputOver.add(over, this);
+    jellyfish.events.onInputOut.add(out, this);
+
+}
+
+function over(object, pointer) {
+
+    object.alpha = 0.5;
+
+}
+
+function out(object, pointer) {
+
+    object.alpha = 1;
+
+}
+
+function clicked(object, pointer) {
+
+    console.log('boom');
+
+}
+
+function update() {
 
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">pointInfo</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">();</span>
-    <span class="c1">// game.debug.circle(image2.hitArea);</span>
+}
 
-<span class="p">}</span>
+function render() {
+
+    // var p = game.input.getLocalPosition(image);
+    // var p = game.input.getLocalPosition(image2);
+    var p = game.input.getLocalPosition(jellyfish, game.input.activePointer);
+
+
+    game.debug.pointInfo(p, 32, 32);
+    game.debug.point(p);
+    game.debug.text();
+    // game.debug.circle(image2.hitArea);
+
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

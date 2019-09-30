@@ -55,38 +55,39 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tile%20sprites/tile%20sprite%20from%20animated%20sprite.js" title="tile sprites/tile sprite from animated sprite.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tile%20sprites/tile%20sprite%20from%20animated%20sprite.js" download="" title="Download: tile sprites/tile sprite from animated sprite.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });</span>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'waters'</span><span class="p">,</span> <span class="s1">'assets/sprites/waters.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.load.spritesheet('waters', 'assets/sprites/waters.png', 32, 400, 32);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">water</span><span class="p">;</span>
+var water;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">water</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">128</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">'waters'</span><span class="p">);</span>
+    water = game.add.tileSprite(0, 24 * 16, 128 * 16, 24 * 16, 'waters');
 
-    <span class="c1">// water = game.add.sprite(0, 0, 'waters');</span>
+    // water = game.add.sprite(0, 0, 'waters');
 
-    <span class="nx">water</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'waves0'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span>
-    <span class="nx">water</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'waves1'</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span>
-    <span class="nx">water</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'waves2'</span><span class="p">,</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">]);</span>
-    <span class="nx">water</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'waves3'</span><span class="p">,</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">13</span><span class="p">]);</span>
-    <span class="nx">water</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'waves4'</span><span class="p">,</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">17</span><span class="p">]);</span>
-    <span class="nx">water</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'waves5'</span><span class="p">,</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">21</span><span class="p">]);</span>
-    <span class="nx">water</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'waves6'</span><span class="p">,</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">25</span><span class="p">]);</span>
-    <span class="nx">water</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'waves7'</span><span class="p">,</span> <span class="p">[</span><span class="mi">28</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">29</span><span class="p">]);</span>
+    water.animations.add('waves0', [0, 1, 2, 3, 2, 1]);
+    water.animations.add('waves1', [4, 5, 6, 7, 6, 5]);
+    water.animations.add('waves2', [8, 9, 10, 11, 10, 9]);
+    water.animations.add('waves3', [12, 13, 14, 15, 14, 13]);
+    water.animations.add('waves4', [16, 17, 18, 19, 18, 17]);
+    water.animations.add('waves5', [20, 21, 22, 23, 22, 21]);
+    water.animations.add('waves6', [24, 25, 26, 27, 26, 25]);
+    water.animations.add('waves7', [28, 29, 30, 31, 30, 29]);
 
-    <span class="c1">// change to animation num</span>
-    <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
-    <span class="nx">water</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'waves'</span> <span class="o">+</span> <span class="nx">n</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    // change to animation num
+    var n = 7;
+    water.animations.play('waves' + n, 8, true);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

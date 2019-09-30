@@ -55,83 +55,84 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/loader/load%20events.js" title="loader/load events.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/loader/load%20events.js" download="" title="Download: loader/load events.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'button'</span><span class="p">,</span> <span class="s1">'assets/buttons/button_sprite_sheet.png'</span><span class="p">,</span> <span class="mi">193</span><span class="p">,</span> <span class="mi">71</span><span class="p">);</span>
+    game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">button</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">80</span><span class="p">;</span>
+var text;
+var button;
+var x = 32;
+var y = 80;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#182d3b'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#182d3b';
 
-    <span class="c1">//	You can listen for each of these events from Phaser.Loader</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">onLoadStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">loadStart</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">onFileComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">fileComplete</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">onLoadComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">loadComplete</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //	You can listen for each of these events from Phaser.Loader
+    game.load.onLoadStart.add(loadStart, this);
+    game.load.onFileComplete.add(fileComplete, this);
+    game.load.onLoadComplete.add(loadComplete, this);
 
-    <span class="c1">//	Just to kick things off</span>
-    <span class="nx">button</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span> <span class="o">-</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    //	Just to kick things off
+    button = game.add.button(game.world.centerX - 95, 400, 'button', start, this, 2, 1, 0);
 
-    <span class="c1">//	Progress report</span>
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'Click to start load'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
+    //	Progress report
+    text = game.add.text(32, 32, 'Click to start load', { fill: '#ffffff' });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">start</span><span class="p">()</span> <span class="p">{</span>
+function start() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture1'</span><span class="p">,</span> <span class="s1">'assets/pics/mighty_no_09_cover_art_by_robduenas.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture2'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar_dragonsun.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture3'</span><span class="p">,</span> <span class="s1">'assets/pics/trsipic1_lazur.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture4'</span><span class="p">,</span> <span class="s1">'assets/pics/archmage_in_your_face.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture5'</span><span class="p">,</span> <span class="s1">'assets/pics/acryl_bladerunner.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture6'</span><span class="p">,</span> <span class="s1">'assets/pics/acryl_bobablast.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture7'</span><span class="p">,</span> <span class="s1">'assets/pics/alex-bisleys_horsy_5.png'</span><span class="p">);</span>
+    game.load.image('picture1', 'assets/pics/mighty_no_09_cover_art_by_robduenas.jpg');
+    game.load.image('picture2', 'assets/pics/cougar_dragonsun.png');
+    game.load.image('picture3', 'assets/pics/trsipic1_lazur.jpg');
+    game.load.image('picture4', 'assets/pics/archmage_in_your_face.png');
+    game.load.image('picture5', 'assets/pics/acryl_bladerunner.png');
+    game.load.image('picture6', 'assets/pics/acryl_bobablast.png');
+    game.load.image('picture7', 'assets/pics/alex-bisleys_horsy_5.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    game.load.start();
 
-    <span class="nx">button</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    button.visible = false;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">loadStart</span><span class="p">()</span> <span class="p">{</span>
+function loadStart() {
 
-	<span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s2">"Loading ..."</span><span class="p">);</span>
+	text.setText("Loading ...");
 
-<span class="p">}</span>
+}
 
-<span class="c1">//	This callback is sent the following parameters:</span>
-<span class="kd">function</span> <span class="nx">fileComplete</span><span class="p">(</span><span class="nx">progress</span><span class="p">,</span> <span class="nx">cacheKey</span><span class="p">,</span> <span class="nx">success</span><span class="p">,</span> <span class="nx">totalLoaded</span><span class="p">,</span> <span class="nx">totalFiles</span><span class="p">)</span> <span class="p">{</span>
+//	This callback is sent the following parameters:
+function fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
 
-	<span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s2">"File Complete: "</span> <span class="o">+</span> <span class="nx">progress</span> <span class="o">+</span> <span class="s2">"% - "</span> <span class="o">+</span> <span class="nx">totalLoaded</span> <span class="o">+</span> <span class="s2">" out of "</span> <span class="o">+</span> <span class="nx">totalFiles</span><span class="p">);</span>
+	text.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
 
-	<span class="kd">var</span> <span class="nx">newImage</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">cacheKey</span><span class="p">);</span>
+	var newImage = game.add.image(x, y, cacheKey);
 
-	<span class="nx">newImage</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.3</span><span class="p">);</span>
+	newImage.scale.set(0.3);
 
-	<span class="nx">x</span> <span class="o">+=</span> <span class="nx">newImage</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="mi">20</span><span class="p">;</span>
+	x += newImage.width + 20;
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">700</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">x</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
-		<span class="nx">y</span> <span class="o">+=</span> <span class="mi">332</span><span class="p">;</span>
-	<span class="p">}</span>
+	if (x > 700)
+	{
+		x = 32;
+		y += 332;
+	}
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">loadComplete</span><span class="p">()</span> <span class="p">{</span>
+function loadComplete() {
 
-	<span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s2">"Load Complete"</span><span class="p">);</span>
+	text.setText("Load Complete");
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,87 +55,87 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/box2d/body%20debug%20draw.js" title="box2d/body debug draw.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/box2d/body%20debug%20draw.js" download="" title="Download: box2d/body debug draw.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Chris Campbell <iforce2d@gmail.com>
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Box2D Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/box2d
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'platform'</span><span class="p">,</span> <span class="s1">'assets/sprites/platform.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'block'</span><span class="p">,</span> <span class="s1">'assets/sprites/block.png'</span><span class="p">);</span>
+    game.load.image('platform', 'assets/sprites/platform.png');
+    game.load.image('block', 'assets/sprites/block.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">platformSprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">blockSprite</span><span class="p">;</span>
+var platformSprite;
+var blockSprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#124184';
 
-    <span class="c1">// Enable Box2D physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>
+    // Enable Box2D physics
+    game.physics.startSystem(Phaser.Physics.BOX2D);
+    game.physics.box2d.gravity.y = 500;
     
-    <span class="c1">// Static platform </span>
-    <span class="nx">platformSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="s1">'platform'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">platformSprite</span><span class="p">);</span>
-    <span class="nx">platformSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    // Static platform 
+    platformSprite = game.add.sprite(400, 550, 'platform');
+    game.physics.box2d.enable(platformSprite);
+    platformSprite.body.static = true;
 
-    <span class="c1">// Dynamic box</span>
-    <span class="nx">blockSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'block'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">blockSprite</span><span class="p">);</span>
-    <span class="nx">blockSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
+    // Dynamic box
+    blockSprite = game.add.sprite(400, 200, 'block');
+    game.physics.box2d.enable(blockSprite);
+    blockSprite.body.angle = 30;
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'Debug draw can be done for bodies individually using custom colors.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">'The shape color of the falling block here depends on vertical speed.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
+    game.add.text(5, 5, 'Debug draw can be done for bodies individually using custom colors.', { fill: '#ffffff', font: '14pt Arial' });
+    game.add.text(5, 25, 'The shape color of the falling block here depends on vertical speed.', { fill: '#ffffff', font: '14pt Arial' });
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">mouseDragStart</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">mouseDragMove</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">mouseDragEnd</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(mouseDragStart, this);
+    game.input.addMoveCallback(mouseDragMove, this);
+    game.input.onUp.add(mouseDragEnd, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
     
-    <span class="c1">// Default color is white</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">body</span><span class="p">(</span><span class="nx">platformSprite</span><span class="p">);</span>
+    // Default color is white
+    game.debug.body(platformSprite);
     
-    <span class="c1">// Make falling block more red depending on vertical speed  </span>
-    <span class="kd">var</span> <span class="nx">red</span> <span class="o">=</span> <span class="nx">blockSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="nx">red</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">red</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">255</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">red</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">red</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">blue</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="nx">red</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">body</span><span class="p">(</span><span class="nx">blockSprite</span><span class="p">,</span> <span class="s1">'rgb('</span><span class="o">+</span><span class="nx">red</span><span class="o">+</span><span class="s1">',0,'</span><span class="o">+</span><span class="nx">blue</span><span class="o">+</span><span class="s1">')'</span><span class="p">);</span>
+    // Make falling block more red depending on vertical speed  
+    var red = blockSprite.body.velocity.y * 0.5;
+    red = Math.min(Math.max(red, 0), 255);
+    var red = Math.floor(red);
+    var blue = 255 - red;
+    game.debug.body(blockSprite, 'rgb('+red+',0,'+blue+')');
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">mouseDragStart</span><span class="p">()</span> <span class="p">{</span>
+function mouseDragStart() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">mouseDragStart</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
+    game.physics.box2d.mouseDragStart(game.input.mousePointer);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">mouseDragMove</span><span class="p">()</span> <span class="p">{</span>
+function mouseDragMove() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">mouseDragMove</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
+    game.physics.box2d.mouseDragMove(game.input.mousePointer);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">mouseDragEnd</span><span class="p">()</span> <span class="p">{</span>
+function mouseDragEnd() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">mouseDragEnd</span><span class="p">();</span>
+    game.physics.box2d.mouseDragEnd();
     
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

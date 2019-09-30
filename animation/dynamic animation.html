@@ -55,60 +55,61 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/animation/dynamic%20animation.js" title="animation/dynamic animation.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/animation/dynamic%20animation.js" download="" title="Download: animation/dynamic animation.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'orb'</span><span class="p">,</span> <span class="s1">'assets/sprites/orb-blue.png'</span><span class="p">);</span>
+    game.load.image('orb', 'assets/sprites/orb-blue.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#ef3d45'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#ef3d45';
 
-    <span class="c1">//  We're going to dynamically create an animation.</span>
-    <span class="c1">//  It will consist of 16 frames, each 22x22 pixels in size.</span>
-    <span class="c1">//  </span>
-    <span class="c1">//  So the overall dimensions will be 352x22</span>
+    //  We're going to dynamically create an animation.
+    //  It will consist of 16 frames, each 22x22 pixels in size.
+    //  
+    //  So the overall dimensions will be 352x22
 
-    <span class="kd">var</span> <span class="nx">orb</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'orb'</span><span class="p">);</span>
+    var orb = game.make.sprite(0, 0, 'orb');
 
-    <span class="c1">//  First create a BitmapData object at the size we need</span>
+    //  First create a BitmapData object at the size we need
 
-    <span class="kd">var</span> <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">352</span><span class="p">,</span> <span class="mi">22</span><span class="p">);</span>
+    var bmd = game.add.bitmapData(352, 22);
 
-    <span class="c1">//  Next draw the orb image into the BitmapData 16 times (once for each frame)</span>
+    //  Next draw the orb image into the BitmapData 16 times (once for each frame)
 
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">22</span><span class="p">;</span>
+    var x = 0;
+    var y = -22;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="nx">orb</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
-        <span class="nx">x</span> <span class="o">+=</span> <span class="mi">22</span><span class="p">;</span>
-        <span class="nx">y</span> <span class="o">+=</span> <span class="mi">3</span><span class="p">;</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 16; i++)
+    {
+        bmd.draw(orb, x, y);
+        x += 22;
+        y += 3;
+    }
 
-    <span class="c1">//  Add it to the display just so you can see what the final sprite sheet looks like</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">);</span>
+    //  Add it to the display just so you can see what the final sprite sheet looks like
+    game.add.image(0, 0, bmd);
 
-    <span class="c1">//  And now add it to the cache, so any sprite can use it</span>
-    <span class="c1">//  The parameters can be found in the API docs, but the important parts are to leave the URL blank and pass the bmd.canvas as the data value</span>
-    <span class="c1">//  The 22x22 is the frame size and 16 the quantity of frames</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">addSpriteSheet</span><span class="p">(</span><span class="s1">'dynamic'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">canvas</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    //  And now add it to the cache, so any sprite can use it
+    //  The parameters can be found in the API docs, but the important parts are to leave the URL blank and pass the bmd.canvas as the data value
+    //  The 22x22 is the frame size and 16 the quantity of frames
+    game.cache.addSpriteSheet('dynamic', '', bmd.canvas, 22, 22, 16, 0, 0);
 
-    <span class="c1">//  Let's create a bunch of sprites all using the same new animation data</span>
-    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">test</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span> <span class="o">+</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="mi">22</span><span class="p">),</span> <span class="s1">'dynamic'</span><span class="p">);</span>
-        <span class="nx">test</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'float'</span><span class="p">);</span>
-        <span class="c1">// test.play('float', 20 + i, true); // uncomment this line and comment out the line below for some trippy fun :)</span>
-        <span class="nx">test</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'float'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+    //  Let's create a bunch of sprites all using the same new animation data
+    for (i = 0; i < 16; i++)
+    {
+        var test = game.add.sprite(200, 100 + (i * 22), 'dynamic');
+        test.animations.add('float');
+        // test.play('float', 20 + i, true); // uncomment this line and comment out the line below for some trippy fun :)
+        test.play('float', 20, true);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,773 +55,774 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/create/gen%20paint.js" title="create/gen paint.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/create/gen%20paint.js" download="" title="Download: create/gen paint.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
-
-<span class="c1">//  Dimensions</span>
-<span class="kd">var</span> <span class="nx">previewSize</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">spriteWidth</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">spriteHeight</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
-
-<span class="c1">//  UI</span>
-<span class="kd">var</span> <span class="nx">ui</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">paletteArrow</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">coords</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">widthText</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">widthUp</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">widthDown</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">heightText</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">heightUp</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">heightDown</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">previewSizeUp</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">previewSizeDown</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">previewSizeText</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">nextFrameButton</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">prevFrameButton</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">frameText</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">saveIcon</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">saveText</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">rightCol</span> <span class="o">=</span> <span class="mi">532</span><span class="p">;</span>
-
-<span class="c1">//  Drawing Area</span>
-<span class="kd">var</span> <span class="nx">canvas</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">canvasBG</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">canvasGrid</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">canvasSprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">canvasZoom</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
-
-<span class="c1">//  Sprite Preview</span>
-<span class="kd">var</span> <span class="nx">preview</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">previewBG</span><span class="p">;</span>
-
-<span class="c1">//  Keys + Mouse</span>
-<span class="kd">var</span> <span class="nx">keys</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">isDown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">isErase</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-
-<span class="c1">//  Palette</span>
-<span class="kd">var</span> <span class="nx">ci</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">palette</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">pmap</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="s1">'A'</span><span class="p">,</span><span class="s1">'B'</span><span class="p">,</span><span class="s1">'C'</span><span class="p">,</span><span class="s1">'D'</span><span class="p">,</span><span class="s1">'E'</span><span class="p">,</span><span class="s1">'F'</span><span class="p">];</span>
-
-<span class="c1">//  Data</span>
-<span class="kd">var</span> <span class="nx">frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">frames</span> <span class="o">=</span> <span class="p">[[]];</span>
-
-<span class="kd">var</span> <span class="nx">data</span><span class="p">;</span>
-
-<span class="kd">function</span> <span class="nx">resetData</span><span class="p">()</span> <span class="p">{</span>
-
-    <span class="nx">data</span> <span class="o">=</span> <span class="p">[];</span>
-
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">spriteHeight</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[];</span>
-
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">spriteWidth</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">a</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">'.'</span><span class="p">);</span>
-        <span class="p">}</span>
-
-        <span class="nx">data</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
-    <span class="p">}</span>
-
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">copyToData</span><span class="p">(</span><span class="nx">src</span><span class="p">)</span> <span class="p">{</span>
-
-    <span class="nx">data</span> <span class="o">=</span> <span class="p">[];</span>
-
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">src</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[];</span>
-
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">src</span><span class="p">[</span><span class="nx">y</span><span class="p">].</span><span class="nx">length</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">a</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">src</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">]);</span>
-        <span class="p">}</span>
-
-        <span class="nx">data</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
-    <span class="p">}</span>
-
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">cloneData</span><span class="p">()</span> <span class="p">{</span>
-
-    <span class="kd">var</span> <span class="nx">clone</span> <span class="o">=</span> <span class="p">[];</span>
-
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[];</span>
-
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">data</span><span class="p">[</span><span class="nx">y</span><span class="p">].</span><span class="nx">length</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">];</span>
-            <span class="nx">a</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
-        <span class="p">}</span>
-
-        <span class="nx">clone</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
-    <span class="p">}</span>
-
-    <span class="k">return</span> <span class="nx">clone</span><span class="p">;</span>
-
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">createUI</span><span class="p">()</span> <span class="p">{</span>
-
-    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">grid</span><span class="p">(</span><span class="s1">'uiGrid'</span><span class="p">,</span> <span class="mi">32</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'rgba(255,255,255,0.5)'</span><span class="p">);</span>
-
-    <span class="c1">//  Create some icons</span>
-    <span class="kd">var</span> <span class="nx">arrow</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">'  22  '</span><span class="p">,</span>
-        <span class="s1">' 2222 '</span><span class="p">,</span>
-        <span class="s1">'222222'</span><span class="p">,</span>
-        <span class="s1">'  22  '</span><span class="p">,</span>
-        <span class="s1">'  22  '</span>
-    <span class="p">];</span>
-
-    <span class="kd">var</span> <span class="nx">plus</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">'2222222'</span><span class="p">,</span>
-        <span class="s1">'2.....2'</span><span class="p">,</span>
-        <span class="s1">'2..2..2'</span><span class="p">,</span>
-        <span class="s1">'2.222.2'</span><span class="p">,</span>
-        <span class="s1">'2..2..2'</span><span class="p">,</span>
-        <span class="s1">'2.....2'</span><span class="p">,</span>
-        <span class="s1">'2222222'</span>
-    <span class="p">];</span>
-
-    <span class="kd">var</span> <span class="nx">minus</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">'2222222'</span><span class="p">,</span>
-        <span class="s1">'2.....2'</span><span class="p">,</span>
-        <span class="s1">'2.....2'</span><span class="p">,</span>
-        <span class="s1">'2.222.2'</span><span class="p">,</span>
-        <span class="s1">'2.....2'</span><span class="p">,</span>
-        <span class="s1">'2.....2'</span><span class="p">,</span>
-        <span class="s1">'2222222'</span>
-    <span class="p">];</span>
-
-    <span class="kd">var</span> <span class="nx">disk</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">'DDDDDDDDDD'</span><span class="p">,</span>
-        <span class="s1">'DED1111DED'</span><span class="p">,</span>
-        <span class="s1">'DED1111DDD'</span><span class="p">,</span>
-        <span class="s1">'DEDDDDDDED'</span><span class="p">,</span>
-        <span class="s1">'DEEEEEEEED'</span><span class="p">,</span>
-        <span class="s1">'DEFFFFFFED'</span><span class="p">,</span>
-        <span class="s1">'DEFF222FED'</span><span class="p">,</span>
-        <span class="s1">'DEFF222FED'</span><span class="p">,</span>
-        <span class="s1">'DEFF222FED'</span><span class="p">,</span>
-        <span class="s1">'DDDDDDDDDD'</span>
-    <span class="p">];</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
+
+//  Dimensions
+var previewSize = 6;
+var spriteWidth = 8;
+var spriteHeight = 8;
+
+//  UI
+var ui;
+var paletteArrow;
+var coords;
+var widthText;
+var widthUp;
+var widthDown;
+var heightText;
+var heightUp;
+var heightDown;
+var previewSizeUp;
+var previewSizeDown;
+var previewSizeText;
+var nextFrameButton;
+var prevFrameButton;
+var frameText;
+var saveIcon;
+var saveText;
+var rightCol = 532;
+
+//  Drawing Area
+var canvas;
+var canvasBG;
+var canvasGrid;
+var canvasSprite;
+var canvasZoom = 32;
+
+//  Sprite Preview
+var preview;
+var previewBG;
+
+//  Keys + Mouse
+var keys;
+var isDown = false;
+var isErase = false;
+
+//  Palette
+var ci = 0;
+var color = 0;
+var palette = 0;
+var pmap = [0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F'];
+
+//  Data
+var frame = 1;
+var frames = [[]];
+
+var data;
+
+function resetData() {
+
+    data = [];
+
+    for (var y = 0; y < spriteHeight; y++)
+    {
+        var a = [];
+
+        for (var x = 0; x < spriteWidth; x++)
+        {
+            a.push('.');
+        }
+
+        data.push(a);
+    }
+
+}
+
+function copyToData(src) {
+
+    data = [];
+
+    for (var y = 0; y < src.length; y++)
+    {
+        var a = [];
+
+        for (var x = 0; x < src[y].length; x++)
+        {
+            a.push(src[y][x]);
+        }
+
+        data.push(a);
+    }
+
+}
+
+function cloneData() {
+
+    var clone = [];
+
+    for (var y = 0; y < data.length; y++)
+    {
+        var a = [];
+
+        for (var x = 0; x < data[y].length; x++)
+        {
+            var v = data[y][x];
+            a.push(v);
+        }
+
+        clone.push(a);
+    }
+
+    return clone;
+
+}
+
+function createUI() {
+
+    game.create.grid('uiGrid', 32 * 16, 32, 32, 32, 'rgba(255,255,255,0.5)');
+
+    //  Create some icons
+    var arrow = [
+        '  22  ',
+        ' 2222 ',
+        '222222',
+        '  22  ',
+        '  22  '
+    ];
+
+    var plus = [
+        '2222222',
+        '2.....2',
+        '2..2..2',
+        '2.222.2',
+        '2..2..2',
+        '2.....2',
+        '2222222'
+    ];
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'arrow'</span><span class="p">,</span> <span class="nx">arrow</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'plus'</span><span class="p">,</span> <span class="nx">plus</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'minus'</span><span class="p">,</span> <span class="nx">minus</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">texture</span><span class="p">(</span><span class="s1">'save'</span><span class="p">,</span> <span class="nx">disk</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    var minus = [
+        '2222222',
+        '2.....2',
+        '2.....2',
+        '2.222.2',
+        '2.....2',
+        '2.....2',
+        '2222222'
+    ];
 
-    <span class="nx">ui</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    var disk = [
+        'DDDDDDDDDD',
+        'DED1111DED',
+        'DED1111DDD',
+        'DEDDDDDDED',
+        'DEEEEEEEED',
+        'DEFFFFFFED',
+        'DEFF222FED',
+        'DEFF222FED',
+        'DEFF222FED',
+        'DDDDDDDDDD'
+    ];
 
-    <span class="nx">drawPalette</span><span class="p">();</span>
+    game.create.texture('arrow', arrow, 2);
+    game.create.texture('plus', plus, 3);
+    game.create.texture('minus', minus, 3);
+    game.create.texture('save', disk, 4);
 
-    <span class="nx">ui</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    ui = game.make.bitmapData(800, 32);
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"20px Courier"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#fff"</span><span class="p">,</span> <span class="na">tabs</span><span class="p">:</span> <span class="mi">80</span> <span class="p">};</span>
+    drawPalette();
 
-    <span class="nx">coords</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">rightCol</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s2">"X: 0\tY: 0"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    ui.addToWorld();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="nx">pmap</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">"\t"</span><span class="p">),</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"14px Courier"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#000"</span><span class="p">,</span> <span class="na">tabs</span><span class="p">:</span> <span class="mi">32</span> <span class="p">});</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="nx">pmap</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">"\t"</span><span class="p">),</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"14px Courier"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffff00"</span><span class="p">,</span> <span class="na">tabs</span><span class="p">:</span> <span class="mi">32</span> <span class="p">});</span>
+    var style = { font: "20px Courier", fill: "#fff", tabs: 80 };
 
-    <span class="nx">paletteArrow</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="s1">'arrow'</span><span class="p">);</span>
+    coords = game.add.text(rightCol, 8, "X: 0\tY: 0", style);
 
-    <span class="c1">//  Change width</span>
+    game.add.text(12, 9, pmap.join("\t"), { font: "14px Courier", fill: "#000", tabs: 32 });
+    game.add.text(11, 8, pmap.join("\t"), { font: "14px Courier", fill: "#ffff00", tabs: 32 });
 
-    <span class="nx">widthText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">rightCol</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="s2">"Width: "</span> <span class="o">+</span> <span class="nx">spriteWidth</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    paletteArrow = game.add.sprite(8, 36, 'arrow');
 
-    <span class="nx">widthUp</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">rightCol</span> <span class="o">+</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">'plus'</span><span class="p">);</span>
-    <span class="nx">widthUp</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'width'</span><span class="p">;</span>
-    <span class="nx">widthUp</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">widthUp</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">widthUp</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">increaseSize</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Change width
 
-    <span class="nx">widthDown</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">rightCol</span> <span class="o">+</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">'minus'</span><span class="p">);</span>
-    <span class="nx">widthDown</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'width'</span><span class="p">;</span>
-    <span class="nx">widthDown</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">widthDown</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">widthDown</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">decreaseSize</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    widthText = game.add.text(rightCol, 60, "Width: " + spriteWidth, style);
 
-    <span class="c1">//  Change height</span>
+    widthUp = game.add.sprite(rightCol + 180, 60, 'plus');
+    widthUp.name = 'width';
+    widthUp.inputEnabled = true;
+    widthUp.input.useHandCursor = true;
+    widthUp.events.onInputDown.add(increaseSize, this);
 
-    <span class="nx">heightText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">rightCol</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"Height: "</span> <span class="o">+</span> <span class="nx">spriteHeight</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    widthDown = game.add.sprite(rightCol + 220, 60, 'minus');
+    widthDown.name = 'width';
+    widthDown.inputEnabled = true;
+    widthDown.input.useHandCursor = true;
+    widthDown.events.onInputDown.add(decreaseSize, this);
 
-    <span class="nx">heightUp</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">rightCol</span> <span class="o">+</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'plus'</span><span class="p">);</span>
-    <span class="nx">heightUp</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'height'</span><span class="p">;</span>
-    <span class="nx">heightUp</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">heightUp</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">heightUp</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">increaseSize</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Change height
 
-    <span class="nx">heightDown</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">rightCol</span> <span class="o">+</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'minus'</span><span class="p">);</span>
-    <span class="nx">heightDown</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'height'</span><span class="p">;</span>
-    <span class="nx">heightDown</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">heightDown</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">heightDown</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">decreaseSize</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    heightText = game.add.text(rightCol, 100, "Height: " + spriteHeight, style);
 
-    <span class="c1">//  Change frame</span>
+    heightUp = game.add.sprite(rightCol + 180, 100, 'plus');
+    heightUp.name = 'height';
+    heightUp.inputEnabled = true;
+    heightUp.input.useHandCursor = true;
+    heightUp.events.onInputDown.add(increaseSize, this);
 
-    <span class="nx">frameText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">rightCol</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="s2">"Frame: "</span> <span class="o">+</span> <span class="nx">frame</span> <span class="o">+</span> <span class="s2">" / "</span> <span class="o">+</span> <span class="nx">frames</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    heightDown = game.add.sprite(rightCol + 220, 100, 'minus');
+    heightDown.name = 'height';
+    heightDown.inputEnabled = true;
+    heightDown.input.useHandCursor = true;
+    heightDown.events.onInputDown.add(decreaseSize, this);
 
-    <span class="nx">nextFrameButton</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">rightCol</span> <span class="o">+</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="s1">'plus'</span><span class="p">);</span>
-    <span class="nx">nextFrameButton</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">nextFrameButton</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">nextFrameButton</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">nextFrame</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Change frame
 
-    <span class="nx">prevFrameButton</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">rightCol</span> <span class="o">+</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="s1">'minus'</span><span class="p">);</span>
-    <span class="nx">prevFrameButton</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">prevFrameButton</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">prevFrameButton</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">prevFrame</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    frameText = game.add.text(rightCol, 160, "Frame: " + frame + " / " + frames.length, style);
 
-    <span class="c1">//  Change preview</span>
+    nextFrameButton = game.add.sprite(rightCol + 180, 160, 'plus');
+    nextFrameButton.inputEnabled = true;
+    nextFrameButton.input.useHandCursor = true;
+    nextFrameButton.events.onInputDown.add(nextFrame, this);
 
-    <span class="nx">previewSizeText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">rightCol</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="s2">"Size: "</span> <span class="o">+</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    prevFrameButton = game.add.sprite(rightCol + 220, 160, 'minus');
+    prevFrameButton.inputEnabled = true;
+    prevFrameButton.input.useHandCursor = true;
+    prevFrameButton.events.onInputDown.add(prevFrame, this);
 
-    <span class="nx">previewSizeUp</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">rightCol</span> <span class="o">+</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="s1">'plus'</span><span class="p">);</span>
-    <span class="nx">previewSizeUp</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">previewSizeUp</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">previewSizeUp</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">increasePreviewSize</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Change preview
 
-    <span class="nx">previewSizeDown</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">rightCol</span> <span class="o">+</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="s1">'minus'</span><span class="p">);</span>
-    <span class="nx">previewSizeDown</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">previewSizeDown</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">previewSizeDown</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">decreasePreviewSize</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    previewSizeText = game.add.text(rightCol, 220, "Size: " + previewSize, style);
 
-    <span class="c1">//  Save Icon</span>
+    previewSizeUp = game.add.sprite(rightCol + 180, 220, 'plus');
+    previewSizeUp.inputEnabled = true;
+    previewSizeUp.input.useHandCursor = true;
+    previewSizeUp.events.onInputDown.add(increasePreviewSize, this);
 
-    <span class="nx">saveText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">rightCol</span><span class="p">,</span> <span class="mi">520</span><span class="p">,</span> <span class="s2">"Saved to console.log"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="nx">saveText</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    previewSizeDown = game.add.sprite(rightCol + 220, 220, 'minus');
+    previewSizeDown.inputEnabled = true;
+    previewSizeDown.input.useHandCursor = true;
+    previewSizeDown.events.onInputDown.add(decreasePreviewSize, this);
 
-    <span class="nx">saveIcon</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">750</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="s1">'save'</span><span class="p">);</span>
-    <span class="nx">saveIcon</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">saveIcon</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">saveIcon</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">save</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Save Icon
 
-<span class="p">}</span>
+    saveText = game.add.text(rightCol, 520, "Saved to console.log", style);
+    saveText.alpha = 0;
 
-<span class="kd">function</span> <span class="nx">createDrawingArea</span><span class="p">()</span> <span class="p">{</span>
+    saveIcon = game.add.sprite(750, 550, 'save');
+    saveIcon.inputEnabled = true;
+    saveIcon.input.useHandCursor = true;
+    saveIcon.events.onInputDown.add(save, this);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">grid</span><span class="p">(</span><span class="s1">'drawingGrid'</span><span class="p">,</span> <span class="mi">16</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="mi">16</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="s1">'rgba(0,191,243,0.8)'</span><span class="p">);</span>
+}
 
-    <span class="nx">canvas</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">spriteWidth</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">spriteHeight</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">);</span>
-    <span class="nx">canvasBG</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+function createDrawingArea() {
 
-    <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'#fff'</span><span class="p">);</span>
-    <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#3f5c67'</span><span class="p">);</span>
+    game.create.grid('drawingGrid', 16 * canvasZoom, 16 * canvasZoom, canvasZoom, canvasZoom, 'rgba(0,191,243,0.8)');
 
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
+    canvas = game.make.bitmapData(spriteWidth * canvasZoom, spriteHeight * canvasZoom);
+    canvasBG = game.make.bitmapData(canvas.width + 2, canvas.height + 2);
 
-    <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
-    <span class="nx">canvasSprite</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">canvasGrid</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'drawingGrid'</span><span class="p">);</span>
-    <span class="nx">canvasGrid</span><span class="p">.</span><span class="nx">crop</span><span class="p">(</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">spriteWidth</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">spriteHeight</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">));</span>
+    canvasBG.rect(0, 0, canvasBG.width, canvasBG.height, '#fff');
+    canvasBG.rect(1, 1, canvasBG.width - 2, canvasBG.height - 2, '#3f5c67');
 
-<span class="p">}</span>
+    var x = 10;
+    var y = 64;
 
-<span class="kd">function</span> <span class="nx">resizeCanvas</span><span class="p">()</span> <span class="p">{</span>
+    canvasBG.addToWorld(x, y);
+    canvasSprite = canvas.addToWorld(x + 1, y + 1);
+    canvasGrid = game.add.sprite(x + 1, y + 1, 'drawingGrid');
+    canvasGrid.crop(new Phaser.Rectangle(0, 0, spriteWidth * canvasZoom, spriteHeight * canvasZoom));
 
-    <span class="nx">canvas</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">spriteWidth</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">spriteHeight</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">);</span>
-    <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+}
 
-    <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'#fff'</span><span class="p">);</span>
-    <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">canvasBG</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#3f5c67'</span><span class="p">);</span>
+function resizeCanvas() {
 
-    <span class="nx">canvasGrid</span><span class="p">.</span><span class="nx">crop</span><span class="p">(</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">spriteWidth</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">spriteHeight</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">));</span>
+    canvas.resize(spriteWidth * canvasZoom, spriteHeight * canvasZoom);
+    canvasBG.resize(canvas.width + 2, canvas.height + 2);
+
+    canvasBG.rect(0, 0, canvasBG.width, canvasBG.height, '#fff');
+    canvasBG.rect(1, 1, canvasBG.width - 2, canvasBG.height - 2, '#3f5c67');
+
+    canvasGrid.crop(new Phaser.Rectangle(0, 0, spriteWidth * canvasZoom, spriteHeight * canvasZoom));
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createPreview</span><span class="p">()</span> <span class="p">{</span>
+function createPreview() {
 
-    <span class="nx">preview</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">spriteWidth</span> <span class="o">*</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">spriteHeight</span> <span class="o">*</span> <span class="nx">previewSize</span><span class="p">);</span>
-    <span class="nx">previewBG</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">preview</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">preview</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+    preview = game.make.bitmapData(spriteWidth * previewSize, spriteHeight * previewSize);
+    previewBG = game.make.bitmapData(preview.width + 2, preview.height + 2);
 
-    <span class="nx">previewBG</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">previewBG</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">previewBG</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'#fff'</span><span class="p">);</span>
-    <span class="nx">previewBG</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">previewBG</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">previewBG</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#3f5c67'</span><span class="p">);</span>
+    previewBG.rect(0, 0, previewBG.width, previewBG.height, '#fff');
+    previewBG.rect(1, 1, previewBG.width - 2, previewBG.height - 2, '#3f5c67');
 
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">rightCol</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span>
+    var x = rightCol;
+    var y = 250;
 
-    <span class="nx">previewBG</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
-    <span class="nx">preview</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+    previewBG.addToWorld(x, y);
+    preview.addToWorld(x + 1, y + 1);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">resizePreview</span><span class="p">()</span> <span class="p">{</span>
+function resizePreview() {
 
-    <span class="nx">preview</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">spriteWidth</span> <span class="o">*</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">spriteHeight</span> <span class="o">*</span> <span class="nx">previewSize</span><span class="p">);</span>
-    <span class="nx">previewBG</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">preview</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">preview</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+    preview.resize(spriteWidth * previewSize, spriteHeight * previewSize);
+    previewBG.resize(preview.width + 2, preview.height + 2);
 
-    <span class="nx">previewBG</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">previewBG</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">previewBG</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'#fff'</span><span class="p">);</span>
-    <span class="nx">previewBG</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">previewBG</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">previewBG</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#3f5c67'</span><span class="p">);</span>
+    previewBG.rect(0, 0, previewBG.width, previewBG.height, '#fff');
+    previewBG.rect(1, 1, previewBG.width - 2, previewBG.height - 2, '#3f5c67');
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">refresh</span><span class="p">()</span> <span class="p">{</span>
+function refresh() {
 
-    <span class="c1">//  Update both the Canvas and Preview</span>
-    <span class="nx">canvas</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
-    <span class="nx">preview</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+    //  Update both the Canvas and Preview
+    canvas.clear();
+    preview.clear();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">spriteHeight</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">spriteWidth</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">];</span>
+    for (var y = 0; y < spriteHeight; y++)
+    {
+        for (var x = 0; x < spriteWidth; x++)
+        {
+            var i = data[y][x];
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">!==</span> <span class="s1">'.'</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">!==</span> <span class="s1">' '</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">color</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">palettes</span><span class="p">[</span><span class="nx">palette</span><span class="p">][</span><span class="nx">i</span><span class="p">];</span>
-                <span class="nx">canvas</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-                <span class="nx">preview</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+            if (i !== '.' && i !== ' ')
+            {
+                color = game.create.palettes[palette][i];
+                canvas.rect(x * canvasZoom, y * canvasZoom, canvasZoom, canvasZoom, color);
+                preview.rect(x * previewSize, y * previewSize, previewSize, previewSize, color);
+            }
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createEventListeners</span><span class="p">()</span> <span class="p">{</span>
+function createEventListeners() {
 
-    <span class="nx">keys</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKeys</span><span class="p">(</span>
-        <span class="p">{</span>
-            <span class="s1">'erase'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">X</span><span class="p">,</span>
-            <span class="s1">'save'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">S</span><span class="p">,</span>
-            <span class="s1">'up'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">UP</span><span class="p">,</span>
-            <span class="s1">'down'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">DOWN</span><span class="p">,</span>
-            <span class="s1">'left'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">LEFT</span><span class="p">,</span>
-            <span class="s1">'right'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">RIGHT</span><span class="p">,</span>
-            <span class="s1">'changePalette'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">P</span><span class="p">,</span>
-            <span class="s1">'nextFrame'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">PERIOD</span><span class="p">,</span>
-            <span class="s1">'prevFrame'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">COMMA</span><span class="p">,</span>
-            <span class="s1">'color0'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">ZERO</span><span class="p">,</span>
-            <span class="s1">'color1'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">ONE</span><span class="p">,</span>
-            <span class="s1">'color2'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">TWO</span><span class="p">,</span>
-            <span class="s1">'color3'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">THREE</span><span class="p">,</span>
-            <span class="s1">'color4'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">FOUR</span><span class="p">,</span>
-            <span class="s1">'color5'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">FIVE</span><span class="p">,</span>
-            <span class="s1">'color6'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SIX</span><span class="p">,</span>
-            <span class="s1">'color7'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SEVEN</span><span class="p">,</span>
-            <span class="s1">'color8'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">EIGHT</span><span class="p">,</span>
-            <span class="s1">'color9'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">NINE</span><span class="p">,</span>
-            <span class="s1">'color10'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">A</span><span class="p">,</span>
-            <span class="s1">'color11'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">B</span><span class="p">,</span>
-            <span class="s1">'color12'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">C</span><span class="p">,</span>
-            <span class="s1">'color13'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">D</span><span class="p">,</span>
-            <span class="s1">'color14'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">E</span><span class="p">,</span>
-            <span class="s1">'color15'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">F</span>
-        <span class="p">}</span>
-    <span class="p">);</span>
+    keys = game.input.keyboard.addKeys(
+        {
+            'erase': Phaser.Keyboard.X,
+            'save': Phaser.Keyboard.S,
+            'up': Phaser.Keyboard.UP,
+            'down': Phaser.Keyboard.DOWN,
+            'left': Phaser.Keyboard.LEFT,
+            'right': Phaser.Keyboard.RIGHT,
+            'changePalette': Phaser.Keyboard.P,
+            'nextFrame': Phaser.Keyboard.PERIOD,
+            'prevFrame': Phaser.Keyboard.COMMA,
+            'color0': Phaser.Keyboard.ZERO,
+            'color1': Phaser.Keyboard.ONE,
+            'color2': Phaser.Keyboard.TWO,
+            'color3': Phaser.Keyboard.THREE,
+            'color4': Phaser.Keyboard.FOUR,
+            'color5': Phaser.Keyboard.FIVE,
+            'color6': Phaser.Keyboard.SIX,
+            'color7': Phaser.Keyboard.SEVEN,
+            'color8': Phaser.Keyboard.EIGHT,
+            'color9': Phaser.Keyboard.NINE,
+            'color10': Phaser.Keyboard.A,
+            'color11': Phaser.Keyboard.B,
+            'color12': Phaser.Keyboard.C,
+            'color13': Phaser.Keyboard.D,
+            'color14': Phaser.Keyboard.E,
+            'color15': Phaser.Keyboard.F
+        }
+    );
 
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">erase</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">cls</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">save</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">save</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">shiftUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">shiftDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">shiftLeft</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">shiftRight</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">changePalette</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">changePalette</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">nextFrame</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">nextFrame</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">prevFrame</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">prevFrame</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    keys.erase.onDown.add(cls, this);
+    keys.save.onDown.add(save, this);
+    keys.up.onDown.add(shiftUp, this);
+    keys.down.onDown.add(shiftDown, this);
+    keys.left.onDown.add(shiftLeft, this);
+    keys.right.onDown.add(shiftRight, this);
+    keys.changePalette.onDown.add(changePalette, this);
+    keys.nextFrame.onDown.add(nextFrame, this);
+    keys.prevFrame.onDown.add(prevFrame, this);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">keys</span><span class="p">[</span><span class="s1">'color'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">].</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">setColor</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 16; i++)
+    {
+        keys['color' + i].onDown.add(setColor, this, 0, i);
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mouse</span><span class="p">.</span><span class="nx">capture</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">paint</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.mouse.capture = true;
+    game.input.onDown.add(onDown, this);
+    game.input.onUp.add(onUp, this);
+    game.input.addMoveCallback(paint, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">cls</span><span class="p">()</span> <span class="p">{</span>
+function cls() {
 
-    <span class="nx">resetData</span><span class="p">();</span>
-    <span class="nx">refresh</span><span class="p">();</span>
+    resetData();
+    refresh();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">nextFrame</span><span class="p">()</span> <span class="p">{</span>
+function nextFrame() {
 
-    <span class="c1">//  Save current frame</span>
-    <span class="nx">frames</span><span class="p">[</span><span class="nx">frame</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">cloneData</span><span class="p">();</span>
+    //  Save current frame
+    frames[frame - 1] = cloneData();
 
-    <span class="nx">frame</span><span class="o">++</span><span class="p">;</span>
+    frame++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">frames</span><span class="p">[</span><span class="nx">frame</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="p">{</span>
-        <span class="nx">copyToData</span><span class="p">(</span><span class="nx">frames</span><span class="p">[</span><span class="nx">frame</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">frames</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
-        <span class="nx">resetData</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (frames[frame - 1])
+    {
+        copyToData(frames[frame - 1]);
+    }
+    else
+    {
+        frames.push(null);
+        resetData();
+    }
 
-    <span class="nx">refresh</span><span class="p">();</span>
+    refresh();
 
-    <span class="nx">frameText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Frame: "</span> <span class="o">+</span> <span class="nx">frame</span> <span class="o">+</span> <span class="s2">" / "</span> <span class="o">+</span> <span class="nx">frames</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    frameText.text = "Frame: " + frame + " / " + frames.length;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">prevFrame</span><span class="p">()</span> <span class="p">{</span>
+function prevFrame() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">frame</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (frame === 1)
+    {
+        return;
+    }
 
-    <span class="c1">//  Save current frame</span>
-    <span class="nx">frames</span><span class="p">[</span><span class="nx">frame</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">cloneData</span><span class="p">();</span>
+    //  Save current frame
+    frames[frame - 1] = cloneData();
 
-    <span class="nx">frame</span><span class="o">--</span><span class="p">;</span>
+    frame--;
 
-    <span class="c1">//  Load old frame</span>
-    <span class="nx">copyToData</span><span class="p">(</span><span class="nx">frames</span><span class="p">[</span><span class="nx">frame</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]);</span>
+    //  Load old frame
+    copyToData(frames[frame - 1]);
 
-    <span class="nx">refresh</span><span class="p">();</span>
+    refresh();
 
-    <span class="nx">frameText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Frame: "</span> <span class="o">+</span> <span class="nx">frame</span> <span class="o">+</span> <span class="s2">" / "</span> <span class="o">+</span> <span class="nx">frames</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    frameText.text = "Frame: " + frame + " / " + frames.length;
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">drawPalette</span><span class="p">()</span> <span class="p">{</span>
+function drawPalette() {
 
-    <span class="c1">//  Draw the palette to the UI bmd</span>
-    <span class="nx">ui</span><span class="p">.</span><span class="nx">clear</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    //  Draw the palette to the UI bmd
+    ui.clear(0, 0, 32 * 16, 32);
 
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var x = 0;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">clr</span> <span class="k">in</span> <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">palettes</span><span class="p">[</span><span class="nx">palette</span><span class="p">])</span>
-    <span class="p">{</span>
-        <span class="nx">ui</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">palettes</span><span class="p">[</span><span class="nx">palette</span><span class="p">][</span><span class="nx">clr</span><span class="p">]);</span>
-        <span class="nx">x</span> <span class="o">+=</span> <span class="mi">32</span><span class="p">;</span>
-    <span class="p">}</span>
+    for (var clr in game.create.palettes[palette])
+    {
+        ui.rect(x, 0, 32, 32, game.create.palettes[palette][clr]);
+        x += 32;
+    }
 
-    <span class="nx">ui</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="s1">'uiGrid'</span><span class="p">);</span>
+    ui.copy('uiGrid');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">changePalette</span><span class="p">()</span> <span class="p">{</span>
+function changePalette() {
 
-    <span class="nx">palette</span><span class="o">++</span><span class="p">;</span>
+    palette++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">palettes</span><span class="p">[</span><span class="nx">palette</span><span class="p">])</span>
-    <span class="p">{</span>
-        <span class="nx">palette</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (!game.create.palettes[palette])
+    {
+        palette = 0;
+    }
 
-    <span class="nx">drawPalette</span><span class="p">();</span>
-    <span class="nx">refresh</span><span class="p">();</span>
+    drawPalette();
+    refresh();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">setColor</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+function setColor(i, p) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">p</span> <span class="o">!==</span> <span class="s1">'undefined'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  It came from a Keyboard Event, in which case the color index is in p, not i.</span>
-        <span class="nx">i</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (typeof p !== 'undefined')
+    {
+        //  It came from a Keyboard Event, in which case the color index is in p, not i.
+        i = p;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">i</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">16</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (i < 0)
+    {
+        i = 15;
+    }
+    else if (i >= 16)
+    {
+        i = 0;
+    }
 
-    <span class="nx">colorIndex</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
-    <span class="nx">color</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">palettes</span><span class="p">[</span><span class="nx">palette</span><span class="p">][</span><span class="nx">pmap</span><span class="p">[</span><span class="nx">colorIndex</span><span class="p">]];</span>
+    colorIndex = i;
+    color = game.create.palettes[palette][pmap[colorIndex]];
 
-    <span class="nx">paletteArrow</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span><span class="p">;</span>
+    paletteArrow.x = (i * 32) + 8;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">nextColor</span><span class="p">()</span> <span class="p">{</span>
+function nextColor() {
 
-    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">colorIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="nx">setColor</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+    var i = colorIndex + 1;
+    setColor(i);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">prevColor</span><span class="p">()</span> <span class="p">{</span>
+function prevColor() {
 
-    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">colorIndex</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="nx">setColor</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+    var i = colorIndex - 1;
+    setColor(i);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">increaseSize</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+function increaseSize(sprite) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="s1">'width'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">spriteWidth</span> <span class="o">===</span> <span class="mi">16</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
+    if (sprite.name === 'width')
+    {
+        if (spriteWidth === 16)
+        {
+            return;
+        }
 
-        <span class="nx">spriteWidth</span><span class="o">++</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="s1">'height'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">spriteHeight</span> <span class="o">===</span> <span class="mi">16</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
+        spriteWidth++;
+    }
+    else if (sprite.name === 'height')
+    {
+        if (spriteHeight === 16)
+        {
+            return;
+        }
 
-        <span class="nx">spriteHeight</span><span class="o">++</span><span class="p">;</span>
-    <span class="p">}</span>
+        spriteHeight++;
+    }
 
-    <span class="nx">resetData</span><span class="p">();</span>
-    <span class="nx">resizeCanvas</span><span class="p">();</span>
-    <span class="nx">resizePreview</span><span class="p">();</span>
+    resetData();
+    resizeCanvas();
+    resizePreview();
 
-    <span class="nx">widthText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Width: "</span> <span class="o">+</span> <span class="nx">spriteWidth</span><span class="p">;</span>
-    <span class="nx">heightText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Height: "</span> <span class="o">+</span> <span class="nx">spriteHeight</span><span class="p">;</span>
+    widthText.text = "Width: " + spriteWidth;
+    heightText.text = "Height: " + spriteHeight;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">decreaseSize</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+function decreaseSize(sprite) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="s1">'width'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">spriteWidth</span> <span class="o">===</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
+    if (sprite.name === 'width')
+    {
+        if (spriteWidth === 4)
+        {
+            return;
+        }
 
-        <span class="nx">spriteWidth</span><span class="o">--</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="s1">'height'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">spriteHeight</span> <span class="o">===</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
+        spriteWidth--;
+    }
+    else if (sprite.name === 'height')
+    {
+        if (spriteHeight === 4)
+        {
+            return;
+        }
 
-        <span class="nx">spriteHeight</span><span class="o">--</span><span class="p">;</span>
-    <span class="p">}</span>
+        spriteHeight--;
+    }
 
-    <span class="nx">resetData</span><span class="p">();</span>
-    <span class="nx">resizeCanvas</span><span class="p">();</span>
-    <span class="nx">resizePreview</span><span class="p">();</span>
+    resetData();
+    resizeCanvas();
+    resizePreview();
 
-    <span class="nx">widthText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Width: "</span> <span class="o">+</span> <span class="nx">spriteWidth</span><span class="p">;</span>
-    <span class="nx">heightText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Height: "</span> <span class="o">+</span> <span class="nx">spriteHeight</span><span class="p">;</span>
+    widthText.text = "Width: " + spriteWidth;
+    heightText.text = "Height: " + spriteHeight;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">increasePreviewSize</span><span class="p">()</span> <span class="p">{</span>
+function increasePreviewSize() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">previewSize</span> <span class="o">===</span> <span class="mi">16</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (previewSize === 16)
+    {
+        return;
+    }
 
-    <span class="nx">previewSize</span><span class="o">++</span><span class="p">;</span>
-    <span class="nx">previewSizeText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Size: "</span> <span class="o">+</span> <span class="nx">previewSize</span><span class="p">;</span>
+    previewSize++;
+    previewSizeText.text = "Size: " + previewSize;
 
-    <span class="nx">resizePreview</span><span class="p">();</span>
-    <span class="nx">refresh</span><span class="p">();</span>
+    resizePreview();
+    refresh();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">decreasePreviewSize</span><span class="p">()</span> <span class="p">{</span>
+function decreasePreviewSize() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">previewSize</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (previewSize === 1)
+    {
+        return;
+    }
 
-    <span class="nx">previewSize</span><span class="o">--</span><span class="p">;</span>
-    <span class="nx">previewSizeText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Size: "</span> <span class="o">+</span> <span class="nx">previewSize</span><span class="p">;</span>
+    previewSize--;
+    previewSizeText.text = "Size: " + previewSize;
 
-    <span class="nx">resizePreview</span><span class="p">();</span>
-    <span class="nx">refresh</span><span class="p">();</span>
+    resizePreview();
+    refresh();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//   So we can right-click to erase</span>
-    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">oncontextmenu</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span> <span class="p">};</span>
+    //   So we can right-click to erase
+    document.body.oncontextmenu = function() { return false; };
 
-    <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">setUserSelect</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">canvas</span><span class="p">,</span> <span class="s1">'none'</span><span class="p">);</span>
-    <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">setTouchAction</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">canvas</span><span class="p">,</span> <span class="s1">'none'</span><span class="p">);</span>
+    Phaser.Canvas.setUserSelect(game.canvas, 'none');
+    Phaser.Canvas.setTouchAction(game.canvas, 'none');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#505050'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#505050';
 
-    <span class="nx">createUI</span><span class="p">();</span>
-    <span class="nx">createDrawingArea</span><span class="p">();</span>
-    <span class="nx">createPreview</span><span class="p">();</span>
-    <span class="nx">createEventListeners</span><span class="p">();</span>
+    createUI();
+    createDrawingArea();
+    createPreview();
+    createEventListeners();
 
-    <span class="nx">resetData</span><span class="p">();</span>
-    <span class="nx">setColor</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    resetData();
+    setColor(2);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">save</span><span class="p">()</span> <span class="p">{</span>
+function save() {
 
-    <span class="c1">//  Save current frame</span>
-    <span class="nx">frames</span><span class="p">[</span><span class="nx">frame</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">cloneData</span><span class="p">();</span>
+    //  Save current frame
+    frames[frame - 1] = cloneData();
 
-    <span class="kd">var</span> <span class="nx">output</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+    var output = "";
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">f</span> <span class="o">&lt;</span> <span class="nx">frames</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">f</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">src</span> <span class="o">=</span> <span class="nx">frames</span><span class="p">[</span><span class="nx">f</span><span class="p">];</span>
+    for (var f = 0; f < frames.length; f++)
+    {
+        var src = frames[f];
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">src</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">continue</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (src === null)
+        {
+            continue;
+        }
 
-        <span class="nx">output</span> <span class="o">=</span> <span class="nx">output</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="s2">"var frame"</span> <span class="o">+</span> <span class="nx">f</span> <span class="o">+</span> <span class="s2">" = [\n"</span><span class="p">);</span>
+        output = output.concat("var frame" + f + " = [\n");
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">src</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">output</span> <span class="o">=</span> <span class="nx">output</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="s2">"\t'"</span><span class="p">);</span>
-            <span class="nx">output</span> <span class="o">=</span> <span class="nx">output</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">src</span><span class="p">[</span><span class="nx">y</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">''</span><span class="p">));</span>
+        for (var y = 0; y < src.length; y++)
+        {
+            output = output.concat("\t'");
+            output = output.concat(src[y].join(''));
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">src</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">output</span> <span class="o">=</span> <span class="nx">output</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="s2">"',\n"</span><span class="p">);</span>
-            <span class="p">}</span>
-            <span class="k">else</span>
-            <span class="p">{</span>
-                <span class="nx">output</span> <span class="o">=</span> <span class="nx">output</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="s2">"'\n"</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+            if (y < src.length - 1)
+            {
+                output = output.concat("',\n");
+            }
+            else
+            {
+                output = output.concat("'\n");
+            }
+        }
         
-        <span class="nx">output</span> <span class="o">=</span> <span class="nx">output</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="s2">"];\n"</span><span class="p">);</span>
-        <span class="nx">output</span> <span class="o">=</span> <span class="nx">output</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="s2">"game.create.texture('yourKey', frame"</span> <span class="o">+</span> <span class="nx">f</span> <span class="o">+</span> <span class="s2">", "</span> <span class="o">+</span> <span class="nx">previewSize</span> <span class="o">+</span> <span class="s2">", "</span> <span class="o">+</span> <span class="nx">previewSize</span> <span class="o">+</span> <span class="s2">", "</span> <span class="o">+</span> <span class="nx">palette</span> <span class="o">+</span> <span class="s2">");\n"</span><span class="p">);</span>
+        output = output.concat("];\n");
+        output = output.concat("game.create.texture('yourKey', frame" + f + ", " + previewSize + ", " + previewSize + ", " + palette + ");\n");
 
-    <span class="p">}</span>
+    }
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">output</span><span class="p">);</span>
+    console.log(output);
 
-    <span class="nx">saveText</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">saveText</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">alpha</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="s2">"Linear"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    saveText.alpha = 1;
+    game.add.tween(saveText).to( { alpha: 0 }, 2000, "Linear", true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">shiftLeft</span><span class="p">()</span> <span class="p">{</span>
+function shiftLeft() {
 
-    <span class="nx">canvas</span><span class="p">.</span><span class="nx">moveH</span><span class="p">(</span><span class="o">-</span><span class="nx">canvasZoom</span><span class="p">);</span>
-    <span class="nx">preview</span><span class="p">.</span><span class="nx">moveH</span><span class="p">(</span><span class="o">-</span><span class="nx">previewSize</span><span class="p">);</span>
+    canvas.moveH(-canvasZoom);
+    preview.moveH(-previewSize);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">spriteHeight</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">y</span><span class="p">].</span><span class="nx">shift</span><span class="p">();</span>
-        <span class="nx">data</span><span class="p">[</span><span class="nx">y</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var y = 0; y < spriteHeight; y++)
+    {
+        var r = data[y].shift();
+        data[y].push(r);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">shiftRight</span><span class="p">()</span> <span class="p">{</span>
+function shiftRight() {
 
-    <span class="nx">canvas</span><span class="p">.</span><span class="nx">moveH</span><span class="p">(</span><span class="nx">canvasZoom</span><span class="p">);</span>
-    <span class="nx">preview</span><span class="p">.</span><span class="nx">moveH</span><span class="p">(</span><span class="nx">previewSize</span><span class="p">);</span>
+    canvas.moveH(canvasZoom);
+    preview.moveH(previewSize);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">spriteHeight</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">y</span><span class="p">].</span><span class="nx">pop</span><span class="p">();</span>
-        <span class="nx">data</span><span class="p">[</span><span class="nx">y</span><span class="p">].</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">r</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var y = 0; y < spriteHeight; y++)
+    {
+        var r = data[y].pop();
+        data[y].splice(0, 0, r);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">shiftUp</span><span class="p">()</span> <span class="p">{</span>
+function shiftUp() {
 
-    <span class="nx">canvas</span><span class="p">.</span><span class="nx">moveV</span><span class="p">(</span><span class="o">-</span><span class="nx">canvasZoom</span><span class="p">);</span>
-    <span class="nx">preview</span><span class="p">.</span><span class="nx">moveV</span><span class="p">(</span><span class="o">-</span><span class="nx">previewSize</span><span class="p">);</span>
+    canvas.moveV(-canvasZoom);
+    preview.moveV(-previewSize);
 
-    <span class="kd">var</span> <span class="nx">top</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
-    <span class="nx">data</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">top</span><span class="p">);</span>
+    var top = data.shift();
+    data.push(top);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">shiftDown</span><span class="p">()</span> <span class="p">{</span>
+function shiftDown() {
 
-    <span class="nx">canvas</span><span class="p">.</span><span class="nx">moveV</span><span class="p">(</span><span class="nx">canvasZoom</span><span class="p">);</span>
-    <span class="nx">preview</span><span class="p">.</span><span class="nx">moveV</span><span class="p">(</span><span class="nx">previewSize</span><span class="p">);</span>
+    canvas.moveV(canvasZoom);
+    preview.moveV(previewSize);
 
-    <span class="kd">var</span> <span class="nx">bottom</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">pop</span><span class="p">();</span>
-    <span class="nx">data</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">);</span>
+    var bottom = data.pop();
+    data.splice(0, 0, bottom);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onDown</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function onDown(pointer) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">&lt;=</span> <span class="mi">32</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">setColor</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">snapToFloor</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">isDown</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    if (pointer.y <= 32)
+    {
+        setColor(game.math.snapToFloor(pointer.x, 32) / 32);
+    }
+    else
+    {
+        isDown = true;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">rightButton</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">isErase</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="nx">isErase</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (pointer.rightButton.isDown)
+        {
+            isErase = true;
+        }
+        else
+        {
+            isErase = false;
+        }
 
-        <span class="nx">paint</span><span class="p">(</span><span class="nx">pointer</span><span class="p">);</span>
-    <span class="p">}</span>
+        paint(pointer);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onUp</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">isDown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="p">}</span>
+function onUp() {
+    isDown = false;
+}
 
-<span class="kd">function</span> <span class="nx">paint</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function paint(pointer) {
 
-    <span class="c1">//  Get the grid loc from the pointer</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">snapToFloor</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">canvasSprite</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">canvasZoom</span><span class="p">)</span> <span class="o">/</span> <span class="nx">canvasZoom</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">snapToFloor</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">canvasSprite</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">canvasZoom</span><span class="p">)</span> <span class="o">/</span> <span class="nx">canvasZoom</span><span class="p">;</span>
+    //  Get the grid loc from the pointer
+    var x = game.math.snapToFloor(pointer.x - canvasSprite.x, canvasZoom) / canvasZoom;
+    var y = game.math.snapToFloor(pointer.y - canvasSprite.y, canvasZoom) / canvasZoom;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">&gt;=</span> <span class="nx">spriteWidth</span> <span class="o">||</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">y</span> <span class="o">&gt;=</span> <span class="nx">spriteHeight</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (x < 0 || x >= spriteWidth || y < 0 || y >= spriteHeight)
+    {
+        return;
+    }
 
-    <span class="nx">coords</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"X: "</span> <span class="o">+</span> <span class="nx">x</span> <span class="o">+</span> <span class="s2">"\tY: "</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span>
+    coords.text = "X: " + x + "\tY: " + y;
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (!isDown)
+    {
+        return;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">isErase</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">data</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'.'</span><span class="p">;</span>
-        <span class="nx">canvas</span><span class="p">.</span><span class="nx">clear</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-        <span class="nx">preview</span><span class="p">.</span><span class="nx">clear</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">data</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">]</span> <span class="o">=</span> <span class="nx">pmap</span><span class="p">[</span><span class="nx">colorIndex</span><span class="p">];</span>
-        <span class="nx">canvas</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">canvasZoom</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-        <span class="nx">preview</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">previewSize</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (isErase)
+    {
+        data[y][x] = '.';
+        canvas.clear(x * canvasZoom, y * canvasZoom, canvasZoom, canvasZoom, color);
+        preview.clear(x * previewSize, y * previewSize, previewSize, previewSize, color);
+    }
+    else
+    {
+        data[y][x] = pmap[colorIndex];
+        canvas.rect(x * canvasZoom, y * canvasZoom, canvasZoom, canvasZoom, color);
+        preview.rect(x * previewSize, y * previewSize, previewSize, previewSize, color);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

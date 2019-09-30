@@ -55,57 +55,58 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/geometry/polygon.js" title="geometry/polygon.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/geometry/polygon.js" download="" title="Download: geometry/polygon.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">var</span> <span class="nx">poly</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">graphics</span><span class="p">;</span>
+var poly;
+var graphics;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Different ways of creating a Polygon:</span>
+    //  Different ways of creating a Polygon:
 
-    <span class="c1">//  Array of Point values</span>
-    <span class="c1">// poly = new Phaser.Polygon([ new Phaser.Point(200, 100), new Phaser.Point(350, 100), new Phaser.Point(375, 200), new Phaser.Point(150, 200) ]);</span>
+    //  Array of Point values
+    // poly = new Phaser.Polygon([ new Phaser.Point(200, 100), new Phaser.Point(350, 100), new Phaser.Point(375, 200), new Phaser.Point(150, 200) ]);
 
-    <span class="c1">//  Point values as parameters</span>
-    <span class="c1">// poly = new Phaser.Polygon(new Phaser.Point(200, 100), new Phaser.Point(350, 100), new Phaser.Point(375, 200), new Phaser.Point(150, 200));</span>
+    //  Point values as parameters
+    // poly = new Phaser.Polygon(new Phaser.Point(200, 100), new Phaser.Point(350, 100), new Phaser.Point(375, 200), new Phaser.Point(150, 200));
 
-    <span class="c1">//  Array of numbers treated as x/y pairs</span>
-    <span class="c1">// poly = new Phaser.Polygon([200, 100, 350, 100, 375, 200, 150, 200]);</span>
+    //  Array of numbers treated as x/y pairs
+    // poly = new Phaser.Polygon([200, 100, 350, 100, 375, 200, 150, 200]);
 
-    <span class="c1">//  Numbers in x/y pairs as parameters</span>
-    <span class="c1">// poly = new Phaser.Polygon(200, 100, 350, 100, 375, 200, 150, 200);</span>
+    //  Numbers in x/y pairs as parameters
+    // poly = new Phaser.Polygon(200, 100, 350, 100, 375, 200, 150, 200);
 
-    <span class="c1">//  Array of mixed-type values</span>
-    <span class="c1">// poly = new Phaser.Polygon([ new Phaser.Point(200, 100), 350, 100, 375, 200, new Phaser.Point(150, 200) ]);</span>
+    //  Array of mixed-type values
+    // poly = new Phaser.Polygon([ new Phaser.Point(200, 100), 350, 100, 375, 200, new Phaser.Point(150, 200) ]);
 
-    <span class="c1">//  Mixed-type values as parameters</span>
-    <span class="c1">// poly = new Phaser.Polygon(new Phaser.Point(200, 100), 350, 100, 375, 200, new Phaser.Point(150, 200));</span>
+    //  Mixed-type values as parameters
+    // poly = new Phaser.Polygon(new Phaser.Point(200, 100), 350, 100, 375, 200, new Phaser.Point(150, 200));
 
-    <span class="c1">//  Array of Objects with visible x/y properties</span>
-    <span class="c1">// poly = new Phaser.Polygon([ { x: 200, y: 100 }, { x: 350, y: 100 }, { x: 375, y: 200}, { x: 150, y: 200 } ]);</span>
+    //  Array of Objects with visible x/y properties
+    // poly = new Phaser.Polygon([ { x: 200, y: 100 }, { x: 350, y: 100 }, { x: 375, y: 200}, { x: 150, y: 200 } ]);
 
-    <span class="c1">//  Objects with visible x/y properties as parameters</span>
-    <span class="c1">// poly = new Phaser.Polygon( { x: 200, y: 100 }, { x: 350, y: 100 }, { x: 375, y: 200}, { x: 150, y: 200 });</span>
-
-
-
-    <span class="c1">//  You can also create an empty Polygon:</span>
-    <span class="nx">poly</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Polygon</span><span class="p">();</span>
-
-    <span class="c1">//  And then populate it via setTo, using any combination of values as above</span>
-    <span class="nx">poly</span><span class="p">.</span><span class="nx">setTo</span><span class="p">([</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">375</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span> <span class="p">]);</span>
+    //  Objects with visible x/y properties as parameters
+    // poly = new Phaser.Polygon( { x: 200, y: 100 }, { x: 350, y: 100 }, { x: 375, y: 200}, { x: 150, y: 200 });
 
 
 
-    <span class="nx">graphics</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    //  You can also create an empty Polygon:
+    poly = new Phaser.Polygon();
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFF33ff</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawPolygon</span><span class="p">(</span><span class="nx">poly</span><span class="p">.</span><span class="nx">points</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    //  And then populate it via setTo, using any combination of values as above
+    poly.setTo([ new Phaser.Point(200, 100), new Phaser.Point(350, 100), new Phaser.Point(375, 200), new Phaser.Point(150, 200) ]);
 
-<span class="p">}</span>
+
+
+    graphics = game.add.graphics(0, 0);
+
+    graphics.beginFill(0xFF33ff);
+    graphics.drawPolygon(poly.points);
+    graphics.endFill();
+
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

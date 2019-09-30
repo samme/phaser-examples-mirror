@@ -55,61 +55,62 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/drop%20limitation.js" title="input/drop limitation.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/drop%20limitation.js" download="" title="Download: input/drop limitation.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span><span class="na">render</span><span class="p">:</span><span class="nx">render</span><span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create,render:render});
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'item'</span><span class="p">,</span> <span class="s1">'assets/buttons/number-buttons-90x90.png'</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.load.spritesheet('item', 'assets/buttons/number-buttons-90x90.png', 90, 90);
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// Add some items to left side, and set a onDragStop listener</span>
-    <span class="c1">// to limit its location when dropped.</span>
+    // Add some items to left side, and set a onDragStop listener
+    // to limit its location when dropped.
 
-    <span class="kd">var</span> <span class="nx">item</span><span class="p">;</span>
+    var item;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// Directly create sprites on the left group.</span>
-        <span class="nx">item</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span> <span class="o">*</span> <span class="nx">i</span><span class="p">,</span> <span class="s1">'item'</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+    for (var i = 0; i < 6; i++)
+    {
+        // Directly create sprites on the left group.
+        item = game.add.sprite(90, 90 * i, 'item', i);
 
-        <span class="c1">// Enable input detection, then it's possible be dragged.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        // Enable input detection, then it's possible be dragged.
+        item.inputEnabled = true;
 
-        <span class="c1">// Make this item draggable.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
+        // Make this item draggable.
+        item.input.enableDrag();
         
-        <span class="c1">// Then we make it snap to left and right side,</span>
-        <span class="c1">// also we make it only snap when released.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableSnap</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        // Then we make it snap to left and right side,
+        // also we make it only snap when released.
+        item.input.enableSnap(90, 90, false, true);
 
-        <span class="c1">// Limit drop location to only the 2 columns.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">fixLocation</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+        // Limit drop location to only the 2 columns.
+        item.events.onDragStop.add(fixLocation);
+    }
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Group Left.'</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">560</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Group Right.'</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="mi">560</span><span class="p">);</span>
+    game.debug.text('Group Left.', 100, 560);
+    game.debug.text('Group Right.', 280, 560);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">fixLocation</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+function fixLocation(item) {
 
-    <span class="c1">// Move the items when it is already dropped.</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">180</span> <span class="o">&amp;&amp;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">270</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">180</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">360</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">270</span><span class="p">;</span>
-    <span class="p">}</span>
+    // Move the items when it is already dropped.
+    if (item.x < 90) {
+        item.x = 90;
+    }
+    else if (item.x > 180 && item.x < 270) {
+        item.x = 180;
+    }
+    else if (item.x > 360) {
+        item.x = 270;
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,40 +55,40 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/iworld.js" title="wip/iworld.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/iworld.js" download="" title="Download: wip/iworld.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// A simple Phaser template</span>
+</div>
+<pre class="highlight javascript"><code>// A simple Phaser template
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">(){</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'guy'</span><span class="p">,</span><span class="s1">'http://examples.phaser.io/assets/sprites/phaser-dude.png'</span><span class="p">)</span>
-<span class="p">}</span>
+function preload(){
+  game.load.image('guy','http://examples.phaser.io/assets/sprites/phaser-dude.png')
+}
 
-<span class="kd">var</span> <span class="nx">guySprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">guyImage</span><span class="p">;</span>
+var guySprite;
+var guyImage;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">(){</span>
+function create(){
 
-    <span class="kd">var</span> <span class="nx">guys</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-  <span class="nx">guySprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s1">'guy'</span><span class="p">);</span>
-  <span class="nx">guyImage</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="s1">'guy'</span><span class="p">);</span>
+    var guys = game.add.group();
+  guySprite = game.add.sprite(0,0,'guy');
+  guyImage = game.add.image(0,30,'guy');
   
-  <span class="nx">guys</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">150</span><span class="p">;</span>
-  <span class="nx">guys</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">150</span><span class="p">;</span>
+  guys.x = 150;
+  guys.y = 150;
 
-  <span class="nx">guys</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">guySprite</span><span class="p">);</span>
-  <span class="nx">guys</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">guyImage</span><span class="p">);</span>
+  guys.add(guySprite);
+  guys.add(guyImage);
   
-  <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">logIt</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-<span class="p">}</span>
+  game.input.onDown.add(logIt, this);
+}
 
-<span class="kd">function</span> <span class="nx">logIt</span><span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// console.log('sprite world',guySprite.world);</span>
-  <span class="c1">// console.log('image world',guyImage.world);</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">guySprite</span><span class="p">.</span><span class="nx">worldTransform</span><span class="p">);</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">guyImage</span><span class="p">.</span><span class="nx">worldTransform</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+function logIt() {
+  // console.log('sprite world',guySprite.world);
+  // console.log('image world',guyImage.world);
+  console.log(guySprite.worldTransform);
+  console.log(guyImage.worldTransform[2]);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

@@ -55,51 +55,51 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/display%20order.js" title="groups/display order.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/display%20order.js" download="" title="Download: groups/display order.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari1'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari130xe.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari2'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari800xl.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'card'</span><span class="p">,</span> <span class="s1">'assets/sprites/mana_card.png'</span><span class="p">);</span>
+    game.load.image('atari1', 'assets/sprites/atari130xe.png');
+    game.load.image('atari2', 'assets/sprites/atari800xl.png');
+    game.load.image('card', 'assets/sprites/mana_card.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">items</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">card</span><span class="p">;</span>
+var items;
+var card;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">items</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    items = game.add.group();
 
-    <span class="c1">//  Items are rendered in the depth order in which they are added to the Group</span>
-    <span class="nx">items</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'atari1'</span><span class="p">);</span>
-    <span class="nx">card</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">'card'</span><span class="p">);</span>
-    <span class="nx">items</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">280</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'atari2'</span><span class="p">);</span>
+    //  Items are rendered in the depth order in which they are added to the Group
+    items.create(64, 100, 'atari1');
+    card = items.create(240, 80, 'card');
+    items.create(280, 100, 'atari2');
 
-    <span class="c1">//  This event will be fired only once</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onTap</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">removeCard</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  This event will be fired only once
+    game.input.onTap.addOnce(removeCard, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">removeCard</span><span class="p">()</span> <span class="p">{</span>
+function removeCard() {
 
-    <span class="c1">//  Now let's kill the card sprite</span>
-    <span class="nx">card</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+    //  Now let's kill the card sprite
+    card.kill();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onTap</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">replaceCard</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onTap.addOnce(replaceCard, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">replaceCard</span><span class="p">()</span> <span class="p">{</span>
+function replaceCard() {
 
-    <span class="c1">//  And bring it back to life again. It will render in the same place as before?</span>
-    <span class="kd">var</span> <span class="nx">deadCard</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">getFirstDead</span><span class="p">();</span>
+    //  And bring it back to life again. It will render in the same place as before?
+    var deadCard = items.getFirstDead();
 
-    <span class="nx">deadCard</span><span class="p">.</span><span class="nx">revive</span><span class="p">();</span>
+    deadCard.revive();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

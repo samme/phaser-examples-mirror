@@ -55,24 +55,25 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/debug/debug%20draw.js" title="debug/debug draw.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/debug/debug%20draw.js" download="" title="Download: debug/debug draw.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">render</span><span class="p">:</span><span class="nx">render</span>  <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { render:render  });
 
-<span class="kd">var</span> <span class="nx">rect</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span> <span class="p">)</span> <span class="p">;</span>
-<span class="kd">var</span> <span class="nx">circle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Circle</span><span class="p">(</span> <span class="mi">280</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">100</span> <span class="p">)</span> <span class="p">;</span>
-<span class="kd">var</span> <span class="nx">point</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">280</span> <span class="p">)</span> <span class="p">;</span>
+var rect = new Phaser.Rectangle( 100, 100, 100, 100 ) ;
+var circle = new Phaser.Circle( 280, 150, 100 ) ;
+var point = new Phaser.Point( 100, 280 ) ;
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">// Draw debug tools</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span> <span class="nx">rect</span><span class="p">,</span> <span class="s1">'rgba(255,0,0,1)'</span> <span class="p">)</span> <span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span> <span class="nx">circle</span><span class="p">,</span> <span class="s1">'rgba(255,255,0,1)'</span> <span class="p">)</span> <span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span> <span class="nx">point</span><span class="p">,</span> <span class="s1">'rgba(255,255,255,1)'</span> <span class="p">)</span> <span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">pixel</span><span class="p">(</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="s1">'rgba(0,255,255,1)'</span> <span class="p">)</span> <span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span> <span class="s2">"This is debug text"</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">380</span> <span class="p">);</span>
+    // Draw debug tools
+    game.debug.geom( rect, 'rgba(255,0,0,1)' ) ;
+    game.debug.geom( circle, 'rgba(255,255,0,1)' ) ;
+    game.debug.geom( point, 'rgba(255,255,255,1)' ) ;
+    game.debug.pixel( 200, 280, 'rgba(0,255,255,1)' ) ;
+    game.debug.text( "This is debug text", 100, 380 );
 
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

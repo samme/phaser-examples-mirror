@@ -55,78 +55,79 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/google%20webfont.js" title="wip/google webfont.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/google%20webfont.js" download="" title="Download: wip/google webfont.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="c1">//  The Google WebFont Loader will look for this object, so create it before loading the script.</span>
-<span class="nx">WebFontConfig</span> <span class="o">=</span> <span class="p">{</span>
+//  The Google WebFont Loader will look for this object, so create it before loading the script.
+WebFontConfig = {
 
-    <span class="c1">//  'active' means all requested fonts have finished loading</span>
-    <span class="c1">//  We set a 1 second delay before calling 'createText'.</span>
-    <span class="c1">//  For some reason if we don't the browser cannot render the text the first time it's created.</span>
-    <span class="na">active</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span><span class="p">,</span> <span class="nx">createText</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span> <span class="p">},</span>
+    //  'active' means all requested fonts have finished loading
+    //  We set a 1 second delay before calling 'createText'.
+    //  For some reason if we don't the browser cannot render the text the first time it's created.
+    active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
 
-    <span class="c1">//  The Google Fonts we want to load</span>
-    <span class="na">google</span><span class="p">:</span> <span class="p">{</span>
-      <span class="na">families</span><span class="p">:</span> <span class="p">[</span><span class="s1">'Revalia'</span><span class="p">,</span> <span class="s1">'Droid Sans'</span><span class="p">,</span> <span class="s1">'Droid Serif'</span><span class="p">]</span>
-    <span class="p">}</span>
+    //  The Google Fonts we want to load
+    google: {
+      families: ['Revalia', 'Droid Sans', 'Droid Serif']
+    }
 
-<span class="p">};</span>
+};
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Load the Google WebFont Loader script</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">script</span><span class="p">(</span><span class="s1">'webfont'</span><span class="p">,</span> <span class="s1">'//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js'</span><span class="p">);</span>
+    //  Load the Google WebFont Loader script
+    game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">grd</span><span class="p">;</span>
+var text = null;
+var grd;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">setBackgroundColor</span><span class="p">(</span><span class="mh">0x2d2d2d</span><span class="p">);</span>
+	game.stage.setBackgroundColor(0x2d2d2d);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createText</span><span class="p">()</span> <span class="p">{</span>
+function createText() {
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s2">"- phaser -\nrocking with\ngoogle web fonts"</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    text = game.add.text(game.world.centerX, game.world.centerY, "- phaser -\nrocking with\ngoogle web fonts");
+    text.anchor.setTo(0.5);
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'Revalia'</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fontSize</span> <span class="o">=</span> <span class="mi">60</span><span class="p">;</span>
+    text.font = 'Revalia';
+    text.fontSize = 60;
 
-    <span class="c1">//  x0, y0 - x1, y1</span>
-    <span class="nx">grd</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">createLinearGradient</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">text</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-    <span class="nx">grd</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'#8ED6FF'</span><span class="p">);</span>   
-    <span class="nx">grd</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'#004CB3'</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="nx">grd</span><span class="p">;</span>
+    //  x0, y0 - x1, y1
+    grd = text.context.createLinearGradient(0, 0, 0, text.canvas.height);
+    grd.addColorStop(0, '#8ED6FF');   
+    grd.addColorStop(1, '#004CB3');
+    text.fill = grd;
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'center'</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">stroke</span> <span class="o">=</span> <span class="s1">'#000000'</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">strokeThickness</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+    text.align = 'center';
+    text.stroke = '#000000';
+    text.strokeThickness = 2;
+    text.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
+    text.inputEnabled = true;
+    text.input.enableDrag();
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">over</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    text.events.onInputOver.add(over, this);
+    text.events.onInputOut.add(out, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">out</span><span class="p">()</span> <span class="p">{</span>
+function out() {
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="nx">grd</span><span class="p">;</span>
+    text.fill = grd;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">over</span><span class="p">()</span> <span class="p">{</span>
+function over() {
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s1">'#ff00ff'</span><span class="p">;</span>
+    text.fill = '#ff00ff';
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,97 +55,98 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/springs%201.js" title="wip/springs 1.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/springs%201.js" download="" title="Download: wip/springs 1.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'backdrop'</span><span class="p">,</span> <span class="s1">'assets/pics/remember-me.jpg'</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'box'</span><span class="p">,</span> <span class="s1">'assets/sprites/block.png'</span><span class="p">);</span>
+    game.load.image('backdrop', 'assets/pics/remember-me.jpg');
+	game.load.image('box', 'assets/sprites/block.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">box1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">box2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">s</span><span class="p">;</span>
+var box1;
+var box2;
+var s;
 
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var cursors;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1920</span><span class="p">,</span> <span class="mi">1200</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'backdrop'</span><span class="p">);</span>
+    game.world.setBounds(0, 0, 1920, 1200);
+    game.add.sprite(0, 0, 'backdrop');
 
-<span class="c1">//    game.physics.gravity.y = -9.78;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">gravity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.78</span><span class="p">;</span>
+//    game.physics.gravity.y = -9.78;
+    game.physics.gravity[1] = -9.78;
 
-    <span class="c1">// game.physics.onBodyAdded.add(addedToWorld, this);</span>
+    // game.physics.onBodyAdded.add(addedToWorld, this);
 
-	<span class="nx">box1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'box'</span><span class="p">);</span>
-	<span class="nx">box1</span><span class="p">.</span><span class="nx">physicsEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-	<span class="c1">// box1.body.fixedRotation = true;</span>
-	<span class="c1">// box1.body.mass = 3;</span>
+	box1 = game.add.sprite(200, 200, 'box');
+	box1.physicsEnabled = true;
+	// box1.body.fixedRotation = true;
+	// box1.body.mass = 3;
 
-	<span class="nx">box2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'box'</span><span class="p">);</span>
-	<span class="nx">box2</span><span class="p">.</span><span class="nx">physicsEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-	<span class="c1">// box2.body.fixedRotation = true;</span>
+	box2 = game.add.sprite(400, 200, 'box');
+	box2.physicsEnabled = true;
+	// box2.body.fixedRotation = true;
 
-	<span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Spring</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">box1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">data</span><span class="p">,</span> <span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">data</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">70</span> <span class="p">],</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">70</span> <span class="p">]);</span>
+	s = new Phaser.Physics.Spring(game, box1.body.data, box2.body.data, 2, 10, 1, null, null, [ 0, 70 ], [ 0, 70 ]);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">addSpring</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
+	game.physics.addSpring(s);
 
-        <span class="c1">// var s = new p2.Spring(box1, box2, {</span>
-        <span class="c1">//     restLength : 1,</span>
-        <span class="c1">//     stiffness : 10,</span>
-        <span class="c1">//     localAnchorA : [0,0.5],</span>
-        <span class="c1">//     localAnchorB : [0,0.5],</span>
-        <span class="c1">// });</span>
-        <span class="c1">// world.addSpring(s);</span>
+        // var s = new p2.Spring(box1, box2, {
+        //     restLength : 1,
+        //     stiffness : 10,
+        //     localAnchorA : [0,0.5],
+        //     localAnchorB : [0,0.5],
+        // });
+        // world.addSpring(s);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">box2</span><span class="p">);</span>
+	game.camera.follow(box2);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-    <span class="c1">// game.physics.defaultRestitution = 0.8;</span>
+    // game.physics.defaultRestitution = 0.8;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">addedToWorld</span><span class="p">(</span><span class="nx">body</span><span class="p">,</span> <span class="nx">world</span><span class="p">)</span> <span class="p">{</span>
+function addedToWorld(body, world) {
 
-	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Body added for'</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
+	console.log('Body added for', body);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setZeroVelocity</span><span class="p">();</span>
+	box2.body.setZeroVelocity();
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-    	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-    	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+    	box2.body.moveLeft(400);
+    }
+    else if (cursors.right.isDown)
+    {
+    	box2.body.moveRight(400);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-    	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-    	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveDown</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+    	box2.body.moveUp(400);
+    }
+    else if (cursors.down.isDown)
+    {
+    	box2.body.moveDown(400);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="c1">// game.debug.text('x: ' + box2.body.velocity.x, 32, 32);</span>
-	<span class="c1">// game.debug.text('y: ' + box2.body.velocity.y, 32, 64);</span>
+	// game.debug.text('x: ' + box2.body.velocity.x, 32, 32);
+	// game.debug.text('y: ' + box2.body.velocity.y, 32, 64);
 
-<span class="p">}</span>
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

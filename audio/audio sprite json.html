@@ -55,110 +55,111 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/audio/audio%20sprite%20json.js" title="audio/audio sprite json.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/audio/audio%20sprite%20json.js" download="" title="Download: audio/audio sprite json.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">var</span> <span class="nx">audioJSON</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">spritemap</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'alien death'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-        <span class="s1">'boss hit'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-        <span class="s1">'escape'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mf">7.2</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-        <span class="s1">'meow'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mf">8.5</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-        <span class="s1">'numkey'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mf">9.1</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-        <span class="s1">'ping'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-        <span class="s1">'death'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mf">16.2</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-        <span class="s1">'shot'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-        <span class="s1">'squit'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mf">19.3</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">};</span>
+var audioJSON = {
+    spritemap: {
+        'alien death': {
+            start: 1,
+            end: 2,
+            loop: false
+        },
+        'boss hit': {
+            start: 3,
+            end: 3.5,
+            loop: false
+        },
+        'escape': {
+            start: 4,
+            end: 7.2,
+            loop: false
+        },
+        'meow': {
+            start: 8,
+            end: 8.5,
+            loop: false
+        },
+        'numkey': {
+            start: 9,
+            end: 9.1,
+            loop: false
+        },
+        'ping': {
+            start: 10,
+            end: 11,
+            loop: false
+        },
+        'death': {
+            start: 12,
+            end: 16.2,
+            loop: false
+        },
+        'shot': {
+            start: 17,
+            end: 18,
+            loop: false
+        },
+        'squit': {
+            start: 19,
+            end: 19.3,
+            loop: false
+        }
+    }
+};
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'title'</span><span class="p">,</span> <span class="s1">'assets/pics/catastrophi.png'</span><span class="p">);</span>
+    game.load.image('title', 'assets/pics/catastrophi.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'button'</span><span class="p">,</span> <span class="s1">'assets/buttons/flixel-button.png'</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'nokia'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/nokia16black.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/nokia16black.xml'</span><span class="p">);</span>
+    game.load.spritesheet('button', 'assets/buttons/flixel-button.png', 80, 20);
+    game.load.bitmapFont('nokia', 'assets/fonts/bitmapFonts/nokia16black.png', 'assets/fonts/bitmapFonts/nokia16black.xml');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audiosprite</span><span class="p">(</span><span class="s1">'sfx'</span><span class="p">,</span> <span class="s1">'assets/audio/SoundEffects/fx_mixdown.ogg'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">audioJSON</span><span class="p">);</span>
+    game.load.audiosprite('sfx', 'assets/audio/SoundEffects/fx_mixdown.ogg', null, audioJSON);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">fx</span><span class="p">;</span>
+var fx;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'title'</span><span class="p">);</span>
+	game.add.image(0, 0, 'title');
 
-	<span class="c1">//	Here we set-up our audio sprite</span>
-	<span class="nx">fx</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audioSprite</span><span class="p">(</span><span class="s1">'sfx'</span><span class="p">);</span>
-        <span class="nx">fx</span><span class="p">.</span><span class="nx">allowMultiple</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	//	Here we set-up our audio sprite
+	fx = game.add.audioSprite('sfx');
+        fx.allowMultiple = true;
 
-	<span class="c1">//	Make some buttons to trigger the sounds</span>
-	<span class="nx">makeButton</span><span class="p">(</span><span class="s1">'alien death'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-	<span class="nx">makeButton</span><span class="p">(</span><span class="s1">'boss hit'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">140</span><span class="p">);</span>
-	<span class="nx">makeButton</span><span class="p">(</span><span class="s1">'escape'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">180</span><span class="p">);</span>
-	<span class="nx">makeButton</span><span class="p">(</span><span class="s1">'meow'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">220</span><span class="p">);</span>
-	<span class="nx">makeButton</span><span class="p">(</span><span class="s1">'numkey'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">260</span><span class="p">);</span>
-	<span class="nx">makeButton</span><span class="p">(</span><span class="s1">'ping'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
-	<span class="nx">makeButton</span><span class="p">(</span><span class="s1">'death'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">340</span><span class="p">);</span>
-	<span class="nx">makeButton</span><span class="p">(</span><span class="s1">'shot'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">380</span><span class="p">);</span>
-	<span class="nx">makeButton</span><span class="p">(</span><span class="s1">'squit'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">420</span><span class="p">);</span>
+	//	Make some buttons to trigger the sounds
+	makeButton('alien death', 600, 100);
+	makeButton('boss hit', 600, 140);
+	makeButton('escape', 600, 180);
+	makeButton('meow', 600, 220);
+	makeButton('numkey', 600, 260);
+	makeButton('ping', 600, 300);
+	makeButton('death', 600, 340);
+	makeButton('shot', 600, 380);
+	makeButton('squit', 600, 420);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">makeButton</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function makeButton(name, x, y) {
 
-    <span class="kd">var</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">click</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">button</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
-    <span class="nx">button</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">);</span>
-    <span class="nx">button</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    var button = game.add.button(x, y, 'button', click, this, 0, 1, 2);
+    button.name = name;
+    button.scale.set(2, 1.5);
+    button.smoothed = false;
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">'nokia'</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">textWidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+    var text = game.add.bitmapText(x, y + 7, 'nokia', name, 16);
+    text.x += (button.width / 2) - (text.textWidth / 2);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">click</span><span class="p">(</span><span class="nx">button</span><span class="p">)</span> <span class="p">{</span>
+function click(button) {
 
-	<span class="nx">fx</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+	fx.play(button.name);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

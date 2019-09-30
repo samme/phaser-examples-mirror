@@ -55,58 +55,59 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bitmapdata/fastcopy%20draw.js" title="bitmapdata/fastcopy draw.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bitmapdata/fastcopy%20draw.js" download="" title="Download: bitmapdata/fastcopy draw.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">r</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bmdDest</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">colors</span><span class="p">;</span>
+var i;
+var r;
+var bmd;
+var bmdDest;
+var colors;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    bmd = game.make.bitmapData(game.width, game.height);
 
-    <span class="nx">bmdDest</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-    <span class="nx">bmdDest</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    bmdDest = game.make.bitmapData(game.width, game.height);
+    bmdDest.addToWorld();
 
-    <span class="nx">colors</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">HSVColorWheel</span><span class="p">();</span>
+    colors = Phaser.Color.HSVColorWheel();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">paint</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.addMoveCallback(paint, this);
 
-    <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nx">r</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    i = 0;
+    r = new Phaser.Rectangle(0, 0, game.width, game.height);
 
-    <span class="c1">//  r = the rotation, s = the scale</span>
-    <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span> <span class="na">r</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">s</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">};</span>
+    //  r = the rotation, s = the scale
+    data = { r: 0, s: 0.5 };
 
-    <span class="c1">//  Change the tween duration, ease type, values, etc for different effects</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">data</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">r</span><span class="p">:</span> <span class="mi">360</span><span class="p">,</span> <span class="na">s</span><span class="p">:</span> <span class="mi">2</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">Number</span><span class="p">.</span><span class="nx">MAX_VALUE</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    //  Change the tween duration, ease type, values, etc for different effects
+    game.add.tween(data).to( { r: 360, s: 2 }, 2000, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.MAX_VALUE, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">paint</span><span class="p">(</span><span class="nx">pointer</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function paint(pointer, x, y) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Change the 4 - the width of the pen, to anything you like</span>
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">colors</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">rgba</span><span class="p">);</span>
+    if (pointer.isDown)
+    {
+        //  Change the 4 - the width of the pen, to anything you like
+        bmd.circle(x, y, 4, colors[i].rgba);
 
-        <span class="nx">i</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">wrapValue</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">359</span><span class="p">);</span>
-    <span class="p">}</span>
+        i = game.math.wrapValue(i, 1, 359);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">//  Change the 0.1 to something like 0.5 for a shorter 'trail'</span>
-    <span class="nx">bmdDest</span><span class="p">.</span><span class="nx">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+    //  Change the 0.1 to something like 0.5 for a shorter 'trail'
+    bmdDest.fill(0, 0, 0, 0.1);
 
-    <span class="c1">//  Change the 0.7 at the end, it's the alpha value, lower it for a softer effect</span>
-    <span class="nx">bmdDest</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="nx">bmd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    //  Change the 0.7 at the end, it's the alpha value, lower it for a softer effect
+    bmdDest.copy(bmd, 0, 0);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

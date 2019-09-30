@@ -55,47 +55,48 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/tilemap3.js" title="wip/tilemap3.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/tilemap3.js" download="" title="Download: wip/tilemap3.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'map'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/maps/test.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">TILED_JSON</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tileset'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/test.png'</span><span class="p">);</span>
+    game.load.tilemap('map', 'assets/tilemaps/maps/test.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('tileset', 'assets/tilemaps/tiles/test.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">map</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">layer</span><span class="p">;</span>
+var map;
+var layer;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#787878'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#787878';
 
-    <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'map'</span><span class="p">);</span>
+    map = game.add.tilemap('map');
 
-    <span class="nx">map</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'tileset'</span><span class="p">);</span>
+    map.addTilesetImage('tileset');
     
-    <span class="nx">layer</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="s1">'calque1'</span><span class="p">);</span>
+    layer = map.createLayer('calque1');
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">layer</span><span class="p">);</span>
+    console.log(layer);
 
-    <span class="c1">// layer.resizeWorld();</span>
+    // layer.resizeWorld();
 
-    <span class="c1">// map.setCollisionBetween(1, 12);</span>
+    // map.setCollisionBetween(1, 12);
 
-    <span class="c1">// layer.debug = true;</span>
+    // layer.debug = true;
 
-    <span class="c1">// dump = map.generateCollisionData(layer);</span>
+    // dump = map.generateCollisionData(layer);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function update() {
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function render() {
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

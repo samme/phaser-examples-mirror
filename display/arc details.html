@@ -55,49 +55,49 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/arc%20details.js" title="display/arc details.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/arc%20details.js" download="" title="Download: display/arc details.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">info</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">graphics1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">graphics2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">angle</span> <span class="o">=</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">0</span> <span class="p">};</span>
+var info;
+var graphics1;
+var graphics2;
+var angle = { min: 0, max: 0 };
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x2d2d2d</span><span class="p">;</span>
+    game.stage.backgroundColor = 0x2d2d2d;
 
-    <span class="nx">graphics1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">graphics2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    graphics1 = game.add.graphics(0, 0);
+    graphics2 = game.add.graphics(0, 0);
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"24px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">};</span>
+    var style = { font: "24px Arial", fill: "#ffffff", align: "center" };
 
-    <span class="nx">info</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'Arc'</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    info = game.add.text(32, 32, 'Arc', style);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">130</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'Clockwise'</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">530</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'Anticlockwise'</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    game.add.text(130, 500, 'Clockwise', style);
+    game.add.text(530, 500, 'Anticlockwise', style);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">angle</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">max</span><span class="p">:</span> <span class="mi">360</span> <span class="p">},</span> <span class="mi">6000</span><span class="p">,</span> <span class="s2">"Linear"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    this.add.tween(angle).to( { max: 360 }, 6000, "Linear", true, 0, -1, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">info</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Arc maxAngle: "</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">angle</span><span class="p">.</span><span class="nx">max</span><span class="p">);</span>
+    info.text = "Arc maxAngle: " + Math.round(angle.max);
 
-    <span class="nx">graphics1</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
-    <span class="nx">graphics1</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0xffffff</span><span class="p">);</span>
-    <span class="nx">graphics1</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0x00bff3</span><span class="p">);</span>
-    <span class="nx">graphics1</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="nx">angle</span><span class="p">.</span><span class="nx">min</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">degToRad</span><span class="p">(</span><span class="nx">angle</span><span class="p">.</span><span class="nx">max</span><span class="p">),</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="nx">graphics1</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    graphics1.clear();
+    graphics1.lineStyle(2, 0xffffff);
+    graphics1.beginFill(0x00bff3);
+    graphics1.arc(200, 300, 160, angle.min, game.math.degToRad(angle.max), false);
+    graphics1.endFill();
 
-    <span class="nx">graphics2</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
-    <span class="nx">graphics2</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0xffffff</span><span class="p">);</span>
-    <span class="nx">graphics2</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xa000f3</span><span class="p">);</span>
-    <span class="nx">graphics2</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="nx">angle</span><span class="p">.</span><span class="nx">min</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">degToRad</span><span class="p">(</span><span class="nx">angle</span><span class="p">.</span><span class="nx">max</span><span class="p">),</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">128</span><span class="p">);</span>
-    <span class="nx">graphics2</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    graphics2.clear();
+    graphics2.lineStyle(2, 0xffffff);
+    graphics2.beginFill(0xa000f3);
+    graphics2.arc(600, 300, 160, angle.min, game.math.degToRad(angle.max), true, 128);
+    graphics2.endFill();
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

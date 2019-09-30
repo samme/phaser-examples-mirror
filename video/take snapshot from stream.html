@@ -55,59 +55,60 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/video/take%20snapshot%20from%20stream.js" title="video/take snapshot from stream.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/video/take%20snapshot%20from%20stream.js" download="" title="Download: video/take snapshot from stream.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">var</span> <span class="nx">video</span><span class="p">;</span>
+var video;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  No properties at all means we'll create a video stream from a webcam</span>
-    <span class="nx">video</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">video</span><span class="p">();</span>
+    //  No properties at all means we'll create a video stream from a webcam
+    video = game.add.video();
 
-    <span class="c1">//  If access to the camera is allowed</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">onAccess</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">camAllowed</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  If access to the camera is allowed
+    video.onAccess.add(camAllowed, this);
 
-    <span class="c1">//  If access to the camera is denied</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">onError</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">camBlocked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  If access to the camera is denied
+    video.onError.add(camBlocked, this);
 
-    <span class="c1">//  As soon as the stream starts this will fire</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">onChangeSource</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">takeSnapshot</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  As soon as the stream starts this will fire
+    video.onChangeSource.add(takeSnapshot, this);
 
-    <span class="c1">//  Start the stream</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">startMediaStream</span><span class="p">();</span>
+    //  Start the stream
+    video.startMediaStream();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">camAllowed</span><span class="p">()</span> <span class="p">{</span>
+function camAllowed() {
 
-    <span class="kd">var</span> <span class="nx">cam</span> <span class="o">=</span> <span class="nx">video</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
-    <span class="nx">cam</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    var cam = video.addToWorld();
+    cam.scale.set(0.5);
 
-    <span class="kd">var</span> <span class="nx">grab</span> <span class="o">=</span> <span class="nx">video</span><span class="p">.</span><span class="nx">snapshot</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-    <span class="nx">grab</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    var grab = video.snapshot.addToWorld(game.width, game.height);
+    grab.anchor.set(1);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'Click to grab'</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"bold 26px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span> <span class="p">})</span>
+    game.add.text(400, 32, 'Click to grab', { font: "bold 26px Arial", fill: "#ffffff" })
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">takeSnapshot</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(takeSnapshot, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">camBlocked</span><span class="p">(</span><span class="nx">video</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+function camBlocked(video, error) {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Camera was blocked'</span><span class="p">,</span> <span class="nx">video</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+    console.log('Camera was blocked', video, error);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">takeSnapshot</span><span class="p">()</span> <span class="p">{</span>
+function takeSnapshot() {
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">grab</span><span class="p">();</span>
+    video.grab();
 
-    <span class="c1">// grab: function (clear, alpha, blendMode) {</span>
-    <span class="c1">// video.grab(false, 0.5, 'multiply');</span>
-    <span class="c1">// video.grab(false, 1, 'overlay');</span>
+    // grab: function (clear, alpha, blendMode) {
+    // video.grab(false, 0.5, 'multiply');
+    // video.grab(false, 1, 'overlay');
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

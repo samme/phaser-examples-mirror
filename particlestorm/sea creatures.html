@@ -55,75 +55,75 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particlestorm/sea%20creatures.js" title="particlestorm/sea creatures.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particlestorm/sea%20creatures.js" download="" title="Download: particlestorm/sea creatures.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Particle Storm Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/particlestorm
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">manager</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+var manager = null;
+var emitter = null;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">forceSingleUpdate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    game.forceSingleUpdate = true;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/particlestorm/logo-flat.png'</span><span class="p">);</span>
+    game.load.image('logo', 'assets/particlestorm/logo-flat.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="s1">'assets/particlestorm/sprites/'</span><span class="p">;</span>
+    game.load.path = 'assets/particlestorm/sprites/';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'seacreatures'</span><span class="p">);</span>
+    game.load.atlas('seacreatures');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#037caa'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#037caa';
 
-    <span class="nx">manager</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">ParticleStorm</span><span class="p">);</span>
+    manager = this.game.plugins.add(Phaser.ParticleStorm);
 
-    <span class="c1">//  Here we've multiple animations all from the same texture atlas.</span>
-    <span class="c1">//  The 'play' parameter controls which one is played with the particle is emitted.</span>
-    <span class="c1">//  By giving an array it'll randomly pick one of the animation names from the play array.</span>
+    //  Here we've multiple animations all from the same texture atlas.
+    //  The 'play' parameter controls which one is played with the particle is emitted.
+    //  By giving an array it'll randomly pick one of the animation names from the play array.
 
-    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="mi">12000</span><span class="p">,</span>
-        <span class="na">image</span><span class="p">:</span> <span class="s1">'seacreatures'</span><span class="p">,</span>
-        <span class="na">animations</span><span class="p">:</span> <span class="p">{</span> 
-            <span class="s1">'jellyfish'</span><span class="p">:</span> <span class="p">{</span> <span class="na">frames</span><span class="p">:</span> <span class="p">{</span> <span class="na">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">stop</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="na">prefix</span><span class="p">:</span> <span class="s1">'blueJellyfish'</span><span class="p">,</span> <span class="na">suffix</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span> <span class="na">zeroPad</span><span class="p">:</span> <span class="mi">4</span> <span class="p">},</span> <span class="na">frameRate</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="na">loop</span><span class="p">:</span> <span class="kc">true</span> <span class="p">},</span>
-            <span class="s1">'flyingFish'</span><span class="p">:</span> <span class="p">{</span> <span class="na">frames</span><span class="p">:</span> <span class="p">[</span><span class="s1">'flyingFish0000'</span><span class="p">,</span> <span class="s1">'flyingFish0001'</span><span class="p">],</span> <span class="na">frameRate</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="na">loop</span><span class="p">:</span> <span class="kc">true</span> <span class="p">},</span>
-            <span class="s1">'octopus'</span><span class="p">:</span> <span class="p">{</span> <span class="na">frames</span><span class="p">:</span> <span class="p">{</span> <span class="na">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">stop</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="na">prefix</span><span class="p">:</span> <span class="s1">'octopus'</span><span class="p">,</span> <span class="na">suffix</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span> <span class="na">zeroPad</span><span class="p">:</span> <span class="mi">4</span> <span class="p">},</span> <span class="na">frameRate</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="na">loop</span><span class="p">:</span> <span class="kc">true</span> <span class="p">},</span>
-            <span class="s1">'electric'</span><span class="p">:</span> <span class="p">{</span> <span class="na">frames</span><span class="p">:</span> <span class="p">{</span> <span class="na">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">stop</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="na">prefix</span><span class="p">:</span> <span class="s1">'purpleFish'</span><span class="p">,</span> <span class="na">suffix</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span> <span class="na">zeroPad</span><span class="p">:</span> <span class="mi">4</span> <span class="p">},</span> <span class="na">frameRate</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="na">loop</span><span class="p">:</span> <span class="kc">true</span> <span class="p">},</span>
-            <span class="s1">'seahorse'</span><span class="p">:</span> <span class="p">{</span> <span class="na">frames</span><span class="p">:</span> <span class="p">{</span> <span class="na">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">stop</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="na">prefix</span><span class="p">:</span> <span class="s1">'seahorse'</span><span class="p">,</span> <span class="na">suffix</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span> <span class="na">zeroPad</span><span class="p">:</span> <span class="mi">4</span> <span class="p">},</span> <span class="na">frameRate</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="na">loop</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span>
-        <span class="p">},</span>
-        <span class="na">play</span><span class="p">:</span> <span class="p">[</span> <span class="s1">'jellyfish'</span><span class="p">,</span> <span class="s1">'flyingFish'</span><span class="p">,</span> <span class="s1">'octopus'</span><span class="p">,</span> <span class="s1">'electric'</span><span class="p">,</span> <span class="s1">'seahorse'</span> <span class="p">],</span>
-        <span class="na">vx</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span> <span class="p">},</span>
-        <span class="na">vy</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">}</span>
-    <span class="p">};</span>
+    var data = {
+        lifespan: 12000,
+        image: 'seacreatures',
+        animations: { 
+            'jellyfish': { frames: { start: 0, stop: 32, prefix: 'blueJellyfish', suffix: '', zeroPad: 4 }, frameRate: 20, loop: true },
+            'flyingFish': { frames: ['flyingFish0000', 'flyingFish0001'], frameRate: 10, loop: true },
+            'octopus': { frames: { start: 0, stop: 24, prefix: 'octopus', suffix: '', zeroPad: 4 }, frameRate: 30, loop: true },
+            'electric': { frames: { start: 0, stop: 20, prefix: 'purpleFish', suffix: '', zeroPad: 4 }, frameRate: 50, loop: true },
+            'seahorse': { frames: { start: 0, stop: 5, prefix: 'seahorse', suffix: '', zeroPad: 4 }, frameRate: 25, loop: true }
+        },
+        play: [ 'jellyfish', 'flyingFish', 'octopus', 'electric', 'seahorse' ],
+        vx: { min: -0.5, max: -3 },
+        vy: { min: -0.5, max: 0.5 }
+    };
 
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    manager.addData('basic', data);
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createEmitter</span><span class="p">();</span>
+    emitter = manager.createEmitter();
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    emitter.addToWorld();
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">600</span><span class="p">],</span> <span class="p">{</span> <span class="na">repeat</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="na">frequency</span><span class="p">:</span> <span class="mi">500</span> <span class="p">});</span>
+    emitter.emit('basic', 900, [0, 600], { repeat: -1, frequency: 500 });
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">487</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
+    game.add.image(432, 487, 'logo');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">522</span><span class="p">);</span>
+    emitter.debug(432, 522);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

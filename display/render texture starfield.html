@@ -55,88 +55,89 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/render%20texture%20starfield.js" title="display/render texture starfield.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/render%20texture%20starfield.js" download="" title="Download: display/render texture starfield.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });</span>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'star'</span><span class="p">,</span> <span class="s1">'assets/sprites/bullet.png'</span><span class="p">);</span>
+    game.load.image('star', 'assets/sprites/bullet.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">star</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">texture1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">texture2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">texture3</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">stars</span> <span class="o">=</span> <span class="p">[];</span>
+var star;
+var texture1;
+var texture2;
+var texture3;
+var stars = [];
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  This is the sprite that will be drawn to the texture</span>
-    <span class="c1">//  Note that we 'make' it, not 'add' it, as we don't want it on the display list</span>
-    <span class="nx">star</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'star'</span><span class="p">);</span>
+    //  This is the sprite that will be drawn to the texture
+    //  Note that we 'make' it, not 'add' it, as we don't want it on the display list
+    star = game.make.sprite(0, 0, 'star');
 
-    <span class="c1">//  For this effect we'll create a vertical scrolling starfield with 300 stars split across 3 layers.</span>
-    <span class="c1">//  This will use only 3 textures / sprites in total.</span>
-    <span class="nx">texture1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">renderTexture</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'texture1'</span><span class="p">);</span>
-    <span class="nx">texture2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">renderTexture</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'texture2'</span><span class="p">);</span>
-    <span class="nx">texture3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">renderTexture</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'texture3'</span><span class="p">);</span>
+    //  For this effect we'll create a vertical scrolling starfield with 300 stars split across 3 layers.
+    //  This will use only 3 textures / sprites in total.
+    texture1 = game.add.renderTexture(800, 600, 'texture1');
+    texture2 = game.add.renderTexture(800, 600, 'texture2');
+    texture3 = game.add.renderTexture(800, 600, 'texture3');
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">texture1</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">texture2</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">texture3</span><span class="p">);</span>
+    game.add.sprite(0, 0, texture1);
+    game.add.sprite(0, 0, texture2);
+    game.add.sprite(0, 0, texture3);
 
-    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">texture1</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+    var t = texture1;
+    var s = 4;
 
-    <span class="c1">//  100 sprites per layer</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="mi">100</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="c1">//  With each 100 stars we ramp up the speed a little and swap to the next texture</span>
-            <span class="nx">s</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
-            <span class="nx">t</span> <span class="o">=</span> <span class="nx">texture2</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">s</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
-            <span class="nx">t</span> <span class="o">=</span> <span class="nx">texture3</span><span class="p">;</span>
-        <span class="p">}</span>
+    //  100 sprites per layer
+    for (var i = 0; i < 300; i++)
+    {
+        if (i == 100)
+        {
+            //  With each 100 stars we ramp up the speed a little and swap to the next texture
+            s = 6;
+            t = texture2;
+        }
+        else if (i == 200)
+        {
+            s = 7;
+            t = texture3;
+        }
 
-        <span class="nx">stars</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="na">speed</span><span class="p">:</span> <span class="nx">s</span><span class="p">,</span> <span class="na">texture</span><span class="p">:</span> <span class="nx">t</span> <span class="p">});</span>
-    <span class="p">}</span>
+        stars.push( { x: game.world.randomX, y: game.world.randomY, speed: s, texture: t });
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Update the stars y position based on its speed</span>
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">speed</span><span class="p">;</span>
+    for (var i = 0; i < 300; i++)
+    {
+        //  Update the stars y position based on its speed
+        stars[i].y += stars[i].speed;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="mi">600</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="c1">//  Off the bottom of the screen? Then wrap around to the top</span>
-            <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">;</span>
-            <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (stars[i].y > 600)
+        {
+            //  Off the bottom of the screen? Then wrap around to the top
+            stars[i].x = game.world.randomX;
+            stars[i].y = -32;
+        }
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">i</span> <span class="o">==</span> <span class="mi">100</span> <span class="o">||</span> <span class="nx">i</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="c1">//  If it's the first star of the layer then we clear the texture</span>
-            <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">texture</span><span class="p">.</span><span class="nx">renderXY</span><span class="p">(</span><span class="nx">star</span><span class="p">,</span> <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">x</span><span class="p">,</span> <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="c1">//  Otherwise just draw the star sprite where we need it</span>
-            <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">texture</span><span class="p">.</span><span class="nx">renderXY</span><span class="p">(</span><span class="nx">star</span><span class="p">,</span> <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">x</span><span class="p">,</span> <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        if (i == 0 || i == 100 || i == 200)
+        {
+            //  If it's the first star of the layer then we clear the texture
+            stars[i].texture.renderXY(star, stars[i].x, stars[i].y, true);
+        }
+        else
+        {
+            //  Otherwise just draw the star sprite where we need it
+            stars[i].texture.renderXY(star, stars[i].x, stars[i].y, false);
+        }
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

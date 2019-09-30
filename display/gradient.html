@@ -55,20 +55,21 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/gradient.js" title="display/gradient.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/gradient.js" download="" title="Download: display/gradient.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">// game.load.image('hotdog', 'assets/sprites/hotdog.png');</span>
+    // game.load.image('hotdog', 'assets/sprites/hotdog.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s2">"#0c9fc7"</span><span class="p">;</span>
+    game.stage.backgroundColor = "#0c9fc7";
 
-    <span class="cm">/**
+    /**
     * Interpolates the two given colours based on the supplied step and currentStep properties.
     *
     * @method Phaser.Color.interpolateColor
@@ -79,46 +80,46 @@
     * @param {number} currentStep - The currentStep value. If the interpolation will take 100 steps, a currentStep value of 50 would be half-way between the two.
     * @param {number} alpha - The alpha of the returned color.
     * @returns {number} The interpolated color value.
-    */</span>
-    <span class="c1">// interpolateColor: function (color1, color2, steps, currentStep, alpha) {</span>
+    */
+    // interpolateColor: function (color1, color2, steps, currentStep, alpha) {
 
-    <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
+    var out = [];
 
-    <span class="kd">var</span> <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    var bmd = game.add.bitmapData(800, 600);
+    bmd.addToWorld();
 
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var y = 0;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">interpolateColor</span><span class="p">(</span><span class="mh">0x66d973</span><span class="p">,</span> <span class="mh">0x40b54d</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+    for (var i = 0; i < 30; i++)
+    {
+        var c = Phaser.Color.interpolateColor(0x66d973, 0x40b54d, 30, i);
 
-        <span class="c1">// console.log(Phaser.Color.getWebRGB(c));</span>
+        // console.log(Phaser.Color.getWebRGB(c));
 
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="nx">y</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">c</span><span class="p">));</span>
+        bmd.rect(0, y, 800, y+2, Phaser.Color.getWebRGB(c));
 
-        <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">c</span><span class="p">));</span>
+        out.push(Phaser.Color.getWebRGB(c));
 
-        <span class="nx">y</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="p">}</span>
+        y += 2;
+    }
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">interpolateColor</span><span class="p">(</span><span class="mh">0x40b54d</span><span class="p">,</span> <span class="mh">0x1d962b</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+    for (var i = 0; i < 60; i++)
+    {
+        var c = Phaser.Color.interpolateColor(0x40b54d, 0x1d962b, 60, i);
 
-        <span class="c1">// console.log(Phaser.Color.getWebRGB(c));</span>
+        // console.log(Phaser.Color.getWebRGB(c));
 
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="nx">y</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">c</span><span class="p">));</span>
+        bmd.rect(0, y, 800, y+2, Phaser.Color.getWebRGB(c));
 
-        <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">c</span><span class="p">));</span>
+        out.push(Phaser.Color.getWebRGB(c));
 
-        <span class="nx">y</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="p">}</span>
+        y += 2;
+    }
 
-    <span class="c1">// console.log(out);</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">out</span><span class="p">));</span>
+    // console.log(out);
+    console.log(JSON.stringify(out));
 
-<span class="p">}</span>
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

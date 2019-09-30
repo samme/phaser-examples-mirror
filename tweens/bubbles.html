@@ -55,44 +55,45 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/bubbles.js" title="tweens/bubbles.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/bubbles.js" download="" title="Download: tweens/bubbles.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'space'</span><span class="p">,</span> <span class="s1">'assets/pics/thalion-rain.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/particles/bubble256.png'</span><span class="p">);</span>
+    game.load.image('space', 'assets/pics/thalion-rain.png');
+    game.load.image('ball', 'assets/particles/bubble256.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bg</span><span class="p">;</span>
+var bg;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">bg</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'space'</span><span class="p">);</span>
+    bg = game.add.tileSprite(0, 0, 800, 600, 'space');
 
-    <span class="kd">var</span> <span class="nx">delay</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var delay = 0;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span> <span class="o">+</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">),</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
+    for (var i = 0; i < 40; i++)
+    {
+        var sprite = game.add.sprite(-100 + (game.world.randomX), 600, 'ball');
 
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">realInRange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">));</span>
+        sprite.scale.set(game.rnd.realInRange(0.1, 0.6));
 
-        <span class="kd">var</span> <span class="nx">speed</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">);</span>
+        var speed = game.rnd.between(4000, 6000);
 
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">y</span><span class="p">:</span> <span class="o">-</span><span class="mi">256</span> <span class="p">},</span> <span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">delay</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+        game.add.tween(sprite).to({ y: -256 }, speed, Phaser.Easing.Sinusoidal.InOut, true, delay, 1000, false);
 
-        <span class="nx">delay</span> <span class="o">+=</span> <span class="mi">200</span><span class="p">;</span>
-    <span class="p">}</span>
+        delay += 200;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">bg</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mf">0.4</span><span class="p">;</span>
+    bg.tilePosition.y += 0.4;
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

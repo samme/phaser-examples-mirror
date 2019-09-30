@@ -55,48 +55,49 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/basics/02%20click%20on%20an%20image.js" title="basics/02 click on an image.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/basics/02%20click%20on%20an%20image.js" download="" title="Download: basics/02 click on an image.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var text;
+var counter = 0;
 
-<span class="kd">function</span> <span class="nx">preload</span> <span class="p">()</span> <span class="p">{</span>
+function preload () {
 
-    <span class="c1">//  You can fill the preloader with as many assets as your game requires</span>
+    //  You can fill the preloader with as many assets as your game requires
 
-    <span class="c1">//  Here we are loading an image. The first parameter is the unique</span>
-    <span class="c1">//  string by which we'll identify the image later in our code.</span>
+    //  Here we are loading an image. The first parameter is the unique
+    //  string by which we'll identify the image later in our code.
 
-    <span class="c1">//  The second parameter is the URL of the image (relative)</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'einstein'</span><span class="p">,</span> <span class="s1">'assets/pics/ra_einstein.png'</span><span class="p">);</span>
+    //  The second parameter is the URL of the image (relative)
+    game.load.image('einstein', 'assets/pics/ra_einstein.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  This creates a simple sprite that is using our loaded image and</span>
-    <span class="c1">//  displays it on-screen and assign it to a variable</span>
-    <span class="kd">var</span> <span class="nx">image</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'einstein'</span><span class="p">);</span>
+    //  This creates a simple sprite that is using our loaded image and
+    //  displays it on-screen and assign it to a variable
+    var image = game.add.sprite(game.world.centerX, game.world.centerY, 'einstein');
 
-    <span class="c1">//  Moves the image anchor to the middle, so it centers inside the game properly</span>
-    <span class="nx">image</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    //  Moves the image anchor to the middle, so it centers inside the game properly
+    image.anchor.set(0.5);
 
-    <span class="c1">//  Enables all kind of input actions on this image (click, etc)</span>
-    <span class="nx">image</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //  Enables all kind of input actions on this image (click, etc)
+    image.inputEnabled = true;
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
+    text = game.add.text(250, 16, '', { fill: '#ffffff' });
 
-    <span class="nx">image</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">listener</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    image.events.onInputDown.add(listener, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">listener</span> <span class="p">()</span> <span class="p">{</span>
+function listener () {
 
-    <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"You clicked "</span> <span class="o">+</span> <span class="nx">counter</span> <span class="o">+</span> <span class="s2">" times!"</span><span class="p">;</span>
+    counter++;
+    text.text = "You clicked " + counter + " times!";
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

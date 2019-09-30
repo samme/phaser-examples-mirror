@@ -55,57 +55,57 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/graphics.js" title="display/graphics.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/graphics.js" download="" title="Download: display/graphics.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">graphics</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    var graphics = game.add.graphics(100, 100);
 
-    <span class="c1">// set a fill and line style</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFF3300</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0xffd900</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    // set a fill and line style
+    graphics.beginFill(0xFF3300);
+    graphics.lineStyle(10, 0xffd900, 1);
     
-    <span class="c1">// draw a shape</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">220</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">220</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    // draw a shape
+    graphics.moveTo(50,50);
+    graphics.lineTo(250, 50);
+    graphics.lineTo(100, 100);
+    graphics.lineTo(250, 220);
+    graphics.lineTo(50, 220);
+    graphics.lineTo(50, 50);
+    graphics.endFill();
     
-    <span class="c1">// set a fill and line style again</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0xFF0000</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFF700B</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    // set a fill and line style again
+    graphics.lineStyle(10, 0xFF0000, 0.8);
+    graphics.beginFill(0xFF700B, 1);
     
-    <span class="c1">// draw a second shape</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">210</span><span class="p">,</span><span class="mi">300</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span><span class="mi">320</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">570</span><span class="p">,</span><span class="mi">350</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">quadraticCurveTo</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span><span class="mi">100</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">330</span><span class="p">,</span><span class="mi">120</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">410</span><span class="p">,</span><span class="mi">200</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">210</span><span class="p">,</span><span class="mi">300</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    // draw a second shape
+    graphics.moveTo(210,300);
+    graphics.lineTo(450,320);
+    graphics.lineTo(570,350);
+    graphics.quadraticCurveTo(600, 0, 480,100);
+    graphics.lineTo(330,120);
+    graphics.lineTo(410,200);
+    graphics.lineTo(210,300);
+    graphics.endFill();
     
-    <span class="c1">// draw a rectangle</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x0000FF</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    // draw a rectangle
+    graphics.lineStyle(2, 0x0000FF, 1);
+    graphics.drawRect(50, 250, 100, 100);
     
-    <span class="c1">// draw a circle</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFFFF0B</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawCircle</span><span class="p">(</span><span class="mi">470</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    // draw a circle
+    graphics.lineStyle(0);
+    graphics.beginFill(0xFFFF0B, 0.5);
+    graphics.drawCircle(470, 200, 200);
+    graphics.endFill();
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mh">0x33FF00</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+    graphics.lineStyle(20, 0x33FF00);
+    graphics.moveTo(30,30);
+    graphics.lineTo(600, 300);
 
-    <span class="nb">window</span><span class="p">.</span><span class="nx">graphics</span> <span class="o">=</span> <span class="nx">graphics</span><span class="p">;</span>
+    window.graphics = graphics;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,66 +55,67 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/text%20tilesprite.js" title="wip/text tilesprite.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/text%20tilesprite.js" download="" title="Download: wip/text tilesprite.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
+// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'knightHawks'</span><span class="p">,</span> <span class="s1">'assets/fonts/KNIGHT3.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">script</span><span class="p">(</span><span class="s1">'filter'</span><span class="p">,</span> <span class="s1">'../filters/Plasma.js'</span><span class="p">);</span>
+    game.load.image('knightHawks', 'assets/fonts/KNIGHT3.png');
+    game.load.script('filter', '../filters/Plasma.js');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">font</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">background</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var font;
+var i;
+var background;
+var filter;
+var count = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    game.world.setBounds(0, 0, 2000, 600);
 
-    <span class="nx">background</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">background</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-    <span class="nx">background</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+    background = game.add.sprite(0, 0);
+    background.width = 800;
+    background.height = 600;
 
-    <span class="nx">filter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="s1">'Plasma'</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    filter = game.add.filter('Plasma', 800, 600);
 
-    <span class="nx">background</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span><span class="nx">filter</span><span class="p">];</span>
+    background.filters = [filter];
 
-    <span class="nx">font</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'knightHawks'</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">BitmapFont</span><span class="p">.</span><span class="nx">TEXT_SET6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">font</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'phaser '</span><span class="p">;</span>
+    font = game.add.bitmapFont('knightHawks', 31, 25, Phaser.BitmapFont.TEXT_SET6, 10, 1, 1);
+    font.text = 'phaser ';
 
-    <span class="c1">// i = game.add.image(0, 0, font);</span>
+    // i = game.add.image(0, 0, font);
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">font</span><span class="p">);</span>
+    sprite = game.add.tileSprite(0, 0, 800, 600, font);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">count</span> <span class="o">+=</span> <span class="mf">0.005</span>
+    count += 0.005
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">tileScale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">count</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">tileScale</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">count</span><span class="p">);</span>
+    sprite.tileScale.x = 2 + Math.sin(count);
+    sprite.tileScale.y = 2 + Math.cos(count);
     
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    sprite.tilePosition.x += 1;
+    sprite.tilePosition.y += 1;
 
 
-    <span class="c1">// game.camera.view.x++;</span>
+    // game.camera.view.x++;
 
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+    filter.update();
 
-    <span class="c1">//  Uncomment for coolness :)</span>
-    <span class="c1">// filter.blueShift -= 0.001;</span>
+    //  Uncomment for coolness :)
+    // filter.blueShift -= 0.001;
 
-	<span class="nx">font</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"  phaser x: "</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="s2">" y: "</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">refreshTexture</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	font.text = "  phaser x: " + game.input.x + " y: " + game.input.y;
+    sprite.refreshTexture = true;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

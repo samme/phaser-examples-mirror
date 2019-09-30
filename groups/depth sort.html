@@ -55,103 +55,103 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/depth%20sort.js" title="groups/depth sort.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/depth%20sort.js" download="" title="Download: groups/depth sort.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser-dude.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'desert'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/maps/depthsort.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">TILED_JSON</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ground_1x1'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/ground_1x1.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'trees'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/walls_1x2.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.load.image('phaser', 'assets/sprites/phaser-dude.png');
+    game.load.tilemap('desert', 'assets/tilemaps/maps/depthsort.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
+    game.load.spritesheet('trees', 'assets/tilemaps/tiles/walls_1x2.png', 32, 64);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">map</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tileset</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">layer</span><span class="p">;</span>
+var map;
+var tileset;
+var layer;
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">group</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">oldY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">locs</span> <span class="o">=</span> <span class="p">[];</span>
+var sprite;
+var group;
+var oldY = 0;
+var cursors;
+var locs = [];
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Create our tilemap to walk around</span>
-    <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'desert'</span><span class="p">);</span>
-    <span class="nx">map</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'ground_1x1'</span><span class="p">);</span>
-    <span class="nx">layer</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="s1">'Tile Layer 1'</span><span class="p">);</span>
+    //  Create our tilemap to walk around
+    map = game.add.tilemap('desert');
+    map.addTilesetImage('ground_1x1');
+    layer = map.createLayer('Tile Layer 1');
 
-    <span class="c1">//  This group will hold the main player + all the tree sprites to depth sort against</span>
-    <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    //  This group will hold the main player + all the tree sprites to depth sort against
+    group = game.add.group();
 
-    <span class="c1">//  Create some trees, each in a unique location</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">createUniqueLocation</span><span class="p">();</span>
-    <span class="p">}</span>
+    //  Create some trees, each in a unique location
+    for (var i = 0; i < 200; i++)
+    {
+        createUniqueLocation();
+    }
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
+    sprite = group.create(300, 28, 'phaser');
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">sort</span><span class="p">();</span>
+    group.sort();
 
-    <span class="c1">//  Move it</span>
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    //  Move it
+    cursors = game.input.keyboard.createCursorKeys();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createUniqueLocation</span><span class="p">()</span> <span class="p">{</span>
+function createUniqueLocation() {
 
-    <span class="k">do</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">snapTo</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">32</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">snapTo</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">32</span><span class="p">;</span>
+    do {
+        var x = game.math.snapTo(game.world.randomX, 32) / 32;
+        var y = game.math.snapTo(game.world.randomY, 32) / 32;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="mi">17</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">y</span> <span class="o">=</span> <span class="mi">17</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (y > 17)
+        {
+            y = 17;
+        }
 
-        <span class="kd">var</span> <span class="nx">idx</span> <span class="o">=</span> <span class="p">(</span><span class="nx">y</span> <span class="o">*</span> <span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="nx">x</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">while</span> <span class="p">(</span><span class="nx">locs</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">idx</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        var idx = (y * 17) + x;
+    }
+    while (locs.indexOf(idx) !== -1)
 
-    <span class="nx">locs</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span>
+    locs.push(idx);
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="mi">32</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'trees'</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">));</span>
+    group.create(x * 32, y * 32, 'trees', game.rnd.integerInRange(0, 7));
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        sprite.x -= 2;
+    }
+    else if (cursors.right.isDown)
+    {
+        sprite.x += 2;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        sprite.y -= 2;
+    }
+    else if (cursors.down.isDown)
+    {
+        sprite.y += 2;
+    }
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">SORT_ASCENDING</span><span class="p">);</span>
+    group.sort('y', Phaser.Group.SORT_ASCENDING);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Sprite z-depth: '</span> <span class="o">+</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">z</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    game.debug.text('Sprite z-depth: ' + sprite.z, 10, 20);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

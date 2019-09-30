@@ -55,31 +55,32 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particles/no%20rotation.js" title="particles/no rotation.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particles/no%20rotation.js" download="" title="Download: particles/no rotation.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'alien'</span><span class="p">,</span> <span class="s1">'assets/sprites/space-baddie.png'</span><span class="p">);</span>
+    game.load.image('alien', 'assets/sprites/space-baddie.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">emitter</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="mi">250</span><span class="p">);</span>
+    var emitter = game.add.emitter(game.world.centerX, game.world.centerY, 250);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">makeParticles</span><span class="p">(</span><span class="s1">'alien'</span><span class="p">);</span>
+    emitter.makeParticles('alien');
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">minParticleSpeed</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span> <span class="o">-</span><span class="mi">300</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">maxParticleSpeed</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+    emitter.minParticleSpeed.setTo(-300, -300);
+    emitter.maxParticleSpeed.setTo(300, 300);
 
-    <span class="c1">//  By setting the min and max rotation to zero, you disable rotation on the particles fully</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">minRotation</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">maxRotation</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    //  By setting the min and max rotation to zero, you disable rotation on the particles fully
+    emitter.minRotation = 0;
+    emitter.maxRotation = 0;
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">15</span><span class="p">);</span>
+    emitter.start(false, 4000, 15);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,37 +55,38 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/align%20sprites%20to%20grid.js" title="groups/align sprites to grid.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/align%20sprites%20to%20grid.js" download="" title="Download: groups/align sprites to grid.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">// game.load.image('ufo', 'assets/sprites/ufo.png');</span>
-    <span class="c1">// game.load.image('diamond', 'assets/sprites/diamond.png');</span>
-    <span class="c1">// game.load.image('diamond', 'assets/sprites/diamond.png');</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'diamonds'</span><span class="p">,</span> <span class="s1">'assets/sprites/diamonds32x24x5.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">24</span><span class="p">);</span>
-    <span class="c1">// game.load.spritesheet('balls', 'assets/sprites/balls.png', 17, 17);</span>
-    <span class="c1">// game.load.atlas('seacreatures', 'assets/sprites/seacreatures_json.png', 'assets/sprites/seacreatures_json.json');</span>
+    // game.load.image('ufo', 'assets/sprites/ufo.png');
+    // game.load.image('diamond', 'assets/sprites/diamond.png');
+    // game.load.image('diamond', 'assets/sprites/diamond.png');
+    game.load.spritesheet('diamonds', 'assets/sprites/diamonds32x24x5.png', 32, 24);
+    // game.load.spritesheet('balls', 'assets/sprites/balls.png', 17, 17);
+    // game.load.atlas('seacreatures', 'assets/sprites/seacreatures_json.png', 'assets/sprites/seacreatures_json.json');
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    var group = game.add.group();
 
-    <span class="c1">//  Creates 24 sprites FOR EACH FRAME</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">createMultiple</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="s1">'diamonds'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="kc">true</span><span class="p">);</span>
+    //  Creates 24 sprites FOR EACH FRAME
+    group.createMultiple(24, 'diamonds', [0, 1, 2, 3, 4], true);
     
-    <span class="c1">// sprites.createMultiple(20, ['diamonds', 'balls'], [0, 1, 2], true);</span>
+    // sprites.createMultiple(20, ['diamonds', 'balls'], [0, 1, 2], true);
 
-    <span class="c1">//  Align the sprites into rows of 12, by however many we need (the -1 argument)</span>
-    <span class="c1">//  With 48x48 pixel spacing per sprite</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">align</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">48</span><span class="p">);</span>
+    //  Align the sprites into rows of 12, by however many we need (the -1 argument)
+    //  With 48x48 pixel spacing per sprite
+    group.align(12, -1, 48, 48);
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
+    group.x = 100;
+    group.y = 64;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

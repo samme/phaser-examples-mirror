@@ -55,36 +55,36 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/timer1.js" title="wip/timer1.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/timer1.js" download="" title="Download: wip/timer1.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">var</span> <span class="nx">last</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var last;
+var i = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-  <span class="c1">//Maybe you have to set it even lower for your machine.</span>
-  <span class="c1">//It's related to the time Phaser needs to boot up.</span>
-  <span class="c1">//The tick stops being negative and behaves nearly normal for me at around 550 - 600ms</span>
+  //Maybe you have to set it even lower for your machine.
+  //It's related to the time Phaser needs to boot up.
+  //The tick stops being negative and behaves nearly normal for me at around 550 - 600ms
 
-  <span class="nx">delay</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span>
-  <span class="nx">foreverTimer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="nx">delay</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">handleEvent</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+  delay = 250;
+  foreverTimer = game.time.events.repeat(delay, 10, handleEvent, this);
 
-  <span class="nx">last</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+  last = Date.now();
 
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'create started'</span><span class="p">,</span> <span class="nx">last</span><span class="p">);</span>
+  console.log('create started', last);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">handleEvent</span><span class="p">()</span> <span class="p">{</span>
+function handleEvent() {
 
-	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'&gt;&gt; Tick'</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="s1">'ms diff:'</span><span class="p">,</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">last</span><span class="p">);</span>
+	console.log('>> Tick', i, 'ms diff:', Date.now() - last);
 
-	<span class="nx">last</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+	last = Date.now();
 
-	<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+	i++;
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

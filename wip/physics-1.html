@@ -55,69 +55,70 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/physics-1.js" title="wip/physics-1.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/physics-1.js" download="" title="Download: wip/physics-1.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari130xe.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mushroom'</span><span class="p">,</span> <span class="s1">'assets/sprites/mushroom2.png'</span><span class="p">);</span>
+    game.load.image('atari', 'assets/sprites/atari130xe.png');
+    game.load.image('mushroom', 'assets/sprites/mushroom2.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite2</span><span class="p">;</span>
+var sprite1;
+var sprite2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#2d2d2d';
 
-    <span class="c1">//  This will check Sprite vs. Sprite collision</span>
+    //  This will check Sprite vs. Sprite collision
 
-    <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'atari'</span><span class="p">);</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'atari'</span><span class="p">;</span>
-    <span class="c1">// sprite1.anchor.set(0.5);</span>
+    sprite1 = game.add.sprite(50, 200, 'atari');
+    sprite1.name = 'atari';
+    // sprite1.anchor.set(0.5);
 
-    <span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="s1">'mushroom'</span><span class="p">);</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'mushroom'</span><span class="p">;</span>
+    sprite2 = game.add.sprite(700, 220, 'mushroom');
+    sprite2.name = 'mushroom';
 
-    <span class="c1">//  Enable the physics bodies of both sprites</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">([</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">sprite2</span><span class="p">]);</span>
+    //  Enable the physics bodies of both sprites
+    game.physics.enable([sprite1, sprite2]);
 
-    <span class="c1">//  And move 'em</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span><span class="p">;</span>
+    //  And move 'em
+    sprite1.body.velocity.x = 100;
+    sprite2.body.velocity.x = -100;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">// object1, object2, collideCallback, processCallback, callbackContext</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">sprite2</span><span class="p">,</span> <span class="nx">collisionHandler</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    // object1, object2, collideCallback, processCallback, callbackContext
+    game.physics.arcade.collide(sprite1, sprite2, collisionHandler, null, this);
 
-    <span class="c1">// var b = sprite1.getBounds();</span>
-    <span class="c1">// console.log(b);</span>
+    // var b = sprite1.getBounds();
+    // console.log(b);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">collisionHandler</span> <span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+function collisionHandler (obj1, obj2) {
 
-    <span class="c1">//  The two sprites are colliding</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#992d2d'</span><span class="p">;</span>
+    //  The two sprites are colliding
+    game.stage.backgroundColor = '#992d2d';
 
-<span class="p">}</span>
+}
 
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">// var b = sprite1.getBounds();</span>
+    // var b = sprite1.getBounds();
 
-    <span class="c1">// game.debug.geom(b, 'rgba(255,0,0,0.8)', true, 1);</span>
+    // game.debug.geom(b, 'rgba(255,0,0,0.8)', true, 1);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span> <span class="s1">'rgba(0,255,0,0.4)'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">sprite2</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span> <span class="s1">'rgba(0,255,0,0.4)'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    game.debug.geom(sprite1.body, 'rgba(0,255,0,0.4)', true, 1);
+    game.debug.geom(sprite2.body, 'rgba(0,255,0,0.4)', true, 1);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

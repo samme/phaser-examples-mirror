@@ -55,109 +55,110 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/group%20bounds.js" title="groups/group bounds.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/group%20bounds.js" download="" title="Download: groups/group bounds.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'assets/pics/archmage_in_your_face.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'diamonds'</span><span class="p">,</span> <span class="s1">'assets/sprites/diamonds32x24x5.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">24</span><span class="p">);</span>
+    game.load.image('pic', 'assets/pics/archmage_in_your_face.png');
+    game.load.spritesheet('diamonds', 'assets/sprites/diamonds32x24x5.png', 32, 24);
     
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">pic</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">group</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bounds</span><span class="p">;</span>
+var pic;
+var group;
+var bounds;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#2d2d2d';
 
-    <span class="nx">pic</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'pic'</span><span class="p">);</span>
-    <span class="nx">pic</span><span class="p">.</span><span class="nx">alignIn</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">bounds</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CENTER</span><span class="p">);</span>
+    pic = game.add.sprite(0, 0, 'pic');
+    pic.alignIn(game.world.bounds, Phaser.CENTER);
 
-    <span class="c1">//  Create our Group and populate it with a bunch of sprites</span>
+    //  Create our Group and populate it with a bunch of sprites
 
-    <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    group = game.add.group();
 
-    <span class="c1">//  Create a bunch of sprites that are spread irregularly around the Groups x/y coordinate</span>
+    //  Create a bunch of sprites that are spread irregularly around the Groups x/y coordinate
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'diamonds'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="s1">'diamonds'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="s1">'diamonds'</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'diamonds'</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+    group.create(0, 0, 'diamonds', 0);
+    group.create(-200, -200, 'diamonds', 1);
+    group.create(100, -200, 'diamonds', 2);
+    group.create(100, 100, 'diamonds', 3);
 
-    <span class="c1">//  Even scaled and/or rotated, it still aligns properly</span>
-    <span class="c1">// group.angle = 30;</span>
-    <span class="c1">// group.scale.set(0.5);</span>
+    //  Even scaled and/or rotated, it still aligns properly
+    // group.angle = 30;
+    // group.scale.set(0.5);
 
-    <span class="c1">//  Test 1</span>
-    <span class="c1">// group.centerX = game.world.centerX;</span>
-    <span class="c1">// group.centerY = game.world.centerY;</span>
-    <span class="c1">// console.log(group.centerX, game.world.centerX);</span>
-    <span class="c1">// console.log(group.centerY, game.world.centerY);</span>
+    //  Test 1
+    // group.centerX = game.world.centerX;
+    // group.centerY = game.world.centerY;
+    // console.log(group.centerX, game.world.centerX);
+    // console.log(group.centerY, game.world.centerY);
 
-    <span class="c1">//  Test 2</span>
-    <span class="c1">// group.left = 0;</span>
-    <span class="c1">// group.centerY = game.world.centerY;</span>
-    <span class="c1">// console.log(group.left, 0);</span>
-    <span class="c1">// console.log(group.centerY, game.world.centerY);</span>
+    //  Test 2
+    // group.left = 0;
+    // group.centerY = game.world.centerY;
+    // console.log(group.left, 0);
+    // console.log(group.centerY, game.world.centerY);
 
-    <span class="c1">//  Test 3</span>
-    <span class="c1">// group.left = game.world.centerX;</span>
-    <span class="c1">// group.centerY = game.world.centerY;</span>
-    <span class="c1">// console.log(group.left, game.world.centerX);</span>
-    <span class="c1">// console.log(group.centerY, game.world.centerY);</span>
+    //  Test 3
+    // group.left = game.world.centerX;
+    // group.centerY = game.world.centerY;
+    // console.log(group.left, game.world.centerX);
+    // console.log(group.centerY, game.world.centerY);
 
-    <span class="c1">//  Test 4</span>
-    <span class="c1">// group.right = game.width;</span>
-    <span class="c1">// group.centerY = game.world.centerY;</span>
-    <span class="c1">// console.log(group.right, game.width);</span>
-    <span class="c1">// console.log(group.centerY, game.world.centerY);</span>
+    //  Test 4
+    // group.right = game.width;
+    // group.centerY = game.world.centerY;
+    // console.log(group.right, game.width);
+    // console.log(group.centerY, game.world.centerY);
 
-    <span class="c1">//  Test 5</span>
-    <span class="c1">// group.top = 0;</span>
-    <span class="c1">// group.centerX = game.world.centerX;</span>
-    <span class="c1">// console.log(group.top, 0);</span>
-    <span class="c1">// console.log(group.centerX, game.world.centerX);</span>
+    //  Test 5
+    // group.top = 0;
+    // group.centerX = game.world.centerX;
+    // console.log(group.top, 0);
+    // console.log(group.centerX, game.world.centerX);
 
-    <span class="c1">//  Test 6</span>
-    <span class="c1">// group.bottom = game.height;</span>
-    <span class="c1">// group.centerX = game.world.centerX;</span>
-    <span class="c1">// console.log(group.bottom, game.height);</span>
-    <span class="c1">// console.log(group.centerX, game.world.centerX);</span>
+    //  Test 6
+    // group.bottom = game.height;
+    // group.centerX = game.world.centerX;
+    // console.log(group.bottom, game.height);
+    // console.log(group.centerX, game.world.centerX);
 
-    <span class="c1">//  Test 7</span>
-    <span class="c1">// group.top = 0;</span>
-    <span class="c1">// group.left = 0;</span>
+    //  Test 7
+    // group.top = 0;
+    // group.left = 0;
 
-    <span class="c1">//  Test 8</span>
-    <span class="c1">// group.right = game.width;</span>
-    <span class="c1">// group.bottom = game.height;</span>
+    //  Test 8
+    // group.right = game.width;
+    // group.bottom = game.height;
 
-    <span class="c1">//  Align Tests</span>
-    <span class="c1">// group.alignIn(pic, Phaser.TOP_LEFT);</span>
-    <span class="c1">// group.alignIn(pic, Phaser.TOP_CENTER);</span>
-    <span class="c1">// group.alignIn(pic, Phaser.TOP_RIGHT);</span>
-    <span class="c1">// group.alignIn(pic, Phaser.LEFT_CENTER);</span>
-    <span class="c1">// group.alignIn(pic, Phaser.CENTER);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">alignIn</span><span class="p">(</span><span class="nx">pic</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RIGHT_CENTER</span><span class="p">);</span>
-    <span class="c1">// group.alignIn(pic, Phaser.BOTTOM_LEFT);</span>
-    <span class="c1">// group.alignIn(pic, Phaser.BOTTOM_CENTER);</span>
-    <span class="c1">// group.alignIn(pic, Phaser.BOTTOM_RIGHT);</span>
+    //  Align Tests
+    // group.alignIn(pic, Phaser.TOP_LEFT);
+    // group.alignIn(pic, Phaser.TOP_CENTER);
+    // group.alignIn(pic, Phaser.TOP_RIGHT);
+    // group.alignIn(pic, Phaser.LEFT_CENTER);
+    // group.alignIn(pic, Phaser.CENTER);
+    group.alignIn(pic, Phaser.RIGHT_CENTER);
+    // group.alignIn(pic, Phaser.BOTTOM_LEFT);
+    // group.alignIn(pic, Phaser.BOTTOM_CENTER);
+    // group.alignIn(pic, Phaser.BOTTOM_RIGHT);
 
-    <span class="c1">// group.alignIn(game.world.bounds, Phaser.LEFT_CENTER);</span>
+    // group.alignIn(game.world.bounds, Phaser.LEFT_CENTER);
 
-    <span class="nx">bounds</span> <span class="o">=</span> <span class="nx">group</span><span class="p">.</span><span class="nx">getBounds</span><span class="p">();</span>
+    bounds = group.getBounds();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">bounds</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">group</span><span class="p">.</span><span class="nx">position</span><span class="p">,</span> <span class="s1">'#ffff00'</span><span class="p">);</span>
+    game.debug.geom(bounds);
+    game.debug.geom(group.position, '#ffff00');
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

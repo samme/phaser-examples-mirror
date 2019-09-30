@@ -55,63 +55,64 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/world/world%20wrap.js" title="world/world wrap.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/world/world%20wrap.js" download="" title="Download: world/world wrap.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'backdrop'</span><span class="p">,</span> <span class="s1">'assets/pics/remember-me.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'card'</span><span class="p">,</span> <span class="s1">'assets/sprites/mana_card.png'</span><span class="p">);</span>
+    game.load.image('backdrop', 'assets/pics/remember-me.jpg');
+    game.load.image('card', 'assets/sprites/mana_card.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">card</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var card;
+var cursors;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1920</span><span class="p">,</span> <span class="mi">1200</span><span class="p">);</span>
+    game.world.setBounds(0, 0, 1920, 1200);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'backdrop'</span><span class="p">);</span>
+    game.add.sprite(0, 0, 'backdrop');
 
-    <span class="nx">card</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'card'</span><span class="p">);</span>
+    card = game.add.sprite(200, 200, 'card');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">card</span><span class="p">);</span>
+    game.camera.follow(card);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">card</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">card</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        card.x -= 4;
+    }
+    else if (cursors.right.isDown)
+    {
+        card.x += 4;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">card</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">card</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        card.y -= 4;
+    }
+    else if (cursors.down.isDown)
+    {
+        card.y += 4;
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">card</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.world.wrap(card, 0, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">cameraInfo</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteCoords</span><span class="p">(</span><span class="nx">card</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.cameraInfo(game.camera, 500, 32);
+    game.debug.spriteCoords(card, 32, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

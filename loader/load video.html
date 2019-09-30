@@ -55,53 +55,54 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/loader/load%20video.js" title="loader/load video.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/loader/load%20video.js" download="" title="Download: loader/load video.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  To load a video file use the following structure.</span>
-    <span class="c1">//  As with all load operations the first parameter is a unique key, which must be unique between all video files.</span>
+    //  To load a video file use the following structure.
+    //  As with all load operations the first parameter is a unique key, which must be unique between all video files.
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">,</span> <span class="s1">'assets/video/chrome.webm'</span><span class="p">);</span>
+    game.load.video('chrome', 'assets/video/chrome.webm');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">video</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var video;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#232323'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#232323';
 
-    <span class="nx">video</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">);</span>
+    video = game.add.video('chrome');
 
-    <span class="c1">//  See the docs for the full parameters</span>
-    <span class="c1">//  But it goes x, y, anchor x, anchor y, scale x, scale y</span>
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">video</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+    //  See the docs for the full parameters
+    //  But it goes x, y, anchor x, anchor y, scale x, scale y
+    sprite = video.addToWorld(game.world.centerX, game.world.centerY, 0.5, 0.5, 2, 2);
 
-    <span class="c1">//  true = loop</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    //  true = loop
+    video.play(true);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">pause</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(pause, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">pause</span><span class="p">()</span> <span class="p">{</span>
+function pause() {
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">paused</span> <span class="o">=</span> <span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">paused</span><span class="p">)</span> <span class="p">?</span> <span class="kc">false</span> <span class="p">:</span> <span class="kc">true</span><span class="p">;</span>
+    video.paused = (video.paused) ? false : true;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Video Time: "</span> <span class="o">+</span> <span class="nx">video</span><span class="p">.</span><span class="nx">currentTime</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Video Duration: "</span> <span class="o">+</span> <span class="nx">video</span><span class="p">.</span><span class="nx">duration</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    game.debug.text("Video Time: " + video.currentTime, 32, 20);
+    game.debug.text("Video Duration: " + video.duration, 550, 20);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Video Progress: "</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">progress</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"%"</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">590</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Video Playing: "</span> <span class="o">+</span> <span class="nx">video</span><span class="p">.</span><span class="nx">playing</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">590</span><span class="p">);</span>
+    game.debug.text("Video Progress: " + Math.round(video.progress * 100) + "%", 32, 590);
+    game.debug.text("Video Playing: " + video.playing, 550, 590);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

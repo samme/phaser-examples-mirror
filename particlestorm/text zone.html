@@ -55,93 +55,93 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particlestorm/text%20zone.js" title="particlestorm/text zone.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particlestorm/text%20zone.js" download="" title="Download: particlestorm/text zone.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Particle Storm Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/particlestorm
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">manager</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+var manager = null;
+var emitter = null;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/particlestorm/logo-flat.png'</span><span class="p">);</span>
+    game.load.image('logo', 'assets/particlestorm/logo-flat.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="s1">'assets/particlestorm/particles/'</span><span class="p">;</span>
+    game.load.path = 'assets/particlestorm/particles/';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">images</span><span class="p">([</span><span class="s1">'pixel_white'</span><span class="p">,</span> <span class="s1">'4x4'</span><span class="p">]);</span>
+    game.load.images(['pixel_white', '4x4']);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">manager</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">ParticleStorm</span><span class="p">);</span>
+    manager = this.game.plugins.add(Phaser.ParticleStorm);
 
-    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
-        <span class="na">image</span><span class="p">:</span> <span class="s1">'pixel_white'</span><span class="p">,</span>
-        <span class="na">vx</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">2</span> <span class="p">},</span>
-        <span class="na">vy</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">3</span> <span class="p">},</span>
-        <span class="na">scale</span><span class="p">:</span> <span class="mf">0.5</span>
-    <span class="p">};</span>
+    var data = {
+        lifespan: 2000,
+        image: 'pixel_white',
+        vx: { min: -2, max: 2 },
+        vy: { min: 1, max: 3 },
+        scale: 0.5
+    };
 
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    manager.addData('basic', data);
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'PHASER'</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'32px serif'</span> <span class="p">});</span>
+    var text = game.add.text(0, 0, 'PHASER', { font: '32px serif' });
 
-    <span class="c1">//  This adds a linear gradient to the Text object, which we can</span>
-    <span class="c1">//  reflect in our particles using the setColor and setAlpha properties.</span>
+    //  This adds a linear gradient to the Text object, which we can
+    //  reflect in our particles using the setColor and setAlpha properties.
 
-    <span class="kd">var</span> <span class="nx">grd</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">createLinearGradient</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">text</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    var grd = text.context.createLinearGradient(0, 0, 0, text.height);
 
-    <span class="c1">//  Add in 2 color stops</span>
-    <span class="nx">grd</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'#8ED6FF'</span><span class="p">);</span>   
-    <span class="nx">grd</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'#004CB3'</span><span class="p">);</span>
+    //  Add in 2 color stops
+    grd.addColorStop(0, '#8ED6FF');   
+    grd.addColorStop(1, '#004CB3');
 
-    <span class="c1">//  And apply to the Text</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="nx">grd</span><span class="p">;</span>
+    //  And apply to the Text
+    text.fill = grd;
 
-    <span class="c1">//  Create a Text Zone, which is a special kind of zone that</span>
-    <span class="c1">//  allows you to emit particles based on the pixels in a Phaser Text object.</span>
+    //  Create a Text Zone, which is a special kind of zone that
+    //  allows you to emit particles based on the pixels in a Phaser Text object.
 
-    <span class="kd">var</span> <span class="nx">textZone</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createTextZone</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+    var textZone = manager.createTextZone(text);
 
-    <span class="c1">//  This scales the Text Zone otherwise it's quite tiny to read.</span>
+    //  This scales the Text Zone otherwise it's quite tiny to read.
 
-    <span class="nx">textZone</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+    textZone.scale.set(4);
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createEmitter</span><span class="p">();</span>
+    emitter = manager.createEmitter();
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    emitter.addToWorld();
 
-    <span class="c1">//  Here we're using 'full: true' to emit one particle for every pixel in the</span>
-    <span class="c1">//  Text Zone. The delay allows them to fall away in sequence.</span>
-    <span class="c1">//  </span>
-    <span class="c1">//  The setColor and setAlpha tell the particles to tint themselves to match</span>
-    <span class="c1">//  the colors found in the Phaser.Text object.</span>
+    //  Here we're using 'full: true' to emit one particle for every pixel in the
+    //  Text Zone. The delay allows them to fall away in sequence.
+    //  
+    //  The setColor and setAlpha tell the particles to tint themselves to match
+    //  the colors found in the Phaser.Text object.
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="p">{</span> <span class="na">zone</span><span class="p">:</span> <span class="nx">textZone</span><span class="p">,</span> <span class="na">full</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">setColor</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">setAlpha</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">delay</span><span class="p">:</span> <span class="p">{</span> <span class="na">start</span><span class="p">:</span> <span class="mi">3000</span><span class="p">,</span> <span class="na">step</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="na">visible</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">});</span>
+    emitter.emit('basic', 150, 150, { zone: textZone, full: true, setColor: true, setAlpha: true, delay: { start: 3000, step: 10, visible: true } });
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">487</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
+    game.add.image(432, 487, 'logo');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">522</span><span class="p">);</span>
+    emitter.debug(432, 522);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

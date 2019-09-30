@@ -55,74 +55,75 @@
 </h1>
 <div class="sourcelinks">
   <a href="js/node_modules/phaser-examples/examples/animation/animation%20events.js" title="animation/animation events.js">source</a> • <a href="js/node_modules/phaser-examples/examples/animation/animation%20events.js" download="" title="Download: animation/animation events.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'lazur'</span><span class="p">,</span> <span class="s1">'assets/pics/thorn_lazur.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
+    game.load.image('lazur', 'assets/pics/thorn_lazur.png');
+    game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">back</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mummy</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">anim</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">loopText</span><span class="p">;</span>
+var back;
+var mummy;
+var anim;
+var loopText;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">back</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">400</span><span class="p">,</span> <span class="s1">'lazur'</span><span class="p">);</span>
-    <span class="nx">back</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="nx">back</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    back = game.add.image(0, -400, 'lazur');
+    back.scale.set(2);
+    back.smoothed = false;
 
-    <span class="nx">mummy</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="s1">'mummy'</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
-    <span class="nx">mummy</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-    <span class="nx">mummy</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="nx">anim</span> <span class="o">=</span> <span class="nx">mummy</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
+    mummy = game.add.sprite(200, 360, 'mummy', 5);
+    mummy.scale.set(4);
+    mummy.smoothed = false;
+    anim = mummy.animations.add('walk');
 
-    <span class="nx">anim</span><span class="p">.</span><span class="nx">onStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">animationStarted</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">anim</span><span class="p">.</span><span class="nx">onLoop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">animationLooped</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">anim</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">animationStopped</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    anim.onStart.add(animationStarted, this);
+    anim.onLoop.add(animationLooped, this);
+    anim.onComplete.add(animationStopped, this);
 
-    <span class="nx">anim</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    anim.play(10, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">animationStarted</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">animation</span><span class="p">)</span> <span class="p">{</span>
+function animationStarted(sprite, animation) {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'Animation started'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'white'</span> <span class="p">});</span>
+    game.add.text(32, 32, 'Animation started', { fill: 'white' });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">animationLooped</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">animation</span><span class="p">)</span> <span class="p">{</span>
+function animationLooped(sprite, animation) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">animation</span><span class="p">.</span><span class="nx">loopCount</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">loopText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">'Animation looped'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'white'</span> <span class="p">});</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">loopText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'Animation looped x2'</span><span class="p">;</span>
-        <span class="nx">animation</span><span class="p">.</span><span class="nx">loop</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (animation.loopCount === 1)
+    {
+        loopText = game.add.text(32, 64, 'Animation looped', { fill: 'white' });
+    }
+    else
+    {
+        loopText.text = 'Animation looped x2';
+        animation.loop = false;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">animationStopped</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">animation</span><span class="p">)</span> <span class="p">{</span>
+function animationStopped(sprite, animation) {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="o">+</span><span class="mi">32</span><span class="p">,</span> <span class="s1">'Animation stopped'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'white'</span> <span class="p">});</span>
+    game.add.text(32, 64+32, 'Animation stopped', { fill: 'white' });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">anim</span><span class="p">.</span><span class="nx">isPlaying</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">back</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (anim.isPlaying)
+    {
+        back.x -= 1;
+    }
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="./" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

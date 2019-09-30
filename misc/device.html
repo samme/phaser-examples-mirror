@@ -55,22 +55,23 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/misc/device.js" title="misc/device.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/misc/device.js" download="" title="Download: misc/device.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 300, Phaser.CANVAS, 'phaser-example', { render: render });
 
-<span class="kd">function</span> <span class="nx">create</span> <span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function create () {
+}
 
-<span class="kd">function</span> <span class="nx">render</span> <span class="p">()</span> <span class="p">{</span>
+function render () {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Navigator: '</span> <span class="o">+</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'iOS: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">iOS</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Mobile Safari: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">mobileSafari</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">98</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'WebApp: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">webApp</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">128</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'nav: '</span> <span class="o">+</span> <span class="nx">navigator</span><span class="p">[</span><span class="s1">'standalone'</span><span class="p">],</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">128</span><span class="o">+</span><span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'app: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">iOSVersion</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">128</span><span class="o">+</span><span class="mi">64</span><span class="p">);</span>
+    game.debug.text('Navigator: ' + navigator.userAgent, 32, 32);
+    game.debug.text('iOS: ' + game.device.iOS, 32, 64);
+    game.debug.text('Mobile Safari: ' + game.device.mobileSafari, 32, 98);
+    game.debug.text('WebApp: ' + game.device.webApp, 32, 128);
+    game.debug.text('nav: ' + navigator['standalone'], 32, 128+32);
+    game.debug.text('app: ' + game.device.iOSVersion, 32, 128+64);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

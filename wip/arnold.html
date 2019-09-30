@@ -55,78 +55,78 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/arnold.js" title="wip/arnold.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/arnold.js" download="" title="Download: wip/arnold.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">Phaser</span><span class="p">,</span><span class="nx">game</span><span class="p">;</span>
+</div>
+<pre class="highlight javascript"><code>var Phaser,game;
 
-    <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
+    game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update }, false);
 
-    <span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+    function preload() {
 
-        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'arnold'</span><span class="p">,</span> <span class="s1">'wip/arnold-rest.png'</span><span class="p">);</span>  <span class="c1">// Image is 209w x 255h</span>
+        game.load.image('arnold', 'wip/arnold-rest.png');  // Image is 209w x 255h
 
-    <span class="p">}</span>
+    }
 
-    <span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">arnold</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="o">-</span><span class="mi">167</span><span class="p">,</span> <span class="mi">561</span><span class="p">,</span> <span class="s1">'arnold'</span><span class="p">);</span>
-        <span class="nx">arnold</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">arnold</span><span class="p">,</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
-        <span class="nx">arnold</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>  <span class="c1">// reset anchor point after turning on physics</span>
+    function create() {
+        arnold = game.add.sprite(-167, 561, 'arnold');
+        arnold.anchor.setTo(0.5, 0.5);
+        game.physics.enable(arnold,Phaser.Physics.ARCADE);
+        arnold.anchor.setTo(0.5, 0.5);  // reset anchor point after turning on physics
 
-    <span class="p">}</span>
+    }
 
-    <span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">tStartX</span> <span class="o">=</span> <span class="o">-</span><span class="mi">167</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tStartY</span> <span class="o">=</span> <span class="mi">561</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tCurrX</span> <span class="o">=</span> <span class="nx">arnold</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tCurrY</span> <span class="o">=</span> <span class="nx">arnold</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tCurrBodyX</span> <span class="o">=</span> <span class="nx">arnold</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tCurrBodyY</span> <span class="o">=</span> <span class="nx">arnold</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tTargetX</span> <span class="o">=</span> <span class="o">-</span><span class="mi">23</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tTargetY</span> <span class="o">=</span> <span class="mi">501</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tAngleDegrees</span> <span class="o">=</span> <span class="o">-</span><span class="mf">23.347668528091089</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tVelocity</span> <span class="o">=</span> <span class="mi">379</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tReachedTargetX</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">tReachedTargetY</span><span class="p">;</span>
+    function update() {
+        var tStartX = -167;
+        var tStartY = 561;
+        var tCurrX = arnold.x;
+        var tCurrY = arnold.y;
+        var tCurrBodyX = arnold.body.x;
+        var tCurrBodyY = arnold.body.y;
+        var tTargetX = -23;
+        var tTargetY = 501;
+        var tAngleDegrees = -23.347668528091089;
+        var tVelocity = 379;
+        var tReachedTargetX;
+        var tReachedTargetY;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">tStartX</span> <span class="o">&lt;=</span> <span class="nx">tTargetX</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">tStartY</span> <span class="o">&lt;=</span> <span class="nx">tTargetY</span><span class="p">)</span> <span class="p">{</span>
-                <span class="c1">//Moving BR</span>
-                <span class="nx">tReachedTargetX</span> <span class="o">=</span> <span class="p">(</span><span class="nx">tCurrX</span> <span class="o">&gt;=</span> <span class="nx">tTargetX</span><span class="p">);</span>
-                <span class="nx">tReachedTargetY</span> <span class="o">=</span> <span class="p">(</span><span class="nx">tCurrY</span> <span class="o">&gt;=</span> <span class="nx">tTargetY</span><span class="p">);</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="c1">// Moving TR</span>
-                <span class="nx">tReachedTargetX</span> <span class="o">=</span> <span class="p">(</span><span class="nx">tCurrX</span> <span class="o">&gt;=</span> <span class="nx">tTargetX</span><span class="p">);</span>
-                <span class="nx">tReachedTargetY</span> <span class="o">=</span> <span class="p">(</span><span class="nx">tCurrY</span> <span class="o">&lt;=</span> <span class="nx">tTargetY</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">tStartY</span> <span class="o">&lt;=</span> <span class="nx">tTargetY</span><span class="p">)</span> <span class="p">{</span>
-                <span class="c1">//Moving BL</span>
-                <span class="nx">tReachedTargetX</span> <span class="o">=</span> <span class="p">(</span><span class="nx">tCurrX</span> <span class="o">&lt;=</span> <span class="nx">tTargetX</span><span class="p">);</span>
-                <span class="nx">tReachedTargetY</span> <span class="o">=</span> <span class="p">(</span><span class="nx">tCurrY</span> <span class="o">&gt;=</span> <span class="nx">tTargetY</span><span class="p">);</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="c1">// Moving TL</span>
-                <span class="nx">tReachedTargetX</span> <span class="o">=</span> <span class="p">(</span><span class="nx">tCurrX</span> <span class="o">&lt;=</span> <span class="nx">tTargetX</span><span class="p">);</span>
-                <span class="nx">tReachedTargetY</span> <span class="o">=</span> <span class="p">(</span><span class="nx">tCurrY</span> <span class="o">&lt;=</span> <span class="nx">tTargetY</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+        if (tStartX <= tTargetX) {
+            if (tStartY <= tTargetY) {
+                //Moving BR
+                tReachedTargetX = (tCurrX >= tTargetX);
+                tReachedTargetY = (tCurrY >= tTargetY);
+            } else {
+                // Moving TR
+                tReachedTargetX = (tCurrX >= tTargetX);
+                tReachedTargetY = (tCurrY <= tTargetY);
+            }
+        } else {
+            if (tStartY <= tTargetY) {
+                //Moving BL
+                tReachedTargetX = (tCurrX <= tTargetX);
+                tReachedTargetY = (tCurrY >= tTargetY);
+            } else {
+                // Moving TL
+                tReachedTargetX = (tCurrX <= tTargetX);
+                tReachedTargetY = (tCurrY <= tTargetY);
+            }
+        }
 
-        <span class="k">if</span> <span class="p">((</span><span class="nx">tReachedTargetX</span><span class="o">!==</span><span class="kc">true</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">tReachedTargetY</span><span class="o">!==</span><span class="kc">true</span><span class="p">))</span> <span class="p">{</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Start: "</span> <span class="o">+</span> <span class="nx">tStartX</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="nx">tStartY</span> <span class="o">+</span> <span class="s2">" / Curr: "</span> <span class="o">+</span> <span class="nx">tCurrX</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="nx">tCurrY</span> <span class="o">+</span> <span class="s2">" / CurrBody: "</span> <span class="o">+</span> <span class="nx">tCurrBodyX</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="nx">tCurrBodyY</span> <span class="o">+</span> <span class="s2">" / "</span> <span class="o">+</span> <span class="s2">"Target: "</span> <span class="o">+</span> <span class="nx">tTargetX</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="nx">tTargetY</span><span class="p">);</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">velocityFromAngle</span><span class="p">(</span><span class="nx">tAngleDegrees</span><span class="p">,</span> <span class="nx">tVelocity</span><span class="p">,</span> <span class="nx">arnold</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">arnold</span><span class="p">.</span><span class="nx">velocity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-            <span class="nx">arnold</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
+        if ((tReachedTargetX!==true) || (tReachedTargetY!==true)) {
+            console.log("Start: " + tStartX + "," + tStartY + " / Curr: " + tCurrX + "," + tCurrY + " / CurrBody: " + tCurrBodyX + "," + tCurrBodyY + " / " + "Target: " + tTargetX + "," + tTargetY);
+            game.physics.arcade.velocityFromAngle(tAngleDegrees, tVelocity, arnold.body.velocity);
+        } else {
+            arnold.velocity = 0;
+            arnold.body.velocity = 0;
+        }
 
-    <span class="p">}</span>
+    }
 
-    <span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+    function render() {
 
-    <span class="p">}</span>
+    }
 
-    <span class="kd">function</span> <span class="nx">msgBox</span><span class="p">(</span><span class="nx">pMsg</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span><span class="o">-</span><span class="mi">24</span><span class="p">,</span> <span class="nx">pMsg</span><span class="p">,</span> <span class="p">{</span><span class="na">font</span><span class="p">:</span><span class="s2">"20px Arial"</span><span class="p">,</span><span class="na">fill</span><span class="p">:</span><span class="s2">"#000000"</span><span class="p">});</span>
-    <span class="p">}</span></code></pre>
+    function msgBox(pMsg) {
+        game.add.text(0, game.world.height-24, pMsg, {font:"20px Arial",fill:"#000000"});
+    }</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

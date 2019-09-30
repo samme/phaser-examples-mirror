@@ -55,59 +55,60 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/crop%20tilesprite.js" title="wip/crop tilesprite.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/crop%20tilesprite.js" download="" title="Download: wip/crop tilesprite.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">tilesprite</span><span class="p">;</span>
+var tilesprite;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'assets/pics/lance-overdose-loader_eye.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'sheet'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.json'</span><span class="p">);</span>
+    game.load.image('pic', 'assets/pics/lance-overdose-loader_eye.png');
+    game.load.spritesheet('sheet', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
+    game.load.atlas('atlas', 'assets/sprites/seacreatures_json.png', 'assets/sprites/seacreatures_json.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite3</span><span class="p">;</span>
+var sprite1;
+var sprite2;
+var sprite3;
 
-<span class="kd">var</span> <span class="nx">crop1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">crop2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">crop3</span><span class="p">;</span>
+var crop1;
+var crop2;
+var crop3;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sheet'</span><span class="p">);</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    sprite1 = game.add.sprite(0, 0, 'sheet');
+    sprite1.animations.add('walk');
+    sprite1.animations.play('walk', 20, true);
 
-    <span class="c1">// sprite2 = game.add.sprite(300, 0, 'atlas', 'octopus0000');</span>
-    <span class="c1">// sprite2.animations.add('swim', Phaser.Animation.generateFrameNames('octopus', 0, 24, '', 4), 30, true);</span>
-    <span class="c1">// sprite2.animations.play('swim');</span>
+    // sprite2 = game.add.sprite(300, 0, 'atlas', 'octopus0000');
+    // sprite2.animations.add('swim', Phaser.Animation.generateFrameNames('octopus', 0, 24, '', 4), 30, true);
+    // sprite2.animations.play('swim');
 
-    <span class="c1">// sprite3 = game.add.sprite(0, 300, 'pic');</span>
+    // sprite3 = game.add.sprite(0, 300, 'pic');
 
-    <span class="nx">crop1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">24</span><span class="p">);</span>
-    <span class="c1">// crop2 = new Phaser.Rectangle(0, 0, 32, 32);</span>
-    <span class="c1">// crop3 = new Phaser.Rectangle(16, 16, 100, 50);</span>
+    crop1 = new Phaser.Rectangle(1, 1, 24, 24);
+    // crop2 = new Phaser.Rectangle(0, 0, 32, 32);
+    // crop3 = new Phaser.Rectangle(16, 16, 100, 50);
 
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">crop</span><span class="p">(</span><span class="nx">crop1</span><span class="p">);</span>
-    <span class="c1">// sprite2.crop(crop2);</span>
-    <span class="c1">// sprite3.crop(crop3);</span>
+    sprite1.crop(crop1);
+    // sprite2.crop(crop2);
+    // sprite3.crop(crop3);
 
-    <span class="c1">// console.log(sprite1.texture);</span>
+    // console.log(sprite1.texture);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

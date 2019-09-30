@@ -55,45 +55,46 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bristoljs/03%20text.js" title="bristoljs/03 text.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bristoljs/03%20text.js" download="" title="Download: bristoljs/03 text.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">text1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text2</span><span class="p">;</span>
+var text1;
+var text2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0xbdbdbd</span><span class="p">;</span>
+    game.stage.backgroundColor = 0xbdbdbd;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">text1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"BristolJS"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"62px Arial Black"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#c51b7d"</span> <span class="p">});</span>
-    <span class="nx">text1</span><span class="p">.</span><span class="nx">stroke</span> <span class="o">=</span> <span class="s2">"#de77ae"</span><span class="p">;</span>
-    <span class="nx">text1</span><span class="p">.</span><span class="nx">strokeThickness</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>
-    <span class="nx">text1</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"#333333"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    text1 = game.add.text(20, 50, "BristolJS", { font: "62px Arial Black", fill: "#c51b7d" });
+    text1.stroke = "#de77ae";
+    text1.strokeThickness = 16;
+    text1.setShadow(2, 2, "#333333", 2, true, false);
 
-    <span class="nx">text2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s2">"and Phaser"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"62px Arial Black"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#c51b7d"</span> <span class="p">});</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">stroke</span> <span class="o">=</span> <span class="s2">"#de77ae"</span><span class="p">;</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">strokeThickness</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"#333333"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    text2 = game.add.text(200, 300, "and Phaser", { font: "62px Arial Black", fill: "#c51b7d" });
+    text2.stroke = "#de77ae";
+    text2.strokeThickness = 16;
+    text2.setShadow(2, 2, "#333333", 2, false, true);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">([</span> <span class="nx">text1</span><span class="p">,</span> <span class="nx">text2</span> <span class="p">]);</span>
+    game.physics.arcade.enable([ text1, text2 ]);
 
-    <span class="nx">text1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">text1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">text1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    text1.body.velocity.setTo(200, 200);
+    text1.body.collideWorldBounds = true;
+    text1.body.bounce.set(1);
 
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">);</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    text2.body.velocity.setTo(-100, -100);
+    text2.body.collideWorldBounds = true;
+    text2.body.bounce.set(1);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">text1</span><span class="p">,</span> <span class="nx">text2</span><span class="p">);</span>
+    game.physics.arcade.collide(text1, text2);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

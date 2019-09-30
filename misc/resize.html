@@ -55,178 +55,179 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/misc/resize.js" title="misc/resize.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/misc/resize.js" download="" title="Download: misc/resize.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="s1">'100%'</span><span class="p">,</span> <span class="s1">'100%'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">init</span><span class="p">:</span> <span class="nx">init</span><span class="p">,</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">resize</span><span class="p">:</span> <span class="nx">resize</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game('100%', '100%', Phaser.CANVAS, 'phaser-example', { init: init, preload: preload, create: create, update: update, resize: resize, render: render });
 
-<span class="kd">var</span> <span class="nx">bg</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">button1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">button2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">pad</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mockgame</span><span class="p">;</span>
+var bg;
+var button1;
+var button2;
+var pad;
+var mockgame;
 
-<span class="kd">var</span> <span class="nx">layer</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">alignedImages</span> <span class="o">=</span> <span class="p">[];</span>
+var layer;
+var alignedImages = [];
 
-<span class="kd">function</span> <span class="nx">init</span> <span class="p">()</span>
-<span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">scaleMode</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">ScaleManager</span><span class="p">.</span><span class="nx">RESIZE</span><span class="p">;</span>
-    <span class="c1">// game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;</span>
-    <span class="c1">// game.scale.compatibility.forceMinimumDocumentHeight = true;</span>
+function init ()
+{
+    game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+    // game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    // game.scale.compatibility.forceMinimumDocumentHeight = true;
 
-    <span class="c1">//  The 'fixed' game size</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">640</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
+    //  The 'fixed' game size
+    game.scale.grid.setSize(640, 400);
 
-    <span class="c1">//  For mobile only</span>
-    <span class="c1">// game.scale.forceOrientation(true, false);</span>
+    //  For mobile only
+    // game.scale.forceOrientation(true, false);
 
-    <span class="c1">// window.a</span>
-<span class="p">}</span>
+    // window.a
+}
 
-<span class="kd">function</span> <span class="nx">preload</span> <span class="p">()</span>
-<span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'50'</span><span class="p">,</span> <span class="s1">'assets/sprites/50x50.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'hotdog'</span><span class="p">,</span> <span class="s1">'assets/sprites/hotdog.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'starfield'</span><span class="p">,</span> <span class="s1">'assets/skies/deep-space.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mockgame'</span><span class="p">,</span> <span class="s1">'assets/pics/game14_angel_dawn.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'xbox360'</span><span class="p">,</span> <span class="s1">'assets/controllers/xbox360.png'</span><span class="p">,</span> <span class="s1">'assets/controllers/xbox360.json'</span><span class="p">);</span>
-<span class="p">}</span>
+function preload ()
+{
+    game.load.image('50', 'assets/sprites/50x50.png');
+    game.load.image('hotdog', 'assets/sprites/hotdog.png');
+    game.load.image('starfield', 'assets/skies/deep-space.jpg');
+    game.load.image('mockgame', 'assets/pics/game14_angel_dawn.png');
+    game.load.atlas('xbox360', 'assets/controllers/xbox360.png', 'assets/controllers/xbox360.json');
+}
 
-<span class="kd">function</span> <span class="nx">create</span> <span class="p">()</span>
-<span class="p">{</span>
-    <span class="c1">//  Added below the World</span>
-    <span class="nx">bg</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">addChildAt</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'starfield'</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+function create ()
+{
+    //  Added below the World
+    bg = game.stage.addChildAt(game.make.tileSprite(0, 0, game.width, game.height, 'starfield'), 0);
 
-    <span class="c1">//  Added above the World</span>
-    <span class="nx">button1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'xbox360'</span><span class="p">,</span> <span class="s1">'360_A'</span><span class="p">);</span>
-    <span class="nx">button2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'xbox360'</span><span class="p">,</span> <span class="s1">'360_B'</span><span class="p">);</span>
-    <span class="nx">pad</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'xbox360'</span><span class="p">,</span> <span class="s1">'360_Dpad'</span><span class="p">);</span>
+    //  Added above the World
+    button1 = game.add.image(0, 0, 'xbox360', '360_A');
+    button2 = game.add.image(0, 0, 'xbox360', '360_B');
+    pad = game.add.image(0, 0, 'xbox360', '360_Dpad');
 
-    <span class="c1">//  Our 'game'</span>
+    //  Our 'game'
 
-    <span class="nx">mockgame</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'mockgame'</span><span class="p">);</span>
-    <span class="c1">// mockgame.anchor.set(0.5);</span>
+    mockgame = game.add.sprite(0, 0, 'mockgame');
+    // mockgame.anchor.set(0.5);
 
-    <span class="nx">alignPad</span><span class="p">();</span>
-<span class="p">}</span>
+    alignPad();
+}
 
-<span class="kd">function</span> <span class="nx">alignPad</span> <span class="p">()</span>
-<span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">boundsFull</span><span class="p">.</span><span class="nx">width</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">boundsFull</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+function alignPad ()
+{
+    var w = Math.floor(game.scale.grid.boundsFull.width);
+    var h = Math.floor(game.scale.grid.boundsFull.height);
 
-    <span class="nx">pad</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="mi">100</span><span class="p">;</span>
-    <span class="nx">pad</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">-</span> <span class="mi">300</span><span class="p">;</span>
+    pad.x = 0 + 100;
+    pad.y = h - 300;
 
-    <span class="nx">button1</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">w</span> <span class="o">-</span> <span class="mi">400</span><span class="p">;</span>
-    <span class="nx">button1</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">-</span> <span class="mi">300</span><span class="p">;</span>
+    button1.x = w - 400;
+    button1.y = h - 300;
 
-    <span class="nx">button2</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">w</span> <span class="o">-</span> <span class="mi">200</span><span class="p">;</span>
-    <span class="nx">button2</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">-</span> <span class="mi">300</span><span class="p">;</span>
-<span class="p">}</span>
+    button2.x = w - 200;
+    button2.y = h - 300;
+}
 
-<span class="kd">function</span> <span class="nx">OLDcreate</span> <span class="p">()</span>
-<span class="p">{</span>
-    <span class="nx">bg</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'starfield'</span><span class="p">);</span>
+function OLDcreate ()
+{
+    bg = game.add.tileSprite(0, 0, game.width, game.height, 'starfield');
 
-    <span class="nx">layer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">createFluidLayer</span><span class="p">();</span>
+    layer = game.scale.grid.createFluidLayer();
 
-    <span class="kd">var</span> <span class="nx">mockgame</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'mockgame'</span><span class="p">);</span>
-    <span class="nx">mockgame</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'top-left'</span><span class="p">;</span>
+    var mockgame = layer.create(0, 0, 'mockgame');
+    mockgame.align = 'top-left';
 
-    <span class="kd">var</span> <span class="nx">topLeft</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'50'</span><span class="p">);</span>
-    <span class="nx">topLeft</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'top-left'</span><span class="p">;</span>
+    var topLeft = layer.create(0, 0, '50');
+    topLeft.align = 'top-left';
 
-    <span class="kd">var</span> <span class="nx">topRight</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'50'</span><span class="p">);</span>
-    <span class="nx">topRight</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">topRight</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'top-right'</span><span class="p">;</span>
+    var topRight = layer.create(0, 0, '50');
+    topRight.anchor.set(1, 0);
+    topRight.align = 'top-right';
 
-    <span class="kd">var</span> <span class="nx">bottomLeft</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'50'</span><span class="p">);</span>
-    <span class="nx">bottomLeft</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">bottomLeft</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'bottom-left'</span><span class="p">;</span>
+    var bottomLeft = layer.create(0, 0, '50');
+    bottomLeft.anchor.set(0, 1);
+    bottomLeft.align = 'bottom-left';
 
-    <span class="kd">var</span> <span class="nx">bottomRight</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'50'</span><span class="p">);</span>
-    <span class="nx">bottomRight</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">bottomRight</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'bottom-right'</span><span class="p">;</span>
+    var bottomRight = layer.create(0, 0, '50');
+    bottomRight.anchor.set(1, 1);
+    bottomRight.align = 'bottom-right';
 
-    <span class="nx">alignedImages</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">mockgame</span><span class="p">);</span>
-    <span class="nx">alignedImages</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">topLeft</span><span class="p">);</span>
-    <span class="nx">alignedImages</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">topRight</span><span class="p">);</span>
-    <span class="nx">alignedImages</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">bottomLeft</span><span class="p">);</span>
-    <span class="nx">alignedImages</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">bottomRight</span><span class="p">);</span>
+    alignedImages.push(mockgame);
+    alignedImages.push(topLeft);
+    alignedImages.push(topRight);
+    alignedImages.push(bottomLeft);
+    alignedImages.push(bottomRight);
 
-    <span class="nx">align</span><span class="p">();</span>
-<span class="p">}</span>
+    align();
+}
 
-<span class="kd">function</span> <span class="nx">update</span> <span class="p">()</span>
-<span class="p">{</span>
-<span class="p">}</span>
+function update ()
+{
+}
 
-<span class="kd">function</span> <span class="nx">resize</span> <span class="p">(</span><span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+function resize (width, height)
+{
+    console.log(width, height);
 
-    <span class="nx">bg</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">width</span><span class="p">;</span>
-    <span class="nx">bg</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">height</span><span class="p">;</span>
+    bg.width = width;
+    bg.height = height;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">fitSprite</span><span class="p">(</span><span class="nx">mockgame</span><span class="p">);</span>
+    game.scale.grid.fitSprite(mockgame);
 
-    <span class="nx">alignPad</span><span class="p">();</span>
+    alignPad();
 
-    <span class="c1">// align();</span>
+    // align();
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">incorrectOrientation</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// game.scale.grid.fitSprite(orientationBG);</span>
-        <span class="c1">// game.scale.scaleSprite(orientation, game.scale.width, game.scale.height, true);</span>
+    if (game.scale.incorrectOrientation)
+    {
+        // game.scale.grid.fitSprite(orientationBG);
+        // game.scale.scaleSprite(orientation, game.scale.width, game.scale.height, true);
 
-        <span class="c1">// orientation.x = game.scale.bounds.centerX;</span>
-        <span class="c1">// orientation.y = game.scale.bounds.centerY;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+        // orientation.x = game.scale.bounds.centerX;
+        // orientation.y = game.scale.bounds.centerY;
+    }
+}
 
-<span class="kd">function</span> <span class="nx">align</span> <span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">alignedImages</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">alignedImages</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+function align ()
+{
+    for (var i = 0; i < alignedImages.length; i++)
+    {
+        var sprite = alignedImages[i];
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">align</span> <span class="o">===</span> <span class="s1">'top-left'</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">topLeft</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">topLeft</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">align</span> <span class="o">===</span> <span class="s1">'top-right'</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">topRight</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">topRight</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">align</span> <span class="o">===</span> <span class="s1">'bottom-right'</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">bottomRight</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">bottomRight</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">align</span> <span class="o">===</span> <span class="s1">'bottom-left'</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">bottomLeft</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">bottomLeft</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+        if (sprite.align === 'top-left')
+        {
+            sprite.x = layer.topLeft.x;
+            sprite.y = layer.topLeft.y;
+        }
+        else if (sprite.align === 'top-right')
+        {
+            sprite.x = layer.topRight.x;
+            sprite.y = layer.topRight.y;
+        }
+        else if (sprite.align === 'bottom-right')
+        {
+            sprite.x = layer.bottomRight.x;
+            sprite.y = layer.bottomRight.y;
+        }
+        else if (sprite.align === 'bottom-left')
+        {
+            sprite.x = layer.bottomLeft.x;
+            sprite.y = layer.bottomLeft.y;
+        }
+    }
+}
 
-<span class="kd">function</span> <span class="nx">render</span> <span class="p">()</span>
-<span class="p">{</span>
-    <span class="c1">// game.debug.text(game.scale.grid.boundsFull.width + ' x ' + game.scale.grid.boundsFull.height, game.scale.grid.boundsFull.x + 4, game.scale.grid.boundsFull.y + 16);</span>
-    <span class="c1">// game.debug.geom(game.scale.grid.boundsFull, 'rgba(255,0,0,0.9', false);</span>
+function render ()
+{
+    // game.debug.text(game.scale.grid.boundsFull.width + ' x ' + game.scale.grid.boundsFull.height, game.scale.grid.boundsFull.x + 4, game.scale.grid.boundsFull.y + 16);
+    // game.debug.geom(game.scale.grid.boundsFull, 'rgba(255,0,0,0.9', false);
 
-    <span class="c1">// game.debug.text(game.scale.grid.boundsNone.width + ' x ' + game.scale.grid.boundsNone.height, game.scale.grid.boundsNone.x + 4, game.scale.grid.boundsNone.y + 16);</span>
-    <span class="c1">// game.debug.geom(game.scale.grid.boundsNone, 'rgba(255,0,0,0.9', false);</span>
+    // game.debug.text(game.scale.grid.boundsNone.width + ' x ' + game.scale.grid.boundsNone.height, game.scale.grid.boundsNone.x + 4, game.scale.grid.boundsNone.y + 16);
+    // game.debug.geom(game.scale.grid.boundsNone, 'rgba(255,0,0,0.9', false);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">boundsFluid</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="s1">' x '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">boundsFluid</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">boundsFluid</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">boundsFluid</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">16</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">boundsFluid</span><span class="p">,</span> <span class="s1">'rgba(255,0,0,0.9'</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    game.debug.text(game.scale.grid.boundsFluid.width + ' x ' + game.scale.grid.boundsFluid.height, game.scale.grid.boundsFluid.x + 4, game.scale.grid.boundsFluid.y + 16);
+    game.debug.geom(game.scale.grid.boundsFluid, 'rgba(255,0,0,0.9', false);
 
-    <span class="c1">// game.debug.text(game.scale.grid.boundsCustom.width + ' x ' + game.scale.grid.boundsCustom.height, game.scale.grid.boundsCustom.x + 4, game.scale.grid.boundsCustom.y + 16);</span>
-    <span class="c1">// game.debug.geom(game.scale.grid.boundsCustom, 'rgba(255,255,0,0.9', false);</span>
-<span class="p">}</span></code></pre>
+    // game.debug.text(game.scale.grid.boundsCustom.width + ' x ' + game.scale.grid.boundsCustom.height, game.scale.grid.boundsCustom.x + 4, game.scale.grid.boundsCustom.y + 16);
+    // game.debug.geom(game.scale.grid.boundsCustom, 'rgba(255,255,0,0.9', false);
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

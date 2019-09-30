@@ -55,84 +55,84 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/destroy%20state.js" title="wip/destroy state.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/destroy%20state.js" download="" title="Download: wip/destroy state.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">BasicGame</span> <span class="o">=</span> <span class="p">{};</span>
+</div>
+<pre class="highlight javascript"><code>var BasicGame = {};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Boot</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
-<span class="p">};</span>
+BasicGame.Boot = function (game) {
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Boot</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+BasicGame.Boot.prototype = {
 
-    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    preload: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
+        this.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'MainMenu'</span><span class="p">);</span>
+        this.state.start('MainMenu');
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">MainMenu</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+BasicGame.MainMenu = function (game) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">mummy</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">anim</span><span class="p">;</span>
+    this.mummy;
+    this.anim;
 
-<span class="p">};</span>
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">MainMenu</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+BasicGame.MainMenu.prototype = {
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x2d2d2d</span><span class="p">;</span>
+        this.stage.backgroundColor = 0x2d2d2d;
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">mummy</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'mummy'</span><span class="p">);</span>
+        this.mummy = this.add.sprite(200, 400, 'mummy');
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">anim</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">mummy</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
+        this.anim = this.mummy.animations.add('walk');
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">anim</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+        this.anim.play(10, false);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">mummy</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onAnimationComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">changeIt</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        this.mummy.events.onAnimationComplete.add(this.changeIt, this);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">changeIt</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    changeIt: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'GameOver'</span><span class="p">);</span>
+        this.state.start('GameOver');
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">GameOver</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+BasicGame.GameOver = function (game) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">dude</span><span class="p">;</span>
+    this.dude;
 
-<span class="p">};</span>
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">GameOver</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+BasicGame.GameOver.prototype = {
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0xff7744</span><span class="p">;</span>
+        this.stage.backgroundColor = 0xff7744;
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">dude</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'mummy'</span><span class="p">);</span>
+        this.dude = this.add.sprite(300, 300, 'mummy');
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example');
 
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Boot'</span><span class="p">,</span> <span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Boot</span><span class="p">);</span>
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'MainMenu'</span><span class="p">,</span> <span class="nx">BasicGame</span><span class="p">.</span><span class="nx">MainMenu</span><span class="p">);</span>
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'GameOver'</span><span class="p">,</span> <span class="nx">BasicGame</span><span class="p">.</span><span class="nx">GameOver</span><span class="p">);</span>
+game.state.add('Boot', BasicGame.Boot);
+game.state.add('MainMenu', BasicGame.MainMenu);
+game.state.add('GameOver', BasicGame.GameOver);
 
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'Boot'</span><span class="p">);</span>
+game.state.start('Boot');
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

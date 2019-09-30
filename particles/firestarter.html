@@ -55,120 +55,121 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particles/firestarter.js" title="particles/firestarter.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particles/firestarter.js" download="" title="Download: particles/firestarter.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'space'</span><span class="p">,</span> <span class="s1">'assets/misc/starfield.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'fire1'</span><span class="p">,</span> <span class="s1">'assets/particles/fire1.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'fire2'</span><span class="p">,</span> <span class="s1">'assets/particles/fire2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'fire3'</span><span class="p">,</span> <span class="s1">'assets/particles/fire3.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'smoke'</span><span class="p">,</span> <span class="s1">'assets/particles/smoke-puff.png'</span><span class="p">);</span>
+    game.load.image('space', 'assets/misc/starfield.jpg');
+    game.load.image('fire1', 'assets/particles/fire1.png');
+    game.load.image('fire2', 'assets/particles/fire2.png');
+    game.load.image('fire3', 'assets/particles/fire3.png');
+    game.load.image('smoke', 'assets/particles/smoke-puff.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/particles/plasmaball.png'</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">);</span>
+    game.load.spritesheet('ball', 'assets/particles/plasmaball.png', 128, 128);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">emitter</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">path</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">index</span><span class="p">;</span>
+var sprite;
+var emitter;
+var path;
+var index;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'space'</span><span class="p">);</span>
+    game.add.tileSprite(0, 0, game.width, game.height, 'space');
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">emitter</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
+    emitter = game.add.emitter(game.world.centerX, game.world.centerY, 400);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">makeParticles</span><span class="p">(</span> <span class="p">[</span> <span class="s1">'fire1'</span><span class="p">,</span> <span class="s1">'fire2'</span><span class="p">,</span> <span class="s1">'fire3'</span><span class="p">,</span> <span class="s1">'smoke'</span> <span class="p">]</span> <span class="p">);</span>
+    emitter.makeParticles( [ 'fire1', 'fire2', 'fire3', 'smoke' ] );
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">gravity</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">setAlpha</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">setScale</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
+    emitter.gravity = 200;
+    emitter.setAlpha(1, 0, 3000);
+    emitter.setScale(0.8, 0, 0.8, 0, 3000);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+    emitter.start(false, 3000, 5);
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    sprite = game.add.sprite(0, 300, 'ball', 0);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+    game.physics.arcade.enable(sprite);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">150</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">checkCollision</span><span class="p">.</span><span class="nx">left</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">checkCollision</span><span class="p">.</span><span class="nx">right</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    game.physics.arcade.gravity.y = 150;
+    game.physics.arcade.checkCollision.left = false;
+    game.physics.arcade.checkCollision.right = false;
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+    sprite.body.setSize(80, 80, 0, 0);
+    sprite.body.collideWorldBounds = true;
+    sprite.body.bounce.set(1);
+    sprite.body.velocity.set(300, 200);
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    sprite.inputEnabled = true;
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDragStart</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDragStop</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    sprite.input.enableDrag();
+    sprite.events.onDragStart.add(onDragStart, this);
+    sprite.events.onDragStop.add(onDragStop, this);
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'pulse'</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'pulse'</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    sprite.animations.add('pulse');
+    sprite.play('pulse', 30, true);
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    sprite.anchor.set(0.5);
 
-    <span class="nx">createText</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">'If you can catch the fireball, drag it around'</span><span class="p">);</span>
+    createText(16, 16, 'If you can catch the fireball, drag it around');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="kd">var</span> <span class="nx">px</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">py</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    var px = sprite.body.velocity.x;
+    var py = sprite.body.velocity.y;
 
-    <span class="nx">px</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-    <span class="nx">py</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    px *= -1;
+    py *= -1;
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">minParticleSpeed</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">px</span><span class="p">,</span> <span class="nx">py</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">maxParticleSpeed</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">px</span><span class="p">,</span> <span class="nx">py</span><span class="p">);</span>
+    emitter.minParticleSpeed.set(px, py);
+    emitter.maxParticleSpeed.set(px, py);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">emitX</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">emitY</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    emitter.emitX = sprite.x;
+    emitter.emitY = sprite.y;
 
-    <span class="c1">// emitter.forEachExists(game.world.wrap, game.world);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    // emitter.forEachExists(game.world.wrap, game.world);
+    game.world.wrap(sprite, 64);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onDragStart</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moves</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="p">}</span>
+function onDragStart() {
+    sprite.body.moves = false;
+}
 
-<span class="kd">function</span> <span class="nx">onDragStop</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moves</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-<span class="p">}</span>
+function onDragStop() {
+    sprite.body.moves = true;
+}
 
-<span class="kd">function</span> <span class="nx">createText</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+function createText(x, y, string) {
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">string</span><span class="p">);</span>
-    <span class="c1">// text.anchor.set(0.5);</span>
-    <span class="c1">// text.align = 'center';</span>
+    var text = game.add.text(x, y, string);
+    // text.anchor.set(0.5);
+    // text.align = 'center';
 
-    <span class="c1">//  Font style</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'Arial Black'</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fontSize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
-    <span class="c1">// text.fontWeight = 'bold';</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s1">'#ffffff'</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'rgba(0, 0, 0, 0.7)'</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+    //  Font style
+    text.font = 'Arial Black';
+    text.fontSize = 20;
+    // text.fontWeight = 'bold';
+    text.fill = '#ffffff';
+    text.setShadow(2, 2, 'rgba(0, 0, 0, 0.7)', 2);
 
-    <span class="k">return</span> <span class="nx">text</span><span class="p">;</span>
+    return text;
 
-<span class="p">}</span>
+}
 
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">// game.debug.bodyInfo(sprite, 32, 32);</span>
+    // game.debug.bodyInfo(sprite, 32, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

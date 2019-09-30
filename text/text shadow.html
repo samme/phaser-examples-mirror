@@ -55,44 +55,45 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/text%20shadow.js" title="text/text shadow.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/text%20shadow.js" download="" title="Download: text/text shadow.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">setBackgroundColor</span><span class="p">(</span><span class="mh">0xefefef</span><span class="p">);</span>
+    game.stage.setBackgroundColor(0xefefef);
 
-    <span class="c1">//  Here we set the shadow:</span>
-    <span class="c1">//  The first 2 parameters control x and y distance</span>
-    <span class="c1">//  The 3rd the shadow colour</span>
-    <span class="c1">//  The 4th the amount of blur</span>
+    //  Here we set the shadow:
+    //  The first 2 parameters control x and y distance
+    //  The 3rd the shadow colour
+    //  The 4th the amount of blur
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">createText</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s1">'shadow 5'</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+    var text = createText(100, 'shadow 5');
+    text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">createText</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="s1">'shadow 0'</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">15</span><span class="p">);</span>
+    text = createText(300, 'shadow 0');
+    text.setShadow(5, 5, 'rgba(0,0,0,0.5)', 15);
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">createText</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s1">'shadow 10'</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    text = createText(500, 'shadow 10');
+    text.setShadow(-5, 5, 'rgba(0,0,0,0.5)', 0);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createText</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function createText(y) {
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s1">'- phaser text shadow -'</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'center'</span><span class="p">;</span>
+    var text = game.add.text(game.world.centerX, y, '- phaser text shadow -');
+    text.anchor.set(0.5);
+    text.align = 'center';
 
-    <span class="c1">//  Font style</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'Arial Black'</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fontSize</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fontWeight</span> <span class="o">=</span> <span class="s1">'bold'</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s1">'#ff00ff'</span><span class="p">;</span>
+    //  Font style
+    text.font = 'Arial Black';
+    text.fontSize = 50;
+    text.fontWeight = 'bold';
+    text.fill = '#ff00ff';
 
-    <span class="k">return</span> <span class="nx">text</span><span class="p">;</span>
+    return text;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

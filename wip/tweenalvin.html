@@ -55,40 +55,41 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/tweenalvin.js" title="wip/tweenalvin.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/tweenalvin.js" download="" title="Download: wip/tweenalvin.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
+    game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">mummy</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tween</span><span class="p">;</span>
+var mummy;
+var tween;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x3d4d3d</span><span class="p">;</span>
+	game.stage.backgroundColor = 0x3d4d3d;
 
-    <span class="nx">mummy</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'mummy'</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+    mummy = game.add.sprite(300, 300, 'mummy', 5);
 
-    <span class="nx">tween</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">mummy</span><span class="p">);</span>
+    tween = this.game.add.tween(mummy);
 
-    <span class="kd">var</span> <span class="nx">tweenDuration</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>
+    var tweenDuration = 2000;
 
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span> <span class="p">:</span> <span class="s2">"+100"</span> <span class="p">},</span> <span class="nx">tweenDuration</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span> <span class="p">:</span> <span class="s2">"+100"</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="s2">"+100"</span> <span class="p">},</span> <span class="nx">tweenDuration</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">tweenDuration</span><span class="p">);</span>
+    tween.to( { x : "+100" }, tweenDuration, Phaser.Easing.Linear.None, true);
+    tween.to( { x : "+100", y: "+100" }, tweenDuration, Phaser.Easing.Linear.None, true, tweenDuration);
  
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 	
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

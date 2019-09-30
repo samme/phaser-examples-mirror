@@ -55,58 +55,59 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/combined%20tweens.js" title="tweens/combined tweens.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/combined%20tweens.js" download="" title="Download: tweens/combined tweens.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span><span class="na">preload</span><span class="p">:</span><span class="nx">preload</span><span class="p">,</span><span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', {preload:preload,create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'pig'</span><span class="p">,</span> <span class="s1">'assets/sprites/invaderpig.png'</span><span class="p">,</span> <span class="mi">124</span><span class="p">,</span> <span class="mi">104</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'starfield'</span><span class="p">,</span> <span class="s1">'assets/misc/starfield.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mushroom'</span><span class="p">,</span> <span class="s1">'assets/sprites/mushroom2.png'</span><span class="p">);</span>
+    game.load.spritesheet('pig', 'assets/sprites/invaderpig.png', 124, 104);
+    game.load.image('starfield', 'assets/misc/starfield.jpg');
+    game.load.image('mushroom', 'assets/sprites/mushroom2.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">mushroom</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">pig</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">pigArrives</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">s</span><span class="p">;</span>
+var mushroom;
+var pig;
+var pigArrives;
+var s;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'starfield'</span><span class="p">);</span>
+    game.add.tileSprite(0, 0, 800, 600, 'starfield');
 
-    <span class="nx">pig</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'pig'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    pig = game.add.sprite(-50, 200, 'pig', 1);
 
-    <span class="nx">pig</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    pig.scale.setTo(0.5, 0.5);
 
-    <span class="nx">mushroom</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">380</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'mushroom'</span><span class="p">);</span>
-    <span class="nx">mushroom</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    mushroom = game.add.sprite(380, 200, 'mushroom');
+    mushroom.anchor.setTo(0.5, 0.5);
 
-    <span class="nx">pigArrives</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">pig</span><span class="p">);</span>
+    pigArrives = game.add.tween(pig);
     
-    <span class="nx">pigArrives</span><span class="p">.</span><span class="nx">to</span><span class="p">({</span><span class="na">x</span><span class="p">:</span><span class="mi">150</span><span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">);</span>
-    <span class="nx">pigArrives</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">firstTween</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">pigArrives</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    pigArrives.to({x:150}, 1000, Phaser.Easing.Bounce.Out);
+    pigArrives.onComplete.add(firstTween, this);
+    pigArrives.start();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">firstTween</span><span class="p">()</span> <span class="p">{</span>
+function firstTween() {
 
-    <span class="nx">s</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">mushroom</span><span class="p">.</span><span class="nx">scale</span><span class="p">);</span>
-    <span class="nx">s</span><span class="p">.</span><span class="nx">to</span><span class="p">({</span><span class="na">x</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span><span class="mi">2</span><span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">);</span>
-    <span class="nx">s</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">theEnd</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">s</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    s = game.add.tween(mushroom.scale);
+    s.to({x: 2, y:2}, 1000, Phaser.Easing.Linear.None);
+    s.onComplete.addOnce(theEnd, this);
+    s.start();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">theEnd</span><span class="p">()</span> <span class="p">{</span>
+function theEnd() {
     
-    <span class="nx">e</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">pig</span><span class="p">);</span>
+    e = game.add.tween(pig);
     
-    <span class="nx">e</span><span class="p">.</span><span class="nx">to</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="o">-</span><span class="mi">150</span> <span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">);</span>
-    <span class="nx">e</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    e.to({ x: -150 }, 1000, Phaser.Easing.Bounce.Out);
+    e.start();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

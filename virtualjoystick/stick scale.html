@@ -55,97 +55,97 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/virtualjoystick/stick%20scale.js" title="virtualjoystick/stick scale.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/virtualjoystick/stick%20scale.js" download="" title="Download: virtualjoystick/stick scale.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Virtual Joystick Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/virtualjoystick
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example');
 
-<span class="kd">var</span> <span class="nx">PhaserGame</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+var PhaserGame = function () {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">;</span>
+    this.sprite;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">;</span>
+    this.pad;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">stick3</span><span class="p">;</span>
+    this.stick1;
+    this.stick2;
+    this.stick3;
 
-<span class="p">};</span>
+};
 
-<span class="nx">PhaserGame</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+PhaserGame.prototype = {
 
-    <span class="na">init</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    init: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">renderSession</span><span class="p">.</span><span class="nx">roundPixels</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+        this.game.renderer.renderSession.roundPixels = true;
+        this.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    preload: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'arcade'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/arcade-joystick.png'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/arcade-joystick.json'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bg'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/fog.png'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/beball1.png'</span><span class="p">);</span>
+        this.load.atlas('arcade', 'assets/virtualjoystick/skins/arcade-joystick.png', 'assets/virtualjoystick/skins/arcade-joystick.json');
+        this.load.image('bg', 'assets/virtualjoystick/fog.png');
+        this.load.image('ball', 'assets/virtualjoystick/beball1.png');
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="kd">var</span> <span class="nx">bg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'bg'</span><span class="p">);</span>
+        var bg = this.add.image(0, 0, 'bg');
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">);</span>
+        this.sprite = this.add.sprite(600, 200, 'ball');
+        this.physics.arcade.enable(this.sprite);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">pad</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">VirtualJoystick</span><span class="p">);</span>
+        this.pad = this.game.plugins.add(Phaser.VirtualJoystick);
 
-        <span class="c1">//  Un-scaled Stick</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick1</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addStick</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">.</span><span class="nx">alignBottomLeft</span><span class="p">();</span>
+        //  Un-scaled Stick
+        this.stick1 = this.pad.addStick(0, 0, 100, 'arcade');
+        this.stick1.alignBottomLeft();
 
-        <span class="c1">//  Stick scaled to 50%</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick2</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addStick</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">.</span><span class="nx">scale</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">.</span><span class="nx">alignBottomRight</span><span class="p">();</span>
+        //  Stick scaled to 50%
+        this.stick2 = this.pad.addStick(0, 0, 100, 'arcade');
+        this.stick2.scale = 0.5;
+        this.stick2.alignBottomRight();
 
-        <span class="c1">//  Stick scaled to 150%</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick3</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addStick</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick3</span><span class="p">.</span><span class="nx">scale</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">;</span>
+        //  Stick scaled to 150%
+        this.stick3 = this.pad.addStick(350, 200, 100, 'arcade');
+        this.stick3.scale = 1.5;
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    update: function () {
 
-        <span class="kd">var</span> <span class="nx">maxSpeed</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+        var maxSpeed = 400;
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">velocityFromRotation</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">.</span><span class="nx">rotation</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">.</span><span class="nx">force</span> <span class="o">*</span> <span class="nx">maxSpeed</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">velocityFromRotation</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">.</span><span class="nx">rotation</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">.</span><span class="nx">force</span> <span class="o">*</span> <span class="nx">maxSpeed</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick3</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">velocityFromRotation</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick3</span><span class="p">.</span><span class="nx">rotation</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick3</span><span class="p">.</span><span class="nx">force</span> <span class="o">*</span> <span class="nx">maxSpeed</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-        <span class="p">}</span>
+        if (this.stick1.isDown)
+        {
+            this.physics.arcade.velocityFromRotation(this.stick1.rotation, this.stick1.force * maxSpeed, this.sprite.body.velocity);
+        }
+        else if (this.stick2.isDown)
+        {
+            this.physics.arcade.velocityFromRotation(this.stick2.rotation, this.stick2.force * maxSpeed, this.sprite.body.velocity);
+        }
+        else if (this.stick3.isDown)
+        {
+            this.physics.arcade.velocityFromRotation(this.stick3.rotation, this.stick3.force * maxSpeed, this.sprite.body.velocity);
+        }
+        else
+        {
+            this.sprite.body.velocity.set(0);
+        }
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Game'</span><span class="p">,</span> <span class="nx">PhaserGame</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+game.state.add('Game', PhaserGame, true);
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

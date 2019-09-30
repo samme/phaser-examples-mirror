@@ -55,56 +55,57 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/arcade%20restart.js" title="wip/arcade restart.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/arcade%20restart.js" download="" title="Download: wip/arcade restart.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var bmd;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Preload'</span><span class="p">);</span>
+    console.log('Preload');
 
-    <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#00FF00'</span><span class="p">;</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">100</span> <span class="p">,</span><span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
+    bmd = game.add.bitmapData(300, 200);
+    bmd.ctx.fillStyle = '#00FF00';
+    bmd.ctx.beginPath();
+    bmd.ctx.arc(150, 100 ,50, 0, Math.PI * 2, true);
+    bmd.ctx.closePath();
+    bmd.ctx.fill();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Create'</span><span class="p">,</span> <span class="nx">world</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">world</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    console.log('Create', world.width, world.height);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">renderSession</span><span class="p">.</span><span class="nx">roundPixels</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">world</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="mi">4704</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
-    <span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.renderer.renderSession.roundPixels = true;
+    world.resize(4704, 600);
+    physics.startSystem(Phaser.Physics.ARCADE);
     
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">155</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    sprite = game.add.sprite(155, 300, bmd);
+    sprite.anchor.set(0.5);
+    physics.arcade.enable(sprite);
+    sprite.body.collideWorldBounds = true;
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">position</span><span class="p">);</span>
+    console.log(sprite.position);
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span><span class="p">).</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span>
-        <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">50</span><span class="p">;</span>
-        <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+    game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add
+        (function(key) {
+            camera.x += 50;
+        }, this);
         
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">R</span><span class="p">).</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span>
-        <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">restart</span><span class="p">();</span>
-        <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
-<span class="p">}</span>
+    game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add
+        (function(key) {
+            game.state.restart();
+        }, this);
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">world</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">320</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">cameraInfo</span><span class="p">(</span><span class="nx">camera</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteCoords</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-<span class="p">}</span>
+function render() {
+    game.debug.text(world.x, 32, 320);
+    game.debug.cameraInfo(camera, 500, 32);
+    game.debug.spriteCoords(sprite, 32, 32);
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

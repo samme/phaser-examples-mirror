@@ -55,59 +55,60 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/geometry/playing%20with%20points.js" title="geometry/playing with points.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/geometry/playing%20with%20points.js" download="" title="Download: geometry/playing with points.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span><span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', {create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">p1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">p2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">p3</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">p4</span><span class="p">;</span>
+var p1;
+var p2;
+var p3;
+var p4;
 
-<span class="kd">var</span> <span class="nx">d2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">d3</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">d4</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>
+var d2 = 1;
+var d3 = 4;
+var d4 = 16;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">);</span>
-    <span class="nx">p2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="nx">p1</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">50</span><span class="p">,</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">p3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="nx">p2</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">50</span><span class="p">,</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">p4</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="nx">p3</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">50</span><span class="p">,</span> <span class="nx">p3</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">50</span><span class="p">);</span>
+    p1 = new Phaser.Point(game.world.centerX, game.world.centerY);
+    p2 = new Phaser.Point(p1.x - 50, p1.y - 50);
+    p3 = new Phaser.Point(p2.x - 50, p2.y - 50);
+    p4 = new Phaser.Point(p3.x - 50, p3.y - 50);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">p2</span><span class="p">.</span><span class="nx">rotate</span><span class="p">(</span><span class="nx">p1</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">d2</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
-    <span class="nx">p3</span><span class="p">.</span><span class="nx">rotate</span><span class="p">(</span><span class="nx">p2</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">d3</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">p4</span><span class="p">.</span><span class="nx">rotate</span><span class="p">(</span><span class="nx">p3</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p3</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">d4</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
+    p2.rotate(p1.x, p1.y, d2, true, 150);
+    p3.rotate(p2.x, p2.y, d3, true, 100);
+    p4.rotate(p3.x, p3.y, d4, true, 50);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="s1">'rgb(0,255,255)'</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">p1</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">p2</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">p3</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p3</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">p4</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p4</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
+    game.context.strokeStyle = 'rgb(0,255,255)';
+    game.context.beginPath();
+    game.context.moveTo(p1.x, p1.y);
+    game.context.lineTo(p2.x, p2.y);
+    game.context.lineTo(p3.x, p3.y);
+    game.context.lineTo(p4.x, p4.y);
+    game.context.stroke();
+    game.context.closePath();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'rgb(255,255,0)'</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">p1</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    game.context.fillStyle = 'rgb(255,255,0)';
+    game.context.fillRect(p1.x, p1.y, 4, 4);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'rgb(255,0,0)'</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">p2</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    game.context.fillStyle = 'rgb(255,0,0)';
+    game.context.fillRect(p2.x, p2.y, 4, 4);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'rgb(0,255,0)'</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">p3</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p3</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    game.context.fillStyle = 'rgb(0,255,0)';
+    game.context.fillRect(p3.x, p3.y, 4, 4);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'rgb(255,0,255)'</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">p4</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p4</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    game.context.fillStyle = 'rgb(255,0,255)';
+    game.context.fillRect(p4.x, p4.y, 4, 4);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

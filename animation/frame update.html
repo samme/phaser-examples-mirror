@@ -55,36 +55,37 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/animation/frame%20update.js" title="animation/frame update.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/animation/frame%20update.js" download="" title="Download: animation/frame update.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
-<span class="p">}</span>
+    game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
+}
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+var text;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">mummy</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'mummy'</span><span class="p">);</span>
+    var mummy = game.add.sprite(300, 200, 'mummy');
 
-    <span class="kd">var</span> <span class="nx">walk</span> <span class="o">=</span> <span class="nx">mummy</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
+    var walk = mummy.animations.add('walk');
 
-    <span class="nx">walk</span><span class="p">.</span><span class="nx">enableUpdate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">walk</span><span class="p">.</span><span class="nx">onUpdate</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUpdate</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    walk.enableUpdate = true;
+    walk.onUpdate.add(onUpdate, this);
 
-    <span class="nx">mummy</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    mummy.animations.play('walk', 5, true);
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">264</span><span class="p">,</span> <span class="s2">"Frame 1"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"28px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ff0044"</span> <span class="p">});</span>
+    text = game.add.text(300, 264, "Frame 1", { font: "28px Arial", fill: "#ff0044" });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onUpdate</span><span class="p">(</span><span class="nx">anim</span><span class="p">,</span> <span class="nx">frame</span><span class="p">)</span> <span class="p">{</span>
+function onUpdate(anim, frame) {
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'Frame '</span> <span class="o">+</span> <span class="nx">frame</span><span class="p">.</span><span class="nx">index</span><span class="p">;</span>
+    text.text = 'Frame ' + frame.index;
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

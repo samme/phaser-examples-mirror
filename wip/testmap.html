@@ -55,33 +55,34 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/testmap.js" title="wip/testmap.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/testmap.js" download="" title="Download: wip/testmap.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'map'</span><span class="p">,</span> <span class="s1">'wip/testing.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">TILED_JSON</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tiles'</span><span class="p">,</span> <span class="s1">'wip/foreboding1.png'</span><span class="p">);</span>
+    game.load.tilemap('map', 'wip/testing.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('tiles', 'wip/foreboding1.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'map'</span><span class="p">);</span>
+    var map = game.add.tilemap('map');
 
-    <span class="c1">//  In the Tiled JSON file, the tileset name is 'foreboding1'</span>
-    <span class="c1">//  In Phaser the cache key is 'tiles'</span>
+    //  In the Tiled JSON file, the tileset name is 'foreboding1'
+    //  In Phaser the cache key is 'tiles'
 
-    <span class="c1">//  Here is how to pair them up correctly:</span>
-    <span class="c1">// map.addTilesetImage('foreboding1', 'tiles');</span>
+    //  Here is how to pair them up correctly:
+    // map.addTilesetImage('foreboding1', 'tiles');
 
-    <span class="c1">//  If you don't give the correct Tiled tileset name (as below) you get weird results.</span>
-    <span class="c1">//  Un-comment it to see.</span>
-    <span class="nx">map</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'tiles'</span><span class="p">);</span>
+    //  If you don't give the correct Tiled tileset name (as below) you get weird results.
+    //  Un-comment it to see.
+    map.addTilesetImage('tiles');
 
-    <span class="kd">var</span> <span class="nx">layer</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="s1">'Tile Layer 1'</span><span class="p">);</span>
+    var layer = map.createLayer('Tile Layer 1');
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

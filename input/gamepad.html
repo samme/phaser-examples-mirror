@@ -55,109 +55,110 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/gamepad.js" title="input/gamepad.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/gamepad.js" download="" title="Download: input/gamepad.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser-dude.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'controller-indicator'</span><span class="p">,</span> <span class="s1">'assets/misc/controller-indicator.png'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">);</span>
-<span class="p">}</span>
+    game.load.image('phaser', 'assets/sprites/phaser-dude.png');
+    game.load.spritesheet('controller-indicator', 'assets/misc/controller-indicator.png', 16,16);
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">pad1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">indicator</span><span class="p">;</span>
+var sprite;
+var pad1;
+var indicator;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#736357'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#736357';
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">);</span>
+    sprite = game.add.sprite(300, 300, 'phaser');
+    sprite.anchor.setTo(0.5,0.5);
 
-    <span class="nx">indicator</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="s1">'controller-indicator'</span><span class="p">);</span>
-    <span class="nx">indicator</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">indicator</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="nx">indicator</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    indicator = game.add.sprite(10,10, 'controller-indicator');
+    indicator.scale.x = indicator.scale.y = 2;
+    indicator.animations.frame = 1;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    game.input.gamepad.start();
 
-    <span class="c1">// To listen to buttons from a specific pad listen directly on that pad game.input.gamepad.padX, where X = pad 1-4</span>
-    <span class="nx">pad1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">pad1</span><span class="p">;</span>
+    // To listen to buttons from a specific pad listen directly on that pad game.input.gamepad.padX, where X = pad 1-4
+    pad1 = game.input.gamepad.pad1;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">dump</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-<span class="p">}</span>
+    game.input.onDown.add(dump, this);
+}
 
-<span class="kd">function</span> <span class="nx">dump</span><span class="p">()</span> <span class="p">{</span>
+function dump() {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">_rawPad</span><span class="p">.</span><span class="nx">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    console.log(pad1._axes[0]);
+    console.log(pad1._rawPad.axes[0]);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">// Pad "connected or not" indicator</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">supported</span> <span class="o">&amp;&amp;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">gamepad</span><span class="p">.</span><span class="nx">active</span> <span class="o">&amp;&amp;</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">connected</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">indicator</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">indicator</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span>
+    // Pad "connected or not" indicator
+    if (game.input.gamepad.supported && game.input.gamepad.active && pad1.connected)
+    {
+        indicator.animations.frame = 0;
+    }
+    else
+    {
+        indicator.animations.frame = 1;
+    }
 
-    <span class="c1">// Controls</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_LEFT</span><span class="p">)</span> <span class="o">||</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">axis</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_STICK_LEFT_X</span><span class="p">)</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span><span class="o">--</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_RIGHT</span><span class="p">)</span> <span class="o">||</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">axis</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_STICK_LEFT_X</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span><span class="o">++</span><span class="p">;</span>
-    <span class="p">}</span>
+    // Controls
+    if (pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_LEFT) || pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) < -0.1)
+    {
+        sprite.x--;
+    }
+    else if (pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_RIGHT) || pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) > 0.1)
+    {
+        sprite.x++;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_UP</span><span class="p">)</span> <span class="o">||</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">axis</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_STICK_LEFT_Y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span><span class="o">--</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_DPAD_DOWN</span><span class="p">)</span> <span class="o">||</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">axis</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_STICK_LEFT_Y</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span><span class="o">++</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_UP) || pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y) < -0.1)
+    {
+        sprite.y--;
+    }
+    else if (pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_DOWN) || pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y) > 0.1)
+    {
+        sprite.y++;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">justPressed</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_A</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">angle</span> <span class="o">+=</span> <span class="mi">5</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (pad1.justPressed(Phaser.Gamepad.XBOX360_A))
+    {
+        sprite.angle += 5;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">justReleased</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_B</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mf">0.01</span><span class="p">;</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (pad1.justReleased(Phaser.Gamepad.XBOX360_B))
+    {
+        sprite.scale.x += 0.01;
+        sprite.scale.y = sprite.scale.x;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pad1</span><span class="p">.</span><span class="nx">connected</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">rightStickX</span> <span class="o">=</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">axis</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_STICK_RIGHT_X</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">rightStickY</span> <span class="o">=</span> <span class="nx">pad1</span><span class="p">.</span><span class="nx">axis</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Gamepad</span><span class="p">.</span><span class="nx">XBOX360_STICK_RIGHT_Y</span><span class="p">);</span>
+    if (pad1.connected)
+    {
+        var rightStickX = pad1.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_X);
+        var rightStickY = pad1.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_Y);
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">rightStickX</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">rightStickX</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (rightStickX)
+        {
+            sprite.x += rightStickX * 10;
+        }
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">rightStickY</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">rightStickY</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+        if (rightStickY)
+        {
+            sprite.y += rightStickY * 10;
+        }
+    }
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">// game.debug.text(pad1)</span>
+    // game.debug.text(pad1)
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

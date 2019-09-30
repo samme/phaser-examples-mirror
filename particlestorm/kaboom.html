@@ -55,120 +55,120 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particlestorm/kaboom.js" title="particlestorm/kaboom.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particlestorm/kaboom.js" download="" title="Download: particlestorm/kaboom.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Particle Storm Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/particlestorm
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">manager</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+var manager = null;
+var emitter = null;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">forceSingleUpdate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    game.forceSingleUpdate = true;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/particlestorm/logo-flat.png'</span><span class="p">);</span>
+    game.load.image('logo', 'assets/particlestorm/logo-flat.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/particlestorm/sprites/haze.png'</span><span class="p">);</span>
+    game.load.image('sky', 'assets/particlestorm/sprites/haze.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="s1">'assets/particlestorm/particles/'</span><span class="p">;</span>
+    game.load.path = 'assets/particlestorm/particles/';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">images</span><span class="p">([</span> <span class="s1">'stone'</span><span class="p">,</span> <span class="s1">'muzzleflash3'</span><span class="p">,</span> <span class="s1">'smoke-puff'</span> <span class="p">]);</span>
+    game.load.images([ 'stone', 'muzzleflash3', 'smoke-puff' ]);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
+    game.add.image(0, 0, 'sky');
 
-    <span class="nx">manager</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">ParticleStorm</span><span class="p">);</span>
+    manager = this.game.plugins.add(Phaser.ParticleStorm);
 
-    <span class="c1">//  This example illustrates:</span>
-    <span class="c1">//  </span>
-    <span class="c1">//  * delay range for when each particle will become visible</span>
-    <span class="c1">//  * scale going to oversize range (1.4) as the 'alpha' fade it out</span>
-    <span class="c1">//  * rotation with a random delta</span>
-    <span class="c1">//  * emit uses "at" instead of "control" to create child sprites more precisely at given life-points</span>
-    <span class="c1">//  * emit.at uses a fractional 'value' (&lt; 1.0) for the first wave of shrapnel, to express a </span>
-    <span class="c1">//    percentage chance of creating a child then (0.4 = 40%)</span>
-    <span class="c1">//  * It uses a value of 2 to create exactly two smoke particles at 0.5 through it's life</span>
-    <span class="c1">//  * emit.child uses "at" instead of a JSON name string to create different child types at </span>
-    <span class="c1">//    different stages of it's life</span>
-    <span class="c1">//  * velocity uses the 'radial' option to specify an arc for the initial vx and vy values, </span>
-    <span class="c1">//    but 'vy' is also defined separately to include a 'delta' value for gravity, </span>
-    <span class="c1">//    and 'vx' has a control to simulate air friction</span>
+    //  This example illustrates:
+    //  
+    //  * delay range for when each particle will become visible
+    //  * scale going to oversize range (1.4) as the 'alpha' fade it out
+    //  * rotation with a random delta
+    //  * emit uses "at" instead of "control" to create child sprites more precisely at given life-points
+    //  * emit.at uses a fractional 'value' (< 1.0) for the first wave of shrapnel, to express a 
+    //    percentage chance of creating a child then (0.4 = 40%)
+    //  * It uses a value of 2 to create exactly two smoke particles at 0.5 through it's life
+    //  * emit.child uses "at" instead of a JSON name string to create different child types at 
+    //    different stages of it's life
+    //  * velocity uses the 'radial' option to specify an arc for the initial vx and vy values, 
+    //    but 'vy' is also defined separately to include a 'delta' value for gravity, 
+    //    and 'vx' has a control to simulate air friction
 
-    <span class="kd">var</span> <span class="nx">explosion</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">image</span><span class="p">:</span> <span class="s1">'muzzleflash3'</span><span class="p">,</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">600</span> <span class="p">},</span>
-        <span class="na">delay</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">200</span> <span class="p">},</span>
-        <span class="na">scale</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.3</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.75</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">1.4</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">alpha</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.2</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">vx</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">2</span> <span class="p">},</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">vy</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">rotation</span><span class="p">:</span> <span class="p">{</span> <span class="na">initial</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">delta</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">3</span> <span class="p">}</span> <span class="p">},</span>
-        <span class="na">emit</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">name</span><span class="p">:</span> <span class="p">{</span> <span class="na">at</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">time</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="s1">'shrapnel'</span> <span class="p">},</span> <span class="p">{</span> <span class="na">time</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="s1">'smoke'</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span> 
-            <span class="na">value</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">at</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">time</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="mf">0.4</span> <span class="p">},</span> <span class="p">{</span> <span class="na">time</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">]</span>
-        <span class="p">}</span>
-    <span class="p">};</span>
+    var explosion = {
+        image: 'muzzleflash3',
+        lifespan: { min: 400, max: 600 },
+        delay: { min: 0, max: 200 },
+        scale: { value: 1, control: [ { x: 0, y: 0.3 }, { x: 0.25, y: 0.75 }, { x: 0.8, y: 1 }, { x: 1, y: 1.4 } ] },
+        alpha: { value: 1, control: [ { x: 0, y: 1 }, { x: 0.3, y: 1 }, { x: 0.6, y: 0.2 }, { x: 1, y: 0 } ] },
+        vx: { value: { min: -2, max: 2 }, control: [ { x: 0, y: 1 }, { x: 1, y: 0 } ] },
+        vy: { value: { min: -5, max: 0 }, control: [ { x: 0, y: 1 }, { x: 1, y: 0 } ] },
+        rotation: { initial: 0, delta: { min: -3, max: 3 } },
+        emit: {
+            name: { at: [ { time: 0, value: 'shrapnel' }, { time: 0.5, value: 'smoke' } ] }, 
+            value: 0, at: [ { time: 0, value: 0.4 }, { time: 0.5, value: 2 } ]
+        }
+    };
 
-    <span class="kd">var</span> <span class="nx">shrapnel</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">image</span><span class="p">:</span> <span class="s1">'stone'</span><span class="p">,</span>
-        <span class="na">delay</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">200</span> <span class="p">},</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="mi">1800</span><span class="p">,</span>
-        <span class="na">velocity</span><span class="p">:</span> <span class="p">{</span> <span class="na">initial</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">8</span> <span class="p">},</span> <span class="na">radial</span><span class="p">:</span> <span class="p">{</span> <span class="na">arcStart</span><span class="p">:</span> <span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="na">arcEnd</span><span class="p">:</span> <span class="mi">45</span> <span class="p">}</span> <span class="p">},</span>
-        <span class="na">vx</span><span class="p">:</span> <span class="p">{</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">vy</span><span class="p">:</span> <span class="p">{</span> <span class="na">delta</span><span class="p">:</span> <span class="mf">0.25</span> <span class="p">},</span>
-        <span class="na">scale</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mf">0.3</span> <span class="p">},</span>
-        <span class="na">rotation</span><span class="p">:</span> <span class="p">{</span> <span class="na">initial</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">delta</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">9</span> <span class="p">}</span> <span class="p">},</span>
-        <span class="na">alpha</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">sendToBack</span><span class="p">:</span> <span class="kc">true</span>
-    <span class="p">};</span>
+    var shrapnel = {
+        image: 'stone',
+        delay: { min: 0, max: 200 },
+        lifespan: 1800,
+        velocity: { initial: { min: 4, max: 8 }, radial: { arcStart: -45, arcEnd: 45 } },
+        vx: { control: [ { x: 0, y: 1 }, { x: 1, y: 0.5 } ] },
+        vy: { delta: 0.25 },
+        scale: { min: 0.1, max: 0.3 },
+        rotation: { initial: 0, delta: { min: -9, max: 9 } },
+        alpha: { value: 1, control: [ { x: 0, y: 1 }, { x: 0.75, y: 1 }, { x: 1, y: 0 } ] },
+        sendToBack: true
+    };
 
-    <span class="kd">var</span> <span class="nx">smoke</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">image</span><span class="p">:</span> <span class="s1">'smoke-puff'</span><span class="p">,</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">1700</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">2000</span> <span class="p">},</span>
-        <span class="na">vx</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="na">vy</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span> <span class="p">},</span> <span class="na">delta</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">scale</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mf">0.6</span> <span class="p">},</span> <span class="na">delta</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.25</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">alpha</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="na">control</span><span class="p">:[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">rotation</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">delta</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">},</span>
-        <span class="na">sendToBack</span><span class="p">:</span> <span class="kc">true</span>
-    <span class="p">};</span>
+    var smoke = {
+        image: 'smoke-puff',
+        lifespan: { min: 1700, max: 2000 },
+        vx: 0,
+        vy: { value: { min: -3, max: -2 }, delta: -0.05, control: [ { x: 0, y: 1 }, { x: 1, y: 0.5 } ] },
+        scale: { value: { min: 0.4, max: 0.6 }, delta: 0.005, control: [ { x: 0, y: 1 }, { x: 0.6, y: 1 }, { x: 1, y: 0.25 } ] },
+        alpha: { value: 0.3, control:[ { x: 0, y: 0 }, { x: 0.3, y: 1 }, { x: 1, y: 0 } ] },
+        rotation: { value: 0, delta: { min: -2, max: 2 } },
+        sendToBack: true
+    };
 
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'explosion'</span><span class="p">,</span> <span class="nx">explosion</span><span class="p">);</span>
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'shrapnel'</span><span class="p">,</span> <span class="nx">shrapnel</span><span class="p">);</span>
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'smoke'</span><span class="p">,</span> <span class="nx">smoke</span><span class="p">);</span>
+    manager.addData('explosion', explosion);
+    manager.addData('shrapnel', shrapnel);
+    manager.addData('smoke', smoke);
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createEmitter</span><span class="p">();</span>
+    emitter = manager.createEmitter();
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    emitter.addToWorld();
 
-    <span class="kd">var</span> <span class="nx">circle</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createCircleZone</span><span class="p">(</span><span class="mi">30</span><span class="p">);</span>
+    var circle = manager.createCircleZone(30);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'explosion'</span><span class="p">,</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">600</span><span class="p">],</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span> <span class="p">{</span> <span class="na">zone</span><span class="p">:</span> <span class="nx">circle</span><span class="p">,</span> <span class="na">total</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="na">repeat</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="na">frequency</span><span class="p">:</span> <span class="mi">1000</span> <span class="p">});</span>
+    emitter.emit('explosion', [200, 600], [300, 500], { zone: circle, total: 25, repeat: -1, frequency: 1000 });
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">487</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
+    game.add.image(432, 487, 'logo');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">522</span><span class="p">);</span>
+    emitter.debug(432, 522);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

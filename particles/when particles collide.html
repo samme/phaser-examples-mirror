@@ -55,55 +55,56 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particles/when%20particles%20collide.js" title="particles/when particles collide.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particles/when%20particles%20collide.js" download="" title="Download: particles/when particles collide.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">leftEmitter</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">rightEmitter</span><span class="p">;</span>
+var leftEmitter;
+var rightEmitter;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/skies/cavern2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'balls'</span><span class="p">,</span> <span class="s1">'assets/sprites/balls.png'</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">);</span>
+    game.load.image('sky', 'assets/skies/cavern2.png');
+    game.load.spritesheet('balls', 'assets/sprites/balls.png', 17, 17);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
+    game.add.image(0, 0, 'sky');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">leftEmitter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">emitter</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span> <span class="o">-</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">leftEmitter</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">leftEmitter</span><span class="p">.</span><span class="nx">setXSpeed</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">leftEmitter</span><span class="p">.</span><span class="nx">setYSpeed</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">leftEmitter</span><span class="p">.</span><span class="nx">makeParticles</span><span class="p">(</span><span class="s1">'balls'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    leftEmitter = game.add.emitter(50, game.world.centerY - 200);
+    leftEmitter.bounce.setTo(0.5, 0.5);
+    leftEmitter.setXSpeed(100, 200);
+    leftEmitter.setYSpeed(-50, 50);
+    leftEmitter.makeParticles('balls', 0, 250, true, true);
 
-    <span class="nx">rightEmitter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">emitter</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">50</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span> <span class="o">-</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">rightEmitter</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">rightEmitter</span><span class="p">.</span><span class="nx">setXSpeed</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">200</span><span class="p">);</span>
-    <span class="nx">rightEmitter</span><span class="p">.</span><span class="nx">setYSpeed</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">rightEmitter</span><span class="p">.</span><span class="nx">makeParticles</span><span class="p">(</span><span class="s1">'balls'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    rightEmitter = game.add.emitter(game.world.width - 50, game.world.centerY - 200);
+    rightEmitter.bounce.setTo(0.5, 0.5);
+    rightEmitter.setXSpeed(-100, -200);
+    rightEmitter.setYSpeed(-50, 50);
+    rightEmitter.makeParticles('balls', 1, 250, true, true);
 
-    <span class="c1">// explode, lifespan, frequency, quantity</span>
-    <span class="nx">leftEmitter</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
-    <span class="nx">rightEmitter</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    // explode, lifespan, frequency, quantity
+    leftEmitter.start(false, 5000, 20);
+    rightEmitter.start(false, 5000, 20);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">leftEmitter</span><span class="p">,</span> <span class="nx">rightEmitter</span><span class="p">,</span> <span class="nx">change</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.physics.arcade.collide(leftEmitter, rightEmitter, change, null, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">change</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+function change(a, b) {
 
-    <span class="nx">a</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-    <span class="nx">b</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    a.frame = 3;
+    b.frame = 3;
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

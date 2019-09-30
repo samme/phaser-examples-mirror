@@ -55,48 +55,49 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/bitmaptext1.js" title="wip/bitmaptext1.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/bitmaptext1.js" download="" title="Download: wip/bitmaptext1.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.xml'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'carrier'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/carrier_command.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/carrier_command.xml'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">);</span>
+    game.load.bitmapFont('desyrel', 'assets/fonts/bitmapFonts/desyrel.png', 'assets/fonts/bitmapFonts/desyrel.xml', null, 0, -32);
+    game.load.bitmapFont('carrier', 'assets/fonts/bitmapFonts/carrier_command.png', 'assets/fonts/bitmapFonts/carrier_command.xml', null, 0, 24);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text2</span><span class="p">;</span>
+var text;
+var text2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">isConsoleOpen</span><span class="p">())</span>
-	<span class="p">{</span>
-	    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'carrier'</span><span class="p">,</span> <span class="s1">'console is open'</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-	<span class="p">}</span>
-	<span class="k">else</span>
-	<span class="p">{</span>
-	    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'carrier'</span><span class="p">,</span> <span class="s1">'console is closed'</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-	<span class="p">}</span>
+	if (game.device.isConsoleOpen())
+	{
+	    text = game.add.bitmapText(100, 100, 'carrier', 'console is open', 32);
+	}
+	else
+	{
+	    text = game.add.bitmapText(100, 100, 'carrier', 'console is closed', 32);
+	}
 
-    <span class="nx">text2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'Phaser &amp; Pixi\nrocking!'</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    text2 = game.add.bitmapText(100, 300, 'desyrel', 'Phaser & Pixi\nrocking!', 64);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">change</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(change, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">change</span><span class="p">()</span> <span class="p">{</span>
+function change() {
 
-	<span class="nx">text</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'center'</span><span class="p">;</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mh">0xFFFFFF</span><span class="p">;</span>
+	text.align = 'center';
+    text2.tint = Math.random() * 0xFFFFFF;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">// text.text = 'Phaser &amp; Pixi\nrocking!\n' + Math.round(game.time.now);</span>
+    // text.text = 'Phaser & Pixi\nrocking!\n' + Math.round(game.time.now);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

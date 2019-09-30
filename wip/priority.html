@@ -55,48 +55,49 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/priority.js" title="wip/priority.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/priority.js" download="" title="Download: wip/priority.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'seacreatures'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.json'</span><span class="p">);</span>
+    game.load.atlas('seacreatures', 'assets/sprites/seacreatures_json.png', 'assets/sprites/seacreatures_json.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite3</span><span class="p">;</span>
+var sprite1;
+var sprite2;
+var sprite3;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'seacreatures'</span><span class="p">,</span> <span class="s1">'blueJellyfish0000'</span><span class="p">);</span>
-    <span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">230</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'seacreatures'</span><span class="p">,</span> <span class="s1">'crab10000'</span><span class="p">);</span>
-    <span class="nx">sprite3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">280</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">'seacreatures'</span><span class="p">,</span> <span class="s1">'seahorse0000'</span><span class="p">);</span>
+    sprite1 = game.add.sprite(200, 300, 'seacreatures', 'blueJellyfish0000');
+    sprite2 = game.add.sprite(230, 300, 'seacreatures', 'crab10000');
+    sprite3 = game.add.sprite(280, 250, 'seacreatures', 'seahorse0000');
 
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">sprite3</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    sprite1.inputEnabled = true;
+    sprite2.inputEnabled = true;
+    sprite3.inputEnabled = true;
 
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">priorityID</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">priorityID</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="nx">sprite3</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">priorityID</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    sprite1.input.priorityID = 0;
+    sprite2.input.priorityID = 1;
+    sprite3.input.priorityID = 2;
 
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pixelPerfectClick</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pixelPerfectClick</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">sprite3</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pixelPerfectClick</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    sprite1.input.pixelPerfectClick = true;
+    sprite2.input.pixelPerfectClick = true;
+    sprite3.input.pixelPerfectClick = true;
 
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">sprite3</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    sprite1.events.onInputDown.add(clicked, this);
+    sprite2.events.onInputDown.add(clicked, this);
+    sprite3.events.onInputDown.add(clicked, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">clicked</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">{</span>
+function clicked(s) {
 
-	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'clicked'</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">frameName</span><span class="p">);</span>
+	console.log('clicked', s.frameName);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

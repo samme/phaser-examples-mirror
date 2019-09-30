@@ -55,103 +55,104 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/pixelpick%20scrolling%20effect.js" title="input/pixelpick scrolling effect.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/pixelpick%20scrolling%20effect.js" download="" title="Download: input/pixelpick scrolling effect.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'stars'</span><span class="p">,</span> <span class="s1">'assets/misc/starfield.jpg'</span><span class="p">);</span>
+    game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
+    game.load.image('stars', 'assets/misc/starfield.jpg');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">b</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">camSpeed</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">s</span><span class="p">;</span>
+var b;
+var camSpeed = 4;
+var s;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="c1">//  Make our world big ...</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">);</span>
+    //  Make our world big ...
+    game.world.setBounds(0,0, 4000, 2000);
 
-    <span class="c1">//  Scrolling background</span>
-    <span class="nx">s</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'stars'</span><span class="p">);</span>
+    //  Scrolling background
+    s = game.add.tileSprite(0, 0, 4000, 600, 'stars');
 
-    <span class="nx">b</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'mummy'</span><span class="p">);</span>
+    b = game.add.sprite(0, 300, 'mummy');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
+    game.physics.arcade.enable(b);
 
-    <span class="nx">b</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
-    <span class="nx">b</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="nx">b</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
-    <span class="nx">b</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    b.scale.set(6);
+    b.smoothed = false;
+    b.animations.add('walk');
+    b.animations.play('walk', 5, true);
 
-    <span class="nx">b</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    b.body.velocity.setTo(50, 0);
 
-    <span class="c1">//  Listen for input events on this sprite</span>
-    <span class="nx">b</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //  Listen for input events on this sprite
+    b.inputEnabled = true;
 
-    <span class="c1">//  Check the pixel data of the sprite</span>
-    <span class="nx">b</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pixelPerfectClick</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //  Check the pixel data of the sprite
+    b.input.pixelPerfectClick = true;
 
-    <span class="nx">b</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tint</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    b.events.onInputDown.add(tint, this);
 
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tint</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">b</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mh">0xffffff</span><span class="p">;</span>
-<span class="p">}</span>
+function tint() {
+    b.tint = Math.random() * 0xffffff;
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">LEFT</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="nx">camSpeed</span><span class="p">;</span>
+    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
+    {
+        game.camera.x -= camSpeed;
 
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">atLimit</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">s</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">camSpeed</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">RIGHT</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">camSpeed</span><span class="p">;</span>
+        if (!game.camera.atLimit.x)
+        {
+            s.tilePosition.x += camSpeed;
+        }
+    }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
+    {
+        game.camera.x += camSpeed;
 
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">atLimit</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">s</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="nx">camSpeed</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        if (!game.camera.atLimit.x)
+        {
+            s.tilePosition.x -= camSpeed;
+        }
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">UP</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="nx">camSpeed</span><span class="p">;</span>
+    if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
+    {
+        game.camera.y -= camSpeed;
 
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">atLimit</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">s</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">camSpeed</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">DOWN</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">camSpeed</span><span class="p">;</span>
+        if (!game.camera.atLimit.y)
+        {
+            s.tilePosition.y += camSpeed;
+        }
+    }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
+    {
+        game.camera.y += camSpeed;
 
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">atLimit</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">s</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="nx">camSpeed</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        if (!game.camera.atLimit.y)
+        {
+            s.tilePosition.y -= camSpeed;
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteInputInfo</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.spriteInputInfo(b, 32, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

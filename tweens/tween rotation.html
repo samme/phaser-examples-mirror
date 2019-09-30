@@ -55,59 +55,59 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/tween%20rotation.js" title="tweens/tween rotation.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/tween%20rotation.js" download="" title="Download: tweens/tween rotation.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'arrow'</span><span class="p">,</span> <span class="s1">'assets/sprites/longarrow-white.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'lemming'</span><span class="p">,</span> <span class="s1">'assets/sprites/lemming.png'</span><span class="p">);</span>
+    game.load.image('arrow', 'assets/sprites/longarrow-white.png');
+    game.load.image('lemming', 'assets/sprites/lemming.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">arrow</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">arrow2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">lemming</span><span class="p">;</span>
+var arrow;
+var arrow2;
+var lemming;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#00aeef'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#00aeef';
 
-    <span class="nx">arrow2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'arrow'</span><span class="p">);</span>
-    <span class="nx">arrow2</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">arrow2</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0x000044</span><span class="p">;</span>
-    <span class="nx">arrow2</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    arrow2 = game.add.sprite(game.world.centerX, game.world.centerY, 'arrow');
+    arrow2.anchor.set(0, 0.5);
+    arrow2.tint = 0x000044;
+    arrow2.alpha = 0.5;
 
-    <span class="nx">arrow</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'arrow'</span><span class="p">);</span>
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    arrow = game.add.sprite(game.world.centerX, game.world.centerY, 'arrow');
+    arrow.anchor.set(0, 0.5);
 
-    <span class="nx">lemming</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'lemming'</span><span class="p">);</span>
-    <span class="nx">lemming</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    lemming = game.add.sprite(game.world.randomX, game.world.randomY, 'lemming');
+    lemming.anchor.set(0.5);
 
-    <span class="nx">setNewLocation</span><span class="p">();</span>
+    setNewLocation();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">setNewLocation</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(setNewLocation, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">setNewLocation</span> <span class="p">()</span> <span class="p">{</span>
+function setNewLocation () {
 
-    <span class="nx">arrow2</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="nx">arrow</span><span class="p">.</span><span class="nx">angle</span><span class="p">;</span>
+    arrow2.angle = arrow.angle;
 
-    <span class="nx">lemming</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">;</span>
-    <span class="nx">lemming</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">;</span>
+    lemming.x = game.world.randomX;
+    lemming.y = game.world.randomY;
 
-    <span class="kd">var</span> <span class="nx">angleTo</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">radToDeg</span><span class="p">(</span><span class="nx">arrow</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">angle</span><span class="p">(</span><span class="nx">lemming</span><span class="p">.</span><span class="nx">position</span><span class="p">));</span>
+    var angleTo = Phaser.Math.radToDeg(arrow.position.angle(lemming.position));
 
-    <span class="kd">var</span> <span class="nx">shortestAngle</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">getShortestAngle</span><span class="p">(</span><span class="nx">angleTo</span><span class="p">,</span> <span class="nx">arrow</span><span class="p">.</span><span class="nx">angle</span><span class="p">);</span>
+    var shortestAngle = game.math.getShortestAngle(angleTo, arrow.angle);
 
-    <span class="kd">var</span> <span class="nx">newAngle</span> <span class="o">=</span> <span class="nx">arrow</span><span class="p">.</span><span class="nx">angle</span> <span class="o">-</span> <span class="nx">shortestAngle</span><span class="p">;</span>
+    var newAngle = arrow.angle - shortestAngle;
 
-    <span class="kd">var</span> <span class="nx">time</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">shortestAngle</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
+    var time = Math.abs(shortestAngle) * 10;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">arrow</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">angle</span><span class="p">:</span> <span class="nx">newAngle</span> <span class="p">},</span> <span class="nx">time</span><span class="p">,</span> <span class="s1">'Linear'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(arrow).to({ angle: newAngle }, time, 'Linear', true);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

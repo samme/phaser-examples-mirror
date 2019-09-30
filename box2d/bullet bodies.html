@@ -55,118 +55,118 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/box2d/bullet%20bodies.js" title="box2d/bullet bodies.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/box2d/bullet%20bodies.js" download="" title="Download: box2d/bullet bodies.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Chris Campbell <iforce2d@gmail.com>
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Box2D Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/box2d
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span><span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update:update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bullet'</span><span class="p">,</span> <span class="s1">'assets/sprites/enemy-bullet.png'</span><span class="p">);</span>
+    game.load.image('bullet', 'assets/sprites/enemy-bullet.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">caption</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">fireTimeout</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bullets</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">usingBullet</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+var caption;
+var fireTimeout = 0;
+var bullets = [];
+var usingBullet = false;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#222222'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#222222';
     
-    <span class="c1">// Enable Box2D physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">debugDraw</span><span class="p">.</span><span class="nx">joints</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">restitution</span> <span class="o">=</span> <span class="mf">0.025</span><span class="p">;</span>
+    // Enable Box2D physics
+    game.physics.startSystem(Phaser.Physics.BOX2D);
+    game.physics.box2d.debugDraw.joints = true;
+    game.physics.box2d.gravity.y = 500;
+    game.physics.box2d.restitution = 0.025;
     
-    <span class="c1">// Ground body</span>
-    <span class="kd">var</span> <span class="nx">groundBody</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    // Ground body
+    var groundBody = new Phaser.Physics.Box2D.Body(this.game, null, 0, 0, 0);
     
-    <span class="c1">// Body with long thin fixture</span>
-    <span class="kd">var</span> <span class="nx">body</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">body</span><span class="p">.</span><span class="nx">setPolygon</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">250</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">250</span><span class="p">,</span> <span class="p">]);</span>
+    // Body with long thin fixture
+    var body = new Phaser.Physics.Box2D.Body(this.game, null, 600, 300, 100);
+    body.setPolygon([-5, -250, -5, 250, 5, 250, 5, -250, ]);
     
-    <span class="c1">// Join long thin body to ground</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">revoluteJoint</span><span class="p">(</span><span class="nx">groundBody</span><span class="p">,</span> <span class="nx">body</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">250</span><span class="p">);</span>
+    // Join long thin body to ground
+    game.physics.box2d.revoluteJoint(groundBody, body, 600, 50, 0, -250);
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'Fast moving bodies will sometimes miss thin objects. Use bullet bodies to help avoid this.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
-    <span class="nx">caption</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
+    game.add.text(5, 5, 'Fast moving bodies will sometimes miss thin objects. Use bullet bodies to help avoid this.', { fill: '#ffffff', font: '14pt Arial' });
+    caption = game.add.text(5, 25, '', { fill: '#ffffff', font: '14pt Arial' });
     
-    <span class="nx">updateCaption</span><span class="p">();</span>
+    updateCaption();
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="nx">toggleBullet</span><span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
+    game.input.onDown.add( toggleBullet, this );
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">toggleBullet</span><span class="p">()</span> <span class="p">{</span>
+function toggleBullet() {
 
-    <span class="nx">usingBullet</span> <span class="o">=</span> <span class="o">!</span><span class="nx">usingBullet</span><span class="p">;</span>
-    <span class="nx">updateCaption</span><span class="p">();</span>
+    usingBullet = !usingBullet;
+    updateCaption();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">updateCaption</span><span class="p">()</span> <span class="p">{</span>
+function updateCaption() {
 
-    <span class="nx">caption</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'Click to toggle bullet bodies. Currently: '</span> <span class="o">+</span> <span class="p">(</span><span class="nx">usingBullet</span> <span class="p">?</span> <span class="s1">'bullet'</span><span class="p">:</span><span class="s1">'non-bullet'</span><span class="p">);</span>
+    caption.text = 'Click to toggle bullet bodies. Currently: ' + (usingBullet ? 'bullet':'non-bullet');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">fireBullet</span><span class="p">()</span> <span class="p">{</span>
+function fireBullet() {
     
-    <span class="c1">// Create the bullet body and set the angle</span>
-    <span class="kd">var</span> <span class="nx">bullet</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'bullet'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">bullet</span><span class="p">);</span>
-    <span class="nx">bullet</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+    // Create the bullet body and set the angle
+    var bullet = game.add.sprite(50, 300, 'bullet');
+    game.physics.box2d.enable(bullet);
+    bullet.body.setCircle(5);
     
-    <span class="c1">// Set velocity</span>
-    <span class="nx">bullet</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">3000</span> <span class="o">+</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
-    <span class="nx">bullet</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">500</span> <span class="o">+</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+    // Set velocity
+    bullet.body.velocity.x = 3000 + 1000 * Math.random();
+    bullet.body.velocity.y = -500 + 1000 * Math.random();
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">usingBullet</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">bullet</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bullet</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>    
+    if (usingBullet)
+    {
+        bullet.body.bullet = true;
+    }    
     
-    <span class="c1">// Add bullets to a list so we can remove them when they go offscreen</span>
-    <span class="nx">bullets</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">bullet</span><span class="p">);</span>
-<span class="p">}</span>
+    // Add bullets to a list so we can remove them when they go offscreen
+    bullets.push(bullet);
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
     
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="nx">fireTimeout</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">fireBullet</span><span class="p">();</span>
-        <span class="nx">fireTimeout</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="mi">500</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (game.time.now > fireTimeout)
+    {
+        fireBullet();
+        fireTimeout = game.time.now + 500;
+    }
 
-    <span class="c1">// Destroy any bullets that go off screen</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">bullets</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">bullet</span> <span class="o">=</span> <span class="nx">bullets</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    // Destroy any bullets that go off screen
+    for (var i = bullets.length - 1; i >= 0; i--)
+    {
+        var bullet = bullets[i];
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">bullet</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">bullet</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">800</span> <span class="o">||</span> <span class="nx">bullet</span><span class="p">.</span><span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">bullet</span><span class="p">.</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="mi">600</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">bullet</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
-            <span class="nx">bullets</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+        if (bullet.x < 0 || bullet.x > 800 || bullet.y < 0 || bullet.y > 600)
+        {
+            bullet.destroy();
+            bullets.splice(i,1);
+        }
+    }
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">box2dWorld</span><span class="p">();</span>
+    game.debug.box2dWorld();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,59 +55,59 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/add%20char%20by%20char.js" title="text/add char by char.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/add%20char%20by%20char.js" download="" title="Download: text/add char by char.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
+</div>
+<pre class="highlight javascript"><code>/**
  * @file Demonstrates how to add text character-by-character using Phaser.
- * @author Melissa Viernes &lt;melissa.b.viernes@gmail.com&gt; @melkybee
- */</span>
+ * @author Melissa Viernes <melissa.b.viernes@gmail.com> @melkybee
+ */
 
-<span class="c1">// Phaser game setup</span>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">}),</span>
+// Phaser game setup
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create }),
 
-    <span class="c1">// Phaser text object</span>
-    <span class="nx">text</span><span class="p">,</span>
+    // Phaser text object
+    text,
     
-    <span class="c1">// Custom text to add onto the screen</span>
-    <span class="nx">txt</span> <span class="o">=</span> <span class="s1">'Hello world! :-)'</span><span class="p">,</span>
+    // Custom text to add onto the screen
+    txt = 'Hello world! :-)',
     
-    <span class="c1">// Amount of time in between the characters being added</span>
-    <span class="nx">time</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    // Amount of time in between the characters being added
+    time = 0.6,
     
-    <span class="c1">// Text style</span>
-    <span class="nx">txtStyle</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">font</span><span class="p">:</span> <span class="s1">'65px Arial'</span><span class="p">,</span>
-        <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ff0044'</span><span class="p">,</span>
-        <span class="na">align</span><span class="p">:</span> <span class="s1">'center'</span>
-    <span class="p">};</span>
+    // Text style
+    txtStyle = {
+        font: '65px Arial',
+        fill: '#ff0044',
+        align: 'center'
+    };
 
-<span class="cm">/**
+/**
  * Game state for create
- */</span>
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// Add text object to center of the world</span>
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="nx">txtStyle</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+ */
+function create() {
+    // Add text object to center of the world
+    text = game.add.text(game.world.centerX, game.world.centerY, '', txtStyle);
+    text.anchor.setTo(0.5, 0.5);
     
-    <span class="c1">// Add custom text, character by character</span>
-    <span class="nx">addCharByChar</span><span class="p">(</span><span class="nx">txt</span><span class="p">,</span> <span class="nx">time</span><span class="p">);</span>
-<span class="p">}</span>
+    // Add custom text, character by character
+    addCharByChar(txt, time);
+}
 
-<span class="cm">/**
+/**
  * Add text, character by character
  * @param {string} txt  - The custom text to add onto the screen.
  * @param {Number} time - The amount of time (seconds) in between the characters being added.
- */</span>
-<span class="kd">function</span> <span class="nx">addCharByChar</span><span class="p">(</span><span class="nx">txt</span><span class="p">,</span> <span class="nx">time</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span>
-        <span class="nx">txtLen</span> <span class="o">=</span> <span class="nx">txt</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
-        <span class="nx">totalTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">txtLen</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// loop through each character of the custom text</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span> <span class="o">*</span> <span class="nx">totalTime</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">txt</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="p">];</span>  <span class="c1">// add the next character</span>
-        <span class="p">},</span> <span class="p">{</span> <span class="na">text</span><span class="p">:</span> <span class="nx">text</span><span class="p">,</span> <span class="na">txt</span><span class="p">:</span> <span class="nx">txt</span><span class="p">,</span> <span class="na">i</span><span class="p">:</span> <span class="nx">i</span> <span class="p">});</span>  <span class="c1">// for scoping purposes</span>
-        <span class="nx">totalTime</span> <span class="o">+=</span> <span class="nx">time</span><span class="p">;</span>  <span class="c1">// the next character will appear at this time</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+ */
+function addCharByChar(txt, time) {
+    var i,
+        txtLen = txt.length,
+        totalTime = 0;
+    for (i = 0; i < txtLen; i++) {  // loop through each character of the custom text
+        game.time.events.add(Phaser.Timer.SECOND * totalTime, function() {
+            this.text.text += this.txt[this.i];  // add the next character
+        }, { text: text, txt: txt, i: i });  // for scoping purposes
+        totalTime += time;  // the next character will appear at this time
+    }
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

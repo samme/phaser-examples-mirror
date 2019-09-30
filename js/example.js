@@ -3,8 +3,6 @@
 
   loadPath = this.loadPath;
 
-  console.debug("loadPath", loadPath);
-
   reset = Phaser.Loader.prototype.reset;
 
   Phaser.Loader.prototype.reset = function(hard, clearEvents) {

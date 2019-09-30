@@ -55,83 +55,84 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/filters/spiral%20galaxy.js" title="filters/spiral galaxy.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/filters/spiral%20galaxy.js" download="" title="Download: filters/spiral galaxy.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var filter;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  From http://glslsandbox.com/e#17794.0</span>
+    //  From http://glslsandbox.com/e#17794.0
 
-    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+    var fragmentSrc = [
 
-        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+        "precision mediump float;",
 
-        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
-        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
-        <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+        "uniform float     time;",
+        "uniform vec2      resolution;",
+        "uniform vec2      mouse;",
 
-        <span class="s2">"// https://www.shadertoy.com/view/MdXSzS"</span><span class="p">,</span>
+        "// https://www.shadertoy.com/view/MdXSzS",
 
-        <span class="s2">"void main()"</span><span class="p">,</span>
-        <span class="s2">"{"</span><span class="p">,</span>
-            <span class="s2">"vec2 uv = (gl_FragCoord.xy/resolution.xy)-.5;"</span><span class="p">,</span>
+        "void main()",
+        "{",
+            "vec2 uv = (gl_FragCoord.xy/resolution.xy)-.5;",
 
-            <span class="s2">"float time = time * .1 + ((.25+.05*sin(time*.1))/(length(uv.xy)+.07))* 2.2;"</span><span class="p">,</span>
-            <span class="s2">"float si = sin(time);"</span><span class="p">,</span>
-            <span class="s2">"float co = cos(time);"</span><span class="p">,</span>
-            <span class="s2">"mat2 ma = mat2(co, si, -si, co);"</span><span class="p">,</span>
+            "float time = time * .1 + ((.25+.05*sin(time*.1))/(length(uv.xy)+.07))* 2.2;",
+            "float si = sin(time);",
+            "float co = cos(time);",
+            "mat2 ma = mat2(co, si, -si, co);",
 
-            <span class="s2">"float c = 0.0;"</span><span class="p">,</span>
-            <span class="s2">"float v1 = 0.0;"</span><span class="p">,</span>
-            <span class="s2">"float v2 = 0.0;"</span><span class="p">,</span>
+            "float c = 0.0;",
+            "float v1 = 0.0;",
+            "float v2 = 0.0;",
 
-            <span class="s2">"for (int i = 0; i &lt; 100; i++)"</span><span class="p">,</span>
-            <span class="s2">"{"</span><span class="p">,</span>
-                <span class="s2">"float s = float(i) * .035;"</span><span class="p">,</span>
-                <span class="s2">"vec3 p = s * vec3(uv, 0.0);"</span><span class="p">,</span>
-                <span class="s2">"p.xy *= ma;"</span><span class="p">,</span>
-                <span class="s2">"p += vec3(.22,.3, s-1.5-sin(time*.13)*.1);"</span><span class="p">,</span>
-                <span class="s2">"for (int i = 0; i &lt; 8; i++)"</span><span class="p">,</span>
-                <span class="s2">"{"</span><span class="p">,</span>
-                    <span class="s2">"p = abs(p) / dot(p,p) - 0.659;"</span><span class="p">,</span>
-                <span class="s2">"}"</span><span class="p">,</span>
-                <span class="s2">"v1 += dot(p,p)*.0015 * (1.8+sin(length(uv.xy*13.0)+.5-time*.2));"</span><span class="p">,</span>
-                <span class="s2">"v2 += dot(p,p)*.0015 * (1.5+sin(length(uv.xy*13.5)+2.2-time*.3));"</span><span class="p">,</span>
-                <span class="s2">"c = length(p.xy*.5) * .35;"</span><span class="p">,</span>
-            <span class="s2">"}"</span><span class="p">,</span>
+            "for (int i = 0; i < 100; i++)",
+            "{",
+                "float s = float(i) * .035;",
+                "vec3 p = s * vec3(uv, 0.0);",
+                "p.xy *= ma;",
+                "p += vec3(.22,.3, s-1.5-sin(time*.13)*.1);",
+                "for (int i = 0; i < 8; i++)",
+                "{",
+                    "p = abs(p) / dot(p,p) - 0.659;",
+                "}",
+                "v1 += dot(p,p)*.0015 * (1.8+sin(length(uv.xy*13.0)+.5-time*.2));",
+                "v2 += dot(p,p)*.0015 * (1.5+sin(length(uv.xy*13.5)+2.2-time*.3));",
+                "c = length(p.xy*.5) * .35;",
+            "}",
 
-            <span class="s2">"float len = length(uv);"</span><span class="p">,</span>
-            <span class="s2">"v1 *= smoothstep(.7, .0, len);"</span><span class="p">,</span>
-            <span class="s2">"v2 *= smoothstep(.6, .0, len);"</span><span class="p">,</span>
+            "float len = length(uv);",
+            "v1 *= smoothstep(.7, .0, len);",
+            "v2 *= smoothstep(.6, .0, len);",
 
-            <span class="s2">"float re = clamp(c, 0.0, 1.0);"</span><span class="p">,</span>
-            <span class="s2">"float gr = clamp((v1+c)*.25, 0.0, 1.0);"</span><span class="p">,</span>
-            <span class="s2">"float bl = clamp(v2, 0.0, 1.0);"</span><span class="p">,</span>
-            <span class="s2">"vec3 col = vec3(re, gr, bl) + smoothstep(0.15, .0, len) * .9;"</span><span class="p">,</span>
+            "float re = clamp(c, 0.0, 1.0);",
+            "float gr = clamp((v1+c)*.25, 0.0, 1.0);",
+            "float bl = clamp(v2, 0.0, 1.0);",
+            "vec3 col = vec3(re, gr, bl) + smoothstep(0.15, .0, len) * .9;",
 
-            <span class="s2">"gl_FragColor=vec4(col, 1.0);"</span><span class="p">,</span>
-        <span class="s2">"}"</span>
-    <span class="p">];</span>
+            "gl_FragColor=vec4(col, 1.0);",
+        "}"
+    ];
 
-    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    filter = new Phaser.Filter(game, null, fragmentSrc);
+    filter.setResolution(800, 600);
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+    sprite = game.add.sprite();
+    sprite.width = 800;
+    sprite.height = 600;
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+    sprite.filters = [ filter ];
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
+    filter.update(game.input.mousePointer);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,76 +55,77 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/text%20bounds.js" title="text/text bounds.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/text%20bounds.js" download="" title="Download: text/text bounds.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">ipsum</span> <span class="o">=</span> <span class="s2">"Click to change alignment\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quid ergo aliud intellegetur nisi uti ne quae pars naturae neglegatur?\n\nSi longus, levis; Ita relinquet duas, de quibus etiam atque etiam consideret. Optime, inquam. Sed quanta sit alias, nunc tantum possitne esse tanta.\n\nQuid, si etiam iucunda memoria est praeteritorum malorum?"</span><span class="p">;</span>
+var text;
+var ipsum = "Click to change alignment\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quid ergo aliud intellegetur nisi uti ne quae pars naturae neglegatur?\n\nSi longus, levis; Ita relinquet duas, de quibus etiam atque etiam consideret. Optime, inquam. Sed quanta sit alias, nunc tantum possitne esse tanta.\n\nQuid, si etiam iucunda memoria est praeteritorum malorum?";
 
-<span class="c1">//  The different types of alignment this demo cycles through</span>
-<span class="c1">//  h = horizontal, v = vertical</span>
-<span class="c1">//  a = the text alignment (see comments below)</span>
-<span class="kd">var</span> <span class="nx">align</span> <span class="o">=</span> <span class="p">[</span> 
-    <span class="p">{</span> <span class="na">h</span><span class="p">:</span> <span class="s1">'left'</span><span class="p">,</span> <span class="na">v</span><span class="p">:</span> <span class="s1">'top'</span><span class="p">,</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'left'</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="na">h</span><span class="p">:</span> <span class="s1">'center'</span><span class="p">,</span> <span class="na">v</span><span class="p">:</span> <span class="s1">'top'</span><span class="p">,</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'center'</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="na">h</span><span class="p">:</span> <span class="s1">'right'</span><span class="p">,</span> <span class="na">v</span><span class="p">:</span> <span class="s1">'top'</span><span class="p">,</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'right'</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="na">h</span><span class="p">:</span> <span class="s1">'left'</span><span class="p">,</span> <span class="na">v</span><span class="p">:</span> <span class="s1">'middle'</span><span class="p">,</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'left'</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="na">h</span><span class="p">:</span> <span class="s1">'center'</span><span class="p">,</span> <span class="na">v</span><span class="p">:</span> <span class="s1">'middle'</span><span class="p">,</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'center'</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="na">h</span><span class="p">:</span> <span class="s1">'right'</span><span class="p">,</span> <span class="na">v</span><span class="p">:</span> <span class="s1">'middle'</span><span class="p">,</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'right'</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="na">h</span><span class="p">:</span> <span class="s1">'left'</span><span class="p">,</span> <span class="na">v</span><span class="p">:</span> <span class="s1">'bottom'</span><span class="p">,</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'left'</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="na">h</span><span class="p">:</span> <span class="s1">'center'</span><span class="p">,</span> <span class="na">v</span><span class="p">:</span> <span class="s1">'bottom'</span><span class="p">,</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'center'</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="na">h</span><span class="p">:</span> <span class="s1">'right'</span><span class="p">,</span> <span class="na">v</span><span class="p">:</span> <span class="s1">'bottom'</span><span class="p">,</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'right'</span> <span class="p">}</span>
-<span class="p">];</span>
+//  The different types of alignment this demo cycles through
+//  h = horizontal, v = vertical
+//  a = the text alignment (see comments below)
+var align = [ 
+    { h: 'left', v: 'top', a: 'left' },
+    { h: 'center', v: 'top', a: 'center' },
+    { h: 'right', v: 'top', a: 'right' },
+    { h: 'left', v: 'middle', a: 'left' },
+    { h: 'center', v: 'middle', a: 'center' },
+    { h: 'right', v: 'middle', a: 'right' },
+    { h: 'left', v: 'bottom', a: 'left' },
+    { h: 'center', v: 'bottom', a: 'center' },
+    { h: 'right', v: 'bottom', a: 'right' }
+];
 
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var i = 0;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bg'</span><span class="p">,</span> <span class="s1">'assets/skies/deepblue.png'</span><span class="p">);</span>
+    game.load.image('bg', 'assets/skies/deepblue.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'bg'</span><span class="p">);</span>
+    game.add.image(0, 0, 'bg');
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"16px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#fff"</span><span class="p">,</span> 
-        <span class="na">align</span><span class="p">:</span> <span class="s2">"left"</span><span class="p">,</span> <span class="c1">// the alignment of the text is independent of the bounds, try changing to 'center' or 'right'</span>
-        <span class="na">boundsAlignH</span><span class="p">:</span> <span class="s2">"left"</span><span class="p">,</span> 
-        <span class="na">boundsAlignV</span><span class="p">:</span> <span class="s2">"top"</span><span class="p">,</span> 
-        <span class="na">wordWrap</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">wordWrapWidth</span><span class="p">:</span> <span class="mi">300</span> <span class="p">};</span>
+    var style = { font: "16px Arial", fill: "#fff", 
+        align: "left", // the alignment of the text is independent of the bounds, try changing to 'center' or 'right'
+        boundsAlignH: "left", 
+        boundsAlignV: "top", 
+        wordWrap: true, wordWrapWidth: 300 };
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">ipsum</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    text = game.add.text(0, 0, ipsum, style);
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setTextBounds</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">768</span><span class="p">,</span> <span class="mi">568</span><span class="p">);</span>
+    text.setTextBounds(16, 16, 768, 568);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">changeAlign</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(changeAlign, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">changeAlign</span><span class="p">()</span> <span class="p">{</span>
+function changeAlign() {
 
-    <span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+    i++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="nx">align</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (i === align.length)
+    {
+        i = 0;
+    }
 
-    <span class="c1">//  Un-comment this line to keep the text left-aligned</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="nx">align</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">a</span><span class="p">;</span>
+    //  Un-comment this line to keep the text left-aligned
+    text.align = align[i].a;
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">boundsAlignH</span> <span class="o">=</span> <span class="nx">align</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">h</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">boundsAlignV</span> <span class="o">=</span> <span class="nx">align</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">v</span><span class="p">;</span>
+    text.boundsAlignH = align[i].h;
+    text.boundsAlignV = align[i].v;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">//  Un-comment to see the text bounds rect to which the text is aligned</span>
-    <span class="c1">// game.debug.geom(text.textBounds, 'rgba(255,0,0,0.5)');</span>
+    //  Un-comment to see the text bounds rect to which the text is aligned
+    // game.debug.geom(text.textBounds, 'rgba(255,0,0,0.5)');
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

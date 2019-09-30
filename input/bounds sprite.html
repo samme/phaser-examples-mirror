@@ -55,37 +55,38 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/bounds%20sprite.js" title="input/bounds sprite.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/bounds%20sprite.js" download="" title="Download: input/bounds sprite.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'assets/pics/game14_angel_dawn.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari800xl.png'</span><span class="p">);</span>
+    game.load.image('pic', 'assets/pics/game14_angel_dawn.png');
+    game.load.image('atari', 'assets/sprites/atari800xl.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bounds</span><span class="p">;</span>
+var sprite;
+var bounds;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#2d2d2d';
 
-    <span class="c1">//  Our sprite that will act as the drag bounds</span>
-    <span class="nx">bounds</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'pic'</span><span class="p">);</span>
-    <span class="nx">bounds</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="nx">bounds</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    //  Our sprite that will act as the drag bounds
+    bounds = game.add.sprite(game.world.centerX, game.world.centerY, 'pic');
+    bounds.alpha = 0.5;
+    bounds.anchor.set(0.5);
 
-    <span class="c1">//  And the sprite we'll drag</span>
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'atari'</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    //  And the sprite we'll drag
+    sprite = game.add.sprite(300, 300, 'atari');
+    sprite.inputEnabled = true;
+    sprite.anchor.set(0.5);
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">boundsSprite</span> <span class="o">=</span> <span class="nx">bounds</span><span class="p">;</span>
+    sprite.input.enableDrag();
+    sprite.input.boundsSprite = bounds;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

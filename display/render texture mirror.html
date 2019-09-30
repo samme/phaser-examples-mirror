@@ -55,41 +55,42 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/render%20texture%20mirror.js" title="display/render texture mirror.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/render%20texture%20mirror.js" download="" title="Download: display/render texture mirror.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/pangball.png'</span><span class="p">);</span>
+    game.load.image('ball', 'assets/sprites/pangball.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">ball</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">texture</span><span class="p">;</span>
+var ball;
+var texture;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Here we'll create a renderTexture the same size as our game</span>
-    <span class="nx">texture</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">renderTexture</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'mousetrail'</span><span class="p">);</span>
+    //  Here we'll create a renderTexture the same size as our game
+    texture = game.add.renderTexture(800, 600, 'mousetrail');
 
-    <span class="c1">//  This is the sprite that will be drawn to the texture</span>
-    <span class="c1">//  Note that we 'make' it, not 'add' it, as we don't want it on the display list.</span>
-    <span class="nx">ball</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
-    <span class="c1">// ball = game.add.sprite(0, 0, 'ball');</span>
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    //  This is the sprite that will be drawn to the texture
+    //  Note that we 'make' it, not 'add' it, as we don't want it on the display list.
+    ball = game.make.sprite(0, 0, 'ball');
+    // ball = game.add.sprite(0, 0, 'ball');
+    ball.anchor.set(0.5);
 
-    <span class="c1">//  This is the sprite that is drawn to the display. We've given it the renderTexture as its texture.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">texture</span><span class="p">);</span>
+    //  This is the sprite that is drawn to the display. We've given it the renderTexture as its texture.
+    game.add.sprite(0, 0, texture);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">//  This time we'll draw the ball sprite twice, in a mirror effect</span>
-    <span class="nx">texture</span><span class="p">.</span><span class="nx">renderXY</span><span class="p">(</span><span class="nx">ball</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">texture</span><span class="p">.</span><span class="nx">renderXY</span><span class="p">(</span><span class="nx">ball</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">600</span> <span class="o">-</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    //  This time we'll draw the ball sprite twice, in a mirror effect
+    texture.renderXY(ball, game.input.activePointer.x, game.input.activePointer.y, true);
+    texture.renderXY(ball, game.input.activePointer.x, 600 - game.input.activePointer.y, false);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

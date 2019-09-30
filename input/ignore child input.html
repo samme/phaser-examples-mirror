@@ -55,81 +55,82 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/ignore%20child%20input.js" title="input/ignore child input.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/ignore%20child%20input.js" download="" title="Download: input/ignore child input.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'beball'</span><span class="p">,</span> <span class="s1">'assets/sprites/beball1.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bikkuriman'</span><span class="p">,</span> <span class="s1">'assets/sprites/bikkuriman.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'square'</span><span class="p">,</span> <span class="s1">'assets/sprites/50x50.png'</span><span class="p">);</span>
+    game.load.image('beball', 'assets/sprites/beball1.png');
+    game.load.image('bikkuriman', 'assets/sprites/bikkuriman.png');
+    game.load.image('square', 'assets/sprites/50x50.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">group1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">group2</span><span class="p">;</span>
+var text = '';
+var group1;
+var group2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Let's create 2 Groups</span>
-    <span class="nx">group1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">group2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    //  Let's create 2 Groups
+    group1 = game.add.group();
+    group2 = game.add.group();
 
-    <span class="c1">//  This will automatically inputEnable all children added to both Groups</span>
-    <span class="nx">group1</span><span class="p">.</span><span class="nx">inputEnableChildren</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">group2</span><span class="p">.</span><span class="nx">inputEnableChildren</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //  This will automatically inputEnable all children added to both Groups
+    group1.inputEnableChildren = true;
+    group2.inputEnableChildren = true;
 
-    <span class="c1">//  Create 10 Sprites per Group</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">group1</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">64</span> <span class="o">+</span> <span class="p">(</span><span class="mi">64</span> <span class="o">*</span> <span class="nx">i</span><span class="p">),</span> <span class="mi">150</span><span class="p">,</span> <span class="s1">'beball'</span><span class="p">);</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'group1-child-'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">;</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clickedSprite</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Create 10 Sprites per Group
+    for (var i = 0; i < 10; i++)
+    {
+        var sprite1 = group1.create(64 + (64 * i), 150, 'beball');
+        sprite1.name = 'group1-child-' + i;
+        sprite1.events.onInputDown.add(clickedSprite, this);
 
-        <span class="kd">var</span> <span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">group2</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">64</span> <span class="o">+</span> <span class="p">(</span><span class="mi">64</span> <span class="o">*</span> <span class="nx">i</span><span class="p">),</span> <span class="mi">350</span><span class="p">,</span> <span class="s1">'bikkuriman'</span><span class="p">);</span>
-        <span class="nx">sprite2</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'group2-child-'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">;</span>
-        <span class="nx">sprite2</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clickedSprite</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+        var sprite2 = group2.create(64 + (64 * i), 350, 'bikkuriman');
+        sprite2.name = 'group2-child-' + i;
+        sprite2.events.onInputDown.add(clickedSprite, this);
+    }
 
-    <span class="c1">//  Our toggle switch</span>
-    <span class="kd">var</span> <span class="nx">toggle</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">800</span><span class="o">-</span><span class="mi">66</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">'square'</span><span class="p">);</span>
-    <span class="nx">toggle</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">toggle</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">toggleGroup</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Our toggle switch
+    var toggle = this.add.sprite(800-66, 16, 'square');
+    toggle.inputEnabled = true;
+    toggle.events.onInputDown.add(toggleGroup, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">toggleGroup</span> <span class="p">()</span> <span class="p">{</span>
+function toggleGroup () {
 
-    <span class="c1">//  By setting ignoreChildInput to true we can tell Group 2s children</span>
-    <span class="c1">//  to ignore all input events</span>
+    //  By setting ignoreChildInput to true we can tell Group 2s children
+    //  to ignore all input events
 
-    <span class="nx">group2</span><span class="p">.</span><span class="nx">ignoreChildInput</span> <span class="o">=</span> <span class="p">(</span><span class="nx">group2</span><span class="p">.</span><span class="nx">ignoreChildInput</span><span class="p">)</span> <span class="p">?</span> <span class="kc">false</span> <span class="p">:</span> <span class="kc">true</span><span class="p">;</span>
+    group2.ignoreChildInput = (group2.ignoreChildInput) ? false : true;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">clickedSprite</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+function clickedSprite (sprite) {
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+    text = sprite.name;
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0xff0000</span><span class="p">;</span>
+    sprite.tint = 0xff0000;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">text</span> <span class="o">===</span> <span class="s1">''</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Click the Sprites. Click the square to toggle Group 2 input."</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"You clicked: "</span> <span class="o">+</span> <span class="nx">text</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (text === '')
+    {
+        game.debug.text("Click the Sprites. Click the square to toggle Group 2 input.", 32, 32);
+    }
+    else
+    {
+        game.debug.text("You clicked: " + text, 32, 32);
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Group2.ignoreChildInput: "</span> <span class="o">+</span> <span class="nx">group2</span><span class="p">.</span><span class="nx">ignoreChildInput</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text("Group2.ignoreChildInput: " + group2.ignoreChildInput, 32, 64);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

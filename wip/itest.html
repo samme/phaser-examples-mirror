@@ -55,112 +55,112 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/itest.js" title="wip/itest.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/itest.js" download="" title="Download: wip/itest.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example');
 
-<span class="kd">var</span> <span class="nx">BasicGame</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{};</span>
+var BasicGame = function(game) {};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Boot</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// nothing here</span>
-<span class="p">};</span>
+BasicGame.Boot = function (game) {
+    // nothing here
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Boot</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> 
-<span class="p">{</span>
-    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">baseURL</span> <span class="o">=</span> <span class="s1">'http://examples.phaser.io/assets/'</span><span class="p">;</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">crossOrigin</span> <span class="o">=</span> <span class="s1">'anonymous'</span><span class="p">;</span>
+BasicGame.Boot.prototype = 
+{
+    preload: function() {
+        game.load.baseURL = 'http://examples.phaser.io/assets/';
+        game.load.crossOrigin = 'anonymous';
 
-        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'sprites/phaser-dude.png'</span><span class="p">);</span>
-    <span class="p">},</span>
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> 
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
-        <span class="nx">sprite2</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'sprite 1'</span><span class="p">;</span>
-        <span class="nx">sprite2</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'sprite 2'</span><span class="p">;</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">selected</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">sprite2</span><span class="p">.</span><span class="nx">selected</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">justSelected</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">sprite2</span><span class="p">.</span><span class="nx">justSelected</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">dragging</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">sprite2</span><span class="p">.</span><span class="nx">dragging</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">currentSelection</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onMouseDown</span><span class="p">,</span> <span class="nx">sprite1</span><span class="p">);</span>
-        <span class="nx">sprite2</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onMouseDown</span><span class="p">,</span> <span class="nx">sprite2</span><span class="p">);</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onMouseUp</span><span class="p">,</span> <span class="nx">sprite1</span><span class="p">);</span>
-        <span class="nx">sprite2</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onMouseUp</span><span class="p">,</span> <span class="nx">sprite2</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">onMouseMove</span><span class="p">,</span> <span class="nx">sprite1</span><span class="p">);</span>        
-        <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">onMouseMove</span><span class="p">,</span> <span class="nx">sprite2</span><span class="p">);</span>        
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">update</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selected</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0x8080FF</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0xFFFFFF</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+        game.load.image('phaser', 'sprites/phaser-dude.png');
+    },
+    create: function() 
+    {
+        var sprite1 = game.add.sprite(20, 100, 'phaser');
+        sprite1.inputEnabled = true;
+        var sprite2 = game.add.sprite(100, 100, 'phaser');
+        sprite2.inputEnabled = true;
+        sprite1.name = 'sprite 1';
+        sprite2.name = 'sprite 2';
+        sprite1.selected = false;
+        sprite2.selected = false;
+        sprite1.justSelected = false;
+        sprite2.justSelected = false;
+        sprite1.dragging = false;
+        sprite2.dragging = false;
+        game.currentSelection = null;
+        sprite1.events.onInputDown.add(onMouseDown, sprite1);
+        sprite2.events.onInputDown.add(onMouseDown, sprite2);
+        sprite1.events.onInputUp.add(onMouseUp, sprite1);
+        sprite2.events.onInputUp.add(onMouseUp, sprite2);
+        game.input.addMoveCallback(onMouseMove, sprite1);        
+        game.input.addMoveCallback(onMouseMove, sprite2);        
+        sprite1.update = function() {
+            if (this.selected) {
+                this.tint = 0x8080FF;
+            } else {
+                this.tint = 0xFFFFFF;
+            }
+        }
 
-        <span class="nx">sprite2</span><span class="p">.</span><span class="nx">update</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selected</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0xFF8000</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0xFFFFFF</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>        
-    <span class="p">},</span>
-    <span class="na">update</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> 
-    <span class="p">{</span>
+        sprite2.update = function() {
+            if (this.selected) {
+                this.tint = 0xFF8000;
+            } else {
+                this.tint = 0xFFFFFF;
+            }
+        }        
+    },
+    update: function() 
+    {
 
-    <span class="p">},</span> 
-    <span class="na">render</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'selected: sprite1 '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">selected</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="s2">"#00ff00"</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'selected: sprite2 '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">selected</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">"#00ff00"</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">VERSION</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="s2">"#ffff00"</span><span class="p">);</span>
-        <span class="c1">//game.debug.pointer(game.input.activePointer);</span>
-    <span class="p">}</span>
-<span class="p">};</span>
+    }, 
+    render: function()
+    {
+        game.debug.text('selected: sprite1 ' + game.world.children[0].selected, 2, 14, "#00ff00");
+        game.debug.text('selected: sprite2 ' + game.world.children[1].selected, 2, 30, "#00ff00");
+        game.debug.text(Phaser.VERSION, game.world.width - 100, 14, "#ffff00");
+        //game.debug.pointer(game.input.activePointer);
+    }
+};
 
 
 
-<span class="nx">onMouseDown</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+onMouseDown = function(object, pointer) {
  
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'mouseDown '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">currentSelection</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">currentSelection</span> <span class="o">!=</span> <span class="k">this</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">currentSelection</span><span class="p">.</span><span class="nx">selected</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">selected</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">currentSelection</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">justSelected</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">dragging</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-<span class="p">}</span>
+    console.log('mouseDown ' + this.name);
+    if (this.game.currentSelection && this.game.currentSelection != this) {
+        this.game.currentSelection.selected = false;
+    }
+    this.selected = true;
+    this.game.currentSelection = this;
+    this.justSelected = true;
+    this.dragging = true;
+}
 
-<span class="nx">onMouseUp</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+onMouseUp = function(object, pointer) {
  
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'mouseUp '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
-  <span class="c1">//  if (this.selected &amp;&amp; !this.dragging &amp;&amp; !this.justSelected) {</span>
-       <span class="k">this</span><span class="p">.</span><span class="nx">selected</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-       <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">currentSelection</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-   <span class="c1">// }</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">leftButton</span><span class="p">.</span><span class="nx">isUp</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">dragging</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">justSelected</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
+    console.log('mouseUp ' + this.name);
+  //  if (this.selected && !this.dragging && !this.justSelected) {
+       this.selected = false;
+       this.game.currentSelection = null;
+   // }
+    if (pointer.leftButton.isUp) {
+        this.dragging = false;
+        this.justSelected = false;
+    }
     
     
-<span class="p">}</span>
-<span class="nx">onMouseMove</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+}
+onMouseMove = function(pointer) {
  
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selected</span> <span class="o">&amp;&amp;</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">leftButton</span><span class="p">.</span><span class="nx">isDown</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">dragging</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'clicking and dragging while '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">' is selected'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-    <span class="p">}</span>    
-<span class="p">}</span>
+    if (this.selected && pointer.leftButton.isDown && this.dragging) {
+        console.log('clicking and dragging while ' + this.name + ' is selected');
+        this.x = pointer.x;
+        this.y = pointer.y;
+    }    
+}
 
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Boot'</span><span class="p">,</span> <span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Boot</span><span class="p">);</span>
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'Boot'</span><span class="p">);</span></code></pre>
+game.state.add('Boot', BasicGame.Boot);
+game.state.start('Boot');</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

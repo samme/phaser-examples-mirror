@@ -55,40 +55,41 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/a08.js" title="wip/a08.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/a08.js" download="" title="Download: wip/a08.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.json'</span><span class="p">);</span>
+    game.load.atlas('atlas', 'assets/sprites/seacreatures_json.png', 'assets/sprites/seacreatures_json.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'greenJellyfish0000'</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    sprite = game.add.sprite(400, 200, 'atlas', 'greenJellyfish0000');
+    sprite.anchor.set(0.5);
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'swim'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Animation</span><span class="p">.</span><span class="nx">generateFrameNames</span><span class="p">(</span><span class="s1">'greenJellyfish'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'swim'</span><span class="p">);</span>
+    sprite.animations.add('swim', Phaser.Animation.generateFrameNames('greenJellyfish', 0, 38, '', 4), 30, true);
+    sprite.play('swim');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">changeTint</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(changeTint, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">changeTint</span><span class="p">()</span> <span class="p">{</span>
+function changeTint() {
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mh">0xffffff</span><span class="p">;</span>
+    sprite.tint = Math.random() * 0xffffff;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="mf">0.02</span><span class="p">;</span>
+    sprite.rotation += 0.02;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

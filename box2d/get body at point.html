@@ -55,82 +55,82 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/box2d/get%20body%20at%20point.js" title="box2d/get body at point.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/box2d/get%20body%20at%20point.js" download="" title="Download: box2d/get body at point.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Chris Campbell <iforce2d@gmail.com>
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Box2D Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/box2d
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/shinyball.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'firstaid'</span><span class="p">,</span> <span class="s1">'assets/sprites/firstaid.png'</span><span class="p">);</span>
+    game.load.image('ball', 'assets/sprites/shinyball.png');
+    game.load.image('firstaid', 'assets/sprites/firstaid.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bodiesUnderMouse</span> <span class="o">=</span> <span class="p">[];</span>
+var bodiesUnderMouse = [];
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#124184';
 
-    <span class="c1">// Enable Box2D physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
+    // Enable Box2D physics
+    game.physics.startSystem(Phaser.Physics.BOX2D);
     
-    <span class="c1">// Make a bunch of random bodies</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">whichImage</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="p">?</span> <span class="s1">'ball'</span> <span class="p">:</span> <span class="s1">'firstaid'</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">50</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">100</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">450</span><span class="p">,</span> <span class="nx">whichImage</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">scale</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+    // Make a bunch of random bodies
+    for (var x = 0; x < 100; x++)
+    {
+        var whichImage = Math.random() > 0.5 ? 'ball' : 'firstaid';
+        var sprite = game.add.sprite(50 + Math.random() * 700, 100 + Math.random() * 450, whichImage);
+        var scale = 1 + Math.random();
+        sprite.scale.set(scale);
+        game.physics.box2d.enable(sprite);
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">whichImage</span> <span class="o">==</span> <span class="s1">'ball'</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="nx">scale</span><span class="p">);</span>
-        <span class="p">}</span>
+        if (whichImage == 'ball')
+        {
+            sprite.body.setCircle(16 * scale);
+        }
 
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">360</span><span class="p">;</span>
-    <span class="p">}</span>
+        sprite.body.static = true;
+        sprite.body.angle = Math.random() * 360;
+    }
 
-    <span class="c1">// All the bodies in this example are static, so we only need to</span>
-    <span class="c1">// update the bodiesUnderMouse array when the mouse actually moves.</span>
-    <span class="c1">// If the bodies were moving around, you would probably want to update</span>
-    <span class="c1">// the array regularly inside the update function, so that the array </span>
-    <span class="c1">// would be accurate even when the mouse does not move.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">mouseMove</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    // All the bodies in this example are static, so we only need to
+    // update the bodiesUnderMouse array when the mouse actually moves.
+    // If the bodies were moving around, you would probably want to update
+    // the array regularly inside the update function, so that the array 
+    // would be accurate even when the mouse does not move.
+    game.input.addMoveCallback(mouseMove, this);
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span> <span class="s1">'Move the mouse to detect fixtures.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">'This method is efficient for large numbers of bodies.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
-<span class="p">}</span>
+    game.add.text(5,  5, 'Move the mouse to detect fixtures.', { fill: '#ffffff', font: '14pt Arial' });
+    game.add.text(5, 25, 'This method is efficient for large numbers of bodies.', { fill: '#ffffff', font: '14pt Arial' });
+}
 
-<span class="kd">function</span> <span class="nx">mouseMove</span><span class="p">()</span> <span class="p">{</span>
+function mouseMove() {
     
-    <span class="c1">// If you want fixtures (box2d.b2Fixture) you can do this:</span>
-    <span class="c1">//fixturesUnderMouse = game.physics.box2d.getFixturesAtPoint(game.input.mousePointer.x, game.input.mousePointer.y, true);</span>
+    // If you want fixtures (box2d.b2Fixture) you can do this:
+    //fixturesUnderMouse = game.physics.box2d.getFixturesAtPoint(game.input.mousePointer.x, game.input.mousePointer.y, true);
     
-    <span class="c1">// However, for this example we want to debug render the body so we'll do this:</span>
-    <span class="nx">bodiesUnderMouse</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">getBodiesAtPoint</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-<span class="p">}</span>
+    // However, for this example we want to debug render the body so we'll do this:
+    bodiesUnderMouse = game.physics.box2d.getBodiesAtPoint(game.input.mousePointer.x, game.input.mousePointer.y);
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
     
-    <span class="c1">// Draw fixtures in green if mouse is currently over them</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">bodiesUnderMouse</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">body</span><span class="p">(</span><span class="nx">bodiesUnderMouse</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">sprite</span><span class="p">,</span> <span class="s1">'rgb(0,255,0)'</span><span class="p">);</span>
-    <span class="p">}</span>
+    // Draw fixtures in green if mouse is currently over them
+    for (var i = 0; i < bodiesUnderMouse.length; i++)
+    {
+        game.debug.body(bodiesUnderMouse[i].sprite, 'rgb(0,255,0)');
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

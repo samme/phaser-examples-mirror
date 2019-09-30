@@ -55,72 +55,73 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/arcade%20physics/one%20way%20collision.js" title="arcade physics/one way collision.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/arcade%20physics/one%20way%20collision.js" download="" title="Download: arcade physics/one way collision.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'gameboy'</span><span class="p">,</span> <span class="s1">'assets/sprites/gameboy_seize_color_40x60.png'</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari130xe.png'</span><span class="p">);</span>
+	game.load.spritesheet('gameboy', 'assets/sprites/gameboy_seize_color_40x60.png', 40, 60);
+	game.load.image('atari', 'assets/sprites/atari130xe.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite3</span><span class="p">;</span>
+var sprite;
+var sprite2;
+var sprite3;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+	game.stage.backgroundColor = '#124184';
 
-	<span class="c1">//	In this example the little Gameboy sprite can pass through the top/bottom of the Atari sprite</span>
-	<span class="c1">//	Because it's set to ignore collisions on its top/bottom faces.</span>
+	//	In this example the little Gameboy sprite can pass through the top/bottom of the Atari sprite
+	//	Because it's set to ignore collisions on its top/bottom faces.
 
-	<span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'atari'</span><span class="p">);</span>
-	<span class="nx">sprite</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'atari'</span><span class="p">;</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
-	<span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-	<span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">checkCollision</span><span class="p">.</span><span class="nx">up</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-	<span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">checkCollision</span><span class="p">.</span><span class="nx">down</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-	<span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">immovable</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	sprite = game.add.sprite(300, 200, 'atari');
+	sprite.name = 'atari';
+	game.physics.enable(sprite, Phaser.Physics.ARCADE);
+	sprite.body.collideWorldBounds = true;
+	sprite.body.checkCollision.up = false;
+	sprite.body.checkCollision.down = false;
+	sprite.body.immovable = true;
 
-	<span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'gameboy'</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-	<span class="nx">sprite2</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'gameboy'</span><span class="p">;</span>
+	sprite2 = game.add.sprite(350, 400, 'gameboy', 2);
+	sprite2.name = 'gameboy';
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite2</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
-	<span class="nx">sprite2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-	<span class="nx">sprite2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+	game.physics.enable(sprite2, Phaser.Physics.ARCADE);
+	sprite2.body.collideWorldBounds = true;
+	sprite2.body.bounce.setTo(1, 1);
 
-	<span class="nx">sprite3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="s1">'gameboy'</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+	sprite3 = game.add.sprite(0, 210, 'gameboy', 4);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite3</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+	game.physics.enable(sprite3, Phaser.Physics.ARCADE);
 
-	<span class="nx">sprite3</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'gameboy2'</span><span class="p">;</span>
-	<span class="nx">sprite3</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-	<span class="nx">sprite3</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+	sprite3.name = 'gameboy2';
+	sprite3.body.collideWorldBounds = true;
+	sprite3.body.bounce.setTo(1, 1);
 
-	<span class="nx">sprite2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">200</span><span class="p">;</span>
-	<span class="nx">sprite3</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+	sprite2.body.velocity.y = -200;
+	sprite3.body.velocity.x = 200;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">sprite2</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">sprite3</span><span class="p">);</span>
+	game.physics.arcade.collide(sprite, sprite2);
+	game.physics.arcade.collide(sprite, sprite3);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">bodyInfo</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">24</span><span class="p">);</span>
+	game.debug.bodyInfo(sprite, 16, 24);
 
-	<span class="c1">// game.debug.body(sprite);</span>
-	<span class="c1">// game.debug.body(sprite2);</span>
+	// game.debug.body(sprite);
+	// game.debug.body(sprite2);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

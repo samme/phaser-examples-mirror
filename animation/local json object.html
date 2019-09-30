@@ -55,132 +55,133 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/animation/local%20json%20object.js" title="animation/local json object.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/animation/local%20json%20object.js" download="" title="Download: animation/local json object.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create});
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Texture Atlas Method 2</span>
-    <span class="c1">//</span>
-    <span class="c1">//  In this example we assume that the TexturePacker JSON data is a real json object stored as a var</span>
-    <span class="c1">//  (in this case botData)</span>
+    //  Texture Atlas Method 2
+    //
+    //  In this example we assume that the TexturePacker JSON data is a real json object stored as a var
+    //  (in this case botData)
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'bot'</span><span class="p">,</span> <span class="s1">'assets/sprites/running_bot.png'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">botData</span><span class="p">);</span>
+    game.load.atlas('bot', 'assets/sprites/running_bot.png', null, botData);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bot</span><span class="p">;</span>
+var bot;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">bot</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'bot'</span><span class="p">);</span>
+    bot = game.add.sprite(game.world.centerX, 300, 'bot');
 
-    <span class="nx">bot</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'run'</span><span class="p">);</span>
-    <span class="nx">bot</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'run'</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    bot.animations.add('run');
+    bot.animations.play('run', 10, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">botData</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"frames"</span><span class="p">:</span> <span class="p">[</span>
+var botData = {
+    "frames": [
 
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0000"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">60</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">60</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">},</span>
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0001"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">54</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">58</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">58</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">},</span>
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0002"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">54</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">58</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">58</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">58</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">},</span>
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0003"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">192</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">},</span>
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0004"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">54</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">54</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">},</span>
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0005"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">196</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">58</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">58</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">},</span>
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0006"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">54</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">54</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">},</span>
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0007"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">140</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">58</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">58</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">},</span>
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0008"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">188</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">60</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">60</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">},</span>
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0009"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">},</span>
-<span class="p">{</span>
-    <span class="s2">"filename"</span><span class="p">:</span> <span class="s2">"running bot.swf/0010"</span><span class="p">,</span>
-    <span class="s2">"frame"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">84</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">188</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">58</span> <span class="p">},</span>
-    <span class="s2">"rotated"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="s2">"trimmed"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="s2">"spriteSourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">58</span> <span class="p">},</span>
-    <span class="s2">"sourceSize"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">64</span> <span class="p">}</span>
-<span class="p">}],</span>
-    <span class="s2">"meta"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"app"</span><span class="p">:</span> <span class="s2">"http://www.texturepacker.com"</span><span class="p">,</span>
-        <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"1.0"</span><span class="p">,</span>
-        <span class="s2">"image"</span><span class="p">:</span> <span class="s2">"running_bot.png"</span><span class="p">,</span>
-        <span class="s2">"format"</span><span class="p">:</span> <span class="s2">"RGBA8888"</span><span class="p">,</span>
-        <span class="s2">"size"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"w"</span><span class="p">:</span> <span class="mi">252</span><span class="p">,</span> <span class="s2">"h"</span><span class="p">:</span> <span class="mi">256</span> <span class="p">},</span>
-        <span class="s2">"scale"</span><span class="p">:</span> <span class="s2">"0.2"</span><span class="p">,</span>
-        <span class="s2">"smartupdate"</span><span class="p">:</span> <span class="s2">"$TexturePacker:SmartUpdate:fb56f261b1eb04e3215824426595f64c$"</span>
-    <span class="p">}</span>
-<span class="p">};</span>
+{
+    "filename": "running bot.swf/0000",
+    "frame": { "x": 34, "y": 128, "w": 56, "h": 60 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 2, "w": 56, "h": 60 },
+    "sourceSize": { "w": 56, "h": 64 }
+},
+{
+    "filename": "running bot.swf/0001",
+    "frame": { "x": 54, "y": 0, "w": 56, "h": 58 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 3, "w": 56, "h": 58 },
+    "sourceSize": { "w": 56, "h": 64 }
+},
+{
+    "filename": "running bot.swf/0002",
+    "frame": { "x": 54, "y": 58, "w": 56, "h": 58 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 3, "w": 56, "h": 58 },
+    "sourceSize": { "w": 56, "h": 64 }
+},
+{
+    "filename": "running bot.swf/0003",
+    "frame": { "x": 0, "y": 192, "w": 34, "h": 64 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 11, "y": 0, "w": 34, "h": 64 },
+    "sourceSize": { "w": 56, "h": 64 }
+},
+{
+    "filename": "running bot.swf/0004",
+    "frame": { "x": 0, "y": 64, "w": 54, "h": 64 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 1, "y": 0, "w": 54, "h": 64 },
+    "sourceSize": { "w": 56, "h": 64 }
+},
+{
+    "filename": "running bot.swf/0005",
+    "frame": { "x": 196, "y": 0, "w": 56, "h": 58 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 3, "w": 56, "h": 58 },
+    "sourceSize": { "w": 56, "h": 64 }
+},
+{
+    "filename": "running bot.swf/0006",
+    "frame": { "x": 0, "y": 0, "w": 54, "h": 64 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 1, "y": 0, "w": 54, "h": 64 },
+    "sourceSize": { "w": 56, "h": 64 }
+},
+{
+    "filename": "running bot.swf/0007",
+    "frame": { "x": 140, "y": 0, "w": 56, "h": 58 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 3, "w": 56, "h": 58 },
+    "sourceSize": { "w": 56, "h": 64 }
+},
+{
+    "filename": "running bot.swf/0008",
+    "frame": { "x": 34, "y": 188, "w": 50, "h": 60 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 3, "y": 2, "w": 50, "h": 60 },
+    "sourceSize": { "w": 56, "h": 64 }
+},
+{
+    "filename": "running bot.swf/0009",
+    "frame": { "x": 0, "y": 128, "w": 34, "h": 64 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 11, "y": 0, "w": 34, "h": 64 },
+    "sourceSize": { "w": 56, "h": 64 }
+},
+{
+    "filename": "running bot.swf/0010",
+    "frame": { "x": 84, "y": 188, "w": 56, "h": 58 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 3, "w": 56, "h": 58 },
+    "sourceSize": { "w": 56, "h": 64 }
+}],
+    "meta": {
+        "app": "http://www.texturepacker.com",
+        "version": "1.0",
+        "image": "running_bot.png",
+        "format": "RGBA8888",
+        "size": { "w": 252, "h": 256 },
+        "scale": "0.2",
+        "smartupdate": "$TexturePacker:SmartUpdate:fb56f261b1eb04e3215824426595f64c$"
+    }
+};
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

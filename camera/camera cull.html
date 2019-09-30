@@ -55,54 +55,55 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/camera/camera%20cull.js" title="camera/camera cull.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/camera/camera%20cull.js" download="" title="Download: camera/camera cull.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'disk'</span><span class="p">,</span> <span class="s1">'assets/sprites/ra_dont_crack_under_pressure.png'</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.load.image('disk', 'assets/sprites/ra_dont_crack_under_pressure.png');
+}
 
-<span class="kd">var</span> <span class="nx">s</span><span class="p">;</span>
+var s;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#182d3b'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#182d3b';
 
-    <span class="nx">s</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'disk'</span><span class="p">);</span>
-    <span class="nx">s</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    s = game.add.sprite(game.world.centerX, game.world.centerY, 'disk');
+    s.anchor.setTo(0.5, 0.5);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">s</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="mf">0.01</span><span class="p">;</span>
+    s.rotation += 0.01;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">LEFT</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">s</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">RIGHT</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">s</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
+    {
+        s.x -= 4;
+    }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
+    {
+        s.x += 4;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">UP</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">s</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">DOWN</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">s</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
+    {
+        s.y -= 4;
+    }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
+    {
+        s.y += 4;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteBounds</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteInfo</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.spriteBounds(s);
+    game.debug.spriteInfo(s, 20, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

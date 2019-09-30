@@ -55,28 +55,29 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bitmapdata/tint.js" title="bitmapdata/tint.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bitmapdata/tint.js" download="" title="Download: bitmapdata/tint.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'crystal'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar_dragonsun.png'</span><span class="p">);</span>
+    game.load.image('crystal', 'assets/pics/cougar_dragonsun.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
+var bmd;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">pic</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'crystal'</span><span class="p">);</span>
+    var pic = game.make.image(0, 0, 'crystal');
 
-    <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">pic</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">pic</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    bmd = game.make.bitmapData(pic.width, pic.height);
 
-    <span class="nx">PIXI</span><span class="p">.</span><span class="nx">CanvasTinter</span><span class="p">.</span><span class="nx">tintMethod</span><span class="p">(</span><span class="nx">pic</span><span class="p">.</span><span class="nx">texture</span><span class="p">,</span> <span class="mh">0xee4343</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">canvas</span><span class="p">);</span>
+    PIXI.CanvasTinter.tintMethod(pic.texture, 0xee4343, bmd.canvas);
 
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    bmd.addToWorld();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

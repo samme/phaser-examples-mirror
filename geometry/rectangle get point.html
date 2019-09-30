@@ -55,53 +55,54 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/geometry/rectangle%20get%20point.js" title="geometry/rectangle get point.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/geometry/rectangle%20get%20point.js" download="" title="Download: geometry/rectangle get point.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Create a Rectangle</span>
-    <span class="kd">var</span> <span class="nx">rectangle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+    //  Create a Rectangle
+    var rectangle = new Phaser.Rectangle(100, 200, 600, 200);
 
-    <span class="c1">//  Create a BitmapData just to plot the points to</span>
-    <span class="kd">var</span> <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    //  Create a BitmapData just to plot the points to
+    var bmd = game.add.bitmapData(game.width, game.height);
 
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">rectangle</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">rectangle</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">rectangle</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">rectangle</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'#2d2d2d'</span><span class="p">);</span>
+    bmd.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height, '#2d2d2d');
 
-    <span class="c1">//  Draw the 9 points that getPoint can return</span>
+    //  Draw the 9 points that getPoint can return
 
-    <span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">();</span>
+    var p = new Phaser.Point();
 
-    <span class="nx">rectangle</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">TOP_LEFT</span><span class="p">,</span> <span class="nx">p</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    rectangle.getPoint(Phaser.TOP_LEFT, p);
+    bmd.rect(p.x, p.y, 2, 2, '#ff00ff');
 
-    <span class="nx">rectangle</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">TOP_CENTER</span><span class="p">,</span> <span class="nx">p</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    rectangle.getPoint(Phaser.TOP_CENTER, p);
+    bmd.rect(p.x, p.y, 2, 2, '#ff00ff');
 
-    <span class="nx">rectangle</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">TOP_RIGHT</span><span class="p">,</span> <span class="nx">p</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    rectangle.getPoint(Phaser.TOP_RIGHT, p);
+    bmd.rect(p.x, p.y, 2, 2, '#ff00ff');
 
-    <span class="nx">rectangle</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">MIDDLE_LEFT</span><span class="p">,</span> <span class="nx">p</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    rectangle.getPoint(Phaser.MIDDLE_LEFT, p);
+    bmd.rect(p.x, p.y, 2, 2, '#ff00ff');
 
-    <span class="nx">rectangle</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">MIDDLE_CENTER</span><span class="p">,</span> <span class="nx">p</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    rectangle.getPoint(Phaser.MIDDLE_CENTER, p);
+    bmd.rect(p.x, p.y, 2, 2, '#ff00ff');
 
-    <span class="nx">rectangle</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">MIDDLE_RIGHT</span><span class="p">,</span> <span class="nx">p</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    rectangle.getPoint(Phaser.MIDDLE_RIGHT, p);
+    bmd.rect(p.x, p.y, 2, 2, '#ff00ff');
 
-    <span class="nx">rectangle</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">BOTTOM_LEFT</span><span class="p">,</span> <span class="nx">p</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    rectangle.getPoint(Phaser.BOTTOM_LEFT, p);
+    bmd.rect(p.x, p.y, 2, 2, '#ff00ff');
 
-    <span class="nx">rectangle</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">BOTTOM_CENTER</span><span class="p">,</span> <span class="nx">p</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    rectangle.getPoint(Phaser.BOTTOM_CENTER, p);
+    bmd.rect(p.x, p.y, 2, 2, '#ff00ff');
 
-    <span class="nx">rectangle</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">BOTTOM_RIGHT</span><span class="p">,</span> <span class="nx">p</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    rectangle.getPoint(Phaser.BOTTOM_RIGHT, p);
+    bmd.rect(p.x, p.y, 2, 2, '#ff00ff');
 
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    bmd.addToWorld();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

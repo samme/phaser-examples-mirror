@@ -55,52 +55,53 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/easing.js" title="tweens/easing.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/easing.js" download="" title="Download: tweens/easing.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'shadow'</span><span class="p">,</span> <span class="s1">'assets/tests/tween/shadow.png'</span><span class="p">,</span> <span class="mi">138</span><span class="p">,</span> <span class="mi">15</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/tests/tween/phaser.png'</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">90</span><span class="p">);</span>
+    game.load.spritesheet('shadow', 'assets/tests/tween/shadow.png', 138, 15);
+    game.load.spritesheet('phaser', 'assets/tests/tween/phaser.png', 70, 90);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">item</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">shadow</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">tween</span><span class="p">;</span>
+    var item;
+    var shadow;
+    var tween;
 
-    <span class="c1">// Sets background color to white.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#ffffff'</span><span class="p">;</span>
+    // Sets background color to white.
+    game.stage.backgroundColor = '#ffffff';
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// Add a shadow to the location which characters will land on.</span>
-        <span class="c1">// And tween their size to make them look like a real shadow.</span>
-        <span class="c1">// Put the following code before items to give shadow a lower</span>
-        <span class="c1">// render order.</span>
-        <span class="nx">shadow</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">190</span> <span class="o">+</span> <span class="mi">69</span> <span class="o">*</span> <span class="nx">i</span><span class="p">,</span> <span class="mi">284</span><span class="p">,</span> <span class="s1">'shadow'</span><span class="p">);</span>
+    for (var i = 0; i < 6; i++)
+    {
+        // Add a shadow to the location which characters will land on.
+        // And tween their size to make them look like a real shadow.
+        // Put the following code before items to give shadow a lower
+        // render order.
+        shadow = game.add.sprite(190 + 69 * i, 284, 'shadow');
 
-        <span class="c1">// Set shadow's size 0 so that it'll be invisible at the beginning.</span>
-        <span class="nx">shadow</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+        // Set shadow's size 0 so that it'll be invisible at the beginning.
+        shadow.scale.setTo(0.0, 0.0);
 
-        <span class="c1">// Also set the origin to the center since we don't want to</span>
-        <span class="c1">// see the shadow scale to the left top.</span>
-        <span class="nx">shadow</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">shadow</span><span class="p">.</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span><span class="na">x</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span> <span class="mi">2400</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        // Also set the origin to the center since we don't want to
+        // see the shadow scale to the left top.
+        shadow.anchor.setTo(0.5, 0.5);
+        game.add.tween(shadow.scale).to({x: 1.0, y: 1.0}, 2400, Phaser.Easing.Bounce.Out, true);
 
-        <span class="c1">// Add characters on top of shadows.</span>
-        <span class="nx">item</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">190</span> <span class="o">+</span> <span class="mi">69</span> <span class="o">*</span> <span class="nx">i</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+        // Add characters on top of shadows.
+        item = game.add.sprite(190 + 69 * i, -50, 'phaser', i);
 
-        <span class="c1">// Set origin to the center to make the rotation look better.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+        // Set origin to the center to make the rotation look better.
+        item.anchor.setTo(0.5, 0.5);
 
-        <span class="c1">// Add a simple bounce tween to each character's position.</span>
-        <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">item</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">245</span> <span class="p">},</span> <span class="mi">2400</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+        // Add a simple bounce tween to each character's position.
+        tween = game.add.tween(item).to( { y: 245 }, 2400, Phaser.Easing.Bounce.Out, true);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

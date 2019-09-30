@@ -55,40 +55,41 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/bitmaptext%20purge%20glyphs.js" title="text/bitmaptext purge glyphs.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/bitmaptext%20purge%20glyphs.js" download="" title="Download: text/bitmaptext purge glyphs.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'gem'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/gem.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/gem.xml'</span><span class="p">);</span>
+    game.load.bitmapFont('gem', 'assets/fonts/bitmapFonts/gem.png', 'assets/fonts/bitmapFonts/gem.xml');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bpmText</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="s2">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid ergo aliud intellegetur nisi uti ne quae pars naturae neglegatur? Si longus, levis; Ita relinquet duas, de quibus etiam atque etiam consideret. Optime, inquam. Sed quanta sit alias, nunc tantum possitne esse tanta.\n\nQuid, si etiam iucunda memoria est praeteritorum malorum? Consequatur summas voluptates non modo parvo, sed per me nihilo, si potest; Atque his de rebus et splendida est eorum et illustris oratio. Mihi enim satis est, ipsis non satis. Ergo ita: non posse honeste vivi, nisi honeste vivatur? Mihi quidem Antiochum, quem audis, satis belle videris attendere. Et quod est munus, quod opus sapientiae? Ex rebus enim timiditas, non ex vocabulis nascitur. Ex ea difficultate illae fallaciloquae, ut ait Accius, malitiae natae sunt. Nonne videmus quanta perturbatio rerum omnium consequatur, quanta confusio? Quae cum magnifice primo dici viderentur, considerata minus probabantur.\n\n---&gt; Click to remove text"</span><span class="p">;</span>
+var bpmText;
+var text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid ergo aliud intellegetur nisi uti ne quae pars naturae neglegatur? Si longus, levis; Ita relinquet duas, de quibus etiam atque etiam consideret. Optime, inquam. Sed quanta sit alias, nunc tantum possitne esse tanta.\n\nQuid, si etiam iucunda memoria est praeteritorum malorum? Consequatur summas voluptates non modo parvo, sed per me nihilo, si potest; Atque his de rebus et splendida est eorum et illustris oratio. Mihi enim satis est, ipsis non satis. Ergo ita: non posse honeste vivi, nisi honeste vivatur? Mihi quidem Antiochum, quem audis, satis belle videris attendere. Et quod est munus, quod opus sapientiae? Ex rebus enim timiditas, non ex vocabulis nascitur. Ex ea difficultate illae fallaciloquae, ut ait Accius, malitiae natae sunt. Nonne videmus quanta perturbatio rerum omnium consequatur, quanta confusio? Quae cum magnifice primo dici viderentur, considerata minus probabantur.\n\n---> Click to remove text";
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x272822</span><span class="p">;</span>
+    game.stage.backgroundColor = 0x272822;
 
-    <span class="nx">bmpText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'gem'</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    bmpText = game.add.bitmapText(32, 32, 'gem', text, 16);
 
-    <span class="nx">bmpText</span><span class="p">.</span><span class="nx">maxWidth</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+    bmpText.maxWidth = 400;
 
-    <span class="c1">//  Click to remove text and purge glyphs</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">chopText</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Click to remove text and purge glyphs
+    game.input.onDown.addOnce(chopText, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">chopText</span><span class="p">()</span> <span class="p">{</span>
+function chopText() {
 
-    <span class="nx">bmpText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">26</span><span class="p">);</span>
+    bmpText.text = text.substr(0, 26);
 
-    <span class="kd">var</span> <span class="nx">purged</span> <span class="o">=</span> <span class="nx">bmpText</span><span class="p">.</span><span class="nx">purgeGlyphs</span><span class="p">();</span>
+    var purged = bmpText.purgeGlyphs();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="s1">'gem'</span><span class="p">,</span> <span class="s2">"Purged "</span> <span class="o">+</span> <span class="nx">purged</span> <span class="o">+</span> <span class="s2">" glyphs"</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.add.bitmapText(32, 128, 'gem', "Purged " + purged + " glyphs", 32);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

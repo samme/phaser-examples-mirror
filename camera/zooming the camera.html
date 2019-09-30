@@ -55,124 +55,125 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/camera/zooming%20the%20camera.js" title="camera/zooming the camera.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/camera/zooming%20the%20camera.js" download="" title="Download: camera/zooming the camera.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'backdrop'</span><span class="p">,</span> <span class="s1">'assets/pics/remember-me.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'card'</span><span class="p">,</span> <span class="s1">'assets/sprites/mana_card.png'</span><span class="p">);</span>
+    game.load.image('backdrop', 'assets/pics/remember-me.jpg');
+    game.load.image('card', 'assets/sprites/mana_card.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">card</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">zooming</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">zoomAmount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var card;
+var cursors;
+var zooming = false;
+var zoomAmount = 0;
 
-<span class="kd">var</span> <span class="nx">size</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">();</span>
+var size = new Phaser.Rectangle();
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  1920 x 1200 (960 x 600)</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="o">-</span><span class="mi">960</span><span class="p">,</span> <span class="o">-</span><span class="mi">600</span><span class="p">,</span> <span class="mi">1920</span><span class="p">,</span> <span class="mi">1200</span><span class="p">);</span>
+    //  1920 x 1200 (960 x 600)
+    game.world.setBounds(-960, -600, 1920, 1200);
 
-    <span class="nx">size</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="o">-</span><span class="mi">960</span><span class="p">,</span> <span class="o">-</span><span class="mi">600</span><span class="p">,</span> <span class="mi">1920</span><span class="p">,</span> <span class="mi">1200</span><span class="p">);</span>
+    size.setTo(-960, -600, 1920, 1200);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="o">-</span><span class="mi">960</span><span class="p">,</span> <span class="o">-</span><span class="mi">600</span><span class="p">,</span> <span class="s1">'backdrop'</span><span class="p">);</span>
+    game.add.sprite(-960, -600, 'backdrop');
 
-    <span class="c1">// card = game.add.sprite(200.5, 200.5, 'card');</span>
+    // card = game.add.sprite(200.5, 200.5, 'card');
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-    <span class="c1">//  world center is 0x0, top-left is -960x-600</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">focusOnXY</span><span class="p">(</span><span class="o">-</span><span class="mi">960</span><span class="p">,</span> <span class="o">-</span><span class="mi">600</span><span class="p">);</span>
+    //  world center is 0x0, top-left is -960x-600
+    game.camera.focusOnXY(-960, -600);
 
-    <span class="c1">// game.world.pivot.x = game.world.width / 2;</span>
-    <span class="c1">// game.world.pivot.y = game.world.height / 2;</span>
-    <span class="c1">// console.log(game.world.pivot);</span>
+    // game.world.pivot.x = game.world.width / 2;
+    // game.world.pivot.y = game.world.height / 2;
+    // console.log(game.world.pivot);
 
-    <span class="c1">// game.camera.bounds = null;</span>
+    // game.camera.bounds = null;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">startZoom</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">stopZoom</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(startZoom, this);
+    game.input.onUp.add(stopZoom, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">startZoom</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function startZoom(pointer) {
 
-    <span class="nx">zooming</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    zooming = true;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">button</span> <span class="o">===</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Mouse</span><span class="p">.</span><span class="nx">LEFT_BUTTON</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">zoomAmount</span> <span class="o">=</span> <span class="mf">0.005</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">zoomAmount</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.005</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (pointer.button === Phaser.Mouse.LEFT_BUTTON)
+    {
+        zoomAmount = 0.005;
+    }
+    else
+    {
+        zoomAmount = -0.005;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">stopZoom</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function stopZoom(pointer) {
 
-    <span class="nx">zooming</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    zooming = false;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">zooming</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">zoomAmount</span><span class="p">;</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">zoomAmount</span><span class="p">;</span>
+    if (zooming)
+    {
+        game.camera.scale.x += zoomAmount;
+        game.camera.scale.y += zoomAmount;
 
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">bounds</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">size</span><span class="p">.</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">bounds</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">size</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">bounds</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">size</span><span class="p">.</span><span class="nx">width</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">bounds</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">size</span><span class="p">.</span><span class="nx">height</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+        game.camera.bounds.x = size.x * game.camera.scale.x;
+        game.camera.bounds.y = size.y * game.camera.scale.y;
+        game.camera.bounds.width = size.width * game.camera.scale.x;
+        game.camera.bounds.height = size.height * game.camera.scale.y;
 
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">view</span><span class="p">);</span>
-        <span class="c1">// console.log(game.camera.bounds);</span>
-        <span class="c1">// console.log(game.input.activePointer.worldX, game.input.activePointer.worldY);</span>
+        console.log(game.camera.view);
+        // console.log(game.camera.bounds);
+        // console.log(game.input.activePointer.worldX, game.input.activePointer.worldY);
 
-        <span class="c1">// game.camera.focusOnXY(game.input.activePointer.worldX, game.input.activePointer.worldY);</span>
+        // game.camera.focusOnXY(game.input.activePointer.worldX, game.input.activePointer.worldY);
 
-        <span class="c1">// game.world.position.x = -game.input.activePointer.worldX * game.camera.scale.x;</span>
-        <span class="c1">// game.world.position.y = -game.input.activePointer.worldY * game.camera.scale.y;</span>
+        // game.world.position.x = -game.input.activePointer.worldX * game.camera.scale.x;
+        // game.world.position.y = -game.input.activePointer.worldY * game.camera.scale.y;
 
-        <span class="c1">// game.world.pivot.x = game.input.activePointer.worldX * game.camera.scale.x;</span>
-        <span class="c1">// game.world.pivot.y = game.input.activePointer.worldY * game.camera.scale.y;</span>
+        // game.world.pivot.x = game.input.activePointer.worldX * game.camera.scale.x;
+        // game.world.pivot.y = game.input.activePointer.worldY * game.camera.scale.y;
 
-    <span class="p">}</span>
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        game.camera.y -= 4;
+    }
+    else if (cursors.down.isDown)
+    {
+        game.camera.y += 4;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        game.camera.x -= 4;
+    }
+    else if (cursors.right.isDown)
+    {
+        game.camera.x += 4;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">// game.debug.cameraInfo(game.camera, 500, 32);</span>
-    <span class="c1">// game.debug.spriteCoords(card, 32, 32);</span>
-    <span class="c1">// game.debug.physicsBody(card.body);</span>
+    // game.debug.cameraInfo(game.camera, 500, 32);
+    // game.debug.spriteCoords(card, 32, 32);
+    // game.debug.physicsBody(card.body);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

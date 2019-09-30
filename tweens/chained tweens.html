@@ -55,47 +55,48 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/chained%20tweens.js" title="tweens/chained tweens.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/chained%20tweens.js" download="" title="Download: tweens/chained tweens.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'kirito'</span><span class="p">,</span> <span class="s1">'assets/sprites/kirito_by_vali233.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'asuna'</span><span class="p">,</span> <span class="s1">'assets/sprites/asuna_by_vali233.png'</span><span class="p">);</span>
+    game.load.image('kirito', 'assets/sprites/kirito_by_vali233.png');
+    game.load.image('asuna', 'assets/sprites/asuna_by_vali233.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tweenA</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tweenB</span><span class="p">;</span>
+var text;
+var tweenA;
+var tweenB;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">renderSession</span><span class="p">.</span><span class="nx">roundPixels</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+    game.renderer.renderSession.roundPixels = true;
+    game.stage.backgroundColor = '#124184';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s2">"Tween Chain Demo"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"16px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span> <span class="p">});</span>
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">680</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s2">"Click to Start"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"16px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span> <span class="p">});</span>
+    game.add.text(16, 16, "Tween Chain Demo", { font: "16px Arial", fill: "#ffffff" });
+    text = game.add.text(680, 16, "Click to Start", { font: "16px Arial", fill: "#ffffff" });
 
-    <span class="kd">var</span> <span class="nx">spriteA</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'kirito'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">spriteB</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'asuna'</span><span class="p">);</span>
+    var spriteA = game.add.sprite(64, 100, 'kirito');
+    var spriteB = game.add.sprite(64, 300, 'asuna');
 
-    <span class="nx">tweenA</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">spriteA</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">600</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="s2">"Quart.easeOut"</span><span class="p">);</span>
-    <span class="nx">tweenB</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">spriteB</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">600</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="s2">"Quart.easeOut"</span><span class="p">);</span>
+    tweenA = game.add.tween(spriteA).to( { x: 600 }, 2000, "Quart.easeOut");
+    tweenB = game.add.tween(spriteB).to( { x: 600 }, 2000, "Quart.easeOut");
 
-    <span class="nx">tweenA</span><span class="p">.</span><span class="nx">chain</span><span class="p">(</span><span class="nx">tweenB</span><span class="p">);</span>
+    tweenA.chain(tweenB);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.addOnce(start, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">start</span><span class="p">()</span> <span class="p">{</span>
+function start() {
 
-    <span class="nx">tweenA</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    tweenA.start();
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    text.visible = false;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

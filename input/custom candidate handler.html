@@ -55,65 +55,66 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/custom%20candidate%20handler.js" title="input/custom candidate handler.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/custom%20candidate%20handler.js" download="" title="Download: input/custom candidate handler.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'manga'</span><span class="p">,</span> <span class="s1">'assets/pics/manga-girl.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'disk'</span><span class="p">,</span> <span class="s1">'assets/sprites/copy-that-floppy.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'card'</span><span class="p">,</span> <span class="s1">'assets/sprites/mana_card.png'</span><span class="p">);</span>
+    game.load.image('manga', 'assets/pics/manga-girl.png');
+    game.load.image('disk', 'assets/sprites/copy-that-floppy.png');
+    game.load.image('card', 'assets/sprites/mana_card.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#4b0049'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#4b0049';
 
-    <span class="kd">var</span> <span class="nx">disk</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'disk'</span><span class="p">);</span>
-    <span class="nx">disk</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    var disk = game.add.sprite(200, 200, 'disk');
+    disk.inputEnabled = true;
 
-    <span class="kd">var</span> <span class="nx">manga</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'manga'</span><span class="p">);</span>
-    <span class="nx">manga</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    var manga = game.add.sprite(70, 100, 'manga');
+    manga.inputEnabled = true;
 
-    <span class="kd">var</span> <span class="nx">card</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'card'</span><span class="p">);</span>
-    <span class="nx">card</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    var card = game.add.sprite(300, 300, 'card');
+    card.inputEnabled = true;
 
-    <span class="c1">//  Set our own custom input candidate handler</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">setInteractiveCandidateHandler</span><span class="p">(</span><span class="nx">handler</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Set our own custom input candidate handler
+    game.input.setInteractiveCandidateHandler(handler, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">handler</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">,</span> <span class="nx">candidates</span><span class="p">,</span> <span class="nx">favorite</span><span class="p">)</span> <span class="p">{</span>
+function handler (pointer, candidates, favorite) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">candidates</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  We're going to always return the 'disk' object if it's part of the candidates</span>
-        <span class="c1">//  Even though it's at the back of the display list, and doesn't use priorityIDs</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">candidates</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">candidates</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">'disk'</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">candidates</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+    if (candidates.length > 1)
+    {
+        //  We're going to always return the 'disk' object if it's part of the candidates
+        //  Even though it's at the back of the display list, and doesn't use priorityIDs
+        for (var i = 0; i < candidates.length; i++)
+        {
+            if (candidates[i].sprite.key === 'disk')
+            {
+                return candidates[i];
+            }
+        }
 
-        <span class="k">return</span> <span class="nx">favorite</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">favorite</span><span class="p">;</span>
-    <span class="p">}</span>
+        return favorite;
+    }
+    else
+    {
+        return favorite;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">targetObject</span><span class="p">)</span> <span class="p">?</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">targetObject</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">key</span> <span class="p">:</span> <span class="s1">'none'</span><span class="p">;</span>
+    var name = (game.input.activePointer.targetObject) ? game.input.activePointer.targetObject.sprite.key : 'none';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Pointer Target: "</span> <span class="o">+</span> <span class="nx">name</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text("Pointer Target: " + name, 32, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

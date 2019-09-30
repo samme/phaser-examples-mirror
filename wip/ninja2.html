@@ -55,65 +55,66 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/ninja2.js" title="wip/ninja2.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/ninja2.js" download="" title="Download: wip/ninja2.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'ninja-tiles'</span><span class="p">,</span> <span class="s1">'assets/physics/ninja-tiles.png'</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">34</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'assets/sprites/firstaid.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/shinyball.png'</span><span class="p">);</span>
+    game.load.spritesheet('ninja-tiles', 'assets/physics/ninja-tiles.png', 128, 128, 34);
+    game.load.image('a', 'assets/sprites/firstaid.png');
+    game.load.image('ball', 'assets/sprites/shinyball.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var sprite1;
+var cursors;
 
-<span class="kd">var</span> <span class="nx">tile1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tile2</span><span class="p">;</span>
+var tile1;
+var tile2;
 
-<span class="kd">var</span> <span class="nx">t</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">running</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+var t;
+var running = false;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	game.stage.smoothed = true;
 
-	<span class="c1">//	Activate the Ninja physics system</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">NINJA</span><span class="p">);</span>
+	//	Activate the Ninja physics system
+	game.physics.startSystem(Phaser.Physics.NINJA);
 
-	<span class="c1">// game.physics.ninja.gravity = 0.1;</span>
+	// game.physics.ninja.gravity = 0.1;
 
-    <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">102</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
+    sprite1 = game.add.sprite(102, 200, 'ball');
 
-    <span class="c1">//  Enable the physics body for the Ninja physics system</span>
-    <span class="c1">//	By default it will create an AABB body for the sprite</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">ninja</span><span class="p">.</span><span class="nx">enableCircle</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">sprite1</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+    //  Enable the physics body for the Ninja physics system
+    //	By default it will create an AABB body for the sprite
+    game.physics.ninja.enableCircle(sprite1, sprite1.width / 2);
 
-    <span class="c1">//	But you can change it to either a Tile or a Circle</span>
-    <span class="nx">tile1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'ninja-tiles'</span><span class="p">,</span> <span class="mi">14</span><span class="p">);</span>
-    <span class="nx">tile1</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-    <span class="nx">tile1</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+    //	But you can change it to either a Tile or a Circle
+    tile1 = game.add.sprite(100, 500, 'ninja-tiles', 14);
+    tile1.width = 100;
+    tile1.height = 100;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">ninja</span><span class="p">.</span><span class="nx">enableTile</span><span class="p">(</span><span class="nx">tile1</span><span class="p">,</span> <span class="mi">14</span><span class="p">);</span>
+    game.physics.ninja.enableTile(tile1, 14);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">collisionHandler</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0xff0000</span><span class="p">;</span>
-<span class="p">}</span>
+function collisionHandler() {
+	game.stage.backgroundColor = 0xff0000;
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">ninja</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">tile1</span><span class="p">,</span> <span class="nx">collisionHandler</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	game.physics.ninja.collide(sprite1, tile1, collisionHandler, null, this);
 
-	<span class="c1">// tile1.body.moveRight(1);</span>
+	// tile1.body.moveRight(1);
 
-	<span class="cm">/*
-	if (cursors.up.isDown &amp;&amp; !running)
+	/*
+	if (cursors.up.isDown && !running)
 	{
 		running = true;
 		t = Date.now();
@@ -125,7 +126,7 @@
 	{
 		sprite1.body.moveRight(100);
 
-		if (sprite1.body.x &gt;= 200)
+		if (sprite1.body.x >= 200)
 		{
 			var ms = Date.now() - t;
 			console.log('100px in ', ms);
@@ -133,45 +134,45 @@
 		    sprite1.body.setZeroVelocity();
 		}
 	}
-	*/</span>
+	*/
 
-    <span class="c1">// sprite1.body.setZeroVelocity();</span>
+    // sprite1.body.setZeroVelocity();
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        sprite1.body.moveLeft(20);
+    }
+    else if (cursors.right.isDown)
+    {
+        sprite1.body.moveRight(20);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        sprite1.body.moveUp(20);
+    }
+    else if (cursors.down.isDown)
+    {
+        sprite1.body.moveUp(20);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">shape</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">shape</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">radToDeg</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span><span class="p">),</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">96</span><span class="p">);</span>
+	game.debug.text(sprite1.body.shape.velocity.x, 32, 32);
+	game.debug.text(sprite1.body.shape.velocity.y, 32, 64);
+	game.debug.text(game.math.radToDeg(sprite1.body.angle), 32, 96);
 
-	<span class="c1">// tile1.render(game.context, 'ninja-tiles');</span>
-	<span class="c1">// tile2.render(game.context, 'ninja-tiles');</span>
+	// tile1.render(game.context, 'ninja-tiles');
+	// tile2.render(game.context, 'ninja-tiles');
 
-    <span class="c1">// game.debug.geom(sprite1.body, 'rgba(0,255,0,0.4)', true, 1);</span>
+    // game.debug.geom(sprite1.body, 'rgba(0,255,0,0.4)', true, 1);
 
-    <span class="c1">// game.debug.geom(tile1, 'rgba(0,255,0,0.4)', true, 1);</span>
-    <span class="c1">// game.debug.geom(tile1, 'rgba(0,255,0,0.4)', true, 1);</span>
+    // game.debug.geom(tile1, 'rgba(0,255,0,0.4)', true, 1);
+    // game.debug.geom(tile1, 'rgba(0,255,0,0.4)', true, 1);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

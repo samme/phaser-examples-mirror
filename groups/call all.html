@@ -55,59 +55,60 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/call%20all.js" title="groups/call all.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/call%20all.js" download="" title="Download: groups/call all.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'item'</span><span class="p">,</span> <span class="s1">'assets/buttons/number-buttons-90x90.png'</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'reviveBtn'</span><span class="p">,</span> <span class="s1">'assets/buttons/revive-button.png'</span><span class="p">);</span>
+    game.load.spritesheet('item', 'assets/buttons/number-buttons-90x90.png', 90, 90);
+    game.load.image('reviveBtn', 'assets/buttons/revive-button.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// Add some items.</span>
-    <span class="kd">var</span> <span class="nx">item</span><span class="p">;</span>
+    // Add some items.
+    var item;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// Give the items a different alpha increase speed.</span>
-        <span class="nx">item</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">290</span><span class="p">,</span> <span class="mi">98</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'item'</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+    for (var i = 0; i < 3; i++)
+    {
+        // Give the items a different alpha increase speed.
+        item = game.add.sprite(290, 98 * (i + 1), 'item', i);
 
-        <span class="c1">// Enable input.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">kill</span><span class="p">);</span>
+        // Enable input.
+        item.inputEnabled = true;
+        item.events.onInputUp.add(kill);
 
-        <span class="c1">// An item besides the left one.</span>
-        <span class="nx">item</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">388</span><span class="p">,</span> <span class="mi">98</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'item'</span><span class="p">,</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">);</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">kill</span><span class="p">);</span>
-    <span class="p">}</span>
+        // An item besides the left one.
+        item = game.add.sprite(388, 98 * (i + 1), 'item', i + 3);
+        item.inputEnabled = true;
+        item.events.onInputUp.add(kill);
+    }
 
-    <span class="c1">// Add a button to revive all the items.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'reviveBtn'</span><span class="p">,</span> <span class="nx">reviveAll</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    // Add a button to revive all the items.
+    game.add.button(270, 400, 'reviveBtn', reviveAll, this, 0, 0, 0);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">kill</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+function kill(item) {
 
-    <span class="nx">item</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+    item.kill();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">reviveAll</span><span class="p">()</span> <span class="p">{</span>
+function reviveAll() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">callAll</span><span class="p">(</span><span class="s1">'revive'</span><span class="p">);</span>
+    game.world.callAll('revive');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Tap or click an item to kill it'</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Press the Revive button to revive them all.'</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">520</span><span class="p">);</span>
+    game.debug.text('Tap or click an item to kill it', 160, 500);
+    game.debug.text('Press the Revive button to revive them all.', 160, 520);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

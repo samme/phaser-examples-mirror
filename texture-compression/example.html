@@ -55,37 +55,38 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/texture-compression/example.js" title="texture-compression/example.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/texture-compression/example.js" download="" title="Download: texture-compression/example.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.WEBGL, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span> 
-    <span class="c1">// New way of loading compressed textures</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'factory'</span><span class="p">,</span> <span class="p">{</span>
-        <span class="na">s3tc</span><span class="p">:</span> <span class="s1">'assets/textures/compressed/factory_dxt1.pvr'</span><span class="p">,</span>
-        <span class="na">pvrtc</span><span class="p">:</span> <span class="s1">'assets/textures/compressed/factory_pvrtc.pvr'</span><span class="p">,</span>
-        <span class="c1">// Ture color is the default fallback texture</span>
-        <span class="na">truecolor</span><span class="p">:</span> <span class="s1">'assets/textures/factory.png'</span>
-    <span class="p">});</span>
+function preload() { 
+    // New way of loading compressed textures
+    game.load.image('factory', {
+        s3tc: 'assets/textures/compressed/factory_dxt1.pvr',
+        pvrtc: 'assets/textures/compressed/factory_pvrtc.pvr',
+        // Ture color is the default fallback texture
+        truecolor: 'assets/textures/factory.png'
+    });
 
-    <span class="c1">// Old way is still supported</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'factory_1'</span><span class="p">,</span> <span class="s1">'assets/textures/factory.png'</span><span class="p">);</span>
-<span class="p">}</span>
+    // Old way is still supported
+    game.load.image('factory_1', 'assets/textures/factory.png');
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// Loaded using dynamic texture selection depending on</span>
-    <span class="c1">// WebGL support</span>
-    <span class="kd">var</span> <span class="nx">mysprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'factory'</span><span class="p">);</span>
+function create() {
+    // Loaded using dynamic texture selection depending on
+    // WebGL support
+    var mysprite = game.add.sprite(0, 0, 'factory');
 
-    <span class="c1">// Loaded using the original way.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'factory_1'</span><span class="p">);</span>
+    // Loaded using the original way.
+    game.add.sprite(100, 100, 'factory_1');
 
-    <span class="c1">// Checking which compressed texture was loaded.</span>
-    <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">mysprite</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">baseTexture</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">compressionAlgorithm</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">c</span><span class="p">)</span>
-        <span class="nx">alert</span><span class="p">(</span><span class="s1">'Compression algorithm is '</span> <span class="o">+</span> <span class="nx">c</span> <span class="o">+</span> <span class="s1">'.'</span><span class="p">);</span>
-    <span class="k">else</span>
-        <span class="nx">alert</span><span class="p">(</span><span class="s1">'No compression algorithm.'</span><span class="p">);</span>
-<span class="p">}</span>
+    // Checking which compressed texture was loaded.
+    var c = mysprite.texture.baseTexture.source.compressionAlgorithm;
+    if (c)
+        alert('Compression algorithm is ' + c + '.');
+    else
+        alert('No compression algorithm.');
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

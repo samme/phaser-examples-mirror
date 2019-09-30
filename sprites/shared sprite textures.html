@@ -55,47 +55,48 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/shared%20sprite%20textures.js" title="sprites/shared sprite textures.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/shared%20sprite%20textures.js" download="" title="Download: sprites/shared sprite textures.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  We load a TexturePacker JSON file and image and show you how to make several unique sprites from the same file</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'assets/pics/texturepacker_test.png'</span><span class="p">,</span> <span class="s1">'assets/pics/texturepacker_test.json'</span><span class="p">);</span>
+    //  We load a TexturePacker JSON file and image and show you how to make several unique sprites from the same file
+    game.load.atlas('atlas', 'assets/pics/texturepacker_test.png', 'assets/pics/texturepacker_test.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">chick</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">car</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mech</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">robot</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cop</span><span class="p">;</span>
+var chick;
+var car;
+var mech;
+var robot;
+var cop;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#404040'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#404040';
 
-    <span class="nx">chick</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">);</span>
+    chick = game.add.sprite(64, 64, 'atlas');
 
-    <span class="c1">//  You can set the frame based on the frame name (which TexturePacker usually sets to be the filename of the image itself)</span>
-    <span class="nx">chick</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'budbrain_chick.png'</span><span class="p">;</span>
+    //  You can set the frame based on the frame name (which TexturePacker usually sets to be the filename of the image itself)
+    chick.frameName = 'budbrain_chick.png';
 
-    <span class="c1">//  Or by setting the frame index</span>
-    <span class="c1">//chick.frame = 0;</span>
+    //  Or by setting the frame index
+    //chick.frame = 0;
 
-    <span class="nx">cop</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">);</span>
-    <span class="nx">cop</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'ladycop.png'</span><span class="p">;</span>
+    cop = game.add.sprite(600, 64, 'atlas');
+    cop.frameName = 'ladycop.png';
 
-    <span class="nx">robot</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">);</span>
-    <span class="nx">robot</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'robot.png'</span><span class="p">;</span>
+    robot = game.add.sprite(50, 300, 'atlas');
+    robot.frameName = 'robot.png';
 
-    <span class="nx">car</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">);</span>
-    <span class="nx">car</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'supercars_parsec.png'</span><span class="p">;</span>
+    car = game.add.sprite(100, 400, 'atlas');
+    car.frameName = 'supercars_parsec.png';
 
-    <span class="nx">mech</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">);</span>
-    <span class="nx">mech</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'titan_mech.png'</span><span class="p">;</span>
+    mech = game.add.sprite(250, 100, 'atlas');
+    mech.frameName = 'titan_mech.png';
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

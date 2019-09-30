@@ -55,87 +55,88 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/tween%20reuse.js" title="tweens/tween reuse.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/tween%20reuse.js" download="" title="Download: tweens/tween reuse.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'beball'</span><span class="p">,</span> <span class="s1">'assets/sprites/beball1.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bikkuriman'</span><span class="p">,</span> <span class="s1">'assets/sprites/bikkuriman.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'darkwing_crazy'</span><span class="p">,</span> <span class="s1">'assets/sprites/darkwing_crazy.png'</span><span class="p">);</span>
+    game.load.image('beball', 'assets/sprites/beball1.png');
+    game.load.image('bikkuriman', 'assets/sprites/bikkuriman.png');
+    game.load.image('darkwing_crazy', 'assets/sprites/darkwing_crazy.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprites</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tween</span><span class="p">;</span>
+var sprites;
+var tween;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2384e7'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#2384e7';
 
-    <span class="nx">sprites</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    sprites = game.add.group();
 
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'beball'</span><span class="p">);</span>
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'bikkuriman'</span><span class="p">);</span>
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'darkwing_crazy'</span><span class="p">);</span>
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'beball'</span><span class="p">);</span>
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'bikkuriman'</span><span class="p">);</span>
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'darkwing_crazy'</span><span class="p">);</span>
+    sprites.create(100, 100, 'beball');
+    sprites.create(200, 100, 'bikkuriman');
+    sprites.create(300, 100, 'darkwing_crazy');
+    sprites.create(400, 100, 'beball');
+    sprites.create(500, 100, 'bikkuriman');
+    sprites.create(600, 100, 'darkwing_crazy');
 
-    <span class="c1">//  We will use the same reference over each time, rather than creating new ones</span>
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprites</span><span class="p">.</span><span class="nx">cursor</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">500</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tween2</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  We will use the same reference over each time, rather than creating new ones
+    tween = game.add.tween(sprites.cursor).to( { y: 500 }, 2000, Phaser.Easing.Bounce.Out, true);
+    tween.onComplete.add(tween2, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tween2</span><span class="p">()</span> <span class="p">{</span>
+function tween2() {
 
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+    sprites.next();
 
-    <span class="c1">//  The second tween alphs to nothing</span>
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprites</span><span class="p">.</span><span class="nx">cursor</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">alpha</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tween3</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  The second tween alphs to nothing
+    tween = game.add.tween(sprites.cursor).to( { alpha: 0 }, 2000, Phaser.Easing.Bounce.Out, true);
+    tween.onComplete.add(tween3, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tween3</span><span class="p">()</span> <span class="p">{</span>
+function tween3() {
 
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+    sprites.next();
 
-    <span class="c1">//  The third tween scales up</span>
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprites</span><span class="p">.</span><span class="nx">cursor</span><span class="p">.</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">2</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tween4</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  The third tween scales up
+    tween = game.add.tween(sprites.cursor.scale).to( { x: 2, y: 2 }, 2000, Phaser.Easing.Bounce.Out, true);
+    tween.onComplete.add(tween4, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tween4</span><span class="p">()</span> <span class="p">{</span>
+function tween4() {
 
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+    sprites.next();
 
-    <span class="c1">//  The fourth tween does y pos + alpha</span>
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprites</span><span class="p">.</span><span class="nx">cursor</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="na">alpha</span><span class="p">:</span> <span class="mf">0.2</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tween5</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  The fourth tween does y pos + alpha
+    tween = game.add.tween(sprites.cursor).to( { y: 500, alpha: 0.2 }, 2000, Phaser.Easing.Bounce.Out, true);
+    tween.onComplete.add(tween5, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tween5</span><span class="p">()</span> <span class="p">{</span>
+function tween5() {
 
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+    sprites.next();
 
-    <span class="c1">//  The fifth tween moves left</span>
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprites</span><span class="p">.</span><span class="nx">cursor</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">100</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tween6</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  The fifth tween moves left
+    tween = game.add.tween(sprites.cursor).to( { x: 100 }, 2000, Phaser.Easing.Bounce.Out, true);
+    tween.onComplete.add(tween6, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tween6</span><span class="p">()</span> <span class="p">{</span>
+function tween6() {
 
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+    sprites.next();
 
-    <span class="c1">//  The sixth tween moves left</span>
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprites</span><span class="p">.</span><span class="nx">cursor</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">400</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    //  The sixth tween moves left
+    tween = game.add.tween(sprites.cursor).to( { x: 300, y: 400 }, 2000, Phaser.Easing.Bounce.Out, true);
 
-<span class="p">}</span>
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

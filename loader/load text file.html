@@ -55,43 +55,44 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/loader/load%20text%20file.js" title="loader/load text file.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/loader/load%20text%20file.js" download="" title="Download: loader/load text file.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Phaser can load Text files.</span>
+    //  Phaser can load Text files.
 
-    <span class="c1">//  It does this using an XMLHttpRequest.</span>
+    //  It does this using an XMLHttpRequest.
     
-    <span class="c1">//  If loading a file from outside of the domain in which the game is running </span>
-    <span class="c1">//  a 'Access-Control-Allow-Origin' header must be present on the server.</span>
-    <span class="c1">//  No parsing of the text file is performed, it's literally just the raw data.</span>
+    //  If loading a file from outside of the domain in which the game is running 
+    //  a 'Access-Control-Allow-Origin' header must be present on the server.
+    //  No parsing of the text file is performed, it's literally just the raw data.
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'html'</span><span class="p">,</span> <span class="s1">'http://phaser.io'</span><span class="p">);</span>
+    game.load.text('html', 'http://phaser.io');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+var text;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#0072bc'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#0072bc';
 
-    <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getText</span><span class="p">(</span><span class="s1">'html'</span><span class="p">);</span>
+    var html = game.cache.getText('html');
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'\n'</span><span class="p">);</span>
+    text = html.split('\n');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">text</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="mi">32</span><span class="p">,</span> <span class="nx">i</span> <span class="o">*</span> <span class="mi">20</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 30; i++)
+    {
+        game.debug.text(text[i], 32, i * 20);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

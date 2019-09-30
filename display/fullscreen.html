@@ -55,69 +55,70 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/fullscreen.js" title="display/fullscreen.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/fullscreen.js" download="" title="Download: display/fullscreen.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">241</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(320, 241, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'dragon'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar_dragonsun.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'star'</span><span class="p">,</span> <span class="s1">'assets/pics/monika_krawinkel-amberstar_title.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'nanoha'</span><span class="p">,</span> <span class="s1">'assets/pics/nanoha_taiken_pink.png'</span><span class="p">);</span>
+    game.load.image('dragon', 'assets/pics/cougar_dragonsun.png');
+    game.load.image('star', 'assets/pics/monika_krawinkel-amberstar_title.png');
+    game.load.image('nanoha', 'assets/pics/nanoha_taiken_pink.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// game.add.image(0, 0, 'star');</span>
+    // game.add.image(0, 0, 'star');
 
-    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'nanoha'</span><span class="p">);</span>
-    <span class="nx">i</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    var i = game.add.image(game.world.centerX, game.world.centerY, 'nanoha');
+    i.anchor.set(0.5);
 
-    <span class="c1">// var sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'dragon');</span>
-    <span class="c1">// sprite.anchor.set(0.5);</span>
+    // var sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'dragon');
+    // sprite.anchor.set(0.5);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#4d4d4d'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#4d4d4d';
 
-    <span class="c1">// Stretch to fill</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">fullScreenScaleMode</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">ScaleManager</span><span class="p">.</span><span class="nx">EXACT_FIT</span><span class="p">;</span>
+    // Stretch to fill
+    game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
 
-    <span class="c1">// Keep original size</span>
-    <span class="c1">// game.scale.fullScreenScaleMode = Phaser.ScaleManager.NO_SCALE;</span>
+    // Keep original size
+    // game.scale.fullScreenScaleMode = Phaser.ScaleManager.NO_SCALE;
 
-    <span class="c1">// Maintain aspect ratio</span>
-    <span class="c1">// game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;</span>
+    // Maintain aspect ratio
+    // game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">gofull</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(gofull, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">gofull</span><span class="p">()</span> <span class="p">{</span>
+function gofull() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">isFullScreen</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">stopFullScreen</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">startFullScreen</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (game.scale.isFullScreen)
+    {
+        game.scale.stopFullScreen();
+    }
+    else
+    {
+        game.scale.startFullScreen(false);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span> <span class="p">()</span> <span class="p">{</span>
+function render () {
 
-    <span class="c1">// game.debug.text('Click / Tap to go fullscreen', 270, 16);</span>
-    <span class="c1">// game.debug.text('Click / Tap to go fullscreen', 0, 16);</span>
+    // game.debug.text('Click / Tap to go fullscreen', 270, 16);
+    // game.debug.text('Click / Tap to go fullscreen', 0, 16);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">inputInfo</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="c1">// game.debug.pointer(game.input.activePointer);</span>
+    game.debug.inputInfo(32, 32);
+    // game.debug.pointer(game.input.activePointer);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

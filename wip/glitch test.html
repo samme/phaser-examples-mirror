@@ -55,65 +55,66 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/glitch%20test.js" title="wip/glitch test.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/glitch%20test.js" download="" title="Download: wip/glitch test.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture1'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar_sanity_train.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture2'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar-face_of_nature.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture3'</span><span class="p">,</span> <span class="s1">'assets/pics/destop-rewarding.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture4'</span><span class="p">,</span> <span class="s1">'assets/pics/unknown-the_starwars_pic.png'</span><span class="p">);</span>
+    game.load.image('picture1', 'assets/pics/cougar_sanity_train.png');
+    game.load.image('picture2', 'assets/pics/cougar-face_of_nature.png');
+    game.load.image('picture3', 'assets/pics/destop-rewarding.png');
+    game.load.image('picture4', 'assets/pics/unknown-the_starwars_pic.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">pic1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'picture1'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">pic2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'picture2'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">pic3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'picture3'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">pic4</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'picture4'</span><span class="p">);</span>
+    var pic1 = game.add.sprite(0, 200, 'picture1');
+    var pic2 = game.add.sprite(200, 200, 'picture2');
+    var pic3 = game.add.sprite(400, 200, 'picture3');
+    var pic4 = game.add.sprite(600, 200, 'picture4');
 
-    <span class="kd">var</span> <span class="nx">pics</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">pic1</span><span class="p">,</span> <span class="nx">pic2</span><span class="p">,</span> <span class="nx">pic3</span><span class="p">,</span> <span class="nx">pic4</span> <span class="p">];</span>
+    var pics = [ pic1, pic2, pic3, pic4 ];
 
-    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var i = 0;
 
-    <span class="nx">pics</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">pic</span><span class="p">)</span> <span class="p">{</span>
+    pics.forEach(function(pic) {
 
-        <span class="nx">pic</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-        <span class="nx">pic</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        pic.scale.set(0.5);
+        pic.visible = false;
 
-        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">1000</span> <span class="o">+</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="mi">500</span><span class="p">),</span> <span class="k">this</span><span class="p">.</span><span class="nx">showPicture</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">pic</span><span class="p">);</span>
-        <span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+        game.time.events.add(1000 + (i * 500), this.showPicture, this, pic);
+        i++;
 
-    <span class="p">});</span>
+    });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">showPicture</span><span class="p">(</span><span class="nx">pic</span><span class="p">)</span> <span class="p">{</span>
+function showPicture(pic) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pic</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">pic</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">pic</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (pic.y === 200)
+    {
+        pic.y = 400;
+    }
+    else
+    {
+        pic.y = 200;
+    }
 
-    <span class="nx">pic</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    pic.visible = true;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">removePicture</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">pic</span><span class="p">);</span>
+    game.time.events.add(2000, this.removePicture, this, pic);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">removePicture</span><span class="p">(</span><span class="nx">pic</span><span class="p">)</span> <span class="p">{</span>
+function removePicture(pic) {
 
-    <span class="nx">pic</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    pic.visible = false;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">showPicture</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">pic</span><span class="p">);</span>
+    game.time.events.add(2000, this.showPicture, this, pic);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

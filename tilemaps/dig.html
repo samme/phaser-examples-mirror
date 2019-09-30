@@ -55,105 +55,105 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tilemaps/dig.js" title="tilemaps/dig.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tilemaps/dig.js" download="" title="Download: tilemaps/dig.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// Art and code by Vengadora</span>
-<span class="c1">// Get in touch!! vengadoravg@gmail.com</span>
-<span class="c1">// art is released as public domain</span>
+</div>
+<pre class="highlight javascript"><code>// Art and code by Vengadora
+// Get in touch!! vengadoravg@gmail.com
+// art is released as public domain
 
-<span class="kd">var</span> <span class="nx">mainState</span> <span class="o">=</span> <span class="p">(</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+var mainState = ( function () {
 
-    <span class="kd">var</span> <span class="nx">preload</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'cave'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/maps/cave.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">TILED_JSON</span><span class="p">);</span>
+    var preload = function () {
+        game.load.tilemap('cave', 'assets/tilemaps/maps/cave.json', null, Phaser.Tilemap.TILED_JSON);
 
-        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'dirt'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/dirt.png'</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span> <span class="s1">'background'</span><span class="p">,</span> <span class="s1">'assets/textures/caveBackground.png'</span> <span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span> <span class="s1">'digger'</span><span class="p">,</span> <span class="s1">'assets/sprites/digger.png'</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">);</span>
-    <span class="p">};</span>
+        game.load.image('dirt', 'assets/tilemaps/tiles/dirt.png');
+        game.load.image( 'background', 'assets/textures/caveBackground.png' );
+        game.load.spritesheet( 'digger', 'assets/sprites/digger.png', 30,30);
+    };
 
-    <span class="kd">var</span> <span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
-        <span class="c1">// set a tile background</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'background'</span><span class="p">);</span>
+    var create = function () {
+        game.physics.startSystem(Phaser.Physics.ARCADE);
+        // set a tile background
+        game.add.tileSprite(0,0, game.world.width, game.world.height, 'background');
 
-        <span class="c1">// setting up the tilemap</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'cave'</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="o">*</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="o">*</span><span class="mi">19</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'dirt'</span><span class="p">);</span>
+        // setting up the tilemap
+        this.tilemap = game.add.tilemap('cave', 30, 30, 30*25, 30*19);
+        this.tilemap.addTilesetImage('dirt');
 
-        <span class="c1">// creating the layer of the tilemap</span>
-        <span class="c1">// ('layer' is the name of the layer of the tilemap created on tiled)</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">cave</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">cave</span><span class="p">.</span><span class="nx">resizeWorld</span><span class="p">();</span>
+        // creating the layer of the tilemap
+        // ('layer' is the name of the layer of the tilemap created on tiled)
+        this.tilemap.cave = this.tilemap.createLayer('layer');
+        this.tilemap.cave.resizeWorld();
 
-        <span class="c1">// activating collisions for this layer</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">cave</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">setCollisionByExclusion</span><span class="p">([],</span> <span class="kc">true</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">cave</span><span class="p">);</span>
+        // activating collisions for this layer
+        game.physics.arcade.enable(this.tilemap.cave);
+        this.tilemap.setCollisionByExclusion([], true, this.tilemap.cave);
 
-        <span class="c1">// creating the digger sprite.</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">digger</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="s1">'digger'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'stand'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'dig'</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">acceleration</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
-        <span class="c1">// some usefull properties</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">timeTakenToDig</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">timeElapsedDigging</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        // creating the digger sprite.
+        this.digger = game.add.sprite(30,30,'digger');
+        this.digger.animations.add('stand', [0]);
+        this.digger.animations.add('walk', [1,2], 4, true);
+        this.digger.animations.add('dig', [3,4], 4, true);
+        this.digger.animations.play('walk');
+        game.physics.arcade.enable(this.digger);
+        this.digger.body.acceleration.y = 300;
+        // some usefull properties
+        this.digger.timeTakenToDig = 100;
+        this.digger.timeElapsedDigging = 0;
 
-        <span class="c1">// cursor listener</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">cursor</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
-    <span class="p">};</span>
+        // cursor listener
+        this.cursor = game.input.keyboard.createCursorKeys();
+    };
 
-    <span class="kd">var</span> <span class="nx">update</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">cave</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var update = function () {
+        game.physics.arcade.collide(this.digger, this.tilemap.cave);
+        this.digger.body.velocity.x = 0;
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cursor</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'dig'</span><span class="p">);</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">timeElapsedDigging</span><span class="o">++</span><span class="p">;</span>
+        if (this.cursor.down.isDown) {
+            this.digger.animations.play('dig');
+            this.digger.timeElapsedDigging++;
 
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">timeElapsedDigging</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">timeTakenToDig</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">timeElapsedDigging</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-                <span class="c1">// calculating the tile's coordinates below the digger</span>
-                <span class="kd">var</span> <span class="nx">downX</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">x</span><span class="o">/</span><span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">tileWidth</span><span class="p">);</span>
-                <span class="kd">var</span> <span class="nx">downY</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">y</span><span class="o">/</span><span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">tileHeight</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+            if (this.digger.timeElapsedDigging >= this.digger.timeTakenToDig) {
+                this.digger.timeElapsedDigging = 0;
+                // calculating the tile's coordinates below the digger
+                var downX = Math.round(this.digger.x/this.tilemap.tileWidth);
+                var downY = Math.round(this.digger.y/this.tilemap.tileHeight + 1);
 
-                <span class="c1">// removing the tile on that coordinates.</span>
-                <span class="c1">// 1 is the index of the dirt that can be removed.</span>
-                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">getTile</span><span class="p">(</span><span class="nx">downX</span><span class="p">,</span> <span class="nx">downY</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-                    <span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">getTile</span><span class="p">(</span><span class="nx">downX</span><span class="p">,</span> <span class="nx">downY</span><span class="p">).</span><span class="nx">index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="k">this</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">.</span><span class="nx">removeTile</span><span class="p">(</span><span class="nx">downX</span><span class="p">,</span> <span class="nx">downY</span><span class="p">);</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
+                // removing the tile on that coordinates.
+                // 1 is the index of the dirt that can be removed.
+                if (this.tilemap.getTile(downX, downY) &&
+                    this.tilemap.getTile(downX, downY).index == 1) {
+                    this.tilemap.removeTile(downX, downY);
+                }
+            }
 
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">timeElapsedDigging</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        } else {
+            this.digger.timeElapsedDigging = 0;
 
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cursor</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">blocked</span><span class="p">.</span><span class="nx">down</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">200</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cursor</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">80</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cursor</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">80</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">digger</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'stand'</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+            if (this.cursor.up.isDown && this.digger.body.blocked.down) {
+                this.digger.body.velocity.y = -200;
+            }
+            if (this.cursor.left.isDown) {
+                this.digger.animations.play('walk');
+                this.digger.body.velocity.x = -80;
+            } else if (this.cursor.right.isDown) {
+                this.digger.animations.play('walk');
+                this.digger.body.velocity.x = 80;
+            } else {
+                this.digger.animations.play('stand');
+            }
+        }
 
-    <span class="p">};</span>
+    };
 
-    <span class="k">return</span> <span class="p">{</span> <span class="na">preload</span> <span class="p">:</span> <span class="nx">preload</span><span class="p">,</span>
-             <span class="na">create</span> <span class="p">:</span> <span class="nx">create</span><span class="p">,</span>
-             <span class="na">update</span> <span class="p">:</span> <span class="nx">update</span> <span class="p">};</span>
+    return { preload : preload,
+             create : create,
+             update : update };
 
-<span class="p">})();</span>
+})();
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'main'</span><span class="p">,</span> <span class="nx">mainState</span><span class="p">);</span>
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'main'</span><span class="p">);</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example');
+game.state.add('main', mainState);
+game.state.start('main');
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

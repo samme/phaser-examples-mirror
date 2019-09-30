@@ -55,51 +55,52 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/create%20sprite%20in%20a%20group.js" title="groups/create sprite in a group.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/create%20sprite%20in%20a%20group.js" download="" title="Download: groups/create sprite in a group.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ufo'</span><span class="p">,</span> <span class="s1">'assets/sprites/ufo.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'baddie'</span><span class="p">,</span> <span class="s1">'assets/sprites/space-baddie.png'</span><span class="p">);</span>
+    game.load.image('ufo', 'assets/sprites/ufo.png');
+    game.load.image('baddie', 'assets/sprites/space-baddie.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">friendAndFoe</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">enemies</span><span class="p">;</span>
+var friendAndFoe;
+var enemies;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// Create some local groups for later use.</span>
-    <span class="nx">friendAndFoe</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">enemies</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    // Create some local groups for later use.
+    friendAndFoe = game.add.group();
+    enemies = game.add.group();
 
-    <span class="c1">// You can directly create a sprite and add it to a group</span>
-    <span class="c1">// using just one line. </span>
-    <span class="nx">friendAndFoe</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="s1">'ufo'</span><span class="p">);</span>
+    // You can directly create a sprite and add it to a group
+    // using just one line. 
+    friendAndFoe.create(200, 240, 'ufo');
 
-    <span class="c1">// Create some enemies.</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">createBaddie</span><span class="p">();</span>
-    <span class="p">}</span>
+    // Create some enemies.
+    for (var i = 0; i < 8; i++)
+    {
+        createBaddie();
+    }
 
-    <span class="c1">// Tap to create new baddie sprites.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onTap</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">createBaddie</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    // Tap to create new baddie sprites.
+    game.input.onTap.add(createBaddie, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createBaddie</span><span class="p">()</span> <span class="p">{</span>
+function createBaddie() {
 
-    <span class="nx">enemies</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">360</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">120</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span><span class="s1">'baddie'</span><span class="p">);</span>
+    enemies.create(360 + Math.random() * 200, 120 + Math.random() * 200,'baddie');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Tap screen or click to create new baddies.'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">24</span><span class="p">);</span>
+    game.debug.text('Tap screen or click to create new baddies.', 16, 24);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

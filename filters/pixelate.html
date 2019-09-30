@@ -55,30 +55,31 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/filters/pixelate.js" title="filters/pixelate.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/filters/pixelate.js" download="" title="Download: filters/pixelate.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.WEBGL, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/pics/mighty_no_09_cover_art_by_robduenas.jpg'</span><span class="p">);</span>
+    game.load.image('phaser', 'assets/pics/mighty_no_09_cover_art_by_robduenas.jpg');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">script</span><span class="p">(</span><span class="s1">'filter'</span><span class="p">,</span> <span class="s1">'https://cdn.rawgit.com/photonstorm/phaser-ce/master/filters/Pixelate.js'</span><span class="p">);</span>
+    game.load.script('filter', 'https://cdn.rawgit.com/photonstorm/phaser-ce/master/filters/Pixelate.js');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="kd">var</span> <span class="nx">logo</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
+	var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'phaser');
 
-	<span class="nx">logo</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+	logo.anchor.set(0.5);
 
-    <span class="kd">var</span> <span class="nx">filter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="s1">'Pixelate'</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    var filter = game.add.filter('Pixelate', 800, 600);
 
-	<span class="nx">logo</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span><span class="nx">filter</span><span class="p">];</span>
+	logo.filters = [filter];
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">filter</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">sizeX</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="na">sizeY</span><span class="p">:</span> <span class="mi">100</span> <span class="p">},</span> <span class="mi">5000</span><span class="p">,</span> <span class="s2">"Quad.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(filter).to( { sizeX: 100, sizeY: 100 }, 5000, "Quad.easeInOut", true, 0, -1, true);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

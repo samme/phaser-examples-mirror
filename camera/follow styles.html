@@ -55,118 +55,119 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/camera/follow%20styles.js" title="camera/follow styles.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/camera/follow%20styles.js" download="" title="Download: camera/follow styles.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">ufo</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">Keys</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">speed</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="s1">'default'</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var ufo;
+var Keys = Phaser.Keyboard;
+var speed = 4;
+var style = 'default';
+var cursors;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ground'</span><span class="p">,</span> <span class="s1">'assets/tests/ground-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'river'</span><span class="p">,</span> <span class="s1">'assets/tests/river-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/tests/sky-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cloud0'</span><span class="p">,</span> <span class="s1">'assets/tests/cloud-big-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cloud1'</span><span class="p">,</span> <span class="s1">'assets/tests/cloud-narrow-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cloud2'</span><span class="p">,</span> <span class="s1">'assets/tests/cloud-small-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ufo'</span><span class="p">,</span><span class="s1">'assets/sprites/ufo.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'baddie'</span><span class="p">,</span><span class="s1">'assets/sprites/space-baddie.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'button'</span><span class="p">,</span> <span class="s1">'assets/buttons/follow-style-button.png'</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">70</span><span class="p">);</span>
+    game.load.image('ground', 'assets/tests/ground-2x.png');
+    game.load.image('river', 'assets/tests/river-2x.png');
+    game.load.image('sky', 'assets/tests/sky-2x.png');
+    game.load.image('cloud0', 'assets/tests/cloud-big-2x.png');
+    game.load.image('cloud1', 'assets/tests/cloud-narrow-2x.png');
+    game.load.image('cloud2', 'assets/tests/cloud-small-2x.png');
+    game.load.image('ufo','assets/sprites/ufo.png');
+    game.load.image('baddie','assets/sprites/space-baddie.png');
+    game.load.spritesheet('button', 'assets/buttons/follow-style-button.png', 224, 70);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Make the world larger than the actual canvas</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1400</span><span class="p">,</span> <span class="mi">1400</span><span class="p">);</span>
+    //  Make the world larger than the actual canvas
+    game.world.setBounds(0, 0, 1400, 1400);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'baddie'</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i=0; i < 10; i++)
+    {
+        game.add.sprite(game.world.randomX, game.world.randomY, 'baddie');
+    }
 
-    <span class="c1">//  Background images</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1400</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="s1">'ground'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'river'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">'cloud0'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">'cloud1'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">900</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="s1">'cloud2'</span><span class="p">);</span>
+    //  Background images
+    game.add.tileSprite(0, 0, 1400, 600, 'sky');
+    game.add.sprite(0, 360, 'ground');
+    game.add.sprite(0, 400, 'river');
+    game.add.sprite(200, 120, 'cloud0');
+    game.add.sprite(-60, 120, 'cloud1');
+    game.add.sprite(900, 170, 'cloud2');
 
-    <span class="c1">// ufo sprite</span>
-    <span class="nx">ufo</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="s1">'ufo'</span><span class="p">);</span>
+    // ufo sprite
+    ufo = game.add.sprite(300, 240, 'ufo');
 
-    <span class="c1">//registration point</span>
-    <span class="nx">ufo</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    //registration point
+    ufo.anchor.setTo(0.5, 0.5);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">ufo</span><span class="p">);</span>
+    game.camera.follow(ufo);
 
-    <span class="c1">// follow style switch buttons</span>
-    <span class="nx">btn0</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">lockonFollow</span><span class="p">,</span><span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">btn1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">platformerFollow</span><span class="p">,</span><span class="k">this</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">btn2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">topdownFollow</span><span class="p">,</span><span class="k">this</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">btn3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">topdownTightFollow</span><span class="p">,</span><span class="k">this</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+    // follow style switch buttons
+    btn0 = game.add.button(6, 40, 'button', lockonFollow,this, 0, 0, 0);
+    btn1 = game.add.button(6, 120, 'button', platformerFollow,this, 1, 1, 1);
+    btn2 = game.add.button(6, 200, 'button', topdownFollow,this, 2, 2, 2);
+    btn3 = game.add.button(6, 280, 'button', topdownTightFollow,this, 3, 3, 3);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">lockonFollow</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">ufo</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Camera</span><span class="p">.</span><span class="nx">FOLLOW_LOCKON</span><span class="p">);</span>
-    <span class="nx">style</span> <span class="o">=</span> <span class="s1">'STYLE_LOCKON'</span><span class="p">;</span>
-<span class="p">}</span>
+function lockonFollow() {
+    game.camera.follow(ufo, Phaser.Camera.FOLLOW_LOCKON);
+    style = 'STYLE_LOCKON';
+}
 
-<span class="kd">function</span> <span class="nx">platformerFollow</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">ufo</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Camera</span><span class="p">.</span><span class="nx">FOLLOW_PLATFORMER</span><span class="p">);</span>
-    <span class="nx">style</span> <span class="o">=</span> <span class="s1">'STYLE_PLATFORMER'</span><span class="p">;</span>
-<span class="p">}</span>
+function platformerFollow() {
+    game.camera.follow(ufo, Phaser.Camera.FOLLOW_PLATFORMER);
+    style = 'STYLE_PLATFORMER';
+}
 
-<span class="kd">function</span> <span class="nx">topdownFollow</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">ufo</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Camera</span><span class="p">.</span><span class="nx">FOLLOW_TOPDOWN</span><span class="p">);</span>
-    <span class="nx">style</span> <span class="o">=</span> <span class="s1">'STYLE_TOPDOWN'</span><span class="p">;</span>
-<span class="p">}</span>
+function topdownFollow() {
+    game.camera.follow(ufo, Phaser.Camera.FOLLOW_TOPDOWN);
+    style = 'STYLE_TOPDOWN';
+}
 
-<span class="kd">function</span> <span class="nx">topdownTightFollow</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">ufo</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Camera</span><span class="p">.</span><span class="nx">FOLLOW_TOPDOWN_TIGHT</span><span class="p">);</span>
-    <span class="nx">style</span> <span class="o">=</span> <span class="s1">'STYLE_TOPDOWN_TIGHT'</span><span class="p">;</span>
-<span class="p">}</span>
+function topdownTightFollow() {
+    game.camera.follow(ufo, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
+    style = 'STYLE_TOPDOWN_TIGHT';
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="nx">speed</span><span class="p">;</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">15</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">speed</span><span class="p">;</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="nx">speed</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">speed</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        ufo.x -= speed;
+        ufo.angle = -15;
+    }
+    else if (cursors.right.isDown)
+    {
+        ufo.x += speed;
+        ufo.angle = 15;
+    }
+    else if (cursors.up.isDown)
+    {
+        ufo.y -= speed;
+    }
+    else if (cursors.down.isDown)
+    {
+        ufo.y += speed;
+    }
+    else
+    {
+        ufo.angle = 0;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span> <span class="p">()</span> <span class="p">{</span>
+function render () {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Click buttons to switch follow styles'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Current style: '</span> <span class="o">+</span> <span class="nx">style</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text('Click buttons to switch follow styles', 32, 32);
+    game.debug.text('Current style: ' + style, 32, 64);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

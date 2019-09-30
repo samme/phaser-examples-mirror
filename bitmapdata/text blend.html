@@ -55,52 +55,53 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bitmapdata/text%20blend.js" title="bitmapdata/text blend.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bitmapdata/text%20blend.js" download="" title="Download: bitmapdata/text blend.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'back'</span><span class="p">,</span> <span class="s1">'assets/pics/swirl1.jpg'</span><span class="p">);</span>
+    game.load.image('back', 'assets/pics/swirl1.jpg');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+var bmd;
+var text;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="c1">//	Our background</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'back'</span><span class="p">);</span>
+	//	Our background
+	game.add.image(0, 0, 'back');
 
-	<span class="c1">//	This is the BitmapData we're going to be drawing to</span>
-	<span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+	//	This is the BitmapData we're going to be drawing to
+	bmd = game.add.bitmapData(game.width, game.height);
 
-	<span class="c1">//	Black and opaque</span>
-	<span class="nx">bmd</span><span class="p">.</span><span class="nx">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+	//	Black and opaque
+	bmd.fill(0, 0, 0, 1);
 
-	<span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+	bmd.addToWorld();
 
-	<span class="c1">//	Our text object</span>
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"phaser"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"bold 32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ff0044"</span> <span class="p">});</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+	//	Our text object
+    text = game.make.text(0, 0, "phaser", { font: "bold 32px Arial", fill: "#ff0044" });
+    text.anchor.set(0.5);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">Number</span><span class="p">.</span><span class="nx">MAX_VALUE</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(text.scale).to( { x: 0.5, y: 0.5 }, 2000, Phaser.Easing.Linear.None, true, 0, Number.MAX_VALUE, true);
 
-    <span class="c1">//	Uncomment for a pretty sweet effect :)</span>
-    <span class="c1">// game.time.events.loop(Phaser.Timer.SECOND * 4, function() { bmd.cls(); }, this);</span>
+    //	Uncomment for a pretty sweet effect :)
+    // game.time.events.loop(Phaser.Timer.SECOND * 4, function() { bmd.cls(); }, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="nx">bmd</span><span class="p">.</span><span class="nx">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">);</span>
+	bmd.fill(0, 0, 0, 0.05);
 
-	<span class="c1">//	Un-comment to see the rotation in action</span>
-	<span class="c1">// text.rotation += 0.05;</span>
+	//	Un-comment to see the rotation in action
+	// text.rotation += 0.05;
 
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="nx">text</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s1">'destination-out'</span><span class="p">);</span>
+    bmd.draw(text, game.world.randomX, game.world.randomY, null, null, 'destination-out');
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

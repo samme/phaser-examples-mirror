@@ -55,31 +55,32 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particles/random%20sprite.js" title="particles/random sprite.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particles/random%20sprite.js" download="" title="Download: particles/random sprite.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">var</span> <span class="nx">emitter</span><span class="p">;</span>
+var emitter;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'carrot'</span><span class="p">,</span> <span class="s1">'assets/sprites/carrot.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'star'</span><span class="p">,</span> <span class="s1">'assets/misc/star_particle.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'diamond'</span><span class="p">,</span> <span class="s1">'assets/sprites/diamond.png'</span><span class="p">);</span>
+    game.load.image('carrot', 'assets/sprites/carrot.png');
+    game.load.image('star', 'assets/misc/star_particle.png');
+    game.load.image('diamond', 'assets/sprites/diamond.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x337799</span><span class="p">;</span>
+    game.stage.backgroundColor = 0x337799;
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">emitter</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+    emitter = game.add.emitter(game.world.centerX, 200, 200);
 
-    <span class="c1">//  Here we're passing an array of image keys. It will pick one at random when emitting a new particle.</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">makeParticles</span><span class="p">([</span><span class="s1">'diamond'</span><span class="p">,</span> <span class="s1">'carrot'</span><span class="p">,</span> <span class="s1">'star'</span><span class="p">]);</span>
+    //  Here we're passing an array of image keys. It will pick one at random when emitting a new particle.
+    emitter.makeParticles(['diamond', 'carrot', 'star']);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    emitter.start(false, 5000, 20);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

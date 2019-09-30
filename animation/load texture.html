@@ -55,45 +55,46 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/animation/load%20texture.js" title="animation/load texture.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/animation/load%20texture.js" download="" title="Download: animation/load texture.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'monster'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_monster39x40.png'</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
+    game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
+    game.load.spritesheet('monster', 'assets/sprites/metalslug_monster39x40.png', 39, 40);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'monster'</span><span class="p">);</span>
+    sprite = game.add.sprite(300, 200, 'monster');
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">]);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    sprite.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+    sprite.animations.play('walk', 20, true);
+    sprite.scale.set(4);
+    sprite.smoothed = false;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">changeTexture</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(changeTexture, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">changeTexture</span><span class="p">()</span> <span class="p">{</span>
+function changeTexture() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">'monster'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">loadTexture</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">loadTexture</span><span class="p">(</span><span class="s1">'monster'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (sprite.key === 'monster')
+    {
+        sprite.loadTexture('mummy', 0, false);
+    }
+    else
+    {
+        sprite.loadTexture('monster', 0, false);
+    }
 
-    <span class="c1">// sprite.smoothed = false;</span>
+    // sprite.smoothed = false;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

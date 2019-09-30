@@ -55,33 +55,34 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/timer3.js" title="wip/timer3.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/timer3.js" download="" title="Download: wip/timer3.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-
-
-<span class="p">}</span>
-
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-
-	<span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
-    <span class="nx">timer</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'completed'</span><span class="p">)</span> <span class="p">}</span> <span class="p">);</span>
-    <span class="nx">timer</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'tick'</span><span class="p">)</span> <span class="p">}</span> <span class="p">);</span>
-    <span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
-
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+var sprite;
 
-<span class="p">}</span>
+function create() {
+
+	var timer = game.time.create(false);
+    timer.onComplete.add(function(){ console.log('completed') } );
+    timer.add(500, function(){ console.log('tick') } );
+    timer.start();
+
+}
+
+function update() {
+
+
+}
+
+function render() {
+
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,136 +55,137 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/audio/sound%20complete.js" title="audio/sound complete.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/audio/sound%20complete.js" download="" title="Download: audio/sound complete.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'explosion'</span><span class="p">,</span> <span class="s1">'assets/audio/SoundEffects/explosion.mp3'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'sword'</span><span class="p">,</span> <span class="s1">'assets/audio/SoundEffects/sword.mp3'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'blaster'</span><span class="p">,</span> <span class="s1">'assets/audio/SoundEffects/blaster.mp3'</span><span class="p">);</span>
+    game.load.audio('explosion', 'assets/audio/SoundEffects/explosion.mp3');
+    game.load.audio('sword', 'assets/audio/SoundEffects/sword.mp3');
+    game.load.audio('blaster', 'assets/audio/SoundEffects/blaster.mp3');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">explosion</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sword</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">blaster</span><span class="p">;</span>
+var explosion;
+var sword;
+var blaster;
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+var text;
 
-<span class="kd">var</span> <span class="nx">text1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text3</span><span class="p">;</span>
+var text1;
+var text2;
+var text3;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#414040'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#414040';
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"65px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#52bace"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">};</span>
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"decoding"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    var style = { font: "65px Arial", fill: "#52bace", align: "center" };
+    text = game.add.text(game.world.centerX, 100, "decoding", style);
+    text.anchor.set(0.5);
 
-    <span class="nx">explosion</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'explosion'</span><span class="p">);</span>
-    <span class="nx">sword</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'sword'</span><span class="p">);</span>
-    <span class="nx">blaster</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'blaster'</span><span class="p">);</span>
+    explosion = game.add.audio('explosion');
+    sword = game.add.audio('sword');
+    blaster = game.add.audio('blaster');
 
-    <span class="c1">//  Being mp3 files these take time to decode, so we can't play them instantly</span>
-    <span class="c1">//  Using setDecodedCallback we can be notified when they're ALL ready for use.</span>
-    <span class="c1">//  The audio files could decode in ANY order, we can never be sure which it'll be.</span>
+    //  Being mp3 files these take time to decode, so we can't play them instantly
+    //  Using setDecodedCallback we can be notified when they're ALL ready for use.
+    //  The audio files could decode in ANY order, we can never be sure which it'll be.
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">sound</span><span class="p">.</span><span class="nx">setDecodedCallback</span><span class="p">([</span> <span class="nx">explosion</span><span class="p">,</span> <span class="nx">sword</span><span class="p">,</span> <span class="nx">blaster</span> <span class="p">],</span> <span class="nx">start</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.sound.setDecodedCallback([ explosion, sword, blaster ], start, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">keys</span><span class="p">;</span>
+var keys;
 
-<span class="kd">function</span> <span class="nx">start</span><span class="p">()</span> <span class="p">{</span>
+function start() {
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'Press 1, 2 or 3'</span><span class="p">;</span>
+    text.text = 'Press 1, 2 or 3';
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"48px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#cdba52"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">};</span>
+    var style = { font: "48px Arial", fill: "#cdba52", align: "center" };
 
-    <span class="nx">text1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="s2">"Blaster: Stopped"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="nx">text1</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    text1 = game.add.text(game.world.centerX, 250, "Blaster: Stopped", style);
+    text1.anchor.set(0.5);
 
-    <span class="nx">text2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="s2">"Explosion: Stopped"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    text2 = game.add.text(game.world.centerX, 350, "Explosion: Stopped", style);
+    text2.anchor.set(0.5);
 
-    <span class="nx">text3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="s2">"Sword: Stopped"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="nx">text3</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    text3 = game.add.text(game.world.centerX, 450, "Sword: Stopped", style);
+    text3.anchor.set(0.5);
 
-    <span class="nx">explosion</span><span class="p">.</span><span class="nx">onStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">soundStopped</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">sword</span><span class="p">.</span><span class="nx">onStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">soundStopped</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">blaster</span><span class="p">.</span><span class="nx">onStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">soundStopped</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    explosion.onStop.add(soundStopped, this);
+    sword.onStop.add(soundStopped, this);
+    blaster.onStop.add(soundStopped, this);
 
-    <span class="nx">keys</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKeys</span><span class="p">({</span> <span class="na">blaster</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">ONE</span><span class="p">,</span> <span class="na">explosion</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">TWO</span><span class="p">,</span> <span class="na">sword</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">THREE</span> <span class="p">});</span>
+    keys = game.input.keyboard.addKeys({ blaster: Phaser.Keyboard.ONE, explosion: Phaser.Keyboard.TWO, sword: Phaser.Keyboard.THREE });
 
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">blaster</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">playFx</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">explosion</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">playFx</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">sword</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">playFx</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    keys.blaster.onDown.add(playFx, this);
+    keys.explosion.onDown.add(playFx, this);
+    keys.sword.onDown.add(playFx, this);
 
-    <span class="c1">//  And for touch devices you can also press the top, middle or bottom of the screen</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onTouch</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  And for touch devices you can also press the top, middle or bottom of the screen
+    game.input.onDown.add(onTouch, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onTouch</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function onTouch(pointer) {
 
-    <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">3</span><span class="p">;</span>
+    var b = game.height / 3;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">b</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">playFx</span><span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">blaster</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="nx">b</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">playFx</span><span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">sword</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">playFx</span><span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">explosion</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (pointer.y < b)
+    {
+        playFx(keys.blaster);
+    }
+    else if (pointer.y > b * 2)
+    {
+        playFx(keys.sword);
+    }
+    else
+    {
+        playFx(keys.explosion);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">playFx</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+function playFx(key) {
 
-    <span class="k">switch</span> <span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">case</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="na">ONE</span><span class="p">:</span>
-            <span class="nx">text1</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Blaster: Playing"</span><span class="p">;</span>
-            <span class="nx">blaster</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
-            <span class="k">break</span><span class="p">;</span>
+    switch (key.keyCode)
+    {
+        case Phaser.Keyboard.ONE:
+            text1.text = "Blaster: Playing";
+            blaster.play();
+            break;
 
-        <span class="k">case</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="na">TWO</span><span class="p">:</span>
-            <span class="nx">text2</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Explosion: Playing"</span><span class="p">;</span>
-            <span class="nx">explosion</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
-            <span class="k">break</span><span class="p">;</span>
+        case Phaser.Keyboard.TWO:
+            text2.text = "Explosion: Playing";
+            explosion.play();
+            break;
 
-        <span class="k">case</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="na">THREE</span><span class="p">:</span>
-            <span class="nx">text3</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Sword: Playing"</span><span class="p">;</span>
-            <span class="nx">sword</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
-            <span class="k">break</span><span class="p">;</span>
-    <span class="p">}</span>
+        case Phaser.Keyboard.THREE:
+            text3.text = "Sword: Playing";
+            sword.play();
+            break;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">soundStopped</span><span class="p">(</span><span class="nx">sound</span><span class="p">)</span> <span class="p">{</span>
+function soundStopped(sound) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">sound</span> <span class="o">===</span> <span class="nx">blaster</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">text1</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Blaster: Complete"</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">sound</span> <span class="o">===</span> <span class="nx">explosion</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">text2</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Explosion: Complete"</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">sound</span> <span class="o">===</span> <span class="nx">sword</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">text3</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Sword: Complete"</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (sound === blaster)
+    {
+        text1.text = "Blaster: Complete";
+    }
+    else if (sound === explosion)
+    {
+        text2.text = "Explosion: Complete";
+    }
+    else if (sound === sword)
+    {
+        text3.text = "Sword: Complete";
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

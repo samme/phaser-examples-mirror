@@ -55,83 +55,84 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tilemaps/resize%20map.js" title="tilemaps/resize map.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tilemaps/resize%20map.js" download="" title="Download: tilemaps/resize map.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'level3'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/maps/cybernoid.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">TILED_JSON</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tiles'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/cybernoid.png'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    game.load.tilemap('level3', 'assets/tilemaps/maps/cybernoid.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('tiles', 'assets/tilemaps/tiles/cybernoid.png', 16, 16);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">map</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">layer</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var map;
+var layer;
+var cursors;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'level3'</span><span class="p">);</span>
+    map = game.add.tilemap('level3');
 
-    <span class="nx">map</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'CybernoidMap3BG_bank.png'</span><span class="p">,</span> <span class="s1">'tiles'</span><span class="p">);</span>
+    map.addTilesetImage('CybernoidMap3BG_bank.png', 'tiles');
 
-    <span class="c1">//  Start with a small layer only 400x200 and increase it by 100px</span>
-    <span class="c1">//  each time we click</span>
-    <span class="nx">layer</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+    //  Start with a small layer only 400x200 and increase it by 100px
+    //  each time we click
+    layer = map.createLayer(0, 400, 200);
 
-    <span class="nx">layer</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    layer.scale.set(2);
 
-    <span class="nx">layer</span><span class="p">.</span><span class="nx">resizeWorld</span><span class="p">();</span>
+    layer.resizeWorld();
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">resize</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(resize, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">resize</span><span class="p">()</span> <span class="p">{</span>
+function resize() {
 
-    <span class="c1">// layer.offset.x += 50;</span>
+    // layer.offset.x += 50;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">layer</span><span class="p">.</span><span class="nx">displayWidth</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">displayWidth</span> <span class="o">+</span> <span class="mi">100</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">displayHeight</span> <span class="o">+</span> <span class="mi">100</span><span class="p">;</span>
-        <span class="nx">layer</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">layer</span><span class="p">.</span><span class="nx">width</span> <span class="o">&lt;</span> <span class="mi">800</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="mi">100</span><span class="p">;</span>
-            <span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="mi">100</span><span class="p">;</span>
-            <span class="nx">layer</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    if (layer.displayWidth !== undefined)
+    {
+        var w = layer.displayWidth + 100;
+        var h = layer.displayHeight + 100;
+        layer.resize(w, h);
+    }
+    else
+    {
+        if (layer.width < 800)
+        {
+            var w = layer.width + 100;
+            var h = layer.height + 100;
+            layer.resize(w, h);
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        game.camera.y -= 4;
+    }
+    else if (cursors.down.isDown)
+    {
+        game.camera.y += 4;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        game.camera.x -= 4;
+    }
+    else if (cursors.right.isDown)
+    {
+        game.camera.x += 4;
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

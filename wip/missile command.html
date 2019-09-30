@@ -55,460 +55,460 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/missile%20command.js" title="wip/missile command.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/missile%20command.js" download="" title="Download: wip/missile command.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">//  The in-bound missiles</span>
+</div>
+<pre class="highlight javascript"><code>//  The in-bound missiles
 
-<span class="nx">MissileLauncher</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">,</span> <span class="nx">cities</span><span class="p">)</span> <span class="p">{</span>
+MissileLauncher = function (game, bmd, cities) {
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">cities</span> <span class="o">=</span> <span class="nx">cities</span><span class="p">;</span>
+	this.game = game;
+	this.bmd = bmd;
+	this.cities = cities;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">missiles</span> <span class="o">=</span> <span class="p">[];</span>
+	this.missiles = [];
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">loop</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">launch</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.launch, this);
 
-	<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	return this;
 
-<span class="p">}</span>
+}
 
-<span class="nx">MissileLauncher</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+MissileLauncher.prototype = {
 
-	<span class="na">launch</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+	launch: function () {
 
-		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Missile</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">);</span>
+		var m = new Missile(this.game, this.bmd);
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">missiles</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">m</span><span class="p">);</span>
+		this.missiles.push(m);
 
-		<span class="nx">m</span><span class="p">.</span><span class="nx">launch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cities</span><span class="p">.</span><span class="nx">getRandom</span><span class="p">(),</span> <span class="mi">10000</span><span class="p">);</span>
+		m.launch(this.cities.getRandom(), 10000);
 
-	<span class="p">},</span>
+	},
 
-	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+	update: function () {
 
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">missiles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">missiles</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">alive</span><span class="p">)</span>
-			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">missiles</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">update</span><span class="p">();</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
+		for (var i = 0; i < this.missiles.length; i++)
+		{
+			if (this.missiles[i].alive)
+			{
+				this.missiles[i].update();
+			}
+		}
 
-	<span class="p">}</span>
+	}
 
-<span class="p">}</span>
+}
 
-<span class="nx">Missile</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">)</span> <span class="p">{</span>
+Missile = function (game, bmd) {
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">;</span>
+	this.game = game;
+	this.bmd = bmd;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+	this.x = 0;
+	this.y = 0;
+	this.alive = false;
+	this.speed = 1;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	this.target = null;
+	this.data = null;
+	this.index = 0;
 
-    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    return this;
 
-<span class="p">}</span>
+}
 
-<span class="nx">Missile</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+Missile.prototype = {
 
-	<span class="na">launch</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
+	launch: function (target, speed) {
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="nx">speed</span><span class="p">;</span>
+		this.x = game.world.randomX;
+		this.y = 0;
+		this.alive = true;
+		this.speed = speed;
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="nx">target</span><span class="p">;</span>
+		this.target = target;
 
-    	<span class="kd">var</span> <span class="nx">destination</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="p">};</span>
+    	var destination = { x: this.x, y: this.y };
 
-	    <span class="kd">var</span> <span class="nx">tween</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">destination</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">target</span><span class="p">.</span><span class="nx">hitX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">target</span><span class="p">.</span><span class="nx">hitY</span> <span class="p">},</span> <span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">);</span>
+	    var tween = this.game.make.tween(destination).to( { x: target.hitX, y: target.hitY }, speed, Phaser.Easing.Linear.None);
     
-    	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    	this.data = tween.generateData(60);
+		this.index = 0;
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">x</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
+		this.x = this.data[this.index].x;
+		this.y = this.data[this.index].y;
 
-	<span class="p">},</span>
+	},
 
-	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+	update: function () {
 
-		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">alive</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#ff0000'</span><span class="p">;</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+		if (this.alive)
+		{
+			this.bmd.context.fillStyle = '#ff0000';
+			this.bmd.context.fillRect(this.x, this.y, 1, 1);
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="o">++</span><span class="p">;</span>
+			this.index++;
 
-			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-				<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'hit target?'</span><span class="p">);</span>
-			<span class="p">}</span>
-			<span class="k">else</span>
-			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">x</span><span class="p">;</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
-			<span class="p">}</span>
+			if (this.index === this.data.length)
+			{
+				this.alive = false;
+				console.log('hit target?');
+			}
+			else
+			{
+				this.x = this.data[this.index].x;
+				this.y = this.data[this.index].y;
+			}
 
-		<span class="p">}</span>
+		}
 
-	<span class="p">}</span>
+	}
 
-<span class="p">};</span>
+};
 
-<span class="nx">Missile</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Missile</span><span class="p">;</span>
+Missile.prototype.constructor = Missile;
 
-<span class="c1">//	The rockets you fire at the missiles</span>
+//	The rockets you fire at the missiles
 
-<span class="nx">Rocket</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">)</span> <span class="p">{</span>
+Rocket = function (game, bmd) {
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">;</span>
+	this.game = game;
+	this.bmd = bmd;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">launchX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">launchY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">destX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">destY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	this.x = 0;
+	this.y = 0;
+	this.launchX = 0;
+	this.launchY = 0;
+	this.destX = 0;
+	this.destY = 0;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">line</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+	this.line = null;
+	this.alive = false;
+	this.speed = 1;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">silo</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	this.silo = null;
+	this.data = null;
+	this.index = 0;
 
-    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    return this;
 
-<span class="p">}</span>
+}
 
-<span class="nx">Rocket</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+Rocket.prototype = {
 
-	<span class="na">launch</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">silo</span><span class="p">,</span> <span class="nx">destX</span><span class="p">,</span> <span class="nx">destY</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
+	launch: function (silo, destX, destY, speed) {
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">silo</span> <span class="o">=</span> <span class="nx">silo</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">launchX</span> <span class="o">=</span> <span class="nx">silo</span><span class="p">.</span><span class="nx">launchX</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">launchY</span> <span class="o">=</span> <span class="nx">silo</span><span class="p">.</span><span class="nx">launchY</span><span class="p">;</span>
+		this.silo = silo;
+		this.launchX = silo.launchX;
+		this.launchY = silo.launchY;
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">destX</span> <span class="o">=</span> <span class="nx">destX</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">destY</span> <span class="o">=</span> <span class="nx">destY</span><span class="p">;</span>
+		this.destX = destX;
+		this.destY = destY;
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">line</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">launchX</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">launchY</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">launchX</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">launchY</span><span class="p">);</span>
+		this.line = new Phaser.Line(this.launchX, this.launchY, this.launchX, this.launchY);
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">distance</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">destX</span><span class="p">,</span> <span class="nx">destY</span><span class="p">)</span> <span class="o">*</span> <span class="nx">speed</span><span class="p">);</span>
+		this.speed = Math.floor(this.game.math.distance(this.line.start.x, this.line.start.y, destX, destY) * speed);
 
-    	<span class="kd">var</span> <span class="nx">destination</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">launchX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">launchY</span> <span class="p">};</span>
+    	var destination = { x: this.launchX, y: this.launchY };
 
-	    <span class="kd">var</span> <span class="nx">tween</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">destination</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">destX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">destY</span> <span class="p">},</span> <span class="k">this</span><span class="p">.</span><span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">);</span>
+	    var tween = this.game.make.tween(destination).to( { x: this.destX, y: this.destY }, this.speed, Phaser.Easing.Linear.None);
 
-    	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    	this.data = tween.generateData(60);
+		this.index = 0;
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		this.alive = true;
 
-	<span class="p">},</span>
+	},
 
-	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+	update: function () {
 
-		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">alive</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="s1">'marker'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">destX</span> <span class="o">-</span> <span class="mi">4</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">destY</span> <span class="o">-</span> <span class="mi">4</span><span class="p">);</span>
+		if (this.alive)
+		{
+			this.bmd.draw('marker', this.destX - 4, this.destY - 4);
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="s1">'#0000ff'</span><span class="p">;</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineWidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+			this.bmd.context.strokeStyle = '#0000ff';
+            this.bmd.context.lineWidth = 1;
+            this.bmd.context.beginPath();
+            this.bmd.context.moveTo(this.line.start.x, this.line.start.y);
+            this.bmd.context.lineTo(this.line.end.x, this.line.end.y);
+            this.bmd.context.closePath();
+            this.bmd.context.stroke();
 
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#ffffff'</span><span class="p">;</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+            this.bmd.context.fillStyle = '#ffffff';
+            this.bmd.context.fillRect(this.line.end.x, this.line.end.y, 1, 1);
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="o">++</span><span class="p">;</span>
+			this.index++;
 
-			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">silo</span><span class="p">.</span><span class="nx">addExplosion</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-			<span class="p">}</span>
-			<span class="k">else</span>
-			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">x</span><span class="p">;</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
+			if (this.index === this.data.length)
+			{
+				this.alive = false;
+				this.silo.addExplosion(this.line.end.x, this.line.end.y);
+			}
+			else
+			{
+				this.line.end.x = this.data[this.index].x;
+				this.line.end.y = this.data[this.index].y;
+			}
+		}
 
-	<span class="p">}</span>
+	}
 
-<span class="p">};</span>
+};
 
-<span class="nx">Rocket</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Rocket</span><span class="p">;</span>
+Rocket.prototype.constructor = Rocket;
 
 
-<span class="c1">//	The resulting explosions</span>
+//	The resulting explosions
 
-<span class="nx">Explosion</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">)</span> <span class="p">{</span>
+Explosion = function (game, bmd) {
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">;</span>
+	this.game = game;
+	this.bmd = bmd;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">;</span>
+	this.x = 0;
+	this.y = 0;
+	this.circle;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">maxRadius</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="mi">750</span><span class="p">;</span>
+	this.alive = false;
+	this.maxRadius = 40;
+	this.speed = 750;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	this.data = null;
+	this.index = 0;
 
-    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    return this;
 
-<span class="p">}</span>
+}
 
-<span class="nx">Explosion</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+Explosion.prototype = {
 
-	<span class="na">explode</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+	explode: function (x, y) {
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">circle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Circle</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+		this.circle = new Phaser.Circle(x, y, 1);
 
-	    <span class="kd">var</span> <span class="nx">tween</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">radius</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">maxRadius</span> <span class="p">},</span> <span class="k">this</span><span class="p">.</span><span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">);</span>
-		<span class="nx">tween</span><span class="p">.</span><span class="nx">yoyo</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-	    <span class="nx">tween</span><span class="p">.</span><span class="nx">interpolation</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">catmullRomInterpolation</span><span class="p">);</span>
+	    var tween = this.game.make.tween(this.circle).to( { radius: this.maxRadius }, this.speed, Phaser.Easing.Linear.None);
+		tween.yoyo(true);
+	    tween.interpolation(game.math.catmullRomInterpolation);
 
-	    <span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	    this.alive = true;
     
-    	<span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    	this.data = tween.generateData(60);
+		this.index = 0;
 
-	<span class="p">},</span>
+	},
 
-	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+	update: function () {
 
-		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">alive</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#ffff00'</span><span class="p">;</span>
+		if (this.alive)
+		{
+			this.bmd.context.fillStyle = '#ffff00';
 
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">.</span><span class="nx">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
+            this.bmd.context.beginPath();
+            this.bmd.context.arc(this.circle.x, this.circle.y, this.circle.radius, 0, Math.PI * 2, false);
+            this.bmd.context.closePath();
+			this.bmd.context.fill();
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="o">++</span><span class="p">;</span>
+			this.index++;
 
-			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">alive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-			<span class="p">}</span>
-			<span class="k">else</span>
-			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">circle</span><span class="p">.</span><span class="nx">radius</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">].</span><span class="nx">radius</span><span class="p">;</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
+			if (this.index === this.data.length)
+			{
+				this.alive = false;
+			}
+			else
+			{
+				this.circle.radius = this.data[this.index].radius;
+			}
+		}
 
-	<span class="p">}</span>
+	}
 
-<span class="p">};</span>
+};
 
-<span class="nx">Explosion</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Explosion</span><span class="p">;</span>
+Explosion.prototype.constructor = Explosion;
 
 
 
 
-<span class="nx">City</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+City = function (game, x) {
 
-    <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">game</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="mi">440</span><span class="p">,</span> <span class="s1">'city'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    Phaser.Sprite.call(this, game, x, 440, 'city', 0);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">hitX</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">32</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">hitY</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">30</span><span class="p">;</span>
+    this.hitX = this.x + 32;
+    this.hitY = this.y + 30;
 
-    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    return this;
 
-<span class="p">}</span>
+}
 
-<span class="nx">City</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
-<span class="nx">City</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">City</span><span class="p">;</span>
+City.prototype = Object.create(Phaser.Sprite.prototype);
+City.prototype.constructor = City;
 
 
-<span class="nx">Silo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">bmd1</span><span class="p">,</span> <span class="nx">bmd2</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+Silo = function (game, bmd1, bmd2, x) {
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+	this.game = game;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">rocketsBMD</span> <span class="o">=</span> <span class="nx">bmd1</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">explosionBMD</span> <span class="o">=</span> <span class="nx">bmd2</span><span class="p">;</span>
+	this.rocketsBMD = bmd1;
+	this.explosionBMD = bmd2;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">launchX</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">launchY</span> <span class="o">=</span> <span class="mi">432</span><span class="p">;</span>
+	this.launchX = x;
+	this.launchY = 432;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">armory</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+	this.armory = 15;
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">rockets</span> <span class="o">=</span> <span class="p">[];</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">explosions</span> <span class="o">=</span> <span class="p">[];</span>
+	this.rockets = [];
+	this.explosions = [];
 
-    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    return this;
 
-<span class="p">}</span>
+}
 
-<span class="nx">Silo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Silo</span><span class="p">;</span>
+Silo.prototype.constructor = Silo;
 
-<span class="nx">Silo</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+Silo.prototype = {
 
-	<span class="na">launch</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
+	launch: function (x, y, speed) {
 
-		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">armory</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">rocket</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rocket</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rocketsBMD</span><span class="p">);</span>
+		if (this.armory > 0)
+		{
+			var rocket = new Rocket(this.game, this.rocketsBMD);
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">rockets</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">rocket</span><span class="p">);</span>
+			this.rockets.push(rocket);
 
-			<span class="nx">rocket</span><span class="p">.</span><span class="nx">launch</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">speed</span><span class="p">);</span>
-		<span class="p">}</span>
+			rocket.launch(this, x, y, speed);
+		}
 
-	<span class="p">},</span>
+	},
 
-	<span class="na">addExplosion</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+	addExplosion: function (x, y) {
 
-		<span class="kd">var</span> <span class="nx">explosion</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Explosion</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">explosionBMD</span><span class="p">);</span>
+		var explosion = new Explosion(this.game, this.explosionBMD);
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">explosions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">explosion</span><span class="p">);</span>
+		this.explosions.push(explosion);
 
-		<span class="nx">explosion</span><span class="p">.</span><span class="nx">explode</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+		explosion.explode(x, y);
 
-	<span class="p">},</span>
+	},
 
-	<span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+	update: function () {
 
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">rockets</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">rockets</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">alive</span><span class="p">)</span>
-			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">rockets</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">update</span><span class="p">();</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
+		for (var i = 0; i < this.rockets.length; i++)
+		{
+			if (this.rockets[i].alive)
+			{
+				this.rockets[i].update();
+			}
+		}
 
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">explosions</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">explosions</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">alive</span><span class="p">)</span>
-			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">explosions</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">update</span><span class="p">();</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
+		for (var i = 0; i < this.explosions.length; i++)
+		{
+			if (this.explosions[i].alive)
+			{
+				this.explosions[i].update();
+			}
+		}
 
-	<span class="p">}</span>
+	}
 
-<span class="p">}</span>
+}
 
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">640</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(640, 480, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'title'</span><span class="p">,</span> <span class="s1">'assets/games/missilecommand/title-page.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'land'</span><span class="p">,</span> <span class="s1">'assets/games/missilecommand/land.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'marker'</span><span class="p">,</span> <span class="s1">'assets/games/missilecommand/marker.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'missile'</span><span class="p">,</span> <span class="s1">'assets/games/missilecommand/missile.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/skies/cavern2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'city'</span><span class="p">,</span> <span class="s1">'assets/games/missilecommand/city.png'</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">36</span><span class="p">);</span>
+    game.load.image('title', 'assets/games/missilecommand/title-page.png');
+    game.load.image('land', 'assets/games/missilecommand/land.png');
+    game.load.image('marker', 'assets/games/missilecommand/marker.png');
+    game.load.image('missile', 'assets/games/missilecommand/missile.png');
+    game.load.image('sky', 'assets/skies/cavern2.png');
+    game.load.spritesheet('city', 'assets/games/missilecommand/city.png', 64, 36);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">rocketsBitmap</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">rocketsLayer</span><span class="p">;</span>
+var rocketsBitmap;
+var rocketsLayer;
 
-<span class="kd">var</span> <span class="nx">explosionsBitmap</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">explosionsLayer</span><span class="p">;</span>
+var explosionsBitmap;
+var explosionsLayer;
 
-<span class="kd">var</span> <span class="nx">missilesBitmap</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">missilesLayer</span><span class="p">;</span>
+var missilesBitmap;
+var missilesLayer;
 
-<span class="kd">var</span> <span class="nx">missileLauncher</span><span class="p">;</span>
+var missileLauncher;
 
-<span class="kd">var</span> <span class="nx">land</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cities</span><span class="p">;</span>
+var land;
+var cities;
 
-<span class="kd">var</span> <span class="nx">rocketSpeed</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+var rocketSpeed = 10;
 
-<span class="kd">var</span> <span class="nx">missileSpeed</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">missileDelay</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+var missileSpeed = 10000;
+var missileDelay = 10000;
 
-<span class="kd">var</span> <span class="nx">m1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">silo1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">silo2</span><span class="p">;</span>
+var m1;
+var silo1;
+var silo2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+	game.stage.smoothed = false;
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
+	game.add.image(0, 0, 'sky');
 
-	<span class="nx">rocketsBitmap</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
-	<span class="nx">missilesBitmap</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
-	<span class="nx">explosionsBitmap</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+	rocketsBitmap = game.add.bitmapData(800, 600);
+	missilesBitmap = game.add.bitmapData(800, 600);
+	explosionsBitmap = game.add.bitmapData(800, 600);
 
-	<span class="nx">rocketsLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">rocketsBitmap</span><span class="p">);</span>
-	<span class="nx">missilesLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">missilesBitmap</span><span class="p">);</span>
-	<span class="nx">explosionsLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">explosionsBitmap</span><span class="p">);</span>
+	rocketsLayer = game.add.image(0, 0, rocketsBitmap);
+	missilesLayer = game.add.image(0, 0, missilesBitmap);
+	explosionsLayer = game.add.image(0, 0, explosionsBitmap);
 
-	<span class="nx">land</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">432</span><span class="p">,</span> <span class="s1">'land'</span><span class="p">);</span>
+	land = game.add.image(0, 432, 'land');
 
-	<span class="nx">cities</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+	cities = game.add.group();
 
-	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">8</span><span class="p">));</span>
-	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">168</span><span class="p">));</span>
-	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">246</span><span class="p">));</span>
-	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">324</span><span class="p">));</span>
-	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">402</span><span class="p">));</span>
-	<span class="nx">cities</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">City</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">568</span><span class="p">));</span>
+	cities.add(new City(game, 8));
+	cities.add(new City(game, 168));
+	cities.add(new City(game, 246));
+	cities.add(new City(game, 324));
+	cities.add(new City(game, 402));
+	cities.add(new City(game, 568));
 
-	<span class="nx">silo1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silo</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">rocketsBitmap</span><span class="p">,</span> <span class="nx">explosionsBitmap</span><span class="p">,</span> <span class="mi">118</span><span class="p">);</span>
-	<span class="nx">silo2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silo</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">rocketsBitmap</span><span class="p">,</span> <span class="nx">explosionsBitmap</span><span class="p">,</span> <span class="mi">518</span><span class="p">);</span>
+	silo1 = new Silo(game, rocketsBitmap, explosionsBitmap, 118);
+	silo2 = new Silo(game, rocketsBitmap, explosionsBitmap, 518);
 
-	<span class="nx">missileLauncher</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MissileLauncher</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">missilesBitmap</span><span class="p">,</span> <span class="nx">cities</span><span class="p">);</span>
+	missileLauncher = new MissileLauncher(game, missilesBitmap, cities);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">launchRocket</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	game.input.onDown.add(launchRocket, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">launchRocket</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function launchRocket(pointer) {
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">320</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">silo1</span><span class="p">.</span><span class="nx">launch</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">rocketSpeed</span><span class="p">);</span>
-	<span class="p">}</span>
-	<span class="k">else</span>
-	<span class="p">{</span>
-		<span class="nx">silo2</span><span class="p">.</span><span class="nx">launch</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">rocketSpeed</span><span class="p">);</span>
-	<span class="p">}</span>
+	if (pointer.x < 320)
+	{
+		silo1.launch(pointer.x, pointer.y, rocketSpeed);
+	}
+	else
+	{
+		silo2.launch(pointer.x, pointer.y, rocketSpeed);
+	}
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="nx">rocketsBitmap</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
-	<span class="nx">explosionsBitmap</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+	rocketsBitmap.clear();
+	explosionsBitmap.clear();
 
-	<span class="nx">missileLauncher</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
-	<span class="nx">silo1</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
-	<span class="nx">silo2</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+	missileLauncher.update();
+	silo1.update();
+	silo2.update();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

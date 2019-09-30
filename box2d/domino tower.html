@@ -55,188 +55,188 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/box2d/domino%20tower.js" title="box2d/domino tower.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/box2d/domino%20tower.js" download="" title="Download: box2d/domino tower.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Chris Campbell <iforce2d@gmail.com>
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Box2D Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/box2d
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'platform'</span><span class="p">,</span> <span class="s1">'assets/sprites/platform.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser_tiny.png'</span><span class="p">);</span>
+    game.load.image('platform', 'assets/sprites/platform.png');
+    game.load.image('phaser', 'assets/sprites/phaser_tiny.png');
 
-<span class="p">}</span>
+}
 
-<span class="nx">_debugType</span> <span class="o">=</span> 
-<span class="p">{</span>
-    <span class="na">NONE</span>    <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="na">SOME</span>    <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="na">WORLD</span>   <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="na">INFO</span>    <span class="p">:</span> <span class="mi">3</span>
-<span class="p">};</span>
+_debugType = 
+{
+    NONE    : 0,
+    SOME    : 1,
+    WORLD   : 2,
+    INFO    : 3
+};
 
-<span class="kd">var</span> <span class="nx">caption</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">debugType</span> <span class="o">=</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">INFO</span><span class="p">;</span> <span class="c1">// will roll over to NONE in create()</span>
-<span class="kd">var</span> <span class="nx">spritesToDebug</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">topSprite</span><span class="p">;</span> <span class="c1">// after create(), will be the last created sprite</span>
-<span class="kd">var</span> <span class="nx">triggerSprite</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">// sprite of rightmost body, removal which will cause collapse</span>
-<span class="kd">var</span> <span class="nx">stepCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var caption;
+var debugType = _debugType.INFO; // will roll over to NONE in create()
+var spritesToDebug = [];
+var topSprite; // after create(), will be the last created sprite
+var triggerSprite = null; // sprite of rightmost body, removal which will cause collapse
+var stepCount = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#124184';
 
-    <span class="c1">// Enable Box2D physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+    // Enable Box2D physics
+    game.physics.startSystem(Phaser.Physics.BOX2D);
+    game.physics.box2d.gravity.y = 200;
 
-    <span class="c1">//game.physics.box2d.debugDraw.aabbs = true;</span>
+    //game.physics.box2d.debugDraw.aabbs = true;
     
-    <span class="c1">// Static platform for boxes to fall on</span>
-    <span class="kd">var</span> <span class="nx">platformSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="s1">'platform'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">platformSprite</span><span class="p">);</span>
-    <span class="nx">platformSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    // Static platform for boxes to fall on
+    var platformSprite = game.add.sprite(400, 550, 'platform');
+    game.physics.box2d.enable(platformSprite);
+    platformSprite.body.static = true;
     
-    <span class="kd">var</span> <span class="nx">spriteWidth</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">spriteHeight</span> <span class="o">=</span> <span class="mi">35</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">spacingX</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="nx">spriteHeight</span> <span class="o">-</span> <span class="nx">spriteWidth</span><span class="p">));</span>
-    <span class="kd">var</span> <span class="nx">baseLayerCount</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">startX</span> <span class="o">=</span> <span class="mi">400</span> <span class="o">-</span> <span class="p">(</span><span class="nx">baseLayerCount</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="nx">spacingX</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">startY</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var spriteWidth = 9;
+    var spriteHeight = 35;
+    var spacingX = (2 * (spriteHeight - spriteWidth));
+    var baseLayerCount = 10;
+    var startX = 400 - (baseLayerCount / 2 - 0.5) * spacingX;
+    var startY = 500;
+    var count = 0;
 
-    <span class="c1">// Create tower of dominos.</span>
-    <span class="k">while</span> <span class="p">(</span><span class="nx">baseLayerCount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    // Create tower of dominos.
+    while (baseLayerCount > 0) {
 
-        <span class="kd">var</span> <span class="nx">layerType</span> <span class="o">=</span> <span class="nx">count</span> <span class="o">%</span> <span class="mi">3</span><span class="p">;</span>
+        var layerType = count % 3;
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">baseLayerCount</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">xpos</span> <span class="o">=</span> <span class="nx">startX</span> <span class="o">+</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">spacingX</span><span class="p">;</span>
-            <span class="nx">topSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">xpos</span><span class="p">,</span> <span class="nx">startY</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">topSprite</span><span class="p">);</span>
+        for (var x = 0; x < baseLayerCount; x++)
+        {
+            var xpos = startX + x * spacingX;
+            topSprite = game.add.sprite(xpos, startY, 'phaser');
+            game.physics.box2d.enable(topSprite);
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">layerType</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">topSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
-            <span class="p">}</span>
+            if (layerType == 0)
+            {
+                topSprite.body.angle = 90;
+            }
 
-            <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.25</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">spritesToDebug</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="p">{</span> <span class="na">sprite</span><span class="p">:</span> <span class="nx">topSprite</span><span class="p">,</span> <span class="na">color</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getRandomColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span> <span class="p">}</span> <span class="p">);</span>
-            <span class="p">}</span>
+            if (Math.random() < 0.25)
+            {
+                spritesToDebug.push( { sprite: topSprite, color: Phaser.Color.getRandomColor(0,255,255) } );
+            }
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">layerType</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">x</span> <span class="o">&gt;</span> <span class="nx">baseLayerCount</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+            if (layerType > 1 && x > baseLayerCount - 3)
+            {
+                break;
+            }
+        }
         
-        <span class="c1">// end pieces</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">layerType</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">topSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">startX</span> <span class="o">-</span> <span class="nx">spriteHeight</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nx">spriteWidth</span><span class="p">,</span> <span class="nx">startY</span> <span class="o">+</span> <span class="nx">spriteWidth</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">topSprite</span><span class="p">);</span>
-            <span class="nx">topSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
+        // end pieces
+        if (layerType == 0 && count > 0)
+        {
+            topSprite = game.add.sprite(startX - spriteHeight - 0.5 * spriteWidth, startY + spriteWidth, 'phaser');
+            game.physics.box2d.enable(topSprite);
+            topSprite.body.angle = 90;
 
-            <span class="nx">topSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">startX</span> <span class="o">+</span> <span class="p">(</span><span class="nx">baseLayerCount</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">spacingX</span> <span class="o">+</span> <span class="p">(</span><span class="nx">spriteHeight</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nx">spriteWidth</span><span class="p">),</span> <span class="nx">startY</span> <span class="o">+</span> <span class="nx">spriteWidth</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">topSprite</span><span class="p">);</span>
-            <span class="nx">topSprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
+            topSprite = game.add.sprite(startX + (baseLayerCount-1) * spacingX + (spriteHeight + 0.5 * spriteWidth), startY + spriteWidth, 'phaser');
+            game.physics.box2d.enable(topSprite);
+            topSprite.body.angle = 90;
 
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">triggerSprite</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">triggerSprite</span> <span class="o">=</span> <span class="nx">topSprite</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+            if (!triggerSprite)
+            {
+                triggerSprite = topSprite;
+            }
+        }
         
-        <span class="k">switch</span> <span class="p">(</span><span class="nx">layerType</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">case</span> <span class="mi">0</span><span class="p">:</span> <span class="c1">// upright</span>
-                <span class="nx">startY</span> <span class="o">-=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="nx">spriteWidth</span> <span class="o">+</span> <span class="nx">spriteHeight</span><span class="p">);</span>
-                <span class="k">break</span><span class="p">;</span>
+        switch (layerType)
+        {
+            case 0: // upright
+                startY -= 0.5 * (spriteWidth + spriteHeight);
+                break;
 
-            <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nx">startX</span> <span class="o">+=</span> <span class="nx">spriteHeight</span> <span class="o">-</span> <span class="nx">spriteWidth</span><span class="p">;</span>
-                <span class="nx">startY</span> <span class="o">-=</span> <span class="nx">spriteWidth</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
+            case 1:
+                startX += spriteHeight - spriteWidth;
+                startY -= spriteWidth;
+                break;
 
-            <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="nx">startY</span> <span class="o">-=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="nx">spriteWidth</span> <span class="o">+</span> <span class="nx">spriteHeight</span><span class="p">);</span>
-                <span class="nx">baseLayerCount</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="nx">count</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+            case 2:
+                startY -= 0.5 * (spriteWidth + spriteHeight);
+                baseLayerCount -= 1;
+                break;
+        }
+        count += 1;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">count</span> <span class="o">&gt;</span> <span class="mi">27</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">break</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        if (count > 27)
+        {
+            break;
+        }
+    }
     
-    <span class="nx">caption</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
-    <span class="nx">changeDebugType</span><span class="p">();</span>
+    caption = game.add.text(5, 5, '', { fill: '#ffffff', font: '14pt Arial' });
+    changeDebugType();
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">changeDebugType</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(changeDebugType, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">changeDebugType</span><span class="p">()</span> <span class="p">{</span>
+function changeDebugType() {
 
-    <span class="nx">debugType</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    debugType += 1;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">debugType</span> <span class="o">&gt;</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">INFO</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">debugType</span> <span class="o">=</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">NONE</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (debugType > _debugType.INFO)
+    {
+        debugType = _debugType.NONE;
+    }
 
-    <span class="nx">caption</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'Click to toggle debug display (currently: '</span><span class="o">+</span>
-        <span class="p">(</span><span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">SOME</span> <span class="p">?</span> <span class="s1">'some'</span> <span class="p">:</span>
-        <span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">WORLD</span> <span class="p">?</span> <span class="s1">'world'</span> <span class="p">:</span>
-        <span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">INFO</span> <span class="p">?</span> <span class="s1">'info'</span> <span class="p">:</span> <span class="s1">'none'</span><span class="p">)</span> <span class="o">+</span><span class="s1">')'</span><span class="p">;</span>
-<span class="p">}</span>
+    caption.text = 'Click to toggle debug display (currently: '+
+        (debugType == _debugType.SOME ? 'some' :
+        debugType == _debugType.WORLD ? 'world' :
+        debugType == _debugType.INFO ? 'info' : 'none') +')';
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">stepCount</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    stepCount += 1;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">stepCount</span> <span class="o">==</span> <span class="mi">180</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// three seconds</span>
-        <span class="nx">triggerSprite</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (stepCount == 180)
+    {
+        // three seconds
+        triggerSprite.destroy();
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">SOME</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">spritesToDebug</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    if (debugType == _debugType.SOME)
+    {
+        var i = spritesToDebug.length;
 
-        <span class="k">while</span> <span class="p">(</span><span class="nx">i</span><span class="o">--</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">body</span><span class="p">(</span><span class="nx">spritesToDebug</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">spritesToDebug</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">color</span><span class="p">));</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">WORLD</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">box2dWorld</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">debugType</span> <span class="o">==</span> <span class="nx">_debugType</span><span class="p">.</span><span class="nx">INFO</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">bodyInfo</span><span class="p">(</span><span class="nx">topSprite</span><span class="p">,</span> <span class="nx">topSprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">20</span><span class="p">,</span> <span class="nx">topSprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">20</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">body</span><span class="p">(</span><span class="nx">topSprite</span><span class="p">,</span> <span class="s1">'rgb(0,255,0)'</span><span class="p">);</span>
-    <span class="p">}</span>
+        while (i--)
+        {
+            game.debug.body(spritesToDebug[i].sprite, Phaser.Color.getWebRGB(spritesToDebug[i].color));
+        }
+    }
+    else if (debugType == _debugType.WORLD)
+    {
+        game.debug.box2dWorld();
+    }
+    else if (debugType == _debugType.INFO)
+    {
+        game.debug.bodyInfo(topSprite, topSprite.x + 20, topSprite.y + 20);
+        game.debug.body(topSprite, 'rgb(0,255,0)');
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

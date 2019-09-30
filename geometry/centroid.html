@@ -55,103 +55,103 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/geometry/centroid.js" title="geometry/centroid.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/geometry/centroid.js" download="" title="Download: geometry/centroid.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// Example: Phaser.Point.centroid</span>
-<span class="c1">// Author: Lewis 'SEPTiMUS' Lane</span>
-<span class="c1">// URL: http://www.rotates.org - https://github.com/lewster32</span>
-<span class="c1">// Instructions: Click to add points. Points can be dragged. Centroid is displayed as a white cross, points as red rings.</span>
+</div>
+<pre class="highlight javascript"><code>// Example: Phaser.Point.centroid
+// Author: Lewis 'SEPTiMUS' Lane
+// URL: http://www.rotates.org - https://github.com/lewster32
+// Instructions: Click to add points. Points can be dragged. Centroid is displayed as a white cross, points as red rings.
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'centroid'</span><span class="p">,</span> <span class="s1">'assets/sprites/centroid.png'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.load.spritesheet('centroid', 'assets/sprites/centroid.png', 16, 16);
+}
 
-<span class="kd">var</span> <span class="nx">points</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">over</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">currentPoint</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">centroid</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">inputType</span><span class="p">;</span>
+var points = [];
+var over = false;
+var currentPoint;
+var centroid;
+var inputType;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">currentPoint</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'centroid'</span><span class="p">);</span>
-    <span class="nx">currentPoint</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    currentPoint = game.add.image(10, 10, 'centroid');
+    currentPoint.anchor.set(0.5);
 
-    <span class="nx">currentPoint</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    currentPoint.alpha = 0.5;
 
-    <span class="nx">centroid</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'centroid'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">centroid</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">centroid</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    centroid = game.add.image(10, 10, 'centroid', 1);
+    centroid.anchor.set(0.5);
+    centroid.visible = false;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onTap</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onTapHandler</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onTap.add(onTapHandler, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onTapHandler</span><span class="p">()</span> <span class="p">{</span>
+function onTapHandler() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">over</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">img</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="s1">'centroid'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    if (!over)
+    {
+        var img = game.add.sprite(game.input.activePointer.position.x, game.input.activePointer.position.y, 'centroid', 0);
 
-        <span class="nx">points</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">img</span><span class="p">.</span><span class="nx">position</span><span class="p">);</span>
+        points.push(img.position);
 
-        <span class="nx">img</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-        <span class="nx">img</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">;</span>
-        <span class="nx">img</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">img</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-        <span class="nx">img</span><span class="p">.</span><span class="nx">defaultCursor</span> <span class="o">=</span> <span class="s2">"move"</span><span class="p">;</span>
+        img.anchor.set(0.5);
+        img.alpha = 0.25;
+        img.inputEnabled = true;
+        img.input.enableDrag(true);
+        img.defaultCursor = "move";
 
-        <span class="nx">img</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">);</span>
-            <span class="nx">over</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="p">},</span> <span class="nx">img</span><span class="p">);</span>
+        img.events.onInputOver.add(function() {
+            this.alpha = 1;
+            this.scale.setTo(1.2, 1.2);
+            over = true;
+        }, img);
 
-        <span class="nx">img</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">;</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-            <span class="nx">over</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="p">},</span> <span class="nx">img</span><span class="p">);</span>
-    <span class="p">}</span>
+        img.events.onInputOut.add(function() {
+            this.alpha = 0.25;
+            this.scale.setTo(1, 1);
+            over = false;
+        }, img);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">currentPoint</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">copyFrom</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">position</span><span class="p">);</span>
+    currentPoint.position.copyFrom(game.input.activePointer.position);
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">points</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">.</span><span class="nx">centroid</span><span class="p">(</span><span class="nx">points</span><span class="p">);</span>
+    if (points.length > 0)
+    {
+        var c = Phaser.Point.centroid(points);
 
-        <span class="nx">centroid</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">copyFrom</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span>
+        centroid.position.copyFrom(c);
 
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">centroid</span><span class="p">.</span><span class="nx">visible</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">centroid</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        if (!centroid.visible)
+        {
+            centroid.visible = true;
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">forEachAlive</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">child</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">roundTo</span><span class="p">(</span><span class="nx">child</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">roundTo</span><span class="p">(</span><span class="nx">child</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nx">child</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">child</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">25</span><span class="p">,</span> <span class="s2">"#ff1e00"</span><span class="p">,</span> <span class="s2">"12px Courier"</span><span class="p">);</span>
-    <span class="p">});</span>
+    game.world.forEachAlive(function(child) {
+        game.debug.text(Phaser.Math.roundTo(child.x, 0) + "," + Phaser.Math.roundTo(child.y, 0), child.x - 10, child.y + 25, "#ff1e00", "12px Courier");
+    });
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">centroid</span><span class="p">.</span><span class="nx">visible</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Points may be dragged."</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">roundTo</span><span class="p">(</span><span class="nx">centroid</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">roundTo</span><span class="p">(</span><span class="nx">centroid</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nx">centroid</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">centroid</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">15</span><span class="p">,</span> <span class="s2">"#fff"</span><span class="p">,</span> <span class="s2">"bold 12px Courier"</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Click anywhere to add points."</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (centroid.visible)
+    {
+        game.debug.text("Points may be dragged.", 10, 20);
+        game.debug.text(Phaser.Math.roundTo(centroid.x, 0) + "," + Phaser.Math.roundTo(centroid.y, 0), centroid.x - 10, centroid.y - 15, "#fff", "bold 12px Courier");
+    }
+    else
+    {
+        game.debug.text("Click anywhere to add points.", 10, 20);
+    }
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

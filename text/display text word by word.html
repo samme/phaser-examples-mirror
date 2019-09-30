@@ -55,91 +55,92 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/display%20text%20word%20by%20word.js" title="text/display text word by word.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/display%20text%20word%20by%20word.js" download="" title="Download: text/display text word by word.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"The sky above the port was the color of television, tuned to a dead channel."</span><span class="p">,</span>
-    <span class="s2">"`It's not like I'm using,' Case heard someone say, as he shouldered his way "</span><span class="p">,</span>
-    <span class="s2">"through the crowd around the door of the Chat. `It's like my body's developed"</span><span class="p">,</span>
-    <span class="s2">"this massive drug deficiency.' It was a Sprawl voice and a Sprawl joke."</span><span class="p">,</span>
-    <span class="s2">"The Chatsubo was a bar for professional expatriates; you could drink there for"</span><span class="p">,</span>
-    <span class="s2">"a week and never hear two words in Japanese."</span><span class="p">,</span>
-    <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"Ratz was tending bar, his prosthetic arm jerking monotonously as he filled a tray"</span><span class="p">,</span>
-    <span class="s2">"of glasses with draft Kirin. He saw Case and smiled, his teeth a webwork of"</span><span class="p">,</span>
-    <span class="s2">"East European steel and brown decay. Case found a place at the bar, between the"</span><span class="p">,</span>
-    <span class="s2">"unlikely tan on one of Lonny Zone's whores and the crisp naval uniform of a tall"</span><span class="p">,</span>
-    <span class="s2">"African whose cheekbones were ridged with precise rows of tribal scars. `Wage was"</span><span class="p">,</span>
-    <span class="s2">"in here early, with two joeboys,' Ratz said, shoving a draft across the bar with"</span><span class="p">,</span>
-    <span class="s2">"his good hand. `Maybe some business with you, Case?'"</span><span class="p">,</span>
-    <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"Case shrugged. The girl to his right giggled and nudged him."</span><span class="p">,</span>
-    <span class="s2">"The bartender's smile widened. His ugliness was the stuff of legend. In an age of"</span><span class="p">,</span>
-    <span class="s2">"affordable beauty, there was something heraldic about his lack of it. The antique"</span><span class="p">,</span>
-    <span class="s2">"arm whined as he reached for another mug."</span><span class="p">,</span>
-    <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"From Neuromancer by William Gibson"</span>
-<span class="p">];</span>
+var content = [
+    "The sky above the port was the color of television, tuned to a dead channel.",
+    "`It's not like I'm using,' Case heard someone say, as he shouldered his way ",
+    "through the crowd around the door of the Chat. `It's like my body's developed",
+    "this massive drug deficiency.' It was a Sprawl voice and a Sprawl joke.",
+    "The Chatsubo was a bar for professional expatriates; you could drink there for",
+    "a week and never hear two words in Japanese.",
+    "",
+    "Ratz was tending bar, his prosthetic arm jerking monotonously as he filled a tray",
+    "of glasses with draft Kirin. He saw Case and smiled, his teeth a webwork of",
+    "East European steel and brown decay. Case found a place at the bar, between the",
+    "unlikely tan on one of Lonny Zone's whores and the crisp naval uniform of a tall",
+    "African whose cheekbones were ridged with precise rows of tribal scars. `Wage was",
+    "in here early, with two joeboys,' Ratz said, shoving a draft across the bar with",
+    "his good hand. `Maybe some business with you, Case?'",
+    "",
+    "Case shrugged. The girl to his right giggled and nudged him.",
+    "The bartender's smile widened. His ugliness was the stuff of legend. In an age of",
+    "affordable beauty, there was something heraldic about his lack of it. The antique",
+    "arm whined as he reached for another mug.",
+    "",
+    "",
+    "From Neuromancer by William Gibson"
+];
 
-<span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="p">[];</span>
+var line = [];
 
-<span class="kd">var</span> <span class="nx">wordIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">lineIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var wordIndex = 0;
+var lineIndex = 0;
 
-<span class="kd">var</span> <span class="nx">wordDelay</span> <span class="o">=</span> <span class="mi">120</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">lineDelay</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+var wordDelay = 120;
+var lineDelay = 400;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"15px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#19de65"</span> <span class="p">});</span>
+    text = game.add.text(32, 32, '', { font: "15px Arial", fill: "#19de65" });
 
-    <span class="nx">nextLine</span><span class="p">();</span>
+    nextLine();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">nextLine</span><span class="p">()</span> <span class="p">{</span>
+function nextLine() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">lineIndex</span> <span class="o">===</span> <span class="nx">content</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  We're finished</span>
-        <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (lineIndex === content.length)
+    {
+        //  We're finished
+        return;
+    }
 
-    <span class="c1">//  Split the current line on spaces, so one word per array element</span>
-    <span class="nx">line</span> <span class="o">=</span> <span class="nx">content</span><span class="p">[</span><span class="nx">lineIndex</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">);</span>
+    //  Split the current line on spaces, so one word per array element
+    line = content[lineIndex].split(' ');
 
-    <span class="c1">//  Reset the word index to zero (the first word in the line)</span>
-    <span class="nx">wordIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    //  Reset the word index to zero (the first word in the line)
+    wordIndex = 0;
 
-    <span class="c1">//  Call the 'nextWord' function once for each word in the line (line.length)</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="nx">wordDelay</span><span class="p">,</span> <span class="nx">line</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="nx">nextWord</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Call the 'nextWord' function once for each word in the line (line.length)
+    game.time.events.repeat(wordDelay, line.length, nextWord, this);
 
-    <span class="c1">//  Advance to the next line</span>
-    <span class="nx">lineIndex</span><span class="o">++</span><span class="p">;</span>
+    //  Advance to the next line
+    lineIndex++;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">nextWord</span><span class="p">()</span> <span class="p">{</span>
+function nextWord() {
 
-    <span class="c1">//  Add the next word onto the text string, followed by a space</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">line</span><span class="p">[</span><span class="nx">wordIndex</span><span class="p">]</span> <span class="o">+</span> <span class="s2">" "</span><span class="p">);</span>
+    //  Add the next word onto the text string, followed by a space
+    text.text = text.text.concat(line[wordIndex] + " ");
 
-    <span class="c1">//  Advance the word index to the next word in the line</span>
-    <span class="nx">wordIndex</span><span class="o">++</span><span class="p">;</span>
+    //  Advance the word index to the next word in the line
+    wordIndex++;
 
-    <span class="c1">//  Last word?</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">wordIndex</span> <span class="o">===</span> <span class="nx">line</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Add a carriage return</span>
-        <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="s2">"\n"</span><span class="p">);</span>
+    //  Last word?
+    if (wordIndex === line.length)
+    {
+        //  Add a carriage return
+        text.text = text.text.concat("\n");
 
-        <span class="c1">//  Get the next line after the lineDelay amount of ms has elapsed</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">lineDelay</span><span class="p">,</span> <span class="nx">nextLine</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+        //  Get the next line after the lineDelay amount of ms has elapsed
+        game.time.events.add(lineDelay, nextLine, this);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

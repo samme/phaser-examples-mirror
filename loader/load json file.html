@@ -55,38 +55,39 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/loader/load%20json%20file.js" title="loader/load json file.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/loader/load%20json%20file.js" download="" title="Download: loader/load json file.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Phaser can load JSON files.</span>
+    //  Phaser can load JSON files.
 
-    <span class="c1">//  It does this using an XMLHttpRequest.</span>
+    //  It does this using an XMLHttpRequest.
     
-    <span class="c1">//  If loading a file from outside of the domain in which the game is running </span>
-    <span class="c1">//  a 'Access-Control-Allow-Origin' header must be present on the server.</span>
+    //  If loading a file from outside of the domain in which the game is running 
+    //  a 'Access-Control-Allow-Origin' header must be present on the server.
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'version'</span><span class="p">,</span> <span class="s1">'http://phaser.io/version.json'</span><span class="p">);</span>
+    game.load.json('version', 'http://phaser.io/version.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#0072bc'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#0072bc';
 
-    <span class="kd">var</span> <span class="nx">phaserJSON</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">'version'</span><span class="p">);</span>
+    var phaserJSON = game.cache.getJSON('version');
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"Current Phaser version: "</span> <span class="o">+</span> <span class="nx">phaserJSON</span><span class="p">.</span><span class="nx">version</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var text = game.add.text(100, 100, "Current Phaser version: " + phaserJSON.version, { fill: '#ffffff' });
+    text.setShadow(2, 2, 'rgba(0,0,0,0.5)', 0);
 
-    <span class="kd">var</span> <span class="nx">text2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s2">"Name: "</span> <span class="o">+</span> <span class="nx">phaserJSON</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var text2 = game.add.text(100, 200, "Name: " + phaserJSON.name, { fill: '#ffffff' });
+    text2.setShadow(2, 2, 'rgba(0,0,0,0.5)', 0);
 
-    <span class="kd">var</span> <span class="nx">text3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s2">"Released: "</span> <span class="o">+</span> <span class="nx">phaserJSON</span><span class="p">.</span><span class="nx">released</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
-    <span class="nx">text3</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var text3 = game.add.text(100, 300, "Released: " + phaserJSON.released, { fill: '#ffffff' });
+    text3.setShadow(2, 2, 'rgba(0,0,0,0.5)', 0);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,74 +55,75 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/remove.js" title="groups/remove.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/remove.js" download="" title="Download: groups/remove.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">items</span><span class="p">;</span>
+var items;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'item'</span><span class="p">,</span> <span class="s1">'assets/buttons/number-buttons-90x90.png'</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'rect'</span><span class="p">,</span> <span class="s1">'assets/tests/200x100corners.png'</span><span class="p">);</span>
-<span class="p">}</span>
+    game.load.spritesheet('item', 'assets/buttons/number-buttons-90x90.png', 90, 90);
+    game.load.image('rect', 'assets/tests/200x100corners.png');
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// Create item container group.</span>
-    <span class="nx">items</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    // Create item container group.
+    items = game.add.group();
 
-    <span class="c1">// Add some items and add them to the container group,</span>
-    <span class="c1">// then you can drag and drop them to remove.</span>
-    <span class="kd">var</span> <span class="nx">item</span><span class="p">;</span>
+    // Add some items and add them to the container group,
+    // then you can drag and drop them to remove.
+    var item;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// Directly create sprites from the group.</span>
-        <span class="nx">item</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">16</span> <span class="o">+</span> <span class="mi">90</span> <span class="o">*</span> <span class="nx">i</span><span class="p">,</span> <span class="s1">'item'</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+    for (var i = 0; i < 6; i++)
+    {
+        // Directly create sprites from the group.
+        item = items.create(90, 16 + 90 * i, 'item', i);
 
-        <span class="nx">item</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'block'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">;</span>
+        item.name = 'block' + i;
 
-        <span class="c1">// Enable input detection, then it's possible be dragged.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        // Enable input detection, then it's possible be dragged.
+        item.inputEnabled = true;
 
-        <span class="c1">// Make this item draggable.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
+        // Make this item draggable.
+        item.input.enableDrag();
 
-        <span class="c1">// Then we make it snap to 90x90 grids.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableSnap</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        // Then we make it snap to 90x90 grids.
+        item.input.enableSnap(90, 90, false, true);
 
-        <span class="c1">// Add a handler to remove it using different options when dropped.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">dropHandler</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+        // Add a handler to remove it using different options when dropped.
+        item.events.onDragStop.add(dropHandler, this);
+    }
 
-    <span class="c1">// Create a rectangle drop it at this rectangle to</span>
-    <span class="c1">// remove it from origin group normally or</span>
-    <span class="c1">// cut it from the group's array entirely.</span>
-    <span class="kd">var</span> <span class="nx">rect</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">390</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'rect'</span><span class="p">);</span>
-    <span class="nx">rect</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">);</span>
+    // Create a rectangle drop it at this rectangle to
+    // remove it from origin group normally or
+    // cut it from the group's array entirely.
+    var rect = game.add.sprite(390, 0, 'rect');
+    rect.scale.setTo(2.0, 3.0);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Group size: '</span> <span class="o">+</span> <span class="nx">items</span><span class="p">.</span><span class="nx">total</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">580</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Drop here to remove item from the Group'</span><span class="p">,</span> <span class="mi">394</span><span class="p">,</span> <span class="mi">24</span><span class="p">);</span>
+    game.debug.text('Group size: ' + items.total, 74, 580);
+    game.debug.text('Drop here to remove item from the Group', 394, 24);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">dropHandler</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function dropHandler(item, pointer) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">400</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Remove the item from the Group.</span>
-        <span class="nx">items</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (item.x < 90)
+    {
+        item.x = 90;
+    }
+    else if (item.x > 400)
+    {
+        //  Remove the item from the Group.
+        items.remove(item);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

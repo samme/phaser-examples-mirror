@@ -55,35 +55,35 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/iemouse.js" title="wip/iemouse.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/iemouse.js" download="" title="Download: wip/iemouse.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">function</span> <span class="nx">MainState</span> <span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
-<span class="nx">MainState</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">preload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">};</span>
-<span class="nx">MainState</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s2">"MouseDown: false"</span><span class="p">,</span> <span class="p">{</span>
-        <span class="na">font</span><span class="p">:</span> <span class="s2">"50px Arial"</span><span class="p">,</span>
-        <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span>
-        <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span>
-    <span class="p">});</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-<span class="p">};</span>
-<span class="nx">MainState</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">update</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</div>
+<pre class="highlight javascript"><code>function MainState () {
+}
+MainState.prototype.preload = function() {
+};
+MainState.prototype.create = function() {
+    this.text = this.add.text(this.world.centerX, this.world.centerY, "MouseDown: false", {
+        font: "50px Arial",
+        fill: "#ffffff",
+        align: "center"
+    });
+    this.text.anchor.set(0.5, 0.5);
+};
+MainState.prototype.update = function() {
 
-    <span class="c1">// this.text.setText(this.input.mousePointer.x);</span>
+    // this.text.setText(this.input.mousePointer.x);
 
 
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//This state is always false in IE 10 and 11</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s2">"MouseDown: true"</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s2">"MouseDown: false"</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (this.input.activePointer.isDown) { //This state is always false in IE 10 and 11
+        this.text.setText("MouseDown: true");
+    } else {
+        this.text.setText("MouseDown: false");
+    }
 
-<span class="p">};</span>
+};
 
-<span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="nx">MainState</span><span class="p">);</span>
-<span class="p">};</span></code></pre>
+window.onload = function() {
+    var game = new Phaser.Game(800, 500, Phaser.CANVAS, 'phaser-example', MainState);
+};</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

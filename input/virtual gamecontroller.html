@@ -55,198 +55,198 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/virtual%20gamecontroller.js" title="input/virtual gamecontroller.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/virtual%20gamecontroller.js" download="" title="Download: input/virtual gamecontroller.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span><span class="nx">update</span><span class="p">,</span><span class="na">render</span><span class="p">:</span><span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update:update,render:render });
 
 
-<span class="cm">/*
+/*
     virtual gamecontroller with phaser.js
     buttons, sprite(sheet)s (animation) and code of this example by valueerror - mario by nintendo ;-)
-*/</span>
+*/
 
-<span class="c1">//some global vars </span>
-<span class="kd">var</span> <span class="nx">fireballs</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">fireRate</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">nextFire</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">nextJump</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">player</span><span class="p">;</span> 
-<span class="kd">var</span> <span class="nx">left</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">right</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">duck</span><span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">fire</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">jump</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
+//some global vars 
+var fireballs;
+var fireRate = 300;
+var nextFire = 0;
+var nextJump = 0;
+var player; 
+var left=false;
+var right=false;
+var duck= false;
+var fire=false;
+var jump=false;
 
 
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">//spritesheet for animations</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mario'</span><span class="p">,</span> <span class="s1">'assets/misc/mariospritesheet-small.png'</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span> <span class="c1">// key, sourcefile, framesize x, framesize y</span>
-    <span class="c1">//background, ground, fireball images</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ground'</span><span class="p">,</span> <span class="s1">'assets/misc/2048x48-ground.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'clouds'</span><span class="p">,</span> <span class="s1">'assets/misc/clouds.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'fireball'</span><span class="p">,</span> <span class="s1">'assets/misc/fireball.png'</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">30</span><span class="p">);</span>
-    <span class="c1">//gamepad buttons</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'buttonvertical'</span><span class="p">,</span> <span class="s1">'assets/buttons/buttons-big/button-vertical.png'</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'buttonhorizontal'</span><span class="p">,</span> <span class="s1">'assets/buttons/buttons-big/button-horizontal.png'</span><span class="p">,</span><span class="mi">96</span><span class="p">,</span><span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'buttondiagonal'</span><span class="p">,</span> <span class="s1">'assets/buttons/buttons-big/button-diagonal.png'</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'buttonfire'</span><span class="p">,</span> <span class="s1">'assets/buttons/buttons-big/button-round-a.png'</span><span class="p">,</span><span class="mi">96</span><span class="p">,</span><span class="mi">96</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'buttonjump'</span><span class="p">,</span> <span class="s1">'assets/buttons/buttons-big/button-round-b.png'</span><span class="p">,</span><span class="mi">96</span><span class="p">,</span><span class="mi">96</span><span class="p">);</span>
-    <span class="c1">// fullscreen setup</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">scaleMode</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">ScaleManager</span><span class="p">.</span><span class="nx">SHOW_ALL</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">fullScreenScaleMode</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">ScaleManager</span><span class="p">.</span><span class="nx">EXACT_FIT</span><span class="p">;</span>
-<span class="p">}</span>
+function preload() {
+    //spritesheet for animations
+    game.load.spritesheet('mario', 'assets/misc/mariospritesheet-small.png',50,50); // key, sourcefile, framesize x, framesize y
+    //background, ground, fireball images
+    game.load.image('ground', 'assets/misc/2048x48-ground.png');
+    game.load.image('clouds', 'assets/misc/clouds.jpg');
+    game.load.image('fireball', 'assets/misc/fireball.png',40,30);
+    //gamepad buttons
+    game.load.spritesheet('buttonvertical', 'assets/buttons/buttons-big/button-vertical.png',64,64);
+    game.load.spritesheet('buttonhorizontal', 'assets/buttons/buttons-big/button-horizontal.png',96,64);
+    game.load.spritesheet('buttondiagonal', 'assets/buttons/buttons-big/button-diagonal.png',64,64);
+    game.load.spritesheet('buttonfire', 'assets/buttons/buttons-big/button-round-a.png',96,96);
+    game.load.spritesheet('buttonjump', 'assets/buttons/buttons-big/button-round-b.png',96,96);
+    // fullscreen setup
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">desktop</span><span class="p">){</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">gofull</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span> <span class="p">}</span> <span class="c1">//go fullscreen on mobile devices</span>
+function create() {
+    if (!game.device.desktop){ game.input.onDown.add(gofull, this); } //go fullscreen on mobile devices
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">P2JS</span><span class="p">);</span>  <span class="c1">//activate physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1200</span><span class="p">;</span>  <span class="c1">//realistic gravity</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span><span class="c1">//(x, y, width, height)</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">setBoundsToWorld</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span> <span class="c1">//(left, right, top, bottom, setCollisionGroup)</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">friction</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>   <span class="c1">// default friction between ground and player or fireballs</span>
+    game.physics.startSystem(Phaser.Physics.P2JS);  //activate physics
+    game.physics.p2.gravity.y = 1200;  //realistic gravity
+    game.world.setBounds(0, 0, 2000, 600);//(x, y, width, height)
+    game.physics.p2.setBoundsToWorld(true, true, false, true, false); //(left, right, top, bottom, setCollisionGroup)
+    game.physics.p2.friction = 5;   // default friction between ground and player or fireballs
 
-    <span class="nx">clouds</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2048</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'clouds'</span><span class="p">);</span> <span class="c1">//add tiling sprite to cover the whole game world</span>
-    <span class="nx">ground</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span><span class="o">-</span><span class="mi">24</span><span class="p">,</span><span class="s1">'ground'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">ground</span><span class="p">);</span>  <span class="c1">//enable physics so our player will not fall through ground but collide with it</span>
-    <span class="nx">ground</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="kr">static</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>    <span class="c1">// ground should not move</span>
+    clouds = game.add.tileSprite(0, 0, 2048, 600, 'clouds'); //add tiling sprite to cover the whole game world
+    ground = game.add.sprite(game.world.width/2, game.world.height-24,'ground');
+    game.physics.p2.enable(ground);  //enable physics so our player will not fall through ground but collide with it
+    ground.body.static=true;    // ground should not move
 
-    <span class="nx">fireballs</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>  <span class="c1">// add a new group for fireballs</span>
-    <span class="nx">fireballs</span><span class="p">.</span><span class="nx">createMultiple</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s1">'fireball'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>  <span class="c1">// create plenty of them hidden and out of the game world</span>
+    fireballs = game.add.group();  // add a new group for fireballs
+    fireballs.createMultiple(500, 'fireball', 0, false);  // create plenty of them hidden and out of the game world
 
-    <span class="c1">//setup our player</span>
-    <span class="nx">player</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">150</span><span class="p">,</span> <span class="s1">'mario'</span><span class="p">);</span> <span class="c1">//create and position player</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">player</span><span class="p">);</span>
-    <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">22</span><span class="p">);</span>  <span class="c1">// collision circle </span>
-    <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">fixedRotation</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span> <span class="c1">// do not rotate on collision</span>
-    <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">mass</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+    //setup our player
+    player = game.add.sprite(350, game.world.height - 150, 'mario'); //create and position player
+    game.physics.p2.enable(player);
+    player.body.setCircle(22);  // collision circle 
+    player.body.fixedRotation=true; // do not rotate on collision
+    player.body.mass = 4;
 
-    <span class="c1">// add some animations </span>
-    <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>  <span class="c1">// (key, framesarray, fps,repeat)</span>
-    <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'duck'</span><span class="p">,</span> <span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'duckwalk'</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">player</span><span class="p">);</span> <span class="c1">//always center player</span>
+    // add some animations 
+    player.animations.add('walk', [1,2,3,4], 10, true);  // (key, framesarray, fps,repeat)
+    player.animations.add('duck', [11], 0, true);
+    player.animations.add('duckwalk', [10,11,12], 3, true);
+    game.camera.follow(player); //always center player
 
-    <span class="c1">// create our virtual game controller buttons </span>
-    <span class="nx">buttonjump</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'buttonjump'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  <span class="c1">//game, x, y, key, callback, callbackContext, overFrame, outFrame, downFrame, upFrame</span>
-    <span class="nx">buttonjump</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>  <span class="c1">//our buttons should stay on the same place  </span>
-    <span class="nx">buttonjump</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">jump</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonjump</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">jump</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
-    <span class="nx">buttonjump</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">jump</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonjump</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">jump</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
+    // create our virtual game controller buttons 
+    buttonjump = game.add.button(600, 500, 'buttonjump', null, this, 0, 1, 0, 1);  //game, x, y, key, callback, callbackContext, overFrame, outFrame, downFrame, upFrame
+    buttonjump.fixedToCamera = true;  //our buttons should stay on the same place  
+    buttonjump.events.onInputOver.add(function(){jump=true;});
+    buttonjump.events.onInputOut.add(function(){jump=false;});
+    buttonjump.events.onInputDown.add(function(){jump=true;});
+    buttonjump.events.onInputUp.add(function(){jump=false;});
 
-    <span class="nx">buttonfire</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'buttonfire'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">buttonfire</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">buttonfire</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">fire</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonfire</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">fire</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
-    <span class="nx">buttonfire</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">fire</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonfire</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">fire</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>        
+    buttonfire = game.add.button(700, 500, 'buttonfire', null, this, 0, 1, 0, 1);
+    buttonfire.fixedToCamera = true;
+    buttonfire.events.onInputOver.add(function(){fire=true;});
+    buttonfire.events.onInputOut.add(function(){fire=false;});
+    buttonfire.events.onInputDown.add(function(){fire=true;});
+    buttonfire.events.onInputUp.add(function(){fire=false;});        
 
-    <span class="nx">buttonleft</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">472</span><span class="p">,</span> <span class="s1">'buttonhorizontal'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">buttonleft</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">buttonleft</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonleft</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
-    <span class="nx">buttonleft</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonleft</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
+    buttonleft = game.add.button(0, 472, 'buttonhorizontal', null, this, 0, 1, 0, 1);
+    buttonleft.fixedToCamera = true;
+    buttonleft.events.onInputOver.add(function(){left=true;});
+    buttonleft.events.onInputOut.add(function(){left=false;});
+    buttonleft.events.onInputDown.add(function(){left=true;});
+    buttonleft.events.onInputUp.add(function(){left=false;});
 
-    <span class="nx">buttonbottomleft</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">536</span><span class="p">,</span> <span class="s1">'buttondiagonal'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
-    <span class="nx">buttonbottomleft</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">buttonbottomleft</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span><span class="nx">duck</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonbottomleft</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span><span class="nx">duck</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
-    <span class="nx">buttonbottomleft</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span><span class="nx">duck</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonbottomleft</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span><span class="nx">duck</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
+    buttonbottomleft = game.add.button(32, 536, 'buttondiagonal', null, this, 6, 4, 6, 4);
+    buttonbottomleft.fixedToCamera = true;
+    buttonbottomleft.events.onInputOver.add(function(){left=true;duck=true;});
+    buttonbottomleft.events.onInputOut.add(function(){left=false;duck=false;});
+    buttonbottomleft.events.onInputDown.add(function(){left=true;duck=true;});
+    buttonbottomleft.events.onInputUp.add(function(){left=false;duck=false;});
 
-    <span class="nx">buttonright</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">472</span><span class="p">,</span> <span class="s1">'buttonhorizontal'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">buttonright</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">buttonright</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonright</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
-    <span class="nx">buttonright</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonright</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
+    buttonright = game.add.button(160, 472, 'buttonhorizontal', null, this, 0, 1, 0, 1);
+    buttonright.fixedToCamera = true;
+    buttonright.events.onInputOver.add(function(){right=true;});
+    buttonright.events.onInputOut.add(function(){right=false;});
+    buttonright.events.onInputDown.add(function(){right=true;});
+    buttonright.events.onInputUp.add(function(){right=false;});
 
-    <span class="nx">buttonbottomright</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">536</span><span class="p">,</span> <span class="s1">'buttondiagonal'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
-    <span class="nx">buttonbottomright</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">buttonbottomright</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span><span class="nx">duck</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonbottomright</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span><span class="nx">duck</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
-    <span class="nx">buttonbottomright</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span><span class="nx">duck</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttonbottomright</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span><span class="nx">duck</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
+    buttonbottomright = game.add.button(160, 536, 'buttondiagonal', null, this, 7, 5, 7, 5);
+    buttonbottomright.fixedToCamera = true;
+    buttonbottomright.events.onInputOver.add(function(){right=true;duck=true;});
+    buttonbottomright.events.onInputOut.add(function(){right=false;duck=false;});
+    buttonbottomright.events.onInputDown.add(function(){right=true;duck=true;});
+    buttonbottomright.events.onInputUp.add(function(){right=false;duck=false;});
 
-    <span class="nx">buttondown</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">96</span><span class="p">,</span> <span class="mi">536</span><span class="p">,</span> <span class="s1">'buttonvertical'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">buttondown</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">buttondown</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">duck</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttondown</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">duck</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
-    <span class="nx">buttondown</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">duck</span><span class="o">=</span><span class="kc">true</span><span class="p">;});</span>
-    <span class="nx">buttondown</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">duck</span><span class="o">=</span><span class="kc">false</span><span class="p">;});</span>
-<span class="p">};</span>
+    buttondown = game.add.button(96, 536, 'buttonvertical', null, this, 0, 1, 0, 1);
+    buttondown.fixedToCamera = true;
+    buttondown.events.onInputOver.add(function(){duck=true;});
+    buttondown.events.onInputOut.add(function(){duck=false;});
+    buttondown.events.onInputDown.add(function(){duck=true;});
+    buttondown.events.onInputUp.add(function(){duck=false;});
+};
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// define what should happen when a button is pressed</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">left</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">duck</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">right</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">duck</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
-    <span class="p">}</span> 
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">duck</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">left</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">right</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'duck'</span><span class="p">);</span>
-    <span class="p">}</span> 
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">duck</span> <span class="o">&amp;&amp;</span> <span class="nx">right</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'duckwalk'</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">duck</span> <span class="o">&amp;&amp;</span> <span class="nx">left</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'duckwalk'</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">loadTexture</span><span class="p">(</span><span class="s1">'mario'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">jump</span><span class="p">){</span> <span class="nx">jump_now</span><span class="p">();</span> <span class="nx">player</span><span class="p">.</span><span class="nx">loadTexture</span><span class="p">(</span><span class="s1">'mario'</span><span class="p">,</span> <span class="mi">5</span><span class="p">);}</span>  <span class="c1">//change to another frame of the spritesheet</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">fire</span><span class="p">){</span><span class="nx">fire_now</span><span class="p">();</span> <span class="nx">player</span><span class="p">.</span><span class="nx">loadTexture</span><span class="p">(</span><span class="s1">'mario'</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">duck</span><span class="p">){</span> <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">);}</span><span class="k">else</span><span class="p">{</span> <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">22</span><span class="p">);}</span>  <span class="c1">//when ducking create a smaller hitarea - (radius,offsetx,offsety)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">currentPointers</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">isMouse</span><span class="p">){</span> <span class="nx">fire</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span> <span class="nx">right</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span> <span class="nx">left</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span> <span class="nx">duck</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span> <span class="nx">jump</span><span class="o">=</span><span class="kc">false</span><span class="p">;}</span> <span class="c1">//this works around a "bug" where a button gets stuck in pressed state</span>
-<span class="p">};</span>
+function update() {
+    // define what should happen when a button is pressed
+    if (left && !duck) {
+        player.scale.x = -1;
+        player.body.moveLeft(500);
+        player.animations.play('walk');
+    }
+    else if (right && !duck) {
+        player.scale.x = 1;
+        player.body.moveRight(500);
+        player.animations.play('walk');
+    } 
+    else if (duck && !left && !right) {
+        player.body.velocity.x=0;
+        player.animations.play('duck');
+    } 
+    else if (duck && right) {
+        player.scale.x = 1;
+        player.body.moveRight(200);
+        player.animations.play('duckwalk');
+    }
+    else if (duck && left) {
+        player.scale.x = -1;
+        player.body.moveLeft(200);
+        player.animations.play('duckwalk');
+    }
+    else {
+        player.loadTexture('mario', 0);
+    }
+    if (jump){ jump_now(); player.loadTexture('mario', 5);}  //change to another frame of the spritesheet
+    if (fire){fire_now(); player.loadTexture('mario', 8); }
+    if (duck){ player.body.setCircle(16,0,6);}else{ player.body.setCircle(22);}  //when ducking create a smaller hitarea - (radius,offsetx,offsety)
+    if (game.input.currentPointers == 0 && !game.input.activePointer.isMouse){ fire=false; right=false; left=false; duck=false; jump=false;} //this works around a "bug" where a button gets stuck in pressed state
+};
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">(){</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'jump:'</span> <span class="o">+</span> <span class="nx">jump</span> <span class="o">+</span> <span class="s1">' duck:'</span> <span class="o">+</span> <span class="nx">duck</span> <span class="o">+</span> <span class="s1">' left:'</span> <span class="o">+</span> <span class="nx">left</span> <span class="o">+</span> <span class="s1">' right:'</span> <span class="o">+</span> <span class="nx">right</span> <span class="o">+</span> <span class="s1">' fire:'</span> <span class="o">+</span> <span class="nx">fire</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
-<span class="p">}</span>
+function render(){
+    game.debug.text('jump:' + jump + ' duck:' + duck + ' left:' + left + ' right:' + right + ' fire:' + fire, 20, 20);
+}
 
 
-<span class="c1">//some useful functions</span>
-<span class="kd">function</span> <span class="nx">gofull</span><span class="p">()</span> <span class="p">{</span> <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">startFullScreen</span><span class="p">(</span><span class="kc">false</span><span class="p">);}</span>
-<span class="kd">function</span> <span class="nx">jump_now</span><span class="p">(){</span>  <span class="c1">//jump with small delay</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="nx">nextJump</span> <span class="p">){</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">600</span><span class="p">);</span>
-        <span class="nx">nextJump</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="mi">900</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="kd">function</span> <span class="nx">fire_now</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="nx">nextFire</span><span class="p">){</span>
-        <span class="nx">nextFire</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="nx">fireRate</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">fireball</span> <span class="o">=</span> <span class="nx">fireballs</span><span class="p">.</span><span class="nx">getFirstExists</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span> <span class="c1">// get the first created fireball that no exists atm</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">fireball</span><span class="p">){</span>
-            <span class="nx">fireball</span><span class="p">.</span><span class="nx">exists</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>  <span class="c1">// come to existance !</span>
-            <span class="nx">fireball</span><span class="p">.</span><span class="nx">lifespan</span><span class="o">=</span><span class="mi">2500</span><span class="p">;</span>  <span class="c1">// remove the fireball after 2500 milliseconds - back to non-existance</span>
-            <span class="k">if</span><span class="p">(</span><span class="nx">player</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>  <span class="c1">// if player looks to the left - create the fireball on his left side</span>
-                <span class="nx">fireball</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">player</span><span class="p">.</span><span class="nx">x</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="nx">player</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-                <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">fireball</span><span class="p">);</span>
-                <span class="nx">fireball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">800</span><span class="p">);</span>
-                <span class="nx">fireball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveDown</span><span class="p">(</span><span class="mi">180</span><span class="p">);</span>
-            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-                <span class="nx">fireball</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">player</span><span class="p">.</span><span class="nx">x</span><span class="o">+</span><span class="mi">20</span><span class="p">,</span> <span class="nx">player</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-                <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">fireball</span><span class="p">);</span>
-                <span class="nx">fireball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">(</span><span class="mi">800</span><span class="p">);</span>
-                <span class="nx">fireball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveDown</span><span class="p">(</span><span class="mi">180</span><span class="p">);</span>
-            <span class="p">}</span>
-            <span class="nx">fireball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre>
+//some useful functions
+function gofull() { game.scale.startFullScreen(false);}
+function jump_now(){  //jump with small delay
+    if (game.time.now > nextJump ){
+        player.body.moveUp(600);
+        nextJump = game.time.now + 900;
+    }
+}
+function fire_now() {
+    if (game.time.now > nextFire){
+        nextFire = game.time.now + fireRate;
+        var fireball = fireballs.getFirstExists(false); // get the first created fireball that no exists atm
+        if (fireball){
+            fireball.exists = true;  // come to existance !
+            fireball.lifespan=2500;  // remove the fireball after 2500 milliseconds - back to non-existance
+            if(player.scale.x == -1){  // if player looks to the left - create the fireball on his left side
+                fireball.reset(player.x-20, player.y);
+                game.physics.p2.enable(fireball);
+                fireball.body.moveLeft(800);
+                fireball.body.moveDown(180);
+            }else{
+                fireball.reset(player.x+20, player.y);
+                game.physics.p2.enable(fireball);
+                fireball.body.moveRight(800);
+                fireball.body.moveDown(180);
+            }
+            fireball.body.setCircle(10);
+        }
+    }
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

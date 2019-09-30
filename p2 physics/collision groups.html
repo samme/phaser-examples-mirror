@@ -55,133 +55,134 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/p2%20physics/collision%20groups.js" title="p2 physics/collision groups.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/p2%20physics/collision%20groups.js" download="" title="Download: p2 physics/collision groups.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'stars'</span><span class="p">,</span> <span class="s1">'assets/misc/starfield.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'ship'</span><span class="p">,</span> <span class="s1">'assets/sprites/humstar.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'panda'</span><span class="p">,</span> <span class="s1">'assets/sprites/spinObj_01.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sweet'</span><span class="p">,</span> <span class="s1">'assets/sprites/spinObj_06.png'</span><span class="p">);</span>
+    game.load.image('stars', 'assets/misc/starfield.jpg');
+    game.load.spritesheet('ship', 'assets/sprites/humstar.png', 32, 32);
+    game.load.image('panda', 'assets/sprites/spinObj_01.png');
+    game.load.image('sweet', 'assets/sprites/spinObj_06.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">ship</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">starfield</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var ship;
+var starfield;
+var cursors;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Enable P2</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">P2JS</span><span class="p">);</span>
+    //  Enable P2
+    game.physics.startSystem(Phaser.Physics.P2JS);
 
-    <span class="c1">//  Turn on impact events for the world, without this we get no collision callbacks</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">setImpactEvents</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    //  Turn on impact events for the world, without this we get no collision callbacks
+    game.physics.p2.setImpactEvents(true);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">restitution</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">;</span>
+    game.physics.p2.restitution = 0.8;
 
-    <span class="c1">//  Create our collision groups. One for the player, one for the pandas</span>
-    <span class="kd">var</span> <span class="nx">playerCollisionGroup</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">createCollisionGroup</span><span class="p">();</span>
-    <span class="kd">var</span> <span class="nx">pandaCollisionGroup</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">createCollisionGroup</span><span class="p">();</span>
+    //  Create our collision groups. One for the player, one for the pandas
+    var playerCollisionGroup = game.physics.p2.createCollisionGroup();
+    var pandaCollisionGroup = game.physics.p2.createCollisionGroup();
 
-    <span class="c1">//  This part is vital if you want the objects with their own collision groups to still collide with the world bounds</span>
-    <span class="c1">//  (which we do) - what this does is adjust the bounds to use its own collision group.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">updateBoundsCollisionGroup</span><span class="p">();</span>
+    //  This part is vital if you want the objects with their own collision groups to still collide with the world bounds
+    //  (which we do) - what this does is adjust the bounds to use its own collision group.
+    game.physics.p2.updateBoundsCollisionGroup();
 
-    <span class="nx">starfield</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'stars'</span><span class="p">);</span>
-    <span class="nx">starfield</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    starfield = game.add.tileSprite(0, 0, 800, 600, 'stars');
+    starfield.fixedToCamera = true;
 
-    <span class="kd">var</span> <span class="nx">pandas</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">pandas</span><span class="p">.</span><span class="nx">enableBody</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">pandas</span><span class="p">.</span><span class="nx">physicsBodyType</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">P2JS</span><span class="p">;</span>
+    var pandas = game.add.group();
+    pandas.enableBody = true;
+    pandas.physicsBodyType = Phaser.Physics.P2JS;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">panda</span> <span class="o">=</span> <span class="nx">pandas</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'panda'</span><span class="p">);</span>
-        <span class="nx">panda</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
+    for (var i = 0; i < 4; i++)
+    {
+        var panda = pandas.create(game.world.randomX, game.world.randomY, 'panda');
+        panda.body.setRectangle(40, 40);
 
-        <span class="c1">//  Tell the panda to use the pandaCollisionGroup </span>
-        <span class="nx">panda</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCollisionGroup</span><span class="p">(</span><span class="nx">pandaCollisionGroup</span><span class="p">);</span>
+        //  Tell the panda to use the pandaCollisionGroup 
+        panda.body.setCollisionGroup(pandaCollisionGroup);
 
-        <span class="c1">//  Pandas will collide against themselves and the player</span>
-        <span class="c1">//  If you don't set this they'll not collide with anything.</span>
-        <span class="c1">//  The first parameter is either an array or a single collision group.</span>
-        <span class="nx">panda</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collides</span><span class="p">([</span><span class="nx">pandaCollisionGroup</span><span class="p">,</span> <span class="nx">playerCollisionGroup</span><span class="p">]);</span>
-    <span class="p">}</span>
+        //  Pandas will collide against themselves and the player
+        //  If you don't set this they'll not collide with anything.
+        //  The first parameter is either an array or a single collision group.
+        panda.body.collides([pandaCollisionGroup, playerCollisionGroup]);
+    }
 
-    <span class="c1">//  Create our ship sprite</span>
-    <span class="nx">ship</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'ship'</span><span class="p">);</span>
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'fly'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'fly'</span><span class="p">);</span>
+    //  Create our ship sprite
+    ship = game.add.sprite(200, 200, 'ship');
+    ship.scale.set(2);
+    ship.smoothed = false;
+    ship.animations.add('fly', [0,1,2,3,4,5], 10, true);
+    ship.play('fly');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">ship</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">28</span><span class="p">);</span>
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">fixedRotation</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    game.physics.p2.enable(ship, false);
+    ship.body.setCircle(28);
+    ship.body.fixedRotation = true;
 
-    <span class="c1">//  Set the ships collision group</span>
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCollisionGroup</span><span class="p">(</span><span class="nx">playerCollisionGroup</span><span class="p">);</span>
+    //  Set the ships collision group
+    ship.body.setCollisionGroup(playerCollisionGroup);
 
-    <span class="c1">//  The ship will collide with the pandas, and when it strikes one the hitPanda callback will fire, causing it to alpha out a bit</span>
-    <span class="c1">//  When pandas collide with each other, nothing happens to them.</span>
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collides</span><span class="p">(</span><span class="nx">pandaCollisionGroup</span><span class="p">,</span> <span class="nx">hitPanda</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  The ship will collide with the pandas, and when it strikes one the hitPanda callback will fire, causing it to alpha out a bit
+    //  When pandas collide with each other, nothing happens to them.
+    ship.body.collides(pandaCollisionGroup, hitPanda, this);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">ship</span><span class="p">);</span>
+    game.camera.follow(ship);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">hitPanda</span><span class="p">(</span><span class="nx">body1</span><span class="p">,</span> <span class="nx">body2</span><span class="p">)</span> <span class="p">{</span>
+function hitPanda(body1, body2) {
 
-    <span class="c1">//  body1 is the space ship (as it's the body that owns the callback)</span>
-    <span class="c1">//  body2 is the body it impacted with, in this case our panda</span>
-    <span class="c1">//  As body2 is a Phaser.Physics.P2.Body object, you access its own (the sprite) via the sprite property:</span>
-    <span class="nx">body2</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">-=</span> <span class="mf">0.1</span><span class="p">;</span>
+    //  body1 is the space ship (as it's the body that owns the callback)
+    //  body2 is the body it impacted with, in this case our panda
+    //  As body2 is a Phaser.Physics.P2.Body object, you access its own (the sprite) via the sprite property:
+    body2.sprite.alpha -= 0.1;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setZeroVelocity</span><span class="p">();</span>
+    ship.body.setZeroVelocity();
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        ship.body.moveLeft(200);
+    }
+    else if (cursors.right.isDown)
+    {
+        ship.body.moveRight(200);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveDown</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        ship.body.moveUp(200);
+    }
+    else if (cursors.down.isDown)
+    {
+        ship.body.moveDown(200);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">atLimit</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">starfield</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="p">(</span><span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">*</span> <span class="mi">16</span><span class="p">)</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">physicsElapsed</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (!game.camera.atLimit.x)
+    {
+        starfield.tilePosition.x += (ship.body.velocity.x * 16) * game.time.physicsElapsed;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">atLimit</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">starfield</span><span class="p">.</span><span class="nx">tilePosition</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="p">(</span><span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="mi">16</span><span class="p">)</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">physicsElapsed</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (!game.camera.atLimit.y)
+    {
+        starfield.tilePosition.y += (ship.body.velocity.y * 16) * game.time.physicsElapsed;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Collide with the Pandas!'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text('Collide with the Pandas!', 32, 32);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

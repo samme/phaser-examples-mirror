@@ -55,36 +55,37 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/audio/ios.js" title="audio/ios.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/audio/ios.js" download="" title="Download: audio/ios.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">//  Comment out the line below to see the rocker switch work as expected</span>
-<span class="nb">window</span><span class="p">.</span><span class="nx">PhaserGlobal</span> <span class="o">=</span> <span class="p">{</span> <span class="na">disableWebAudio</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+</div>
+<pre class="highlight javascript"><code>
+//  Comment out the line below to see the rocker switch work as expected
+window.PhaserGlobal = { disableWebAudio: true };
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(400, 400, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">disableVisibilityChange</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">scaleMode</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">ScaleManager</span><span class="p">.</span><span class="nx">SHOW_ALL</span><span class="p">;</span>
+    game.stage.disableVisibilityChange = true;
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'music'</span><span class="p">,</span> <span class="s1">'rave_digger.mp3'</span><span class="p">);</span>
+    game.load.audio('music', 'rave_digger.mp3');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#182d3b'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#182d3b';
 
-    <span class="nx">music</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'music'</span><span class="p">);</span>
+    music = game.add.audio('music');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">music</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span> <span class="p">});</span>
+    game.input.onDown.addOnce(function() { music.play(); });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">soundInfo</span><span class="p">(</span><span class="nx">music</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.soundInfo(music, 20, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

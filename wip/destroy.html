@@ -55,67 +55,68 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/destroy.js" title="wip/destroy.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/destroy.js" download="" title="Download: wip/destroy.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render }, false);
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'assets/pics/backscroll.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'button'</span><span class="p">,</span> <span class="s1">'assets/buttons/button_sprite_sheet.png'</span><span class="p">,</span> <span class="mi">193</span><span class="p">,</span> <span class="mi">71</span><span class="p">);</span>
+	game.load.image('pic', 'assets/pics/backscroll.png');
+    game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">g</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">p</span><span class="p">;</span>
+var sprite;
+var sprite2;
+var g;
+var p;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="c1">// game.stage.backgroundColor = '#ff5500';</span>
+	// game.stage.backgroundColor = '#ff5500';
 
-	<span class="c1">// game.renderer.useFillRect = false;</span>
+	// game.renderer.useFillRect = false;
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span> <span class="o">-</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">tint</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-	<span class="c1">// sprite = game.add.sprite(0.5, 0, 'pic');</span>
-	<span class="c1">// sprite2 = game.add.sprite(0, 300, 'pic');</span>
+    sprite = game.add.button(game.world.centerX - 95, 400, 'button', tint, this, 2, 1, 0);
+	// sprite = game.add.sprite(0.5, 0, 'pic');
+	// sprite2 = game.add.sprite(0, 300, 'pic');
 
-	<span class="c1">// game.physics.enable(sprite);</span>
+	// game.physics.enable(sprite);
 
-	<span class="c1">// sprite.inputEnabled = true;</span>
-	<span class="c1">// sprite.events.onInputDown.add(tint, this);</span>
-	<span class="c1">// sprite.events.onInputUp.add(wibble, this);</span>
+	// sprite.inputEnabled = true;
+	// sprite.events.onInputDown.add(tint, this);
+	// sprite.events.onInputUp.add(wibble, this);
 
-	<span class="c1">// game.add.tween(sprite).to({y: 500}, 3000, Phaser.Easing.Linear.None, true);</span>
+	// game.add.tween(sprite).to({y: 500}, 3000, Phaser.Easing.Linear.None, true);
 
-	<span class="c1">// p = new PIXI.Point(43, 45);</span>
+	// p = new PIXI.Point(43, 45);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tint</span><span class="p">()</span> <span class="p">{</span>
+function tint() {
 
-	<span class="nx">sprite</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
-	<span class="c1">// sprite.tint = Math.random() * 0xFFFFFF;</span>
-	<span class="c1">// sprite2.tint = Math.random() * 0xFFFFFF;</span>
+	sprite.destroy();
+	// sprite.tint = Math.random() * 0xFFFFFF;
+	// sprite2.tint = Math.random() * 0xFFFFFF;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">wibble</span><span class="p">()</span> <span class="p">{</span>
+function wibble() {
 
-	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+	console.log(sprite);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="c1">// game.debug.text(sprite.position.y, 32, 32);</span>
+	// game.debug.text(sprite.position.y, 32, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

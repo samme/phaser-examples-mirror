@@ -55,24 +55,24 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/text%20line%20spacing.js" title="text/text line spacing.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/text%20line%20spacing.js" download="" title="Download: text/text line spacing.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#5d5d5d'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#5d5d5d';
 
-    <span class="kd">var</span> <span class="nx">haiku</span> <span class="o">=</span> <span class="s2">"Turtles and mushrooms\nYou are in the wrong castle\nFireball mustache"</span><span class="p">;</span>
+    var haiku = "Turtles and mushrooms\nYou are in the wrong castle\nFireball mustache";
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="nx">haiku</span><span class="p">,</span>  <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">backgroundColor</span><span class="p">:</span> <span class="s1">'rgba(0,255,0,0.25)'</span> <span class="p">});</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">lineSpacing</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span><span class="p">;</span>
+    var text = game.add.text(100, 64, haiku,  { font: "32px Arial", fill: '#ffffff', backgroundColor: 'rgba(0,255,0,0.25)' });
+    text.lineSpacing = -20;
 
-    <span class="kd">var</span> <span class="nx">haiku2</span> <span class="o">=</span> <span class="s2">"Green hat, Master Sword\nMonsters and chickens beware\nMoney making game"</span><span class="p">;</span>
+    var haiku2 = "Green hat, Master Sword\nMonsters and chickens beware\nMoney making game";
 
-    <span class="kd">var</span> <span class="nx">text2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">haiku2</span><span class="p">,</span>  <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">backgroundColor</span><span class="p">:</span> <span class="s1">'rgba(0,255,0,0.25)'</span> <span class="p">});</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">lineSpacing</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+    var text2 = game.add.text(100, 300, haiku2,  { font: "32px Arial", fill: '#ffffff', backgroundColor: 'rgba(0,255,0,0.25)' });
+    text2.lineSpacing = 40;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

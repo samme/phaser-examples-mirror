@@ -55,85 +55,85 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particlestorm/block%20trail.js" title="particlestorm/block trail.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particlestorm/block%20trail.js" download="" title="Download: particlestorm/block trail.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Particle Storm Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/particlestorm
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">manager</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">particle</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+var manager = null;
+var emitter = null;
+var particle = null;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">forceSingleUpdate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    game.forceSingleUpdate = true;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/particlestorm/logo-flat.png'</span><span class="p">);</span>
+    game.load.image('logo', 'assets/particlestorm/logo-flat.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="s1">'assets/particlestorm/particles/'</span><span class="p">;</span>
+    game.load.path = 'assets/particlestorm/particles/';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">images</span><span class="p">([</span><span class="s1">'ball1'</span><span class="p">,</span> <span class="s1">'block1'</span><span class="p">,</span> <span class="s1">'block2'</span><span class="p">,</span> <span class="s1">'block3'</span><span class="p">,</span> <span class="s1">'4x4'</span><span class="p">,</span> <span class="s1">'spark'</span><span class="p">]);</span>
+    game.load.images(['ball1', 'block1', 'block2', 'block3', '4x4', 'spark']);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">manager</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">ParticleStorm</span><span class="p">);</span>
+    manager = this.game.plugins.add(Phaser.ParticleStorm);
 
-    <span class="c1">//  Emit children within a rectangle shape - rect.x/y is relative to parent, not absolute</span>
+    //  Emit children within a rectangle shape - rect.x/y is relative to parent, not absolute
 
-    <span class="kd">var</span> <span class="nx">parent</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">image</span><span class="p">:</span> <span class="s1">'block1'</span><span class="p">,</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="mi">6000</span><span class="p">,</span>
-        <span class="na">vx</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="na">emit</span><span class="p">:</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"child"</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span> <span class="na">rect</span><span class="p">:</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="na">width</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="na">height</span><span class="p">:</span> <span class="mi">32</span> <span class="p">}</span> <span class="p">}</span>
-    <span class="p">};</span>
+    var parent = {
+        image: 'block1',
+        lifespan: 6000,
+        vx: 2,
+        emit: { name: "child", value: 0.05, rect: { x: -16, y: -16, width: 32, height: 32 } }
+    };
 
-    <span class="kd">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span>
-        <span class="na">image</span><span class="p">:</span> <span class="s1">'4x4'</span><span class="p">,</span>
-        <span class="na">sendToBack</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-        <span class="na">vx</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span> <span class="p">}</span>
-    <span class="p">};</span>
+    var child = {
+        lifespan: 4000,
+        image: '4x4',
+        sendToBack: true,
+        vx: { min: -1, max: -2 }
+    };
 
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">parent</span><span class="p">);</span>
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'child'</span><span class="p">,</span> <span class="nx">child</span><span class="p">);</span>
+    manager.addData('basic', parent);
+    manager.addData('child', child);
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createEmitter</span><span class="p">();</span>
+    emitter = manager.createEmitter();
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    emitter.addToWorld();
 
-    <span class="c1">//  Emit a single parent particle (which will automatically spawn children)</span>
-    <span class="nx">particle</span> <span class="o">=</span> <span class="nx">emitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">350</span><span class="p">);</span>
+    //  Emit a single parent particle (which will automatically spawn children)
+    particle = emitter.emit('basic', 100, 350);
 
-    <span class="c1">//  Emit a new one on click</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">release</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Emit a new one on click
+    game.input.onDown.add(release, this);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">487</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
+    game.add.image(432, 487, 'logo');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">release</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function release(pointer) {
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+    emitter.emit('basic', 0, pointer.y);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Click to release"</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Lifespan: "</span> <span class="o">+</span> <span class="nx">particle</span><span class="p">.</span><span class="nx">lifePercent</span> <span class="o">+</span> <span class="s1">'%'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text("Click to release", 32, 32);
+    game.debug.text("Lifespan: " + particle.lifePercent + '%', 32, 64);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">522</span><span class="p">);</span>
+    emitter.debug(432, 522);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

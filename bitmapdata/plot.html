@@ -55,59 +55,60 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bitmapdata/plot.js" title="bitmapdata/plot.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bitmapdata/plot.js" download="" title="Download: bitmapdata/plot.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">star</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">texture1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span> <span class="na">res</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="na">pow</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span> <span class="na">angle</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="na">height</span><span class="p">:</span> <span class="mi">6</span> <span class="p">};</span>
+var star;
+var texture1;
+var data = { res: 6, pow: 10000, angle: 0.1, height: 6 };
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'star'</span><span class="p">,</span> <span class="s1">'assets/sprites/chunk.png'</span><span class="p">);</span>
-    <span class="c1">// game.load.image('star', 'assets/sprites/jets.png');</span>
+    game.load.image('star', 'assets/sprites/chunk.png');
+    // game.load.image('star', 'assets/sprites/jets.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">star</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'star'</span><span class="p">);</span>
+    star = game.make.sprite(0, 0, 'star');
 
-    <span class="nx">texture1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">renderTexture</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'texture1'</span><span class="p">);</span>
+    texture1 = game.add.renderTexture(800, 600, 'texture1');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">texture1</span><span class="p">);</span>
+    game.add.sprite(0, 0, texture1);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">data</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">height</span><span class="p">:</span> <span class="mi">12</span> <span class="p">},</span> <span class="mi">3000</span><span class="p">,</span> <span class="s2">"Sine.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">data</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">angle</span><span class="p">:</span> <span class="mf">1.0</span> <span class="p">},</span> <span class="mi">4000</span><span class="p">,</span> <span class="s2">"Linear"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(data).to( { height: 12 }, 3000, "Sine.easeInOut", true, 4000, -1, true);
+    game.add.tween(data).to( { angle: 1.0 }, 4000, "Linear", true, 0, -1, true);
  
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">plot</span><span class="p">()</span> <span class="p">{</span>
+function plot() {
 
-    <span class="nx">texture1</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+    texture1.clear();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">;</span> <span class="nx">x</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">res</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">((</span><span class="nx">data</span><span class="p">.</span><span class="nx">pow</span><span class="p">)</span> <span class="o">-</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">)</span> <span class="o">/</span> <span class="nx">data</span><span class="p">.</span><span class="nx">res</span><span class="p">);</span>
+    for (var x = -100; x <= 100; x += 2)
+    {
+        var v = data.res * Math.floor(Math.sqrt((data.pow) - x * x) / data.res);
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">v</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&gt;</span> <span class="o">-</span><span class="nx">v</span><span class="p">;</span> <span class="nx">y</span> <span class="o">-=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">res</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="p">(</span><span class="mi">32</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">y</span><span class="p">)</span> <span class="o">/</span> <span class="nx">data</span><span class="p">.</span><span class="nx">height</span><span class="p">))</span> <span class="o">+</span> <span class="nx">data</span><span class="p">.</span><span class="nx">angle</span> <span class="o">*</span> <span class="nx">y</span><span class="p">;</span>
+        for (var y = v; y > -v; y -= data.res)
+        {
+            var z = (32 * Math.sin(Math.sqrt(x * x + y * y) / data.height)) + data.angle * y;
 
-            <span class="kd">var</span> <span class="nx">drawX</span> <span class="o">=</span> <span class="mi">400</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">);</span>
-            <span class="kd">var</span> <span class="nx">drawY</span> <span class="o">=</span> <span class="mi">300</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">z</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+            var drawX = 400 + Math.floor(x * 3);
+            var drawY = 300 + Math.floor(z * 2);
 
-            <span class="nx">texture1</span><span class="p">.</span><span class="nx">renderRawXY</span><span class="p">(</span><span class="nx">star</span><span class="p">,</span> <span class="nx">drawX</span><span class="p">,</span> <span class="nx">drawY</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+            texture1.renderRawXY(star, drawX, drawY, false);
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">plot</span><span class="p">();</span>
+    plot();
  
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

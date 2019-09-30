@@ -55,97 +55,98 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/demoscene/textwriter.js" title="demoscene/textwriter.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/demoscene/textwriter.js" download="" title="Download: demoscene/textwriter.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">//  10 x 8</span>
-<span class="c1">// var game = new Phaser.Game(320, 256, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });</span>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">320</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mi">256</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+//  10 x 8
+// var game = new Phaser.Game(320, 256, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(320*2, 256*2, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'knightHawks'</span><span class="p">,</span> <span class="s1">'assets/demoscene/knighthawks.png'</span><span class="p">);</span>
-    <span class="c1">// game.load.image('knightHawks', 'assets/fonts/retroFonts/knighthawks_font.png');</span>
-    <span class="c1">// game.load.image('knightHawks', 'assets/fonts/retroFonts/KNIGHT3.png');</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'raster'</span><span class="p">,</span> <span class="s1">'assets/demoscene/sunset-raster.png'</span><span class="p">);</span>
-    <span class="c1">// game.load.image('raster', 'assets/demoscene/multi-color-raster.png');</span>
+    game.load.image('knightHawks', 'assets/demoscene/knighthawks.png');
+    // game.load.image('knightHawks', 'assets/fonts/retroFonts/knighthawks_font.png');
+    // game.load.image('knightHawks', 'assets/fonts/retroFonts/KNIGHT3.png');
+    game.load.image('raster', 'assets/demoscene/sunset-raster.png');
+    // game.load.image('raster', 'assets/demoscene/multi-color-raster.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">font</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">letters</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">pos</span> <span class="o">=</span> <span class="p">[];</span>
+var font;
+var letters = [];
+var pos = [];
 
-<span class="kd">var</span> <span class="nx">data</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">scale</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+var data;
+var scale = 2;
+var page = -1;
 
-<span class="kd">var</span> <span class="nx">bfont</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">alpha</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mask</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">();</span>
+var bfont;
+var alpha;
+var mask = new Phaser.Rectangle();
 
-<span class="kd">var</span> <span class="nx">scroller</span> <span class="o">=</span> <span class="p">[</span> 
-                <span class="s2">"----------"</span><span class="p">,</span>
-                <span class="s2">"- PHASER -"</span><span class="p">,</span> 
-                <span class="s2">"----------"</span><span class="p">,</span> 
-                <span class="s2">"- 2.1.0  -"</span><span class="p">,</span> 
-                <span class="s2">"- IS IN  -"</span><span class="p">,</span> 
-                <span class="s2">"- DA     -"</span><span class="p">,</span> 
-                <span class="s2">"- HOUSE! -"</span><span class="p">,</span> 
-                <span class="s2">"----------"</span><span class="p">,</span> 
+var scroller = [ 
+                "----------",
+                "- PHASER -", 
+                "----------", 
+                "- 2.1.0  -", 
+                "- IS IN  -", 
+                "- DA     -", 
+                "- HOUSE! -", 
+                "----------", 
 
-                <span class="s2">"THIS IS   "</span><span class="p">,</span>
-                <span class="s2">"  PHOTON  "</span><span class="p">,</span>
-                <span class="s2">"  STORM   "</span><span class="p">,</span> 
-                <span class="s2">" BRINGING "</span><span class="p">,</span> 
-                <span class="s2">" YOU HIS  "</span><span class="p">,</span> 
-                <span class="s2">"TEXTWRITER"</span><span class="p">,</span> 
-                <span class="s2">"EFFECT IN "</span><span class="p">,</span> 
-                <span class="s2">"PHASER ..."</span><span class="p">,</span> 
+                "THIS IS   ",
+                "  PHOTON  ",
+                "  STORM   ", 
+                " BRINGING ", 
+                " YOU HIS  ", 
+                "TEXTWRITER", 
+                "EFFECT IN ", 
+                "PHASER ...", 
 
-                <span class="s2">"I WONDER  "</span><span class="p">,</span>
-                <span class="s2">"  IF THIS "</span><span class="p">,</span>
-                <span class="s2">"  WILL    "</span><span class="p">,</span> 
-                <span class="s2">"   WORK   "</span><span class="p">,</span> 
-                <span class="s2">" PROPERLY "</span><span class="p">,</span> 
-                <span class="s2">"OR IF THE "</span><span class="p">,</span> 
-                <span class="s2">"STRANGE   "</span><span class="p">,</span> 
-                <span class="s2">"BUGSSSS   "</span><span class="p">,</span> 
-                <span class="p">];</span>
+                "I WONDER  ",
+                "  IF THIS ",
+                "  WILL    ", 
+                "   WORK   ", 
+                " PROPERLY ", 
+                "OR IF THE ", 
+                "STRANGE   ", 
+                "BUGSSSS   ", 
+                ];
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// makeRasterFont();</span>
+    // makeRasterFont();
 
-    <span class="c1">// font = game.add.retroFont('knightHawks', 31, 25, Phaser.RetroFont.TEXT_SET6 + "*", 10, 1, 1);</span>
-    <span class="nx">font</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">retroFont</span><span class="p">(</span><span class="s1">'knightHawks'</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RetroFont</span><span class="p">.</span><span class="nx">TEXT_SET2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    // font = game.add.retroFont('knightHawks', 31, 25, Phaser.RetroFont.TEXT_SET6 + "*", 10, 1, 1);
+    font = game.add.retroFont('knightHawks', 31, 25, Phaser.RetroFont.TEXT_SET2, 10, 1, 0);
 
-    <span class="c1">//  There can only be 80 letters on-screen at once (10x8) so generate them all now</span>
+    //  There can only be 80 letters on-screen at once (10x8) so generate them all now
 
-    <span class="c1">//  Scale 1:1</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="c1">// var scale = 1;</span>
-    <span class="c1">// var tx = 32;</span>
-    <span class="c1">// var ty = 32;</span>
-    <span class="c1">// var hx = 16;</span>
-    <span class="c1">// var hy = 16;</span>
+    //  Scale 1:1
+    var x = 0;
+    var y = 0;
+    // var scale = 1;
+    // var tx = 32;
+    // var ty = 32;
+    // var hx = 16;
+    // var hy = 16;
 
-    <span class="c1">//  Scale 2:1</span>
-    <span class="nx">scale</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">tx</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">ty</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">hx</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">hy</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+    //  Scale 2:1
+    scale = 2;
+    var tx = 64;
+    var ty = 64;
+    var hx = 32;
+    var hy = 32;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    game.stage.smoothed = false;
 
-    <span class="c1">//  In reverse so they overlap in the correct order</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  For some reason using a BMD here doesn't allow us to share the texture - need to investigate why</span>
+    //  In reverse so they overlap in the correct order
+    for (var i = 0; i < 80; i++)
+    {
+        //  For some reason using a BMD here doesn't allow us to share the texture - need to investigate why
 
-        <span class="kd">var</span> <span class="nx">letter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'knightHawks'</span><span class="p">);</span>
+        var letter = game.add.sprite(game.world.centerX, game.world.centerY, 'knightHawks');
 
-<span class="cm">/*
+/*
 // the various blend modes supported by pixi
 PIXI.blendModes = {
     NORMAL:0,
@@ -166,138 +167,138 @@ PIXI.blendModes = {
     COLOR:15,
     LUMINOSITY:16
 };
- */</span>
+ */
 
-        <span class="c1">// letter.blendMode = PIXI.blendModes.OVERLAY;</span>
-        <span class="nx">letter</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-        <span class="nx">letter</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-        <span class="nx">letter</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">loadFrameData</span><span class="p">(</span><span class="nx">font</span><span class="p">.</span><span class="nx">frameData</span><span class="p">,</span> <span class="mi">48</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">sendToBack</span><span class="p">(</span><span class="nx">letter</span><span class="p">);</span>
+        // letter.blendMode = PIXI.blendModes.OVERLAY;
+        letter.scale.set(0);
+        letter.anchor.set(0.5);
+        letter.animations.loadFrameData(font.frameData, 48);
+        this.world.sendToBack(letter);
 
-        <span class="nx">letters</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">letter</span><span class="p">);</span>
-        <span class="nx">pos</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">hx</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">y</span> <span class="o">+</span> <span class="nx">hy</span> <span class="p">}</span> <span class="p">);</span> <span class="c1">// add 16 because of the anchor</span>
+        letters.push(letter);
+        pos.push( { x: x + hx, y: y + hy } ); // add 16 because of the anchor
 
-        <span class="nx">x</span> <span class="o">+=</span> <span class="nx">tx</span><span class="p">;</span>
+        x += tx;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-            <span class="nx">y</span> <span class="o">+=</span> <span class="nx">ty</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        if (x === game.width)
+        {
+            x = 0;
+            y += ty;
+        }
+    }
 
-    <span class="kd">var</span> <span class="nx">raster</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'raster'</span><span class="p">);</span>
-    <span class="nx">raster</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
-    <span class="nx">raster</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
-    <span class="nx">raster</span><span class="p">.</span><span class="nx">blendMode</span> <span class="o">=</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">blendModes</span><span class="p">.</span><span class="nx">COLOR</span><span class="p">;</span>
+    var raster = game.add.sprite(0, 0, 'raster');
+    raster.width = game.width;
+    raster.height = game.height;
+    raster.blendMode = PIXI.blendModes.COLOR;
 
-    <span class="c1">// this.world.sendToBack(raster);</span>
+    // this.world.sendToBack(raster);
 
-    <span class="nx">bringIn</span><span class="p">();</span>
+    bringIn();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">setLetters</span><span class="p">()</span> <span class="p">{</span>
+function setLetters() {
 
-    <span class="nx">page</span><span class="o">++</span><span class="p">;</span>
+    page++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">page</span> <span class="o">===</span> <span class="mi">3</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">page</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (page === 3)
+    {
+        page = 0;
+    }
 
-    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var i = 0;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">letters</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">frame</span> <span class="o">=</span> <span class="nx">font</span><span class="p">.</span><span class="nx">grabData</span><span class="p">[</span><span class="nx">scroller</span><span class="p">[(</span><span class="nx">page</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="nx">y</span><span class="p">].</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">x</span><span class="p">)];</span>
-            <span class="nx">i</span><span class="o">++</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    for (var y = 0; y < 8; y++)
+    {
+        for (var x = 0; x < 10; x++)
+        {
+            letters[i].frame = font.grabData[scroller[(page * 8) + y].charCodeAt(x)];
+            i++;
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">bringIn</span><span class="p">()</span> <span class="p">{</span>
+function bringIn() {
 
-    <span class="nx">setLetters</span><span class="p">();</span>
+    setLetters();
 
-    <span class="kd">var</span> <span class="nx">delay</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">speed</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
+    var delay = 0;
+    var speed = 300;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">page</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">letters</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">position</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pos</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">x</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pos</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="p">},</span> <span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Back</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">delay</span><span class="p">);</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">letters</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">scale</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">scale</span> <span class="p">},</span> <span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Back</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">delay</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">letters</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">position</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">pos</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">x</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">pos</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="p">},</span> <span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">delay</span><span class="p">);</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">letters</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">scale</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">scale</span> <span class="p">},</span> <span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">delay</span><span class="p">);</span>
-        <span class="p">}</span>
+    for (var i = 0; i < 80; i++)
+    {
+        if (page % 2 === 1)
+        {
+            game.add.tween(letters[i].position).to( { x: pos[i].x, y: pos[i].y }, speed, Phaser.Easing.Back.Out, true, delay);
+            game.add.tween(letters[i].scale).to( { x: scale, y: scale }, speed, Phaser.Easing.Back.Out, true, delay);
+        }
+        else
+        {
+            game.add.tween(letters[i].position).to( { x: pos[i].x, y: pos[i].y }, speed, Phaser.Easing.Sinusoidal.Out, true, delay);
+            game.add.tween(letters[i].scale).to( { x: scale, y: scale }, speed, Phaser.Easing.Sinusoidal.Out, true, delay);
+        }
 
-        <span class="nx">delay</span> <span class="o">+=</span> <span class="mi">100</span><span class="p">;</span>
-    <span class="p">}</span>
+        delay += 100;
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">delay</span> <span class="o">+</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">takeAway</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.time.events.add(delay + 2000, takeAway, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">takeAway</span><span class="p">()</span> <span class="p">{</span>
+function takeAway() {
 
-    <span class="kd">var</span> <span class="nx">delay</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">speed</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+    var delay = 0;
+    var speed = 200;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">79</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">letters</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">position</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span> <span class="p">},</span> <span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">delay</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">letters</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="nx">speed</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">delay</span><span class="p">);</span>
-        <span class="nx">delay</span> <span class="o">+=</span> <span class="mi">50</span><span class="p">;</span>
-    <span class="p">}</span>
+    for (var i = 79; i >= 0; i--)
+    {
+        game.add.tween(letters[i].position).to( { x: game.world.centerX, y: game.world.centerY }, speed, Phaser.Easing.Sinusoidal.Out, true, delay);
+        game.add.tween(letters[i].scale).to( { x: 0, y: 0 }, speed, Phaser.Easing.Sinusoidal.Out, true, delay);
+        delay += 50;
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">delay</span> <span class="o">+</span> <span class="mi">200</span><span class="p">,</span> <span class="nx">bringIn</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.time.events.add(delay + 200, bringIn, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    game.context.clearRect(0, 0, game.width, game.height);
 
-    <span class="c1">// raster.cls();</span>
-    <span class="c1">// raster.alphaMask('raster', alpha, mask);</span>
-    <span class="c1">// bfont.draw(raster);</span>
+    // raster.cls();
+    // raster.alphaMask('raster', alpha, mask);
+    // bfont.draw(raster);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">makeRasterFont</span><span class="p">()</span> <span class="p">{</span>
+function makeRasterFont() {
 
-    <span class="nx">bfont</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
-    <span class="nx">alpha</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
-    <span class="nx">raster</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
+    bfont = game.make.bitmapData();
+    alpha = game.make.bitmapData();
+    raster = game.make.bitmapData();
 
-    <span class="c1">//  Load the font</span>
-    <span class="nx">bfont</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'knightHawks'</span><span class="p">);</span>
+    //  Load the font
+    bfont.load('knightHawks');
 
-    <span class="c1">//  Extract all the pink pixels into the alpha bmd</span>
-    <span class="nx">bfont</span><span class="p">.</span><span class="nx">extract</span><span class="p">(</span><span class="nx">alpha</span><span class="p">,</span> <span class="mi">237</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    //  Extract all the pink pixels into the alpha bmd
+    bfont.extract(alpha, 237, 0, 140, 255, true);
 
-    <span class="nx">raster</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">bfont</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">bfont</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    raster.resize(bfont.width, bfont.height);
 
-    <span class="c1">//  Display the 4 stages of the process</span>
-    <span class="c1">// game.add.image(0, 0, 'knightHawks');</span>
-    <span class="c1">// game.add.image(360, 0, alpha);</span>
-    <span class="c1">// game.add.image(0, 200, raster);</span>
-    <span class="c1">// game.add.image(360, 200, bfont);</span>
+    //  Display the 4 stages of the process
+    // game.add.image(0, 0, 'knightHawks');
+    // game.add.image(360, 0, alpha);
+    // game.add.image(0, 200, raster);
+    // game.add.image(360, 200, bfont);
 
-    <span class="c1">//  Tween the rasters</span>
-    <span class="nx">mask</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bfont</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getImage</span><span class="p">(</span><span class="s1">'raster'</span><span class="p">).</span><span class="nx">height</span><span class="p">);</span>
+    //  Tween the rasters
+    mask.setTo(0, 0, bfont.width, game.cache.getImage('raster').height);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">mask</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="nx">mask</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="nx">bfont</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span> <span class="p">},</span> <span class="mi">4000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(mask).to( { y: -(mask.height - bfont.height) }, 4000, Phaser.Easing.Sinusoidal.InOut, true, 0, 100, true);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

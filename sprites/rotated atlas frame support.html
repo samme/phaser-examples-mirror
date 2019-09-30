@@ -55,32 +55,33 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/rotated%20atlas%20frame%20support.js" title="sprites/rotated atlas frame support.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/rotated%20atlas%20frame%20support.js" download="" title="Download: sprites/rotated atlas frame support.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'assets/sprites/atlas_rotated.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/atlas_rotated.json'</span><span class="p">);</span>
+    game.load.atlas('atlas', 'assets/sprites/atlas_rotated.png', 'assets/sprites/atlas_rotated.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#404040'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#404040';
 
-    <span class="c1">//  These two are both rotated</span>
-    <span class="kd">var</span> <span class="nx">cactuar</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'cactuar'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">contra</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'contra1'</span><span class="p">);</span>
+    //  These two are both rotated
+    var cactuar = game.add.sprite(0, 0, 'atlas', 'cactuar');
+    var contra = game.add.sprite(300, 0, 'atlas', 'contra1');
 
-    <span class="nx">contra</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0xff0000</span><span class="p">;</span>
+    contra.tint = 0xff0000;
 
-    <span class="c1">//   Should be 83x169 (the original dimensions, even though rotated in the atlas)</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">contra</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">contra</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    //   Should be 83x169 (the original dimensions, even though rotated in the atlas)
+    console.log(contra.width, contra.height);
 
-    <span class="c1">//  But this one isn't</span>
-    <span class="kd">var</span> <span class="nx">lulu</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'shocktroopers_lulu2'</span><span class="p">);</span>
+    //  But this one isn't
+    var lulu = game.add.sprite(500, 0, 'atlas', 'shocktroopers_lulu2');
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

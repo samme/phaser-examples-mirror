@@ -55,33 +55,34 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/bitmap%20font%20cache%20as%20bitmap.js" title="text/bitmap font cache as bitmap.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/bitmap%20font%20cache%20as%20bitmap.js" download="" title="Download: text/bitmap font cache as bitmap.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.xml'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mushroom'</span><span class="p">,</span> <span class="s1">'assets/sprites/mushroom2.png'</span><span class="p">);</span>
+    game.load.bitmapFont('desyrel', 'assets/fonts/bitmapFonts/desyrel.png', 'assets/fonts/bitmapFonts/desyrel.xml');
+    game.load.image('mushroom', 'assets/sprites/mushroom2.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// var txt1 = game.add.bitmapText(0, 0, 'desyrel','0x0', 30);</span>
+    // var txt1 = game.add.bitmapText(0, 0, 'desyrel','0x0', 30);
 
-    <span class="kd">var</span> <span class="nx">bob</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'mushroom'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">bob2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'mushroom'</span><span class="p">);</span>
+    var bob = game.add.sprite(200, 200, 'mushroom');
+    var bob2 = game.add.sprite(300, 200, 'mushroom');
     
-    <span class="c1">// var txt2 = game.add.bitmapText(25, 25, 'desyrel', '25x25', 30);</span>
-    <span class="c1">// var txt3 = game.add.bitmapText(50, 50, 'desyrel', '50x50', 60);</span>
+    // var txt2 = game.add.bitmapText(25, 25, 'desyrel', '25x25', 30);
+    // var txt3 = game.add.bitmapText(50, 50, 'desyrel', '50x50', 60);
 
-    <span class="c1">// txt1.cacheAsBitmap = true;</span>
-    <span class="nx">bob</span><span class="p">.</span><span class="nx">cacheAsBitmap</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">bob2</span><span class="p">.</span><span class="nx">cacheAsBitmap</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="c1">// txt2.cacheAsBitmap = true;</span>
-    <span class="c1">// txt3.cacheAsBitmap = true;</span>
+    // txt1.cacheAsBitmap = true;
+    bob.cacheAsBitmap = true;
+    bob2.cacheAsBitmap = true;
+    // txt2.cacheAsBitmap = true;
+    // txt3.cacheAsBitmap = true;
     
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

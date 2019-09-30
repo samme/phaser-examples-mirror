@@ -55,43 +55,44 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/remove%20random.js" title="wip/remove random.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/remove%20random.js" download="" title="Download: wip/remove random.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'bullets'</span><span class="p">,</span> <span class="s1">'assets/sprites/balls.png'</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">);</span>
+    game.load.spritesheet('bullets', 'assets/sprites/balls.png', 17, 17);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">balls</span><span class="p">;</span>
+var balls;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#2d2d2d';
 
-    <span class="nx">balls</span> <span class="o">=</span> <span class="p">[];</span>
+    balls = [];
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">balls</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">80</span> <span class="o">+</span> <span class="mi">32</span> <span class="o">*</span> <span class="nx">i</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'bullets'</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)));</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 20; i++)
+    {
+        balls.push(game.add.sprite(80 + 32 * i, 100, 'bullets', game.rnd.integerInRange(0, 6)));
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">removeRandom</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(removeRandom, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">removeRandom</span><span class="p">()</span> <span class="p">{</span>
+function removeRandom() {
 
-    <span class="kd">var</span> <span class="nx">ball</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">removeRandom</span><span class="p">(</span><span class="nx">balls</span><span class="p">);</span>
+    var ball = game.math.removeRandom(balls);
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">ball</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (ball)
+    {
+        ball.destroy();
+    }
 
 
-<span class="p">}</span>
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

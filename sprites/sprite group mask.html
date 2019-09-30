@@ -55,62 +55,63 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/sprite%20group%20mask.js" title="sprites/sprite group mask.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/sprite%20group%20mask.js" download="" title="Download: sprites/sprite group mask.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'box'</span><span class="p">,</span> <span class="s1">'assets/sprites/block.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'platform'</span><span class="p">,</span> <span class="s1">'assets/sprites/platform.png'</span><span class="p">);</span>
+    game.load.image('box', 'assets/sprites/block.png');
+    game.load.image('platform', 'assets/sprites/platform.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">group</span><span class="p">;</span>
+var group;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  A platform the boxes will 'rise' out of</span>
-    <span class="kd">var</span> <span class="nx">platform</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'platform'</span><span class="p">);</span>
-    <span class="nx">platform</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
-    <span class="nx">platform</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+    //  A platform the boxes will 'rise' out of
+    var platform = game.add.sprite(0, game.world.centerY, 'platform');
+    platform.width = game.width;
+    platform.height = 8;
 
-    <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    group = game.add.group();
 
-    <span class="c1">//  Box sprite is 95x95</span>
-    <span class="kd">var</span> <span class="nx">box1</span> <span class="o">=</span> <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'box'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">box2</span> <span class="o">=</span> <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'box'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">box3</span> <span class="o">=</span> <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'box'</span><span class="p">);</span>
+    //  Box sprite is 95x95
+    var box1 = group.create(200, 300, 'box');
+    var box2 = group.create(400, 300, 'box');
+    var box3 = group.create(600, 300, 'box');
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'anchor.x'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'anchor.y'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    group.setAll('anchor.x', 0.5);
+    group.setAll('anchor.y', 0.5);
 
-    <span class="c1">//  A mask is a Graphics object</span>
-    <span class="kd">var</span> <span class="nx">mask</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    //  A mask is a Graphics object
+    var mask = game.add.graphics(0, 100);
 
-    <span class="c1">//  Shapes drawn to the Graphics object must be filled.</span>
-    <span class="nx">mask</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xffffff</span><span class="p">);</span>
+    //  Shapes drawn to the Graphics object must be filled.
+    mask.beginFill(0xffffff);
 
-    <span class="c1">//  Here we'll draw a rectangle for each group sprite</span>
-    <span class="nx">mask</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">130</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">mask</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">330</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">mask</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">530</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+    //  Here we'll draw a rectangle for each group sprite
+    mask.drawRect(130, 0, 140, 200);
+    mask.drawRect(330, 0, 140, 200);
+    mask.drawRect(530, 0, 140, 200);
 
-    <span class="c1">//  And apply it to the Group itself</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">mask</span> <span class="o">=</span> <span class="nx">mask</span><span class="p">;</span>
+    //  And apply it to the Group itself
+    group.mask = mask;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">box1</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">y</span><span class="p">:</span> <span class="mi">200</span> <span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">"Sine.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">box2</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">y</span><span class="p">:</span> <span class="mi">200</span> <span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">"Sine.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">box3</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">y</span><span class="p">:</span> <span class="mi">200</span> <span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">"Sine.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(box1).to({ y: 200 }, 1000, "Sine.easeInOut", true, 0, -1, true);
+    game.add.tween(box2).to({ y: 200 }, 1000, "Sine.easeInOut", true, 500, -1, true);
+    game.add.tween(box3).to({ y: 200 }, 1000, "Sine.easeInOut", true, 1000, -1, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">box</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">box</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="mf">0.04</span><span class="p">;</span>
-    <span class="p">});</span>
+    group.forEach(function(box) {
+        box.rotation += 0.04;
+    });
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

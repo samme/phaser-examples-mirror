@@ -55,38 +55,39 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/rect%20intersect.js" title="wip/rect intersect.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/rect%20intersect.js" download="" title="Download: wip/rect intersect.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">cropRect</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">fakeImage</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">irect</span><span class="p">;</span>
+var cropRect;
+var fakeImage;
+var irect;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function preload() {
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">fakeImage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">240</span><span class="p">);</span>
+    fakeImage = new Phaser.Rectangle(0, 0, 320, 240);
 
-    <span class="nx">cropRect</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
+    cropRect = new Phaser.Rectangle(0, 100, 320, 50);
     
-    <span class="nx">irect</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">cropRect</span><span class="p">,</span> <span class="nx">fakeImage</span><span class="p">);</span>
+    irect = Phaser.Rectangle.intersection(cropRect, fakeImage);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">fakeImage</span><span class="p">,</span> <span class="s1">'rgba(0,255,0,0.3)'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">cropRect</span><span class="p">,</span> <span class="s1">'rgba(255,0,0,0.3)'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">irect</span><span class="p">,</span> <span class="s1">'rgba(255,255,0,1)'</span><span class="p">);</span>
+    game.debug.geom(fakeImage, 'rgba(0,255,0,0.3)');
+    game.debug.geom(cropRect, 'rgba(255,0,0,0.3)');
+    game.debug.geom(irect, 'rgba(255,255,0,1)');
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

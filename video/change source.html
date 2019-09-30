@@ -55,55 +55,56 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/video/change%20source.js" title="video/change source.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/video/change%20source.js" download="" title="Download: video/change source.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'liquid'</span><span class="p">,</span> <span class="s1">'assets/video/liquid2.mp4'</span><span class="p">);</span>
+    game.load.video('liquid', 'assets/video/liquid2.mp4');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">video</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var video;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">video</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'liquid'</span><span class="p">);</span>
+    video = game.add.video('liquid');
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">onPlay</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    video.onPlay.addOnce(start, this);
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">video</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    sprite = video.addToWorld(400, 300, 0.5, 0.5);
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+    video.play();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">start</span><span class="p">()</span> <span class="p">{</span>
+function start() {
 
-    <span class="c1">//  After 5 seconds we'll swap to a new video</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="nx">changeSource</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  After 5 seconds we'll swap to a new video
+    game.time.events.add(5000, changeSource, this);
 
-    <span class="c1">//  This would swap on a mouse click</span>
-    <span class="c1">// game.input.onDown.addOnce(changeSource, this);</span>
+    //  This would swap on a mouse click
+    // game.input.onDown.addOnce(changeSource, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">changeSource</span><span class="p">()</span> <span class="p">{</span>
+function changeSource() {
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">changeSource</span><span class="p">(</span><span class="s1">'assets/video/skull.mp4'</span><span class="p">);</span>
+    video.changeSource('assets/video/skull.mp4');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Video width: "</span> <span class="o">+</span> <span class="nx">video</span><span class="p">.</span><span class="nx">video</span><span class="p">.</span><span class="nx">videoWidth</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Video height: "</span> <span class="o">+</span> <span class="nx">video</span><span class="p">.</span><span class="nx">video</span><span class="p">.</span><span class="nx">videoHeight</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text("Video width: " + video.video.videoWidth, 600, 32);
+    game.debug.text("Video height: " + video.video.videoHeight, 600, 64);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Video Time: "</span> <span class="o">+</span> <span class="nx">video</span><span class="p">.</span><span class="nx">currentTime</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Video Duration: "</span> <span class="o">+</span> <span class="nx">video</span><span class="p">.</span><span class="nx">duration</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text("Video Time: " + video.currentTime, 32, 32);
+    game.debug.text("Video Duration: " + video.duration, 32, 64);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

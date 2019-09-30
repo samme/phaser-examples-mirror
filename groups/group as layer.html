@@ -55,71 +55,72 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/group%20as%20layer.js" title="groups/group as layer.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/group%20as%20layer.js" download="" title="Download: groups/group as layer.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1280</span><span class="p">,</span> <span class="mi">800</span><span class="p">);</span>
+    game.world.setBounds(0, 0, 1280, 800);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ground'</span><span class="p">,</span> <span class="s1">'assets/tests/ground-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'river'</span><span class="p">,</span> <span class="s1">'assets/tests/river-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/tests/sky-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cloud0'</span><span class="p">,</span> <span class="s1">'assets/tests/cloud-big-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cloud1'</span><span class="p">,</span> <span class="s1">'assets/tests/cloud-narrow-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cloud2'</span><span class="p">,</span> <span class="s1">'assets/tests/cloud-small-2x.png'</span><span class="p">);</span>
+    game.load.image('ground', 'assets/tests/ground-2x.png');
+    game.load.image('river', 'assets/tests/river-2x.png');
+    game.load.image('sky', 'assets/tests/sky-2x.png');
+    game.load.image('cloud0', 'assets/tests/cloud-big-2x.png');
+    game.load.image('cloud1', 'assets/tests/cloud-narrow-2x.png');
+    game.load.image('cloud2', 'assets/tests/cloud-small-2x.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'ufo'</span><span class="p">,</span> <span class="s1">'assets/sprites/ufo.png'</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">21</span><span class="p">);</span>
+    game.load.spritesheet('ufo', 'assets/sprites/ufo.png', 24, 21);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// Create the sky layer, behind everything and donot move.</span>
-    <span class="kd">var</span> <span class="nx">skyLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    // Create the sky layer, behind everything and donot move.
+    var skyLayer = game.add.group();
 
-    <span class="c1">// Create the cloud layer, only beyond the sky.</span>
-    <span class="kd">var</span> <span class="nx">cloudLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    // Create the cloud layer, only beyond the sky.
+    var cloudLayer = game.add.group();
 
-    <span class="c1">// Create the ground, behind the river and beyond clouds.</span>
-    <span class="kd">var</span> <span class="nx">groundLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    // Create the ground, behind the river and beyond clouds.
+    var groundLayer = game.add.group();
 
-    <span class="c1">// Create the sprite layer. This should behind the river,</span>
-    <span class="c1">// and beyond the ground, cloud and sky layer.</span>
-    <span class="kd">var</span> <span class="nx">spriteLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    // Create the sprite layer. This should behind the river,
+    // and beyond the ground, cloud and sky layer.
+    var spriteLayer = game.add.group();
 
-    <span class="c1">// Create the river layer, beyond everything.</span>
-    <span class="kd">var</span> <span class="nx">riverLayer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    // Create the river layer, beyond everything.
+    var riverLayer = game.add.group();
 
-    <span class="c1">// Add sky background to skyLayer.</span>
-    <span class="kd">var</span> <span class="nx">sky</span> <span class="o">=</span> <span class="nx">skyLayer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
+    // Add sky background to skyLayer.
+    var sky = skyLayer.create(0, 0, 'sky');
 
-    <span class="c1">// Add clouds to cloudLayer.</span>
-    <span class="kd">var</span> <span class="nx">cloud0</span> <span class="o">=</span> <span class="nx">cloudLayer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">'cloud0'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">cloud1</span> <span class="o">=</span> <span class="nx">cloudLayer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">'cloud1'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">cloud2</span> <span class="o">=</span> <span class="nx">cloudLayer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">900</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="s1">'cloud2'</span><span class="p">);</span>
+    // Add clouds to cloudLayer.
+    var cloud0 = cloudLayer.create(200, 120, 'cloud0');
+    var cloud1 = cloudLayer.create(-60, 120, 'cloud1');
+    var cloud2 = cloudLayer.create(900, 170, 'cloud2');
 
-    <span class="c1">// Add ground sprite to groundLayer.</span>
-    <span class="kd">var</span> <span class="nx">ground</span> <span class="o">=</span> <span class="nx">groundLayer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="s1">'ground'</span><span class="p">);</span>
+    // Add ground sprite to groundLayer.
+    var ground = groundLayer.create(0, 360, 'ground');
 
-    <span class="c1">// Add river to riverLayer.</span>
-    <span class="kd">var</span> <span class="nx">river</span> <span class="o">=</span> <span class="nx">riverLayer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'river'</span><span class="p">);</span>
+    // Add river to riverLayer.
+    var river = riverLayer.create(0, 400, 'river');
 
-    <span class="c1">// Add sprites to spriteLayer.</span>
-    <span class="kd">var</span> <span class="nx">ufo</span> <span class="o">=</span> <span class="nx">spriteLayer</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="s1">'ufo'</span><span class="p">);</span>
-    <span class="nx">ufo</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    // Add sprites to spriteLayer.
+    var ufo = spriteLayer.create(360, 240, 'ufo');
+    ufo.anchor.setTo(0.5);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'sky layer:    z = 0'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'cloud layer:  z = 1'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">36</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'ground layer: z = 2'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">52</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'sprite layer: z = 3'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">68</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'river layer:  z = 4'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">84</span><span class="p">);</span>
+    game.debug.text('sky layer:    z = 0', 16, 20);
+    game.debug.text('cloud layer:  z = 1', 16, 36);
+    game.debug.text('ground layer: z = 2', 16, 52);
+    game.debug.text('sprite layer: z = 3', 16, 68);
+    game.debug.text('river layer:  z = 4', 16, 84);
     
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

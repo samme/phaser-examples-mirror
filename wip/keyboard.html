@@ -55,63 +55,64 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/keyboard.js" title="wip/keyboard.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/keyboard.js" download="" title="Download: wip/keyboard.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.WEBGL, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ship'</span><span class="p">,</span> <span class="s1">'assets/sprites/thrust_ship2.png'</span><span class="p">);</span>
+    game.load.image('ship', 'assets/sprites/thrust_ship2.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">ship</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var ship;
+var cursors;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#2d2d2d';
 
-    <span class="nx">ship</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'ship'</span><span class="p">);</span>
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">physicsEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="c1">//  We do this because our ship is shaped like a triangle, not a square :)</span>
-    <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">addPolygon</span><span class="p">({},</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">23</span>  <span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">23</span>  <span class="p">,</span>  <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    ship = game.add.sprite(200, 200, 'ship');
+    ship.physicsEnabled = true;
+    //  We do this because our ship is shaped like a triangle, not a square :)
+    ship.body.addPolygon({}, 29, 23  ,  0, 23  ,  14, 1);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">rotateLeft</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">rotateRight</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setZeroRotation</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        ship.body.rotateLeft(100);
+    }
+    else if (cursors.right.isDown)
+    {
+        ship.body.rotateRight(100);
+    }
+    else
+    {
+        ship.body.setZeroRotation();
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">thrust</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">reverse</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        ship.body.thrust(400);
+    }
+    else if (cursors.down.isDown)
+    {
+        ship.body.reverse(400);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">physicsBody</span><span class="p">(</span><span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+    game.debug.physicsBody(ship.body);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

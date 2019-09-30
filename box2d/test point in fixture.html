@@ -55,84 +55,84 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/box2d/test%20point%20in%20fixture.js" title="box2d/test point in fixture.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/box2d/test%20point%20in%20fixture.js" download="" title="Download: box2d/test point in fixture.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Chris Campbell <iforce2d@gmail.com>
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Box2D Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/box2d
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser.png'</span><span class="p">);</span>
+    game.load.image('phaser', 'assets/sprites/phaser.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">platformSprites</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">selectedSprite</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+var platformSprites = [];
+var selectedSprite = null;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#124184';
 
-    <span class="c1">// Enable Box2D physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
+    // Enable Box2D physics
+    game.physics.startSystem(Phaser.Physics.BOX2D);
     
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">kinematic</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>    
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">angularVelocity</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">;</span>
-        <span class="nx">platformSprites</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 4; i++)
+    {
+        var sprite = game.add.sprite(100 + i * 200, 300, 'phaser');
+        game.physics.box2d.enable(sprite);
+        sprite.body.kinematic = true;    
+        sprite.body.angularVelocity = 0.2;
+        platformSprites.push(sprite);
+    }
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clickOnSomething</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(clickOnSomething, this);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span> <span class="s1">'Move the mouse to detect fixtures. Click to select.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">'This method is used when you want to know if a point is inside a specific fixture.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="s1">'Please note this is not an efficient way to find out what is under the mouse.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="s1">'For an efficient method, see the "Get body at point" example.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
-<span class="p">}</span>
+    game.add.text(5,  5, 'Move the mouse to detect fixtures. Click to select.', { fill: '#ffffff', font: '14pt Arial' });
+    game.add.text(5, 25, 'This method is used when you want to know if a point is inside a specific fixture.', { fill: '#ffffff', font: '14pt Arial' });
+    game.add.text(5, 45, 'Please note this is not an efficient way to find out what is under the mouse.', { fill: '#ffffff', font: '14pt Arial' });
+    game.add.text(5, 65, 'For an efficient method, see the "Get body at point" example.', { fill: '#ffffff', font: '14pt Arial' });
+}
 
-<span class="kd">function</span> <span class="nx">clickOnSomething</span><span class="p">()</span> <span class="p">{</span>
+function clickOnSomething() {
     
-    <span class="c1">// Reset all to white</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">selectedSprite</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">selectedSprite</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0xffffff</span><span class="p">;</span>
-    <span class="p">}</span>
+    // Reset all to white
+    if (selectedSprite)
+    {
+        selectedSprite.tint = 0xffffff;
+    }
     
-    <span class="c1">// Check sprites one by one to see if any was clicked</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">platformSprites</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">platformSprites</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">body</span><span class="p">.</span><span class="nx">containsPoint</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">))</span>
-        <span class="p">{</span>
-            <span class="nx">selectedSprite</span> <span class="o">=</span> <span class="nx">platformSprites</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-            <span class="nx">selectedSprite</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0xff00ff</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    // Check sprites one by one to see if any was clicked
+    for (var i = 0; i < platformSprites.length; i++)
+    {
+        if (platformSprites[i].body.containsPoint(game.input.mousePointer))
+        {
+            selectedSprite = platformSprites[i];
+            selectedSprite.tint = 0xff00ff;
+        }
+    }
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
     
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">platformSprites</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// Draw fixture in yellow if mouse is currently over </span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">platformSprites</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">body</span><span class="p">.</span><span class="nx">containsPoint</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">))</span>
-        <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">body</span><span class="p">(</span><span class="nx">platformSprites</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="s1">'rgb(255,255,0)'</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    for (var i = 0; i < platformSprites.length; i++)
+    {
+        // Draw fixture in yellow if mouse is currently over 
+        if (platformSprites[i].body.containsPoint(game.input.mousePointer))
+        {
+            game.debug.body(platformSprites[i], 'rgb(255,255,0)');
+        }
+    }
     
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

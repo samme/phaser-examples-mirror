@@ -55,55 +55,56 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/input%20priority.js" title="input/input priority.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/input%20priority.js" download="" title="Download: input/input priority.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'manga'</span><span class="p">,</span> <span class="s1">'assets/pics/manga-girl.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'disk'</span><span class="p">,</span> <span class="s1">'assets/sprites/copy-that-floppy.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'card'</span><span class="p">,</span> <span class="s1">'assets/sprites/mana_card.png'</span><span class="p">);</span>
+    game.load.image('manga', 'assets/pics/manga-girl.png');
+    game.load.image('disk', 'assets/sprites/copy-that-floppy.png');
+    game.load.image('card', 'assets/sprites/mana_card.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#4b0049'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#4b0049';
 
-    <span class="c1">//  Note the input.priorityID values below.</span>
+    //  Note the input.priorityID values below.
 
-    <span class="c1">//  Even though the card and disk sprites visually appear on-top of the manga sprite,</span>
-    <span class="c1">//  because they have lower priorityIDs the manga sprite gets priority in all input events.</span>
+    //  Even though the card and disk sprites visually appear on-top of the manga sprite,
+    //  because they have lower priorityIDs the manga sprite gets priority in all input events.
 
-    <span class="c1">//  Without the priorityID, input priority is given to the sprite at the top of the display list</span>
-    <span class="c1">//  (in this case to card).</span>
+    //  Without the priorityID, input priority is given to the sprite at the top of the display list
+    //  (in this case to card).
 
-    <span class="kd">var</span> <span class="nx">manga</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'manga'</span><span class="p">);</span>
-    <span class="nx">manga</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">manga</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span> <span class="c1">// true = run a pixel perfect check ONLY when you click on the Sprite</span>
-    <span class="c1">// manga.input.pixelPerfectOver = true;</span>
-    <span class="nx">manga</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">priorityID</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    var manga = game.add.sprite(100, 100, 'manga');
+    manga.inputEnabled = true;
+    manga.input.enableDrag(false, false, true); // true = run a pixel perfect check ONLY when you click on the Sprite
+    // manga.input.pixelPerfectOver = true;
+    manga.input.priorityID = 2;
 
-    <span class="kd">var</span> <span class="nx">disk</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'disk'</span><span class="p">);</span>
-    <span class="nx">disk</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">;</span>
-    <span class="nx">disk</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">disk</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="c1">// disk.input.pixelPerfectOver = true;</span>
-    <span class="nx">disk</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">priorityID</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    var disk = game.add.sprite(200, 200, 'disk');
+    disk.alpha = 0.7;
+    disk.inputEnabled = true;
+    disk.input.enableDrag(false, false, true);
+    // disk.input.pixelPerfectOver = true;
+    disk.input.priorityID = 1;
 
-    <span class="kd">var</span> <span class="nx">card</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'card'</span><span class="p">);</span>
-    <span class="nx">card</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">card</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="c1">// card.input.pixelPerfectOver = true;</span>
-    <span class="nx">card</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">priorityID</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var card = game.add.sprite(300, 300, 'card');
+    card.inputEnabled = true;
+    card.input.enableDrag(false, false, true);
+    // card.input.pixelPerfectOver = true;
+    card.input.priorityID = 0;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Drag the Sprites"</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text("Drag the Sprites", 32, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

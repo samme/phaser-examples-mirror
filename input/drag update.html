@@ -55,73 +55,74 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/drag%20update.js" title="input/drag update.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/drag%20update.js" download="" title="Download: input/drag update.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ship'</span><span class="p">,</span> <span class="s1">'assets/sprites/ship.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/longarrow.png'</span><span class="p">);</span>
+    game.load.image('ship', 'assets/sprites/ship.png');
+    game.load.image('ball', 'assets/sprites/longarrow.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">angle</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">dragSprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">copySprite</span><span class="p">;</span>
+var angle = 0;
+var dragSprite;
+var copySprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2f0f1c'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#2f0f1c';
 
-    <span class="nx">dragSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'ship'</span><span class="p">);</span>
-    <span class="nx">dragSprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    dragSprite = game.add.sprite(game.world.centerX, game.world.centerY, 'ship');
+    dragSprite.anchor.set(0.5);
 
-    <span class="c1">//  Input Enable the sprite</span>
-    <span class="nx">dragSprite</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //  Input Enable the sprite
+    dragSprite.inputEnabled = true;
 
-    <span class="c1">//  Allow dragging</span>
-    <span class="nx">dragSprite</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
+    //  Allow dragging
+    dragSprite.input.enableDrag();
 
-    <span class="c1">//  Drag events</span>
-    <span class="nx">dragSprite</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">dragStart</span><span class="p">);</span>
-    <span class="nx">dragSprite</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragUpdate</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">dragUpdate</span><span class="p">);</span>
-    <span class="nx">dragSprite</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">dragStop</span><span class="p">);</span>
+    //  Drag events
+    dragSprite.events.onDragStart.add(dragStart);
+    dragSprite.events.onDragUpdate.add(dragUpdate);
+    dragSprite.events.onDragStop.add(dragStop);
 
-    <span class="nx">copySprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">dragSprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">220</span><span class="p">,</span> <span class="nx">dragSprite</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
-    <span class="nx">copySprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">copySprite</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="nx">copySprite</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">180</span><span class="p">;</span>
+    copySprite = game.add.sprite(dragSprite.x + 220, dragSprite.y, 'ball');
+    copySprite.anchor.set(0, 0.5);
+    copySprite.alpha = 0.5;
+    copySprite.angle = 180;
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">"drag the ship"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#f9b4cf"</span> <span class="p">});</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.8)'</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+    var text = game.add.text(32, 32, "drag the ship", { font: "32px Arial", fill: "#f9b4cf" });
+    text.setShadow(6, 6, 'rgba(0,0,0,0.8)', 5);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">dragStart</span><span class="p">()</span> <span class="p">{</span>
+function dragStart() {
 
-    <span class="nx">copySprite</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    copySprite.alpha = 1;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">dragUpdate</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">,</span> <span class="nx">dragX</span><span class="p">,</span> <span class="nx">dragY</span><span class="p">,</span> <span class="nx">snapPoint</span><span class="p">)</span> <span class="p">{</span>
+function dragUpdate(sprite, pointer, dragX, dragY, snapPoint) {
 
-    <span class="c1">//  As we drag the ship around inc the angle</span>
-    <span class="nx">angle</span> <span class="o">+=</span> <span class="mf">0.01</span><span class="p">;</span>
+    //  As we drag the ship around inc the angle
+    angle += 0.01;
 
-    <span class="c1">//  This just circles the copySprite around the sprite being dragged</span>
-    <span class="nx">copySprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">dragSprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">220</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">angle</span><span class="p">);</span>
-    <span class="nx">copySprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">dragSprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">220</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">angle</span><span class="p">);</span>
+    //  This just circles the copySprite around the sprite being dragged
+    copySprite.x = dragSprite.x + 220 * Math.cos(angle);
+    copySprite.y = dragSprite.y + 220 * Math.sin(angle);
 
-    <span class="c1">//  And this points the copySprite at the current pointer</span>
-    <span class="nx">copySprite</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">angleToPointer</span><span class="p">(</span><span class="nx">copySprite</span><span class="p">);</span>
+    //  And this points the copySprite at the current pointer
+    copySprite.rotation = game.physics.arcade.angleToPointer(copySprite);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">dragStop</span><span class="p">()</span> <span class="p">{</span>
+function dragStop() {
 
-    <span class="nx">copySprite</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    copySprite.alpha = 0.5;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

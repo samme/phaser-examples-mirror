@@ -55,61 +55,62 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/time/remove%20event.js" title="time/remove event.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/time/remove%20event.js" download="" title="Download: time/remove event.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">counters</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">timerEvents</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+var counters = [];
+var text = [];
+var timerEvents = [];
+var i = 9;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#6688ee'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#6688ee';
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">counters</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="nx">text</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">80</span> <span class="o">+</span> <span class="p">(</span><span class="mi">40</span> <span class="o">*</span> <span class="nx">i</span><span class="p">),</span> <span class="s1">'Counter '</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="s1">' = 0'</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">});</span>
-        <span class="nx">text</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    for (var i = 0; i < 10; i++)
+    {
+        counters[i] = 0;
+        text[i] = game.add.text(game.world.centerX, 80 + (40 * i), 'Counter ' + i + ' = 0', { font: "32px Arial", fill: "#ffffff", align: "center" });
+        text[i].anchor.setTo(0.5, 0);
 
-        <span class="c1">//  Here we create our timer events. They will be set to loop at a random value between 250ms and 1000ms</span>
-        <span class="nx">timerEvents</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">loop</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="nx">updateCounter</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
-    <span class="p">}</span>
+        //  Here we create our timer events. They will be set to loop at a random value between 250ms and 1000ms
+        timerEvents[i] = game.time.events.loop(game.rnd.integerInRange(250, 1000), updateCounter, this, i);
+    }
 
-    <span class="c1">//  Click to remove</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">removeCounter</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Click to remove
+    game.input.onDown.add(removeCounter, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">updateCounter</span><span class="p">(</span><span class="nx">idx</span><span class="p">)</span> <span class="p">{</span>
+function updateCounter(idx) {
 
-    <span class="nx">counters</span><span class="p">[</span><span class="nx">idx</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+    counters[idx]++;
 
-    <span class="nx">text</span><span class="p">[</span><span class="nx">idx</span><span class="p">].</span><span class="nx">setText</span><span class="p">(</span><span class="s1">'Counter '</span> <span class="o">+</span> <span class="nx">idx</span> <span class="o">+</span> <span class="s1">' = '</span> <span class="o">+</span> <span class="nx">counters</span><span class="p">[</span><span class="nx">idx</span><span class="p">]);</span>
+    text[idx].setText('Counter ' + idx + ' = ' + counters[idx]);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">removeCounter</span><span class="p">()</span> <span class="p">{</span>
+function removeCounter() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Removes the timer, starting with the top one and working down</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">timerEvents</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+    if (i >= 0)
+    {
+        //  Removes the timer, starting with the top one and working down
+        game.time.events.remove(timerEvents[i]);
 
-        <span class="c1">//  Just updates the text</span>
-        <span class="nx">text</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">style</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s1">'#3344aa'</span><span class="p">;</span>
-        <span class="nx">text</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">setText</span><span class="p">(</span><span class="s1">'Counter '</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="s1">' removed'</span><span class="p">);</span>
-        <span class="nx">i</span><span class="o">--</span><span class="p">;</span>
-    <span class="p">}</span>
+        //  Just updates the text
+        text[i].style.fill = '#3344aa';
+        text[i].setText('Counter ' + i + ' removed');
+        i--;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Queued events: "</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s1">' - click to remove'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text("Queued events: " + game.time.events.length + ' - click to remove', 32, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,52 +55,53 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/dynamic%20crop.js" title="sprites/dynamic crop.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/dynamic%20crop.js" download="" title="Download: sprites/dynamic crop.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'trsi'</span><span class="p">,</span> <span class="s1">'assets/pics/trsipic1_lazur.jpg'</span><span class="p">);</span>
+    game.load.image('trsi', 'assets/pics/trsipic1_lazur.jpg');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">pic</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cropRect</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">w</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">h</span><span class="p">;</span>
+var pic;
+var cropRect;
+var w;
+var h;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">pic</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'trsi'</span><span class="p">);</span>
+    pic = game.add.sprite(0, 0, 'trsi');
 
-    <span class="nx">w</span> <span class="o">=</span> <span class="nx">pic</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
-    <span class="nx">h</span> <span class="o">=</span> <span class="nx">pic</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+    w = pic.width;
+    h = pic.height;
 
-    <span class="nx">cropRect</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">);</span>
+    cropRect = new Phaser.Rectangle(0, 0, 128, 128);
 
-    <span class="nx">pic</span><span class="p">.</span><span class="nx">crop</span><span class="p">(</span><span class="nx">cropRect</span><span class="p">);</span>
+    pic.crop(cropRect);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">w</span> <span class="o">&amp;&amp;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">h</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">pic</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">pic</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="nx">cropRect</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">cropRect</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    if (game.input.x < w && game.input.y < h)
+    {
+        pic.x = game.input.x;
+        pic.y = game.input.y;
+        cropRect.x = game.input.x;
+        cropRect.y = game.input.y;
 
-        <span class="nx">pic</span><span class="p">.</span><span class="nx">updateCrop</span><span class="p">();</span>
-    <span class="p">}</span>
+        pic.updateCrop();
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'x: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="s1">' y: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text('x: ' + game.input.x + ' y: ' + game.input.y, 32, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,34 +55,35 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/animation/starling%20atlas.js" title="animation/starling atlas.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/animation/starling%20atlas.js" download="" title="Download: animation/starling atlas.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Here we load the Starling Texture Atlas and XML file</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlasXML</span><span class="p">(</span><span class="s1">'octopus'</span><span class="p">,</span> <span class="s1">'assets/sprites/octopus.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/octopus.xml'</span><span class="p">);</span>
+    //  Here we load the Starling Texture Atlas and XML file
+    game.load.atlasXML('octopus', 'assets/sprites/octopus.png', 'assets/sprites/octopus.xml');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  A more suitable underwater background color</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#1873CE'</span><span class="p">;</span>
+    //  A more suitable underwater background color
+    game.stage.backgroundColor = '#1873CE';
 
-    <span class="c1">//  Create our octopus</span>
-    <span class="kd">var</span> <span class="nx">octopus</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'octopus'</span><span class="p">);</span>
+    //  Create our octopus
+    var octopus = game.add.sprite(300, 200, 'octopus');
 
-    <span class="c1">//  Create an animation called 'swim', the fact we don't specify any frames means it will use all frames in the atlas</span>
-    <span class="nx">octopus</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'swim'</span><span class="p">);</span>
+    //  Create an animation called 'swim', the fact we don't specify any frames means it will use all frames in the atlas
+    octopus.animations.add('swim');
 
-    <span class="c1">//  Play the animation at 30fps on a loop</span>
-    <span class="nx">octopus</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'swim'</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    //  Play the animation at 30fps on a loop
+    octopus.animations.play('swim', 30, true);
 
-    <span class="c1">//  Bob the octopus up and down with a tween</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">octopus</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">y</span><span class="p">:</span> <span class="mi">300</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Quadratic</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    //  Bob the octopus up and down with a tween
+    game.add.tween(octopus).to({ y: 300 }, 2000, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

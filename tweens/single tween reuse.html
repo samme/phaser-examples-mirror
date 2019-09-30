@@ -55,60 +55,61 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/single%20tween%20reuse.js" title="tweens/single tween reuse.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/single%20tween%20reuse.js" download="" title="Download: tweens/single tween reuse.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bikkuriman'</span><span class="p">,</span> <span class="s1">'assets/sprites/bikkuriman.png'</span><span class="p">);</span>
+    game.load.image('bikkuriman', 'assets/sprites/bikkuriman.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tween</span><span class="p">;</span>
+var sprite;
+var tween;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2384e7'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#2384e7';
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'bikkuriman'</span><span class="p">);</span>
+    sprite = game.add.sprite(400, 100, 'bikkuriman');
 
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">500</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">tween2</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    tween = game.add.tween(sprite).to( { y: 500 }, 2000, Phaser.Easing.Bounce.Out, true);
+    tween.onComplete.addOnce(tween2, this);
 
-    <span class="c1">//  Notice the use of addOnce above. If you don't use that then you *must* do:</span>
-    <span class="c1">// tween.onComplete.removeAll();</span>
-    <span class="c1">//  before using the tween again, or it will fire both onComplete callbacks.</span>
+    //  Notice the use of addOnce above. If you don't use that then you *must* do:
+    // tween.onComplete.removeAll();
+    //  before using the tween again, or it will fire both onComplete callbacks.
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tween2</span><span class="p">()</span> <span class="p">{</span>
+function tween2() {
 
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">alpha</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">tween3</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    tween.to( { alpha: 0.5 }, 2000, Phaser.Easing.Bounce.Out, true);
+    tween.onComplete.addOnce(tween3, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tween3</span><span class="p">()</span> <span class="p">{</span>
+function tween3() {
 
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">2</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">tween4</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    tween.to( { x: 2, y: 2 }, 2000, Phaser.Easing.Bounce.Out, true);
+    tween.onComplete.addOnce(tween4, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tween4</span><span class="p">()</span> <span class="p">{</span>
+function tween4() {
 
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="na">alpha</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">tween5</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    tween.to( { y: 500, alpha: 1 }, 2000, Phaser.Easing.Bounce.Out, true);
+    tween.onComplete.addOnce(tween5, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">tween5</span><span class="p">()</span> <span class="p">{</span>
+function tween5() {
 
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="na">alpha</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">tween2</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    tween.to( { x: 400, y: 100, alpha: 1 }, 2000, Phaser.Easing.Bounce.Out, true);
+    tween.onComplete.addOnce(tween2, this);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

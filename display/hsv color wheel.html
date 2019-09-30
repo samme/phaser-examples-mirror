@@ -55,83 +55,84 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/hsv%20color%20wheel.js" title="display/hsv color wheel.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/hsv%20color%20wheel.js" download="" title="Download: display/hsv color wheel.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">colors</span><span class="p">;</span>
+var i = 0;
+var bmd;
+var colors;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+	bmd = game.add.bitmapData(800, 600);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">);</span>
+	game.add.sprite(0, 0, bmd);
 
-	<span class="nx">colors</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">HSVColorWheel</span><span class="p">();</span>
+	colors = Phaser.Color.HSVColorWheel();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">paint</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">paint2</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">paint3</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">paint4</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">paint5</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.addMoveCallback(paint, this);
+    game.input.addMoveCallback(paint2, this);
+    game.input.addMoveCallback(paint3, this);
+    game.input.addMoveCallback(paint4, this);
+	game.input.addMoveCallback(paint5, this);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span><span class="p">).</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">remove</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.addOnce(remove, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">remove</span><span class="p">()</span> <span class="p">{</span>
+function remove() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">deleteMoveCallback</span><span class="p">(</span><span class="nx">paint3</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.deleteMoveCallback(paint3, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">paint</span><span class="p">(</span><span class="nx">pointer</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function paint(pointer, x, y) {
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">bmd</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="nx">colors</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">rgba</span><span class="p">);</span>
+	if (pointer.isDown)
+	{
+		bmd.circle(x, y, 16, colors[i].rgba);
 
-		<span class="nx">i</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">wrapValue</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">359</span><span class="p">);</span>
-	<span class="p">}</span>
+		i = game.math.wrapValue(i, 1, 359);
+	}
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">paint2</span><span class="p">(</span><span class="nx">pointer</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function paint2(pointer, x, y) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="nx">colors</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">rgba</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (pointer.isDown)
+    {
+        bmd.circle(x, y + 64, 8, colors[i].rgba);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">paint3</span><span class="p">(</span><span class="nx">pointer</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function paint3(pointer, x, y) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="nx">colors</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">rgba</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (pointer.isDown)
+    {
+        bmd.circle(x, y - 64, 8, colors[i].rgba);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">paint4</span><span class="p">(</span><span class="nx">pointer</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function paint4(pointer, x, y) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="nx">colors</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">rgba</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (pointer.isDown)
+    {
+        bmd.circle(x - 64, y, 8, colors[i].rgba);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">paint5</span><span class="p">(</span><span class="nx">pointer</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function paint5(pointer, x, y) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">64</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="nx">colors</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">rgba</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (pointer.isDown)
+    {
+        bmd.circle(x + 64, y, 8, colors[i].rgba);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,95 +55,95 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/basics/08%20sprite%20rotation.js" title="basics/08 sprite rotation.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/basics/08%20sprite%20rotation.js" download="" title="Download: basics/08 sprite rotation.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'arrow'</span><span class="p">,</span> <span class="s1">'assets/sprites/longarrow-white.png'</span><span class="p">);</span>
+    game.load.image('arrow', 'assets/sprites/longarrow-white.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">arrow</span><span class="p">;</span>
+var arrow;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  The code isn't too important for this example</span>
-    <span class="c1">//  What we're showing here is the angles, in degrees and radians,</span>
-    <span class="c1">//  that a Phaser sprite uses when rotating.</span>
-    <span class="c1">//  </span>
-    <span class="c1">//  You can rotate a sprite by setting either property.</span>
-    <span class="c1">//  </span>
-    <span class="c1">//  `angle` is in degrees, from -180 to 180.</span>
-    <span class="c1">//  `rotation` is in radians, from -PI to PI</span>
-    <span class="c1">//  </span>
-    <span class="c1">//  For example:</span>
-    <span class="c1">//  </span>
-    <span class="c1">//  sprite.angle = 45</span>
-    <span class="c1">//  </span>
-    <span class="c1">//  is the same as:</span>
-    <span class="c1">//  </span>
-    <span class="c1">//  sprite.rotation = 0.785</span>
+    //  The code isn't too important for this example
+    //  What we're showing here is the angles, in degrees and radians,
+    //  that a Phaser sprite uses when rotating.
+    //  
+    //  You can rotate a sprite by setting either property.
+    //  
+    //  `angle` is in degrees, from -180 to 180.
+    //  `rotation` is in radians, from -PI to PI
+    //  
+    //  For example:
+    //  
+    //  sprite.angle = 45
+    //  
+    //  is the same as:
+    //  
+    //  sprite.rotation = 0.785
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#000000'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#000000';
 
-    <span class="kd">var</span> <span class="nx">labelStyle</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"16px courier"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#00ff00"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">};</span>
+    var labelStyle = { font: "16px courier", fill: "#00ff00", align: "center" };
 
-    <span class="c1">//  Create a large circle, then draw the angles on it</span>
+    //  Create a large circle, then draw the angles on it
 
-    <span class="kd">var</span> <span class="nx">circle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Circle</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">450</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">labelCircle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Circle</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">530</span><span class="p">);</span>
+    var circle = new Phaser.Circle(400, 300, 450);
+    var labelCircle = new Phaser.Circle(400, 300, 530);
 
-    <span class="kd">var</span> <span class="nx">graphics</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var graphics = game.add.graphics(0, 0);
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x00ff00</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    graphics.lineStyle(2, 0x00ff00, 1);
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawCircle</span><span class="p">(</span><span class="nx">circle</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">circle</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">circle</span><span class="p">.</span><span class="nx">diameter</span><span class="p">);</span>
+    graphics.drawCircle(circle.x, circle.y, circle.diameter);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">a</span> <span class="o">&lt;</span> <span class="mi">360</span><span class="p">;</span> <span class="nx">a</span> <span class="o">+=</span> <span class="mf">22.5</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+    for (var a = 0; a < 360; a += 22.5)
+    {
+        graphics.moveTo(400, 300);
 
-        <span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">circle</span><span class="p">.</span><span class="nx">circumferencePoint</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        var p = circle.circumferencePoint(a, true);
 
-        <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+        graphics.lineTo(p.x, p.y);
 
-        <span class="kd">var</span> <span class="nx">lp</span> <span class="o">=</span> <span class="nx">labelCircle</span><span class="p">.</span><span class="nx">circumferencePoint</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        var lp = labelCircle.circumferencePoint(a, true);
 
-        <span class="kd">var</span> <span class="nx">na</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
+        var na = a;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">na</span> <span class="o">-=</span> <span class="mi">360</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (a > 180)
+        {
+            na -= 360;
+        }
 
-        <span class="kd">var</span> <span class="nx">rads</span> <span class="o">=</span> <span class="nb">String</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">degToRad</span><span class="p">(</span><span class="nx">na</span><span class="p">)).</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">na</span> <span class="o">+</span> <span class="s2">"°\n"</span> <span class="o">+</span> <span class="nx">rads</span><span class="p">;</span>
+        var rads = String(Phaser.Math.degToRad(na)).substr(0, 5);
+        var info = na + "°\n" + rads;
 
-        <span class="kd">var</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">lp</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">lp</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">info</span><span class="p">,</span> <span class="nx">labelStyle</span><span class="p">);</span>
-        <span class="nx">label</span><span class="p">.</span><span class="nx">centerX</span> <span class="o">=</span> <span class="nx">lp</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">label</span><span class="p">.</span><span class="nx">centerY</span> <span class="o">=</span> <span class="nx">lp</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-    <span class="p">}</span>
+        var label = game.add.text(lp.x, lp.y, info, labelStyle);
+        label.centerX = lp.x;
+        label.centerY = lp.y;
+    }
 
-    <span class="nx">arrow</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'arrow'</span><span class="p">);</span>
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0xff0000</span><span class="p">;</span>
+    arrow = game.add.sprite(game.world.centerX, game.world.centerY, 'arrow');
+    arrow.anchor.set(0, 0.5);
+    arrow.tint = 0xff0000;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">angle</span> <span class="o">+=</span> <span class="mf">0.2</span><span class="p">;</span>
+    arrow.angle += 0.2;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Sprite Rotation'</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Angle: '</span> <span class="o">+</span> <span class="nx">arrow</span><span class="p">.</span><span class="nx">angle</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Rotation: '</span> <span class="o">+</span> <span class="nx">arrow</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">96</span><span class="p">);</span>
+    game.debug.text('Sprite Rotation', 24, 32);
+    game.debug.text('Angle: ' + arrow.angle.toFixed(2), 24, 64);
+    game.debug.text('Rotation: ' + arrow.rotation.toFixed(2), 24, 96);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

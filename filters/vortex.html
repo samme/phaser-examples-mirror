@@ -55,85 +55,86 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/filters/vortex.js" title="filters/vortex.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/filters/vortex.js" download="" title="Download: filters/vortex.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'metal'</span><span class="p">,</span> <span class="s1">'assets/textures/metal.png'</span><span class="p">);</span>
+    game.load.image('metal', 'assets/textures/metal.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var filter;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Shader by GhettoWolf (https://www.shadertoy.com/view/Xdl3WH)</span>
+    //  Shader by GhettoWolf (https://www.shadertoy.com/view/Xdl3WH)
 
-    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+    var fragmentSrc = [
 
-        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+        "precision mediump float;",
 
-        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
-        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
-        <span class="s2">"uniform sampler2D iChannel0;"</span><span class="p">,</span>
+        "uniform float     time;",
+        "uniform vec2      resolution;",
+        "uniform sampler2D iChannel0;",
 
-        <span class="s2">"#ifdef GL_ES"</span><span class="p">,</span>
-        <span class="s2">"precision highp float;"</span><span class="p">,</span>
-        <span class="s2">"#endif"</span><span class="p">,</span>
+        "#ifdef GL_ES",
+        "precision highp float;",
+        "#endif",
 
-        <span class="s2">"#define PI 3.1416"</span><span class="p">,</span>
+        "#define PI 3.1416",
 
-        <span class="s2">"void main( void ) {"</span><span class="p">,</span>
+        "void main( void ) {",
 
-            <span class="s2">"//map the xy pixel co-ordinates to be between -1.0 to +1.0 on x and y axes"</span><span class="p">,</span>
-            <span class="s2">"//and alter the x value according to the aspect ratio so it isn't 'stretched'"</span><span class="p">,</span>
+            "//map the xy pixel co-ordinates to be between -1.0 to +1.0 on x and y axes",
+            "//and alter the x value according to the aspect ratio so it isn't 'stretched'",
 
-            <span class="s2">"vec2 p = (2.0 * gl_FragCoord.xy / resolution.xy - 1.0) * vec2(resolution.x / resolution.y, 1.0);"</span><span class="p">,</span>
+            "vec2 p = (2.0 * gl_FragCoord.xy / resolution.xy - 1.0) * vec2(resolution.x / resolution.y, 1.0);",
 
-            <span class="s2">"//now, this is the usual part that uses the formula for texture mapping a ray-"</span><span class="p">,</span>
-            <span class="s2">"//traced cylinder using the vector p that describes the position of the pixel"</span><span class="p">,</span>
-            <span class="s2">"//from the centre."</span><span class="p">,</span>
+            "//now, this is the usual part that uses the formula for texture mapping a ray-",
+            "//traced cylinder using the vector p that describes the position of the pixel",
+            "//from the centre.",
 
-            <span class="s2">"vec2 uv = vec2(atan(p.y, p.x) * 1.0/PI, 1.0 / sqrt(dot(p, p))) * vec2(2.0, 1.0);"</span><span class="p">,</span>
+            "vec2 uv = vec2(atan(p.y, p.x) * 1.0/PI, 1.0 / sqrt(dot(p, p))) * vec2(2.0, 1.0);",
 
-            <span class="s2">"//now this just 'warps' the texture read by altering the u coordinate depending on"</span><span class="p">,</span>
-            <span class="s2">"//the val of the v coordinate and the current time"</span><span class="p">,</span>
+            "//now this just 'warps' the texture read by altering the u coordinate depending on",
+            "//the val of the v coordinate and the current time",
 
-            <span class="s2">"uv.x += sin(2.0 * uv.y + time * 0.5);"</span><span class="p">,</span>
+            "uv.x += sin(2.0 * uv.y + time * 0.5);",
 
-            <span class="s2">"//this divison makes the color value 'darker' into the distance, otherwise"</span><span class="p">,</span>
-            <span class="s2">"//everything will be a uniform brightness and no sense of depth will be present."</span><span class="p">,</span>
+            "//this divison makes the color value 'darker' into the distance, otherwise",
+            "//everything will be a uniform brightness and no sense of depth will be present.",
 
-            <span class="s2">"vec3 c = texture2D(iChannel0, uv).xyz / (uv.y * 0.5 + 1.0);"</span><span class="p">,</span>
+            "vec3 c = texture2D(iChannel0, uv).xyz / (uv.y * 0.5 + 1.0);",
 
-            <span class="s2">"gl_FragColor = vec4(c, 1.0);"</span><span class="p">,</span>
+            "gl_FragColor = vec4(c, 1.0);",
 
-        <span class="s2">"}"</span>
-    <span class="p">];</span>
+        "}"
+    ];
 
-    <span class="c1">//  Texture must be power-of-two sized or the filter will break</span>
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'metal'</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+    //  Texture must be power-of-two sized or the filter will break
+    sprite = game.add.sprite(0, 0, 'metal');
+    sprite.width = 800;
+    sprite.height = 600;
 
-    <span class="kd">var</span> <span class="nx">customUniforms</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">iChannel0</span><span class="p">:</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="s1">'sampler2D'</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">texture</span><span class="p">,</span> <span class="na">textureData</span><span class="p">:</span> <span class="p">{</span> <span class="na">repeat</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">}</span>
-    <span class="p">};</span>
+    var customUniforms = {
+        iChannel0: { type: 'sampler2D', value: sprite.texture, textureData: { repeat: true } }
+    };
 
-    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">customUniforms</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    filter = new Phaser.Filter(game, customUniforms, fragmentSrc);
+    filter.setResolution(800, 600);
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+    sprite.filters = [ filter ];
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+    filter.update();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

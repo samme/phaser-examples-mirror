@@ -55,42 +55,43 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/loader/load%20bitmap%20font.js" title="loader/load bitmap font.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/loader/load%20bitmap%20font.js" download="" title="Download: loader/load bitmap font.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Phaser can load Bitmap Fonts.</span>
+    //  Phaser can load Bitmap Fonts.
 
-    <span class="c1">//  As with all load operations the first parameter is a unique key, which must be unique between all image files.</span>
-    <span class="c1">//  Next is the bitmap font file itself, in this case desyrel.png</span>
-    <span class="c1">//  Finally is the path to the XML file that goes with the font.</span>
+    //  As with all load operations the first parameter is a unique key, which must be unique between all image files.
+    //  Next is the bitmap font file itself, in this case desyrel.png
+    //  Finally is the path to the XML file that goes with the font.
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.xml'</span><span class="p">);</span>
+    game.load.bitmapFont('desyrel', 'assets/fonts/bitmapFonts/desyrel.png', 'assets/fonts/bitmapFonts/desyrel.xml');
 
-    <span class="c1">//  Note that the XML file should be saved with UTF-8 encoding or some browsers (such as Firefox) won't load it.</span>
+    //  Note that the XML file should be saved with UTF-8 encoding or some browsers (such as Firefox) won't load it.
 
-    <span class="c1">//  There are various tools that can create Bitmap Fonts and the XML file needed.</span>
-    <span class="c1">//  On Windows you can use the free app BMFont: http://www.angelcode.com/products/bmfont/</span>
-    <span class="c1">//  On OS X we recommend Glyph Designer: http://www.71squared.com/en/glyphdesigner</span>
+    //  There are various tools that can create Bitmap Fonts and the XML file needed.
+    //  On Windows you can use the free app BMFont: http://www.angelcode.com/products/bmfont/
+    //  On OS X we recommend Glyph Designer: http://www.71squared.com/en/glyphdesigner
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+var text;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#0072bc'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#0072bc';
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'desyrel'</span><span class="p">,</span><span class="s1">'Bitmap Fonts!'</span><span class="p">,</span><span class="mi">64</span><span class="p">);</span>
+    text = game.add.bitmapText(200, 100, 'desyrel','Bitmap Fonts!',64);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s1">'Bitmap Fonts!\nx: '</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">+</span> <span class="s1">' y: '</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">y</span><span class="p">));</span>
+    text.setText('Bitmap Fonts!\nx: ' + Math.round(game.input.x) + ' y: ' + Math.round(game.input.y));
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

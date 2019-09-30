@@ -55,35 +55,36 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/bounce.js" title="tweens/bounce.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/bounce.js" download="" title="Download: tweens/bounce.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/yellow_ball.png'</span><span class="p">);</span>
+    game.load.image('ball', 'assets/sprites/yellow_ball.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">ball</span><span class="p">;</span>
+var ball;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">ball</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
+    ball = game.add.sprite(300, 0, 'ball');
 
-    <span class="nx">startBounceTween</span><span class="p">();</span>
-<span class="p">}</span>
+    startBounceTween();
+}
 
-<span class="kd">function</span> <span class="nx">startBounceTween</span><span class="p">()</span> <span class="p">{</span>
+function startBounceTween() {
 
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    ball.y = 0;
 
-    <span class="kd">var</span> <span class="nx">bounce</span><span class="o">=</span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">ball</span><span class="p">);</span>
+    var bounce=game.add.tween(ball);
 
-    <span class="nx">bounce</span><span class="p">.</span><span class="nx">to</span><span class="p">({</span> <span class="na">y</span><span class="p">:</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span><span class="o">-</span><span class="nx">ball</span><span class="p">.</span><span class="nx">height</span> <span class="p">},</span> <span class="mi">1000</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">3000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">In</span><span class="p">);</span>
-    <span class="nx">bounce</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">startBounceTween</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">bounce</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    bounce.to({ y: game.world.height-ball.height }, 1000 + Math.random() * 3000, Phaser.Easing.Bounce.In);
+    bounce.onComplete.add(startBounceTween, this);
+    bounce.start();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

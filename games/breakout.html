@@ -55,210 +55,211 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/games/breakout.js" title="games/breakout.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/games/breakout.js" download="" title="Download: games/breakout.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'breakout'</span><span class="p">,</span> <span class="s1">'assets/games/breakout/breakout.png'</span><span class="p">,</span> <span class="s1">'assets/games/breakout/breakout.json'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'starfield'</span><span class="p">,</span> <span class="s1">'assets/misc/starfield.jpg'</span><span class="p">);</span>
+    game.load.atlas('breakout', 'assets/games/breakout/breakout.png', 'assets/games/breakout/breakout.json');
+    game.load.image('starfield', 'assets/misc/starfield.jpg');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">ball</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">paddle</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bricks</span><span class="p">;</span>
+var ball;
+var paddle;
+var bricks;
 
-<span class="kd">var</span> <span class="nx">ballOnPaddle</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+var ballOnPaddle = true;
 
-<span class="kd">var</span> <span class="nx">lives</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var lives = 3;
+var score = 0;
 
-<span class="kd">var</span> <span class="nx">scoreText</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">livesText</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">introText</span><span class="p">;</span>
+var scoreText;
+var livesText;
+var introText;
 
-<span class="kd">var</span> <span class="nx">s</span><span class="p">;</span>
+var s;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="c1">//  We check bounds collisions against all walls other than the bottom one</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">checkCollision</span><span class="p">.</span><span class="nx">down</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    //  We check bounds collisions against all walls other than the bottom one
+    game.physics.arcade.checkCollision.down = false;
 
-    <span class="nx">s</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'starfield'</span><span class="p">);</span>
+    s = game.add.tileSprite(0, 0, 800, 600, 'starfield');
 
-    <span class="nx">bricks</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">bricks</span><span class="p">.</span><span class="nx">enableBody</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">bricks</span><span class="p">.</span><span class="nx">physicsBodyType</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">;</span>
+    bricks = game.add.group();
+    bricks.enableBody = true;
+    bricks.physicsBodyType = Phaser.Physics.ARCADE;
 
-    <span class="kd">var</span> <span class="nx">brick</span><span class="p">;</span>
+    var brick;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">15</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">brick</span> <span class="o">=</span> <span class="nx">bricks</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">120</span> <span class="o">+</span> <span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="mi">36</span><span class="p">),</span> <span class="mi">100</span> <span class="o">+</span> <span class="p">(</span><span class="nx">y</span> <span class="o">*</span> <span class="mi">52</span><span class="p">),</span> <span class="s1">'breakout'</span><span class="p">,</span> <span class="s1">'brick_'</span> <span class="o">+</span> <span class="p">(</span><span class="nx">y</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'_1.png'</span><span class="p">);</span>
-            <span class="nx">brick</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-            <span class="nx">brick</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">immovable</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    for (var y = 0; y < 4; y++)
+    {
+        for (var x = 0; x < 15; x++)
+        {
+            brick = bricks.create(120 + (x * 36), 100 + (y * 52), 'breakout', 'brick_' + (y+1) + '_1.png');
+            brick.body.bounce.set(1);
+            brick.body.immovable = true;
+        }
+    }
 
-    <span class="nx">paddle</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'breakout'</span><span class="p">,</span> <span class="s1">'paddle_big.png'</span><span class="p">);</span>
-    <span class="nx">paddle</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    paddle = game.add.sprite(game.world.centerX, 500, 'breakout', 'paddle_big.png');
+    paddle.anchor.setTo(0.5, 0.5);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">paddle</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.enable(paddle, Phaser.Physics.ARCADE);
 
-    <span class="nx">paddle</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">paddle</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="nx">paddle</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">immovable</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    paddle.body.collideWorldBounds = true;
+    paddle.body.bounce.set(1);
+    paddle.body.immovable = true;
 
-    <span class="nx">ball</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">paddle</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">'breakout'</span><span class="p">,</span> <span class="s1">'ball_1.png'</span><span class="p">);</span>
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">checkWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    ball = game.add.sprite(game.world.centerX, paddle.y - 16, 'breakout', 'ball_1.png');
+    ball.anchor.set(0.5);
+    ball.checkWorldBounds = true;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">ball</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.enable(ball, Phaser.Physics.ARCADE);
 
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    ball.body.collideWorldBounds = true;
+    ball.body.bounce.set(1);
 
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'spin'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'ball_1.png'</span><span class="p">,</span> <span class="s1">'ball_2.png'</span><span class="p">,</span> <span class="s1">'ball_3.png'</span><span class="p">,</span> <span class="s1">'ball_4.png'</span><span class="p">,</span> <span class="s1">'ball_5.png'</span> <span class="p">],</span> <span class="mi">50</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    ball.animations.add('spin', [ 'ball_1.png', 'ball_2.png', 'ball_3.png', 'ball_4.png', 'ball_5.png' ], 50, true, false);
 
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onOutOfBounds</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">ballLost</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    ball.events.onOutOfBounds.add(ballLost, this);
 
-    <span class="nx">scoreText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="s1">'score: 0'</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"20px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"left"</span> <span class="p">});</span>
-    <span class="nx">livesText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">680</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="s1">'lives: 3'</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"20px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"left"</span> <span class="p">});</span>
-    <span class="nx">introText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'- click to start -'</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"40px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">});</span>
-    <span class="nx">introText</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    scoreText = game.add.text(32, 550, 'score: 0', { font: "20px Arial", fill: "#ffffff", align: "left" });
+    livesText = game.add.text(680, 550, 'lives: 3', { font: "20px Arial", fill: "#ffffff", align: "left" });
+    introText = game.add.text(game.world.centerX, 400, '- click to start -', { font: "40px Arial", fill: "#ffffff", align: "center" });
+    introText.anchor.setTo(0.5, 0.5);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">releaseBall</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(releaseBall, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span> <span class="p">()</span> <span class="p">{</span>
+function update () {
 
-    <span class="c1">//  Fun, but a little sea-sick inducing :) Uncomment if you like!</span>
-    <span class="c1">// s.tilePosition.x += (game.input.speed.x / 2);</span>
+    //  Fun, but a little sea-sick inducing :) Uncomment if you like!
+    // s.tilePosition.x += (game.input.speed.x / 2);
 
-    <span class="nx">paddle</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    paddle.x = game.input.x;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">paddle</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">24</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">paddle</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">24</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">paddle</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">24</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">paddle</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">24</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (paddle.x < 24)
+    {
+        paddle.x = 24;
+    }
+    else if (paddle.x > game.width - 24)
+    {
+        paddle.x = game.width - 24;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">ballOnPaddle</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">paddle</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">ball</span><span class="p">,</span> <span class="nx">paddle</span><span class="p">,</span> <span class="nx">ballHitPaddle</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">ball</span><span class="p">,</span> <span class="nx">bricks</span><span class="p">,</span> <span class="nx">ballHitBrick</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (ballOnPaddle)
+    {
+        ball.body.x = paddle.x;
+    }
+    else
+    {
+        game.physics.arcade.collide(ball, paddle, ballHitPaddle, null, this);
+        game.physics.arcade.collide(ball, bricks, ballHitBrick, null, this);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">releaseBall</span> <span class="p">()</span> <span class="p">{</span>
+function releaseBall () {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">ballOnPaddle</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">ballOnPaddle</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">300</span><span class="p">;</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">75</span><span class="p">;</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'spin'</span><span class="p">);</span>
-        <span class="nx">introText</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (ballOnPaddle)
+    {
+        ballOnPaddle = false;
+        ball.body.velocity.y = -300;
+        ball.body.velocity.x = -75;
+        ball.animations.play('spin');
+        introText.visible = false;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">ballLost</span> <span class="p">()</span> <span class="p">{</span>
+function ballLost () {
 
-    <span class="nx">lives</span><span class="o">--</span><span class="p">;</span>
-    <span class="nx">livesText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'lives: '</span> <span class="o">+</span> <span class="nx">lives</span><span class="p">;</span>
+    lives--;
+    livesText.text = 'lives: ' + lives;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">lives</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">gameOver</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">ballOnPaddle</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    if (lives === 0)
+    {
+        gameOver();
+    }
+    else
+    {
+        ballOnPaddle = true;
 
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">paddle</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">16</span><span class="p">,</span> <span class="nx">paddle</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">16</span><span class="p">);</span>
+        ball.reset(paddle.body.x + 16, paddle.y - 16);
         
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
-    <span class="p">}</span>
+        ball.animations.stop();
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">gameOver</span> <span class="p">()</span> <span class="p">{</span>
+function gameOver () {
 
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    ball.body.velocity.setTo(0, 0);
     
-    <span class="nx">introText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'Game Over!'</span><span class="p">;</span>
-    <span class="nx">introText</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    introText.text = 'Game Over!';
+    introText.visible = true;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">ballHitBrick</span> <span class="p">(</span><span class="nx">_ball</span><span class="p">,</span> <span class="nx">_brick</span><span class="p">)</span> <span class="p">{</span>
+function ballHitBrick (_ball, _brick) {
 
-    <span class="nx">_brick</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+    _brick.kill();
 
-    <span class="nx">score</span> <span class="o">+=</span> <span class="mi">10</span><span class="p">;</span>
+    score += 10;
 
-    <span class="nx">scoreText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'score: '</span> <span class="o">+</span> <span class="nx">score</span><span class="p">;</span>
+    scoreText.text = 'score: ' + score;
 
-    <span class="c1">//  Are they any bricks left?</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">bricks</span><span class="p">.</span><span class="nx">countLiving</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  New level starts</span>
-        <span class="nx">score</span> <span class="o">+=</span> <span class="mi">1000</span><span class="p">;</span>
-        <span class="nx">scoreText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'score: '</span> <span class="o">+</span> <span class="nx">score</span><span class="p">;</span>
-        <span class="nx">introText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'- Next Level -'</span><span class="p">;</span>
+    //  Are they any bricks left?
+    if (bricks.countLiving() == 0)
+    {
+        //  New level starts
+        score += 1000;
+        scoreText.text = 'score: ' + score;
+        introText.text = '- Next Level -';
 
-        <span class="c1">//  Let's move the ball back to the paddle</span>
-        <span class="nx">ballOnPaddle</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">paddle</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">16</span><span class="p">;</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">paddle</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">16</span><span class="p">;</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+        //  Let's move the ball back to the paddle
+        ballOnPaddle = true;
+        ball.body.velocity.set(0);
+        ball.x = paddle.x + 16;
+        ball.y = paddle.y - 16;
+        ball.animations.stop();
 
-        <span class="c1">//  And bring the bricks back from the dead :)</span>
-        <span class="nx">bricks</span><span class="p">.</span><span class="nx">callAll</span><span class="p">(</span><span class="s1">'revive'</span><span class="p">);</span>
-    <span class="p">}</span>
+        //  And bring the bricks back from the dead :)
+        bricks.callAll('revive');
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">ballHitPaddle</span> <span class="p">(</span><span class="nx">_ball</span><span class="p">,</span> <span class="nx">_paddle</span><span class="p">)</span> <span class="p">{</span>
+function ballHitPaddle (_ball, _paddle) {
 
-    <span class="kd">var</span> <span class="nx">diff</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var diff = 0;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_ball</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">_paddle</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Ball is on the left-hand side of the paddle</span>
-        <span class="nx">diff</span> <span class="o">=</span> <span class="nx">_paddle</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">_ball</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">_ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span> <span class="o">*</span> <span class="nx">diff</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_ball</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="nx">_paddle</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Ball is on the right-hand side of the paddle</span>
-        <span class="nx">diff</span> <span class="o">=</span> <span class="nx">_ball</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span><span class="nx">_paddle</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">_ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="nx">diff</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="c1">//  Ball is perfectly in the middle</span>
-        <span class="c1">//  Add a little random X to stop it bouncing straight up!</span>
-        <span class="nx">_ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">8</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (_ball.x < _paddle.x)
+    {
+        //  Ball is on the left-hand side of the paddle
+        diff = _paddle.x - _ball.x;
+        _ball.body.velocity.x = (-10 * diff);
+    }
+    else if (_ball.x > _paddle.x)
+    {
+        //  Ball is on the right-hand side of the paddle
+        diff = _ball.x -_paddle.x;
+        _ball.body.velocity.x = (10 * diff);
+    }
+    else
+    {
+        //  Ball is perfectly in the middle
+        //  Add a little random X to stop it bouncing straight up!
+        _ball.body.velocity.x = 2 + Math.random() * 8;
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

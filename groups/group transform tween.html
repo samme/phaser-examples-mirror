@@ -55,52 +55,53 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/group%20transform%20tween.js" title="groups/group transform tween.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/group%20transform%20tween.js" download="" title="Download: groups/group transform tween.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">robot</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">eye</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">body</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">leftArm</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">rightArm</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">leftLeg</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">rightLeg</span><span class="p">;</span>
+var robot;
+var eye;
+var body;
+var leftArm;
+var rightArm;
+var leftLeg;
+var rightLeg;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'eye'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/eye.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'body'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/body.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'arm-l'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/arm-l.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'arm-r'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/arm-r.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'leg-l'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/leg-l.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'leg-r'</span><span class="p">,</span> <span class="s1">'assets/sprites/robot/leg-r.png'</span><span class="p">);</span>
+    game.load.image('eye', 'assets/sprites/robot/eye.png');
+    game.load.image('body', 'assets/sprites/robot/body.png');
+    game.load.image('arm-l', 'assets/sprites/robot/arm-l.png');
+    game.load.image('arm-r', 'assets/sprites/robot/arm-r.png');
+    game.load.image('leg-l', 'assets/sprites/robot/leg-l.png');
+    game.load.image('leg-r', 'assets/sprites/robot/leg-r.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// Use groups of sprites to create a big robot.</span>
-    <span class="c1">// Robot itself, you can subclass group class in a real game.</span>
-    <span class="nx">robot</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    // Use groups of sprites to create a big robot.
+    // Robot itself, you can subclass group class in a real game.
+    robot = game.add.group();
 
-    <span class="c1">// Robot components.</span>
-    <span class="nx">leftArm</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="s1">'arm-l'</span><span class="p">);</span>
-    <span class="nx">rightArm</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">549</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="s1">'arm-r'</span><span class="p">);</span>
-    <span class="nx">leftLeg</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">325</span><span class="p">,</span> <span class="s1">'leg-l'</span><span class="p">);</span>
-    <span class="nx">rightLeg</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">410</span><span class="p">,</span> <span class="mi">325</span><span class="p">,</span> <span class="s1">'leg-r'</span><span class="p">);</span>
-    <span class="nx">body</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">219</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'body'</span><span class="p">);</span>
-    <span class="nx">eye</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">335</span><span class="p">,</span> <span class="mi">173</span><span class="p">,</span><span class="s1">'eye'</span><span class="p">);</span>
+    // Robot components.
+    leftArm = robot.create(90, 175, 'arm-l');
+    rightArm = robot.create(549, 175, 'arm-r');
+    leftLeg = robot.create(270, 325, 'leg-l');
+    rightLeg = robot.create(410, 325, 'leg-r');
+    body = robot.create(219, 32, 'body');
+    eye = robot.create(335, 173,'eye');
 
-    <span class="c1">// Tween the robot's size, so all the components also scaled.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">robot</span><span class="p">.</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span><span class="na">x</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Back</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">false</span><span class="p">).</span><span class="nx">yoyo</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    // Tween the robot's size, so all the components also scaled.
+    game.add.tween(robot.scale).to( {x: 1.2, y: 1.2}, 1000, Phaser.Easing.Back.InOut, true, 0, false).yoyo(true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'The robot is a group and every component is a sprite.'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">);</span>
+    game.debug.text('The robot is a group and every component is a sprite.', 32,32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

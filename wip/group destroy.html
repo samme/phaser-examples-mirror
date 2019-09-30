@@ -55,78 +55,79 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/group%20destroy.js" title="wip/group destroy.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/group%20destroy.js" download="" title="Download: wip/group destroy.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari1'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari130xe.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sonic'</span><span class="p">,</span> <span class="s1">'assets/sprites/sonic_havok_sanity.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'starfield'</span><span class="p">,</span> <span class="s1">'assets/misc/starfield.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'carrier'</span><span class="p">,</span> <span class="s1">'assets/fonts/carrier_command.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/carrier_command.xml'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'button'</span><span class="p">,</span> <span class="s1">'assets/buttons/button_sprite_sheet.png'</span><span class="p">,</span> <span class="mi">193</span><span class="p">,</span> <span class="mi">71</span><span class="p">);</span>
+    game.load.image('atari1', 'assets/sprites/atari130xe.png');
+    game.load.image('sonic', 'assets/sprites/sonic_havok_sanity.png');
+    game.load.image('starfield', 'assets/misc/starfield.jpg');
+    game.load.bitmapFont('carrier', 'assets/fonts/carrier_command.png', 'assets/fonts/carrier_command.xml', null, 0, 24);
+    game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">group</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">DaddyGroup</span><span class="p">;</span>
+var group;
+var DaddyGroup;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">DaddyGroup</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    DaddyGroup = game.add.group();
 
-    <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    group = game.add.group();
 
-    <span class="c1">//  Testing Group.destroy with different object types:</span>
+    //  Testing Group.destroy with different object types:
 
-    <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'atari1'</span><span class="p">);</span>
+    var sprite = game.make.sprite(300, 100, 'atari1');
 
-    <span class="kd">var</span> <span class="nx">graphics</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFF3300</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">220</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">220</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    var graphics = game.make.graphics(0, 0);
+    graphics.beginFill(0xFF3300);
+    graphics.moveTo(0,50);
+    graphics.lineTo(250, 50);
+    graphics.lineTo(100, 100);
+    graphics.lineTo(250, 220);
+    graphics.lineTo(50, 220);
+    graphics.lineTo(0, 50);
+    graphics.endFill();
 
-    <span class="kd">var</span> <span class="nx">tilesprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'starfield'</span><span class="p">);</span>
-    <span class="nx">tilesprite</span><span class="p">.</span><span class="nx">autoScroll</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    var tilesprite = game.make.tileSprite(600, 100, 200, 200, 'starfield');
+    tilesprite.autoScroll(0, 100);
 
-    <span class="kd">var</span> <span class="nx">bitmaptext</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'carrier'</span><span class="p">,</span> <span class="s1">'bitmap text'</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    var bitmaptext = game.make.bitmapText(100, 300, 'carrier', 'bitmap text', 32);
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="s2">"normal text"</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'Arial Black'</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fontSize</span> <span class="o">=</span> <span class="mi">60</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s1">'#ff0044'</span><span class="p">;</span>
+    var text = game.make.text(100, 350, "normal text");
+    text.font = 'Arial Black';
+    text.fontSize = 60;
+    text.fill = '#ff0044';
 
-    <span class="kd">var</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">actionOnClick</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var button = game.make.button(100, 450, 'button', actionOnClick, this, 2, 1, 0);
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">graphics</span><span class="p">);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tilesprite</span><span class="p">);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">bitmaptext</span><span class="p">);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">button</span><span class="p">);</span>
+    group.add(sprite);
+    group.add(graphics);
+    group.add(tilesprite);
+    group.add(bitmaptext);
+    group.add(text);
+    group.add(button);
 
-    <span class="nx">DaddyGroup</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">group</span><span class="p">);</span>
+    DaddyGroup.add(group);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">actionOnClick</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(actionOnClick, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">actionOnClick</span><span class="p">()</span> <span class="p">{</span>
+function actionOnClick() {
 
-    <span class="nx">DaddyGroup</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+    DaddyGroup.destroy();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function update() {
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function render() {
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,64 +55,65 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/loader/load%20binary%20file.js" title="loader/load binary file.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/loader/load%20binary%20file.js" download="" title="Download: loader/load binary file.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Phaser can load Binary files.</span>
+    //  Phaser can load Binary files.
 
-    <span class="c1">//  It does this using an XMLHttpRequest.</span>
+    //  It does this using an XMLHttpRequest.
     
-    <span class="c1">//  If loading a file from outside of the domain in which the game is running </span>
-    <span class="c1">//  a 'Access-Control-Allow-Origin' header must be present on the server.</span>
-    <span class="c1">//  No parsing of the text file is performed, it's literally just the raw data.</span>
+    //  If loading a file from outside of the domain in which the game is running 
+    //  a 'Access-Control-Allow-Origin' header must be present on the server.
+    //  No parsing of the text file is performed, it's literally just the raw data.
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">binary</span><span class="p">(</span><span class="s1">'mod'</span><span class="p">,</span> <span class="s1">'assets/audio/protracker/global_trash_3_v2.mod'</span><span class="p">,</span> <span class="nx">binaryLoadCallback</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.load.binary('mod', 'assets/audio/protracker/global_trash_3_v2.mod', binaryLoadCallback, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">binaryLoadCallback</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+function binaryLoadCallback(key, data) {
 
-    <span class="c1">//  Convert our binary file into a Uint8Array</span>
-    <span class="c1">//  We must return the data value or nothing will be added to the cache, even if you don't modify it.</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nx">Uint8Array</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+    //  Convert our binary file into a Uint8Array
+    //  We must return the data value or nothing will be added to the cache, even if you don't modify it.
+    return new Uint8Array(data);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#0072bc'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#0072bc';
 
-    <span class="c1">//  Get our binary file into a local buffer var</span>
-    <span class="kd">var</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getBinary</span><span class="p">(</span><span class="s1">'mod'</span><span class="p">);</span>
+    //  Get our binary file into a local buffer var
+    var buffer = game.cache.getBinary('mod');
 
-    <span class="c1">//   getString scans the binary file between the two values given, </span>
-    <span class="c1">//   returning the characters it finds there as a string</span>
+    //   getString scans the binary file between the two values given, 
+    //   returning the characters it finds there as a string
 
-    <span class="kd">var</span> <span class="nx">signature</span> <span class="o">=</span> <span class="nx">getString</span><span class="p">(</span><span class="nx">buffer</span><span class="p">,</span> <span class="mi">1080</span><span class="p">,</span> <span class="mi">1084</span><span class="p">);</span>
+    var signature = getString(buffer, 1080, 1084);
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">"Signature: "</span> <span class="o">+</span> <span class="nx">signature</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var text = game.add.text(32, 32, "Signature: " + signature, { fill: '#ffffff' });
+    text.setShadow(2, 2, 'rgba(0,0,0,0.5)', 0);
 
-    <span class="kd">var</span> <span class="nx">title</span> <span class="o">=</span> <span class="nx">getString</span><span class="p">(</span><span class="nx">buffer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-    <span class="kd">var</span> <span class="nx">text2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s2">"Title: "</span> <span class="o">+</span> <span class="nx">title</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var title = getString(buffer, 0, 20)
+    var text2 = game.add.text(32, 64, "Title: " + title, { fill: '#ffffff' });
+    text2.setShadow(2, 2, 'rgba(0,0,0,0.5)', 0);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">getString</span><span class="p">(</span><span class="nx">buffer</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
+function getString(buffer, start, end) {
 
-    <span class="kd">var</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+    var output = '';
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">start</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">end</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">output</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">buffer</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-    <span class="p">}</span>
+    for (var i = start; i < end; i++)
+    {
+        output += String.fromCharCode(buffer[i]);
+    }
 
-    <span class="k">return</span> <span class="nx">output</span><span class="p">;</span>
+    return output;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

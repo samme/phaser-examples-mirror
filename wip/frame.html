@@ -55,61 +55,62 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/frame.js" title="wip/frame.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/frame.js" download="" title="Download: wip/frame.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'seacreatures'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.json'</span><span class="p">);</span>
+    game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
+    game.load.atlas('seacreatures', 'assets/sprites/seacreatures_json.png', 'assets/sprites/seacreatures_json.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">mummy</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">jelly</span><span class="p">;</span>
+var mummy;
+var jelly;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="c1">//	Testing both sprite sheets and texture atlases with a Phaser.Image</span>
+	//	Testing both sprite sheets and texture atlases with a Phaser.Image
 
-	<span class="nx">mummy</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'mummy'</span><span class="p">);</span>
+	mummy = game.add.image(200, 200, 'mummy');
 
-    <span class="nx">jelly</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'seacreatures'</span><span class="p">,</span> <span class="s1">'blueJellyfish0000'</span><span class="p">);</span>
+    jelly = game.add.image(200, 300, 'seacreatures', 'blueJellyfish0000');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">changeFrame</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(changeFrame, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">changeFrame</span><span class="p">()</span> <span class="p">{</span>
+function changeFrame() {
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">jelly</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">===</span> <span class="s1">'blueJellyfish0000'</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">jelly</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'crab10000'</span><span class="p">;</span>
-	<span class="p">}</span>
-	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">jelly</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">===</span> <span class="s1">'crab10000'</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">jelly</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'purpleFish0000'</span><span class="p">;</span>
-	<span class="p">}</span>
-	<span class="k">else</span>
-	<span class="p">{</span>
-		<span class="nx">jelly</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'blueJellyfish0000'</span><span class="p">;</span>
-	<span class="p">}</span>
+	if (jelly.frameName === 'blueJellyfish0000')
+	{
+		jelly.frameName = 'crab10000';
+	}
+	else if (jelly.frameName === 'crab10000')
+	{
+		jelly.frameName = 'purpleFish0000';
+	}
+	else
+	{
+		jelly.frameName = 'blueJellyfish0000';
+	}
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="c1">//	You could animate an Image like this! But it makes more sense to use a Sprite</span>
-	<span class="k">if</span> <span class="p">(</span><span class="nx">mummy</span><span class="p">.</span><span class="nx">frame</span> <span class="o">&lt;</span> <span class="mi">17</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">mummy</span><span class="p">.</span><span class="nx">frame</span><span class="o">++</span><span class="p">;</span>
-	<span class="p">}</span>
-	<span class="k">else</span>
-	<span class="p">{</span>
-		<span class="nx">mummy</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="p">}</span>
+	//	You could animate an Image like this! But it makes more sense to use a Sprite
+	if (mummy.frame < 17)
+	{
+		mummy.frame++;
+	}
+	else
+	{
+		mummy.frame = 0;
+	}
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

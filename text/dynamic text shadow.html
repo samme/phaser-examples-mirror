@@ -55,55 +55,56 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/dynamic%20text%20shadow.js" title="text/dynamic text shadow.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/dynamic%20text%20shadow.js" download="" title="Download: text/dynamic text shadow.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+var text;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">setBackgroundColor</span><span class="p">(</span><span class="mh">0xfbf6d5</span><span class="p">);</span>
+	game.stage.setBackgroundColor(0xfbf6d5);
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">'  dynamic shadows  '</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">align</span> <span class="o">=</span> <span class="s1">'center'</span><span class="p">;</span>
+    text = game.add.text(game.world.centerX, 250, '  dynamic shadows  ');
+    text.anchor.set(0.5);
+    text.align = 'center';
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'Arial Black'</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fontSize</span> <span class="o">=</span> <span class="mi">70</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fontWeight</span> <span class="o">=</span> <span class="s1">'bold'</span><span class="p">;</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">fill</span> <span class="o">=</span> <span class="s1">'#ec008c'</span><span class="p">;</span>
+    text.font = 'Arial Black';
+    text.fontSize = 70;
+    text.fontWeight = 'bold';
+    text.fill = '#ec008c';
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'rgba(0, 0, 0, 0.5)'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    text.setShadow(0, 0, 'rgba(0, 0, 0, 0.5)', 0);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="kd">var</span> <span class="nx">offset</span> <span class="o">=</span> <span class="nx">moveToXY</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">,</span> <span class="nx">text</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">text</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+	var offset = moveToXY(game.input.activePointer, text.x, text.y, 8);
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="nx">offset</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">offset</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="s1">'rgba(0, 0, 0, 0.5)'</span><span class="p">,</span> <span class="nx">distanceToPointer</span><span class="p">(</span><span class="nx">text</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">)</span> <span class="o">/</span> <span class="mi">30</span><span class="p">);</span>
+    text.setShadow(offset.x, offset.y, 'rgba(0, 0, 0, 0.5)', distanceToPointer(text, game.input.activePointer) / 30);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">distanceToPointer</span><span class="p">(</span><span class="nx">displayObject</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function distanceToPointer(displayObject, pointer) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">_dx</span> <span class="o">=</span> <span class="nx">displayObject</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">_dy</span> <span class="o">=</span> <span class="nx">displayObject</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    this._dx = displayObject.x - pointer.x;
+    this._dy = displayObject.y - pointer.y;
     
-    <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_dx</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">_dx</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_dy</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">_dy</span><span class="p">);</span>
+    return Math.sqrt(this._dx * this._dx + this._dy * this._dy);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">moveToXY</span><span class="p">(</span><span class="nx">displayObject</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
+function moveToXY(displayObject, x, y, speed) {
 
-    <span class="kd">var</span> <span class="nx">_angle</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">displayObject</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">x</span> <span class="o">-</span> <span class="nx">displayObject</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
+    var _angle = Math.atan2(y - displayObject.y, x - displayObject.x);
     
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">_angle</span><span class="p">)</span> <span class="o">*</span> <span class="nx">speed</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">_angle</span><span class="p">)</span> <span class="o">*</span> <span class="nx">speed</span><span class="p">;</span>
+    var x = Math.cos(_angle) * speed;
+    var y = Math.sin(_angle) * speed;
 
-    <span class="k">return</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">x</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">y</span> <span class="p">};</span>
+    return { x: x, y: y };
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

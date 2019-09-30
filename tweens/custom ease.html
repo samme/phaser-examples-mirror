@@ -55,41 +55,42 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/custom%20ease.js" title="tweens/custom ease.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/custom%20ease.js" download="" title="Download: tweens/custom ease.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser.png'</span><span class="p">);</span>
+    game.load.image('logo', 'assets/sprites/phaser.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">sprite3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
+    var sprite1 = game.add.sprite(100, 100, 'logo');
+    var sprite2 = game.add.sprite(300, 100, 'logo');
+    var sprite3 = game.add.sprite(500, 100, 'logo');
 
-    <span class="c1">//  Inject a custom ease into Phaser</span>
+    //  Inject a custom ease into Phaser
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">tweens</span><span class="p">.</span><span class="nx">easeMap</span><span class="p">[</span><span class="s1">'Custom.easeIn'</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">k</span> <span class="o">*</span> <span class="nx">k</span><span class="p">;</span>
-    <span class="p">};</span>
+    game.tweens.easeMap['Custom.easeIn'] = function (k) {
+        return k * k;
+    };
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">tweens</span><span class="p">.</span><span class="nx">easeMap</span><span class="p">[</span><span class="s1">'Custom.easeOut'</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">k</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">k</span> <span class="p">);</span>
-    <span class="p">};</span>
+    game.tweens.easeMap['Custom.easeOut'] = function (k) {
+        return k * ( 2 - k );
+    };
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">tweens</span><span class="p">.</span><span class="nx">easeMap</span><span class="p">[</span><span class="s1">'Custom.easeInOut'</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="nx">k</span> <span class="o">*=</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="p">)</span> <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nx">k</span> <span class="o">*</span> <span class="nx">k</span><span class="p">;</span>
-        <span class="k">return</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span> <span class="o">--</span><span class="nx">k</span> <span class="o">*</span> <span class="p">(</span> <span class="nx">k</span> <span class="o">-</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">);</span>
-    <span class="p">};</span>
+    game.tweens.easeMap['Custom.easeInOut'] = function (k) {
+        if ( ( k *= 2 ) < 1 ) return 0.5 * k * k;
+        return - 0.5 * ( --k * ( k - 2 ) - 1 );
+    };
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">400</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="s2">"Custom.easeIn"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite2</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">400</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="s2">"Custom.easeOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite3</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">400</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="s2">"Custom.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(sprite1).to( { y: 400 }, 2000, "Custom.easeIn", true, 0, 1000, true);
+    game.add.tween(sprite2).to( { y: 400 }, 2000, "Custom.easeOut", true, 0, 1000, true);
+    game.add.tween(sprite3).to( { y: 400 }, 2000, "Custom.easeInOut", true, 0, 1000, true);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

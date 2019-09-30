@@ -55,47 +55,48 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/tint%20sprite%20frame.js" title="display/tint sprite frame.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/tint%20sprite%20frame.js" download="" title="Download: display/tint sprite frame.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
+// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'seacreatures'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.json'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'undersea'</span><span class="p">,</span> <span class="s1">'assets/pics/undersea.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'coral'</span><span class="p">,</span> <span class="s1">'assets/pics/seabed.png'</span><span class="p">);</span>
+    game.load.atlas('seacreatures', 'assets/sprites/seacreatures_json.png', 'assets/sprites/seacreatures_json.json');
+    game.load.image('undersea', 'assets/pics/undersea.jpg');
+    game.load.image('coral', 'assets/pics/seabed.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">greenJellyfish</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">stingray</span><span class="p">;</span>
+var greenJellyfish;
+var stingray;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'undersea'</span><span class="p">);</span>
+    game.add.image(0, 0, 'undersea');
 
-    <span class="nx">greenJellyfish</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">330</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'seacreatures'</span><span class="p">);</span>
-    <span class="nx">greenJellyfish</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'swim'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Animation</span><span class="p">.</span><span class="nx">generateFrameNames</span><span class="p">(</span><span class="s1">'greenJellyfish'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">greenJellyfish</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'swim'</span><span class="p">);</span>
+    greenJellyfish = game.add.sprite(330, 100, 'seacreatures');
+    greenJellyfish.animations.add('swim', Phaser.Animation.generateFrameNames('greenJellyfish', 0, 39, '', 4), 30, true);
+    greenJellyfish.animations.play('swim');
 
-    <span class="nx">stingray</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="s1">'seacreatures'</span><span class="p">);</span>
-    <span class="nx">stingray</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'swim'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Animation</span><span class="p">.</span><span class="nx">generateFrameNames</span><span class="p">(</span><span class="s1">'stingray'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">stingray</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'swim'</span><span class="p">);</span>
+    stingray = game.add.sprite(80, 190, 'seacreatures');
+    stingray.animations.add('swim', Phaser.Animation.generateFrameNames('stingray', 0, 23, '', 4), 30, true);
+    stingray.animations.play('swim');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="s1">'coral'</span><span class="p">);</span>
+    game.add.image(0, 466, 'coral');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">greenJellyfish</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">y</span><span class="p">:</span> <span class="mi">250</span> <span class="p">},</span> <span class="mi">4000</span><span class="p">,</span> <span class="s2">"Quad.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(greenJellyfish).to({ y: 250 }, 4000, "Quad.easeInOut", true, 0, 1000, true);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">loop</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">changeTint</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.time.events.loop(Phaser.Timer.SECOND * 2, changeTint, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">changeTint</span><span class="p">()</span> <span class="p">{</span>
+function changeTint() {
 
-    <span class="nx">greenJellyfish</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mh">0xffffff</span><span class="p">;</span>
-    <span class="nx">stingray</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mh">0xffffff</span><span class="p">;</span>
+    greenJellyfish.tint = Math.random() * 0xffffff;
+    stingray.tint = Math.random() * 0xffffff;
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

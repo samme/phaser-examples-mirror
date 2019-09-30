@@ -55,472 +55,473 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/games/yahtzee.js" title="games/yahtzee.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/games/yahtzee.js" download="" title="Download: games/yahtzee.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example');
 
-<span class="kd">var</span> <span class="nx">Die</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+var Die = function (game) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+    this.game = game;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">locked</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    this.value = 1;
+    this.locked = false;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'dice'</span><span class="p">,</span> <span class="s1">'dieWhite1'</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    this.sprite = game.make.sprite(0, 0, 'dice', 'dieWhite1');
+    this.sprite.inputEnabled = true;
+    this.sprite.input.useHandCursor = true;
+    this.sprite.events.onInputDown.add(this.clicked, this);
 
-<span class="p">};</span>
+};
 
-<span class="nx">Die</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+Die.prototype = {
 
-    <span class="na">roll</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    roll: function () {
 
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">locked</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'dieWhite'</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (!this.locked)
+        {
+            this.value = this.game.rnd.between(1, 6);
+            this.sprite.frameName = 'dieWhite' + this.value;
+        }
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">clicked</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    clicked: function () {
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">canLock</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">locked</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">unlock</span><span class="p">();</span>
-            <span class="p">}</span>
-            <span class="k">else</span>
-            <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">lock</span><span class="p">();</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+        if (this.game.canLock)
+        {
+            if (this.locked)
+            {
+                this.unlock();
+            }
+            else
+            {
+                this.lock();
+            }
+        }
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">lock</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    lock: function () {
 
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">locked</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">locked</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'dieRed'</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (!this.locked)
+        {
+            this.locked = true;
+            this.sprite.frameName = 'dieRed' + this.value;
+        }
 
-    <span class="p">},</span>
+    },
     
-    <span class="na">unlock</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    unlock: function () {
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">locked</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">locked</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'dieWhite'</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (this.locked)
+        {
+            this.locked = false;
+            this.sprite.frameName = 'dieWhite' + this.value;
+        }
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">reset</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    reset: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">unlock</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">roll</span><span class="p">();</span>
+        this.unlock();
+        this.roll();
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="kd">var</span> <span class="nx">Cup</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+var Cup = function (game) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+    this.game = game;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">die1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Die</span><span class="p">(</span><span class="nx">game</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">die2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Die</span><span class="p">(</span><span class="nx">game</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">die3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Die</span><span class="p">(</span><span class="nx">game</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">die4</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Die</span><span class="p">(</span><span class="nx">game</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">die5</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Die</span><span class="p">(</span><span class="nx">game</span><span class="p">);</span>
+    this.die1 = new Die(game);
+    this.die2 = new Die(game);
+    this.die3 = new Die(game);
+    this.die4 = new Die(game);
+    this.die5 = new Die(game);
 
-<span class="p">};</span>
+};
 
-<span class="nx">Cup</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+Cup.prototype = {
 
-    <span class="na">reset</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    reset: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">die1</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">die2</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">die3</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">die4</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">die5</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
+        this.die1.reset();
+        this.die2.reset();
+        this.die3.reset();
+        this.die4.reset();
+        this.die5.reset();
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">shake</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    shake: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">die1</span><span class="p">.</span><span class="nx">roll</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">die2</span><span class="p">.</span><span class="nx">roll</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">die3</span><span class="p">.</span><span class="nx">roll</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">die4</span><span class="p">.</span><span class="nx">roll</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">die5</span><span class="p">.</span><span class="nx">roll</span><span class="p">();</span>
+        this.die1.roll();
+        this.die2.roll();
+        this.die3.roll();
+        this.die4.roll();
+        this.die5.roll();
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">getDie</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    getDie: function (value) {
 
-        <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="p">{</span> <span class="na">total</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">qty</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="nx">value</span> <span class="p">};</span>
+        var out = { total: 0, qty: 0, value: value };
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">[</span><span class="s1">'die'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">].</span><span class="nx">value</span> <span class="o">===</span> <span class="nx">value</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">out</span><span class="p">.</span><span class="nx">total</span> <span class="o">+=</span> <span class="nx">value</span><span class="p">;</span>
-                <span class="nx">out</span><span class="p">.</span><span class="nx">qty</span><span class="o">++</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+        for (var i = 1; i <= 5; i++)
+        {
+            if (this['die' + i].value === value)
+            {
+                out.total += value;
+                out.qty++;
+            }
+        }
 
-        <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+        return out;
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">getFullSet</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    getFullSet: function () {
 
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">getDie</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">getDie</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">getDie</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">getDie</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">getDie</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">getDie</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-        <span class="p">];</span>
+        return [
+            this.getDie(1),
+            this.getDie(2),
+            this.getDie(3),
+            this.getDie(4),
+            this.getDie(5),
+            this.getDie(6)
+        ];
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="c1">//  Yahtzee combos:</span>
-<span class="c1">//  </span>
-<span class="c1">//  Top Row:</span>
-<span class="c1">//  </span>
-<span class="c1">//  1s, 2s, 3s, 4s, 5s, 6s</span>
-<span class="c1">//  </span>
-<span class="c1">//  Top Row Bonus: 35 points for getting 63+</span>
-<span class="c1">//  </span>
-<span class="c1">//  Bottom Row:</span>
-<span class="c1">//  </span>
-<span class="c1">//  Three of a Kind</span>
-<span class="c1">//  Four of a Kind</span>
-<span class="c1">//  Full House (any 3 + any 2)</span>
-<span class="c1">//  Small straight (1,2,3,4 - 2,3,4,5 - 3,4,5,6)</span>
-<span class="c1">//  Large straight (1,2,3,4,5 - 2,3,4,5,6)</span>
-<span class="c1">//  Chance (sum of all dice)</span>
-<span class="c1">//  Yahtzee (5 of a kind)</span>
+//  Yahtzee combos:
+//  
+//  Top Row:
+//  
+//  1s, 2s, 3s, 4s, 5s, 6s
+//  
+//  Top Row Bonus: 35 points for getting 63+
+//  
+//  Bottom Row:
+//  
+//  Three of a Kind
+//  Four of a Kind
+//  Full House (any 3 + any 2)
+//  Small straight (1,2,3,4 - 2,3,4,5 - 3,4,5,6)
+//  Large straight (1,2,3,4,5 - 2,3,4,5,6)
+//  Chance (sum of all dice)
+//  Yahtzee (5 of a kind)
 
-<span class="kd">var</span> <span class="nx">ComboSingle</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+var ComboSingle = function (game, value) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+    this.game = game;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+    this.value = value;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    this.score = 0;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">played</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    this.played = false;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">check</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    this.check = function () {
 
-        <span class="kd">var</span> <span class="nx">dice</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">cup</span><span class="p">.</span><span class="nx">getDie</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+        var dice = this.game.cup.getDie(this.value);
 
-        <span class="k">return</span> <span class="p">(</span><span class="nx">dice</span><span class="p">.</span><span class="nx">qty</span><span class="p">);</span>
+        return (dice.qty);
 
-    <span class="p">};</span>
+    };
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">play</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    this.play = function () {
 
-        <span class="kd">var</span> <span class="nx">dice</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">cup</span><span class="p">.</span><span class="nx">getDie</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+        var dice = this.game.cup.getDie(this.value);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="nx">dice</span><span class="p">.</span><span class="nx">total</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">played</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        this.score = dice.total;
+        this.played = true;
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="kd">var</span> <span class="nx">ComboChance</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+var ComboChance = function (game) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+    this.game = game;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    this.score = 0;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">played</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    this.played = false;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">check</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    this.check = function () {
 
-        <span class="kd">var</span> <span class="nx">set</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">cup</span><span class="p">.</span><span class="nx">getFullSet</span><span class="p">();</span>
-        <span class="kd">var</span> <span class="nx">score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        var set = this.game.cup.getFullSet();
+        var score = 0;
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">set</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">score</span> <span class="o">+=</span> <span class="nx">set</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">total</span><span class="p">;</span>
-        <span class="p">}</span>
+        for (var i = 0; i < set.length; i++)
+        {
+            score += set[i].total;
+        }
 
-        <span class="k">return</span> <span class="nx">score</span><span class="p">;</span>
+        return score;
 
-    <span class="p">};</span>
+    };
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">play</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    this.play = function () {
 
-        <span class="kd">var</span> <span class="nx">set</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">cup</span><span class="p">.</span><span class="nx">getFullSet</span><span class="p">();</span>
+        var set = this.game.cup.getFullSet();
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">set</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">+=</span> <span class="nx">set</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">total</span><span class="p">;</span>
-        <span class="p">}</span>
+        for (var i = 0; i < set.length; i++)
+        {
+            this.score += set[i].total;
+        }
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">played</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        this.played = true;
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="kd">var</span> <span class="nx">ComboStraight</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">size</span><span class="p">,</span> <span class="nx">points</span><span class="p">)</span> <span class="p">{</span>
+var ComboStraight = function (game, size, points) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+    this.game = game;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">size</span> <span class="o">=</span> <span class="nx">size</span><span class="p">;</span>
+    this.size = size;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    this.score = 0;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">points</span> <span class="o">=</span> <span class="nx">points</span><span class="p">;</span>
+    this.points = points;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">played</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    this.played = false;
 
-    <span class="c1">//  Small straight (1,2,3,4 - 2,3,4,5 - 3,4,5,6)</span>
-    <span class="c1">//  11223</span>
-    <span class="c1">//  Large straight (1,2,3,4,5 - 2,3,4,5,6)</span>
+    //  Small straight (1,2,3,4 - 2,3,4,5 - 3,4,5,6)
+    //  11223
+    //  Large straight (1,2,3,4,5 - 2,3,4,5,6)
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">check</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    this.check = function () {
 
-        <span class="kd">var</span> <span class="nx">set</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">cup</span><span class="p">.</span><span class="nx">getFullSet</span><span class="p">();</span>
+        var set = this.game.cup.getFullSet();
 
-        <span class="c1">//  A small straight means the set cannot have a qty 3+ anywhere</span>
-        <span class="c1">//  A large straight means it cannot have a qty 2+ anywhere</span>
+        //  A small straight means the set cannot have a qty 3+ anywhere
+        //  A large straight means it cannot have a qty 2+ anywhere
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">set</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">set</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">qty</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">size</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+        for (var i = 0; i < set.length; i++)
+        {
+            if (set[i].qty >= this.size)
+            {
+                return false;
+            }
+        }
 
-        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        return true;
 
-    <span class="p">};</span>
+    };
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">play</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    this.play = function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">played</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        this.played = true;
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">points</span><span class="p">;</span>
+        this.score = this.points;
 
-    <span class="p">};</span>
+    };
 
-<span class="p">};</span>
+};
 
-<span class="kd">var</span> <span class="nx">ComboFullHouse</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+var ComboFullHouse = function (game) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+    this.game = game;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    this.score = 0;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">played</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    this.played = false;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">check</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    this.check = function () {
 
-        <span class="kd">var</span> <span class="nx">set</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">cup</span><span class="p">.</span><span class="nx">getFullSet</span><span class="p">();</span>
+        var set = this.game.cup.getFullSet();
 
-        <span class="c1">//  Full House (any 3 + any 2)</span>
+        //  Full House (any 3 + any 2)
 
-        <span class="kd">var</span> <span class="nx">any3</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">any2</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        var any3 = false;
+        var any2 = false;
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">set</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">set</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">qty</span> <span class="o">===</span> <span class="mi">3</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">any3</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">set</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">qty</span> <span class="o">===</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">any2</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+        for (var i = 0; i < set.length; i++)
+        {
+            if (set[i].qty === 3)
+            {
+                any3 = true;
+            }
+            else if (set[i].qty === 2)
+            {
+                any2 = true;
+            }
+        }
 
-        <span class="k">return</span> <span class="p">(</span><span class="nx">any3</span> <span class="o">&amp;&amp;</span> <span class="nx">any2</span><span class="p">);</span>
+        return (any3 && any2);
 
-    <span class="p">};</span>
+    };
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">play</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    this.play = function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">played</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        this.played = true;
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="mi">35</span><span class="p">;</span>
+        this.score = 35;
 
-    <span class="p">};</span>
+    };
 
-<span class="p">};</span>
+};
 
-<span class="kd">var</span> <span class="nx">ComboXOfAKind</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">points</span><span class="p">)</span> <span class="p">{</span>
+var ComboXOfAKind = function (game, value, points) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+    this.game = game;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+    this.value = value;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    this.score = 0;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">points</span> <span class="o">=</span> <span class="nx">points</span><span class="p">;</span>
+    this.points = points;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">played</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    this.played = false;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">check</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    this.check = function () {
 
-        <span class="kd">var</span> <span class="nx">set</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">cup</span><span class="p">.</span><span class="nx">getFullSet</span><span class="p">();</span>
+        var set = this.game.cup.getFullSet();
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">set</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">set</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">qty</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+        for (var i = 0; i < set.length; i++)
+        {
+            if (set[i].qty >= this.value)
+            {
+                return true;
+            }
+        }
 
-        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        return false;
 
-    <span class="p">};</span>
+    };
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">play</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    this.play = function () {
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">points</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">set</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">cup</span><span class="p">.</span><span class="nx">getFullSet</span><span class="p">();</span>
+        if (this.points === false)
+        {
+            var set = this.game.cup.getFullSet();
 
-            <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">set</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">set</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">qty</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="nx">set</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">value</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">points</span><span class="p">;</span>
-        <span class="p">}</span>
+            for (var i = 0; i < set.length; i++)
+            {
+                if (set[i].qty >= this.value)
+                {
+                    this.score = set[i].value * this.value;
+                }
+            }
+        }
+        else
+        {
+            this.score = this.points;
+        }
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">played</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        this.played = true;
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="kd">var</span> <span class="nx">Yahtzee</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+var Yahtzee = function (game) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">cup</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    this.cup = null;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">combo1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboSingle</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">combo2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboSingle</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">combo3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboSingle</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">combo4</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboSingle</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">combo5</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboSingle</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">combo6</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboSingle</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+    this.combo1 = new ComboSingle(this, 1);
+    this.combo2 = new ComboSingle(this, 2);
+    this.combo3 = new ComboSingle(this, 3);
+    this.combo4 = new ComboSingle(this, 4);
+    this.combo5 = new ComboSingle(this, 5);
+    this.combo6 = new ComboSingle(this, 6);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">upperBonus</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    this.upperBonus = 0;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">comboThreeOfAKind</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboXOfAKind</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">comboFourOfAKind</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboXOfAKind</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">comboFullHouse</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboFullHouse</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">comboSmallStraight</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboStraight</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">comboLargeStraight</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboStraight</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">comboChance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboChance</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">comboYahtzee</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComboXOfAKind</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
+    this.comboThreeOfAKind = new ComboXOfAKind(this, 3, false);
+    this.comboFourOfAKind = new ComboXOfAKind(this, 4, false);
+    this.comboFullHouse = new ComboFullHouse(this);
+    this.comboSmallStraight = new ComboStraight(this, 3, 30);
+    this.comboLargeStraight = new ComboStraight(this, 2, 40);
+    this.comboChance = new ComboChance(this);
+    this.comboYahtzee = new ComboXOfAKind(this, 5, 50);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    this.total = 0;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">roll</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">rollButton</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">canLock</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    this.roll = 1;
+    this.rollButton = null;
+    this.canLock = false;
 
-<span class="p">};</span>
+};
 
-<span class="nx">Yahtzee</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+Yahtzee.prototype = {
 
-    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    preload: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">baseURL</span> <span class="o">=</span> <span class="s1">'assets/games/yahtzee/'</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'board'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'glow'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'roll'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'dice'</span><span class="p">);</span>
+        this.load.baseURL = 'assets/games/yahtzee/';
+        this.load.image('board');
+        this.load.image('glow');
+        this.load.image('roll');
+        this.load.atlas('dice');
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'board'</span><span class="p">);</span>
+        this.add.image(0, 0, 'board');
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">cup</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Cup</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        this.cup = new Cup(this);
 
-        <span class="c1">//  Position the die</span>
+        //  Position the die
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">die</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cup</span><span class="p">[</span><span class="s1">'die'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">].</span><span class="nx">sprite</span><span class="p">;</span>
+        for (var i = 1; i <= 5; i++)
+        {
+            var die = this.cup['die' + i].sprite;
 
-            <span class="nx">die</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">120</span> <span class="o">*</span> <span class="nx">i</span><span class="p">;</span>
-            <span class="nx">die</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+            die.x = 120 * i;
+            die.y = 32;
 
-            <span class="k">this</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">die</span><span class="p">);</span>
-        <span class="p">}</span>
+            this.world.add(die);
+        }
 
-        <span class="c1">//  Score sheet</span>
+        //  Score sheet
 
-        <span class="c1">// var style = { font: "65px Arial", fill: "#ff0044", align: "center" };</span>
-        <span class="c1">// var text = game.add.text(game.world.centerX, game.world.centerY, "- phaser -\nwith a sprinkle of\npixi dust", style);</span>
+        // var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
+        // var text = game.add.text(game.world.centerX, game.world.centerY, "- phaser -\nwith a sprinkle of\npixi dust", style);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">rollButton</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">528</span><span class="p">,</span> <span class="s1">'roll'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">rollButton</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">rollButton</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">rollButton</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">rollButton</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">doRoll</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        this.rollButton = this.add.sprite(this.world.centerX, 528, 'roll');
+        this.rollButton.anchor.x = 0.5;
+        this.rollButton.inputEnabled = true;
+        this.rollButton.input.useHandCursor = true;
+        this.rollButton.events.onInputDown.add(this.doRoll, this);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">doRoll</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    doRoll: function () {
 
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"\n\nRoll "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">roll</span><span class="p">);</span>
+        console.log("\n\nRoll " + this.roll);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">cup</span><span class="p">.</span><span class="nx">shake</span><span class="p">();</span>
+        this.cup.shake();
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">roll</span><span class="o">++</span><span class="p">;</span>
+        this.roll++;
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">canLock</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        this.canLock = true;
 
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'1s'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">combo1</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'2s'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">combo2</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'3s'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">combo3</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'4s'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">combo4</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'5s'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">combo5</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'6s'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">combo6</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'3ofaK'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">comboThreeOfAKind</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'4ofaK'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">comboFourOfAKind</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'full'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">comboFullHouse</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'sm. straight'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">comboSmallStraight</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'lg. straight'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">comboLargeStraight</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'yahtzee'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">comboYahtzee</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'chance'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">comboChance</span><span class="p">.</span><span class="nx">check</span><span class="p">());</span>
+        console.log('1s', this.combo1.check());
+        console.log('2s', this.combo2.check());
+        console.log('3s', this.combo3.check());
+        console.log('4s', this.combo4.check());
+        console.log('5s', this.combo5.check());
+        console.log('6s', this.combo6.check());
+        console.log('3ofaK', this.comboThreeOfAKind.check());
+        console.log('4ofaK', this.comboFourOfAKind.check());
+        console.log('full', this.comboFullHouse.check());
+        console.log('sm. straight', this.comboSmallStraight.check());
+        console.log('lg. straight', this.comboLargeStraight.check());
+        console.log('yahtzee', this.comboYahtzee.check());
+        console.log('chance', this.comboChance.check());
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Game'</span><span class="p">,</span> <span class="nx">Yahtzee</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+game.state.add('Game', Yahtzee, true);
 
 </code></pre>
 <meta content="../" name="loadPath">

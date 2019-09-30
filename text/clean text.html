@@ -55,27 +55,28 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/clean%20text.js" title="text/clean text.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/clean%20text.js" download="" title="Download: text/clean text.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.xml'</span><span class="p">);</span>
+    game.load.bitmapFont('desyrel', 'assets/fonts/bitmapFonts/desyrel.png', 'assets/fonts/bitmapFonts/desyrel.xml');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">dirtyString</span> <span class="o">=</span> <span class="s1">'The Desyrel™ font doesn\'t have\na trademark character\nor a €Euro sign.\nString length: '</span><span class="p">;</span>
+    var dirtyString = 'The Desyrel™ font doesn\'t have\na trademark character\nor a €Euro sign.\nString length: ';
 
-    <span class="kd">var</span> <span class="nx">text1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">'desyrel'</span><span class="p">,</span> <span class="nx">dirtyString</span> <span class="o">+</span> <span class="p">(</span><span class="nx">dirtyString</span><span class="p">.</span><span class="nx">length</span><span class="p">),</span> <span class="mi">32</span><span class="p">);</span>
+    var text1 = game.add.bitmapText(100, 64, 'desyrel', dirtyString + (dirtyString.length), 32);
 
-    <span class="c1">//  Clean the string. This will remove all characters the font data doesn't support</span>
-    <span class="kd">var</span> <span class="nx">cleanString</span> <span class="o">=</span> <span class="nx">text1</span><span class="p">.</span><span class="nx">cleanText</span><span class="p">(</span><span class="nx">dirtyString</span><span class="p">);</span>
+    //  Clean the string. This will remove all characters the font data doesn't support
+    var cleanString = text1.cleanText(dirtyString);
 
-    <span class="kd">var</span> <span class="nx">text2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'desyrel'</span><span class="p">,</span> <span class="nx">cleanString</span> <span class="o">+</span> <span class="p">(</span><span class="nx">cleanString</span><span class="p">.</span><span class="nx">length</span><span class="p">),</span> <span class="mi">32</span><span class="p">);</span>
+    var text2 = game.add.bitmapText(100, 300, 'desyrel', cleanString + (cleanString.length), 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,55 +55,56 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/overlap%20without%20physics.js" title="sprites/overlap without physics.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/overlap%20without%20physics.js" download="" title="Download: sprites/overlap without physics.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari1'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari130xe.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari2'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari800xl.png'</span><span class="p">);</span>
+    game.load.image('atari1', 'assets/sprites/atari130xe.png');
+    game.load.image('atari2', 'assets/sprites/atari800xl.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+var sprite1;
+var sprite2;
+var text;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'atari1'</span><span class="p">);</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
+    sprite1 = game.add.sprite(100, 200, 'atari1');
+    sprite1.inputEnabled = true;
+    sprite1.input.enableDrag();
 
-    <span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'atari2'</span><span class="p">);</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
+    sprite2 = game.add.sprite(400, 400, 'atari2');
+    sprite2.inputEnabled = true;
+    sprite2.input.enableDrag();
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">'Drag the sprites. Overlapping: false'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
+    text = game.add.text(16, 16, 'Drag the sprites. Overlapping: false', { fill: '#ffffff' });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">checkOverlap</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">sprite2</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'Drag the sprites. Overlapping: true'</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'Drag the sprites. Overlapping: false'</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (checkOverlap(sprite1, sprite2))
+    {
+        text.text = 'Drag the sprites. Overlapping: true';
+    }
+    else
+    {
+        text.text = 'Drag the sprites. Overlapping: false';
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">checkOverlap</span><span class="p">(</span><span class="nx">spriteA</span><span class="p">,</span> <span class="nx">spriteB</span><span class="p">)</span> <span class="p">{</span>
+function checkOverlap(spriteA, spriteB) {
 
-    <span class="kd">var</span> <span class="nx">boundsA</span> <span class="o">=</span> <span class="nx">spriteA</span><span class="p">.</span><span class="nx">getBounds</span><span class="p">();</span>
-    <span class="kd">var</span> <span class="nx">boundsB</span> <span class="o">=</span> <span class="nx">spriteB</span><span class="p">.</span><span class="nx">getBounds</span><span class="p">();</span>
+    var boundsA = spriteA.getBounds();
+    var boundsB = spriteB.getBounds();
 
-    <span class="k">return</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">.</span><span class="nx">intersects</span><span class="p">(</span><span class="nx">boundsA</span><span class="p">,</span> <span class="nx">boundsB</span><span class="p">);</span>
+    return Phaser.Rectangle.intersects(boundsA, boundsB);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

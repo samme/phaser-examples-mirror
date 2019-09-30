@@ -55,88 +55,89 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/demoscene/glitter.js" title="demoscene/glitter.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/demoscene/glitter.js" download="" title="Download: demoscene/glitter.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'star'</span><span class="p">,</span> <span class="s1">'assets/demoscene/star3.png'</span><span class="p">);</span>
+    game.load.image('star', 'assets/demoscene/star3.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">stars</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">waveformX</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">waveformY</span><span class="p">;</span>
+var stars;
+var waveformX;
+var waveformY;
 
-<span class="kd">var</span> <span class="nx">xl</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">yl</span><span class="p">;</span>
+var xl;
+var yl;
 
-<span class="kd">var</span> <span class="nx">cx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var cx = 0;
+var cy = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Generate our motion data</span>
-    <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="o">-</span><span class="mi">64</span> <span class="p">};</span>
-    <span class="kd">var</span> <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">128</span> <span class="p">},</span> <span class="mi">4000</span><span class="p">,</span> <span class="s2">"Bounce.easeIn"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">tween2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">128</span> <span class="p">},</span> <span class="mi">4000</span><span class="p">,</span> <span class="s2">"Bounce.easeOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    //  Generate our motion data
+    var sprite = { x: 0, y: -64 };
+    var tween = game.add.tween(sprite).to( { x: 128 }, 4000, "Bounce.easeIn", true, 0, -1, true);
+    var tween2 = game.add.tween(sprite).to( { y: 128 }, 4000, "Bounce.easeOut", true, 0, -1, false);
 
-    <span class="nx">waveformX</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
-    <span class="nx">waveformY</span> <span class="o">=</span> <span class="nx">tween2</span><span class="p">.</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+    waveformX = tween.generateData(60);
+    waveformY = tween2.generateData(60);
 
-    <span class="nx">xl</span> <span class="o">=</span> <span class="nx">waveformX</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="nx">yl</span> <span class="o">=</span> <span class="nx">waveformY</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    xl = waveformX.length - 1;
+    yl = waveformY.length - 1;
 
-    <span class="kd">var</span> <span class="nx">sprites</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">spriteBatch</span><span class="p">();</span>
+    var sprites = game.add.spriteBatch();
 
-    <span class="nx">stars</span> <span class="o">=</span> <span class="p">[];</span>
+    stars = [];
 
-    <span class="kd">var</span> <span class="nx">xs</span> <span class="o">=</span> <span class="mi">28</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">ys</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+    var xs = 28;
+    var ys = 32;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">18</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">28</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">star</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">((</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">xs</span><span class="p">),</span> <span class="p">(</span><span class="nx">y</span> <span class="o">*</span> <span class="nx">ys</span><span class="p">),</span> <span class="s1">'star'</span><span class="p">);</span>
+    for (var y = 0; y < 18; y++)
+    {
+        for (var x = 0; x < 28; x++)
+        {
+            var star = game.make.sprite((x * xs), (y * ys), 'star');
 
-            <span class="nx">star</span><span class="p">.</span><span class="nx">ox</span> <span class="o">=</span> <span class="nx">star</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-            <span class="nx">star</span><span class="p">.</span><span class="nx">oy</span> <span class="o">=</span> <span class="nx">star</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+            star.ox = star.x;
+            star.oy = star.y;
 
-            <span class="nx">star</span><span class="p">.</span><span class="nx">cx</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">xl</span><span class="p">);</span>
-            <span class="nx">star</span><span class="p">.</span><span class="nx">cy</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">yl</span><span class="p">);</span>
+            star.cx = game.rnd.between(0, xl);
+            star.cy = game.rnd.between(0, yl);
 
-            <span class="nx">star</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-            <span class="nx">sprites</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">star</span><span class="p">);</span>
-            <span class="nx">stars</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">star</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+            star.anchor.set(0.5);
+            sprites.addChild(star);
+            stars.push(star);
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">stars</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">ox</span> <span class="o">+</span> <span class="nx">waveformX</span><span class="p">[</span><span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">cx</span><span class="p">].</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">oy</span> <span class="o">+</span> <span class="nx">waveformY</span><span class="p">[</span><span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">cy</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
+    for (var i = 0, len = stars.length; i < len; i++)
+    {
+        stars[i].x = stars[i].ox + waveformX[stars[i].cx].x;
+        stars[i].y = stars[i].oy + waveformY[stars[i].cy].y;
 
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">cx</span><span class="o">++</span><span class="p">;</span>
+        stars[i].cx++;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">cx</span> <span class="o">&gt;</span> <span class="nx">xl</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">cx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (stars[i].cx > xl)
+        {
+            stars[i].cx = 0;
+        }
 
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">cy</span><span class="o">++</span><span class="p">;</span>
+        stars[i].cy++;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">cy</span> <span class="o">&gt;</span> <span class="nx">yl</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">cy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        if (stars[i].cy > yl)
+        {
+            stars[i].cy = 0;
+        }
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

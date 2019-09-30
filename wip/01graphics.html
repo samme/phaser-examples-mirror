@@ -55,53 +55,53 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/01graphics.js" title="wip/01graphics.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/01graphics.js" download="" title="Download: wip/01graphics.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, render: render });</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create, render: render });
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">graphics</span><span class="p">;</span>
+var graphics;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">graphics</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    graphics = game.add.graphics(100, 100);
 
-    <span class="c1">// drawShape(0x027a71, 0x02fdeb);</span>
-    <span class="nx">drawShape2</span><span class="p">();</span>
+    // drawShape(0x027a71, 0x02fdeb);
+    drawShape2();
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    graphics.scale.set(0);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">graphics</span><span class="p">.</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="mi">3000</span><span class="p">,</span> <span class="s1">'Linear'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(graphics.scale).to({ x: 1, y: 1 }, 3000, 'Linear', true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">drawShape2</span><span class="p">()</span> <span class="p">{</span>
+function drawShape2() {
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawCircle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    graphics.lineStyle(2, 0xff0000, 1);
+    graphics.drawCircle(50, 50, 100);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">drawShape</span><span class="p">(</span><span class="nx">fill</span><span class="p">,</span> <span class="nx">style</span><span class="p">)</span> <span class="p">{</span>
+function drawShape(fill, style) {
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="nx">fill</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nx">style</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    graphics.beginFill(fill);
+    graphics.lineStyle(4, style, 1);
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">125</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    graphics.moveTo(0, 0);
+    graphics.lineTo(250, 0);
+    graphics.lineTo(250, 200);
+    graphics.lineTo(125, 100);
+    graphics.lineTo(0, 200);
+    graphics.lineTo(0, 0);
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    graphics.endFill();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">graphics</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="s1">' x '</span> <span class="o">+</span> <span class="nx">graphics</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text(graphics.width + ' x ' + graphics.height, 32, 32);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

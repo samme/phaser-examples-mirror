@@ -55,51 +55,52 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/audio/remove%20sound.js" title="audio/remove sound.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/audio/remove%20sound.js" download="" title="Download: audio/remove sound.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'greenie'</span><span class="p">,</span> <span class="s1">'assets/sprites/wizball.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'wizball'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'assets/audio/oedipus_wizball_highscore.mp3'</span><span class="p">,</span> <span class="s1">'assets/audio/oedipus_wizball_highscore.ogg'</span><span class="p">]);</span>
+    game.load.image('greenie', 'assets/sprites/wizball.png');
+    game.load.audio('wizball', ['assets/audio/oedipus_wizball_highscore.mp3', 'assets/audio/oedipus_wizball_highscore.ogg']);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">s</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">music</span><span class="p">;</span>
+var s;
+var music;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#182d3b'</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">touch</span><span class="p">.</span><span class="nx">preventDefault</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    game.stage.backgroundColor = '#182d3b';
+    game.input.touch.preventDefault = false;
 
-    <span class="nx">music</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'wizball'</span><span class="p">);</span>
+    music = game.add.audio('wizball');
 
-    <span class="nx">music</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+    music.play();
 
-    <span class="nx">s</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'greenie'</span><span class="p">);</span>
-    <span class="nx">s</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    s = game.add.sprite(game.world.centerX, game.world.centerY, 'greenie');
+    s.anchor.set(0.5);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">removeMusic</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(removeMusic, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">removeMusic</span><span class="p">()</span> <span class="p">{</span>
+function removeMusic() {
 
-    <span class="nx">music</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+    music.destroy();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">removeSound</span><span class="p">(</span><span class="s1">'wizball'</span><span class="p">);</span>
+    game.cache.removeSound('wizball');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">checkSoundKey</span><span class="p">(</span><span class="s1">'wizball'</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">soundInfo</span><span class="p">(</span><span class="nx">music</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (game.cache.checkSoundKey('wizball'))
+    {
+        game.debug.soundInfo(music, 20, 32);
+    }
 
-<span class="p">}</span>
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

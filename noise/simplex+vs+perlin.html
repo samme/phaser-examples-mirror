@@ -55,66 +55,67 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/noise/simplex+vs+perlin.js" title="noise/simplex+vs+perlin.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/noise/simplex+vs+perlin.js" download="" title="Download: noise/simplex+vs+perlin.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">,</span>
-    <span class="nx">bmd</span><span class="p">,</span>
-    <span class="nx">x</span><span class="p">,</span>
-    <span class="nx">y</span><span class="p">,</span>
-    <span class="nx">d</span><span class="p">,</span>
-    <span class="nx">simplexNoise</span><span class="p">,</span>
-    <span class="nx">perlinNoise</span><span class="p">,</span>
-    <span class="nx">simplexImageData</span><span class="p">,</span>
-    <span class="nx">perlinImageData</span><span class="p">,</span>
-    <span class="nx">step</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+var sprite,
+    bmd,
+    x,
+    y,
+    d,
+    simplexNoise,
+    perlinNoise,
+    simplexImageData,
+    perlinImageData,
+    step = 4;
 
 
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">alphaMax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="kd">var</span> <span class="nx">alphaMin</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-  <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-  <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">;</span>
-  <span class="nx">simplexImageData</span> <span class="o">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nx">createImageData</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-  <span class="nx">perlinImageData</span> <span class="o">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nx">createImageData</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-  <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">bmd</span><span class="p">);</span>
-<span class="p">}</span>
+function create() {
+  var alphaMax = 0;
+  var alphaMin = 1;
+  bmd = game.make.bitmapData(game.width, game.height);
+  ctx = bmd.ctx;
+  simplexImageData = ctx.createImageData(1,1);
+  perlinImageData = ctx.createImageData(1, 1);
+  sprite = game.add.sprite(0,0,bmd);
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-  <span class="nx">bmd</span><span class="p">.</span><span class="nx">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+  bmd.fill(0,0,0,1);
 
-  <span class="k">for</span><span class="p">(</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span> <span class="nx">x</span><span class="o">+=</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">simplexNoise</span> <span class="o">=</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">noise</span><span class="p">.</span><span class="nx">simplex</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="mf">0.005</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">*</span> <span class="mf">0.00025</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="nx">perlinNoise</span> <span class="o">=</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">noise</span><span class="p">.</span><span class="nx">perlin</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="mf">0.005</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">*</span> <span class="mf">0.00025</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="nx">d</span> <span class="o">=</span> <span class="nx">simplexImageData</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-    <span class="nx">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nx">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
-    <span class="nx">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">simplexNoise</span> <span class="o">*</span> <span class="mi">128</span> <span class="o">+</span> <span class="mi">128</span><span class="p">;</span>
-    <span class="nx">d</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
-    <span class="nx">ctx</span><span class="p">.</span><span class="nx">putImageData</span><span class="p">(</span><span class="nx">simplexImageData</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">simplexNoise</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+  for(x = 0; x < game.width; x+=step) {
+    simplexNoise = (game.noise.simplex(x * 0.005, game.time.now * 0.00025) + 1.0) * 0.5;
+    perlinNoise = (game.noise.perlin(x * 0.005, game.time.now * 0.00025) + 1.0) * 0.5;
+    d = simplexImageData.data;
+    d[0] = 0;
+    d[1] = 255;
+    d[2] = simplexNoise * 128 + 128;
+    d[3] = 255;
+    ctx.putImageData(simplexImageData, x, simplexNoise * game.height);
 
-    <span class="nx">d</span> <span class="o">=</span> <span class="nx">perlinImageData</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-    <span class="nx">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
-    <span class="nx">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nx">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">perlinNoise</span> <span class="o">*</span> <span class="mi">128</span> <span class="o">+</span> <span class="mi">128</span><span class="p">;;</span>
-    <span class="nx">d</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
-    <span class="nx">ctx</span><span class="p">.</span><span class="nx">putImageData</span><span class="p">(</span><span class="nx">perlinImageData</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">perlinNoise</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-  <span class="p">}</span>
+    d = perlinImageData.data;
+    d[0] = 255;
+    d[1] = 0;
+    d[2] = perlinNoise * 128 + 128;;
+    d[3] = 255;
+    ctx.putImageData(perlinImageData, x, perlinNoise * game.height);
+  }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">d</span> <span class="o">=</span> <span class="nx">simplexImageData</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Simplex Noise Line'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'rgb('</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">')'</span><span class="p">);</span>
-  <span class="nx">d</span> <span class="o">=</span> <span class="nx">perlinImageData</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Perlin Noise Line'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">'rgb('</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="nx">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">')'</span><span class="p">);</span>
-<span class="p">}</span>
+function render() {
+  d = simplexImageData.data;
+  game.debug.text('Simplex Noise Line', 32, 32, 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')');
+  d = perlinImageData.data;
+  game.debug.text('Perlin Noise Line', 32, 64, 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')');
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

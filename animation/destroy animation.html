@@ -55,66 +55,67 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/animation/destroy%20animation.js" title="animation/destroy animation.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/animation/destroy%20animation.js" download="" title="Download: animation/destroy animation.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
+    game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprites</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">rip</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var sprites;
+var rip = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">sprites</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    sprites = game.add.group();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">loop</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="nx">createSprite</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.time.events.loop(50, createSprite, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createSprite</span><span class="p">()</span> <span class="p">{</span>
+function createSprite() {
 
-    <span class="kd">var</span> <span class="nx">mummy</span> <span class="o">=</span> <span class="nx">sprites</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'mummy'</span><span class="p">);</span>
+    var mummy = sprites.create(0, game.world.randomY, 'mummy');
 
-    <span class="nx">mummy</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
+    mummy.animations.add('walk');
 
-    <span class="nx">mummy</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    mummy.play('walk', 10, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    sprites.setAll('x', 10, true, true, 1);
 
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">checkSprite</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    sprites.forEach(checkSprite, this, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">checkSprite</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+function checkSprite(sprite) {
 
-    <span class="k">try</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">rip</span><span class="o">++</span><span class="p">;</span>
-            <span class="nx">sprites</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
-    <span class="p">}</span>
+    try {
+        if (sprite.x > game.width)
+        {
+            rip++;
+            sprites.remove(sprite, true);
+        }
+    }
+    catch (e)
+    {
+        console.log(sprite);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Group size: "</span> <span class="o">+</span> <span class="nx">sprites</span><span class="p">.</span><span class="nx">total</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Destroyed: "</span> <span class="o">+</span> <span class="nx">rip</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text("Group size: " + sprites.total, 32, 32);
+    game.debug.text("Destroyed: " + rip, 32, 64);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

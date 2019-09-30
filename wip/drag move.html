@@ -55,59 +55,59 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/drag%20move.js" title="wip/drag move.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/drag%20move.js" download="" title="Download: wip/drag move.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
 
-<span class="kd">var</span> <span class="nx">graphics</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
+var graphics;
+var bmd;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'block'</span><span class="p">,</span> <span class="s1">'assets/sprites/block.png'</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.load.image('block', 'assets/sprites/block.png');
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">block</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'block'</span><span class="p">);</span>
-    <span class="nx">block1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'block'</span><span class="p">);</span>
+    block = game.add.sprite(100, 100, 'block');
+    block1 = game.add.sprite(100, 300, 'block');
 
-    <span class="nx">block</span><span class="p">.</span><span class="nx">originX</span> <span class="o">=</span> <span class="nx">block</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="nx">block</span><span class="p">.</span><span class="nx">originY</span> <span class="o">=</span> <span class="nx">block</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-    <span class="nx">block1</span><span class="p">.</span><span class="nx">originX</span> <span class="o">=</span> <span class="nx">block1</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="nx">block1</span><span class="p">.</span><span class="nx">originY</span> <span class="o">=</span> <span class="nx">block1</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    block.originX = block.x;
+    block.originY = block.y;
+    block1.originX = block1.x;
+    block1.originY = block1.y;
 
-    <span class="nx">block</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">block1</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    block.inputEnabled = true;
+    block1.inputEnabled = true;
 
-    <span class="nx">block</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="nx">block1</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    block.input.enableDrag(false, false);
+    block1.input.enableDrag(false, true);
 
-    <span class="nx">block</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">blockDragStop</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">block1</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">blockDragStop</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    block.events.onDragStop.add(blockDragStop, this);
+    block1.events.onDragStop.add(blockDragStop, this);
 
-    <span class="c1">// Text</span>
+    // Text
 
-    <span class="kd">var</span> <span class="nx">text1</span> <span class="o">=</span> <span class="s2">"input.enableDrag(false, false);"</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">text2</span> <span class="o">=</span> <span class="s2">"input.enableDrag(false, true) - Not working"</span><span class="p">;</span>
+    var text1 = "input.enableDrag(false, false);";
+    var text2 = "input.enableDrag(false, true) - Not working";
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"15px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"left"</span> <span class="p">};</span>
+    var style = { font: "15px Arial", fill: "#ffffff", align: "left" };
 
-    <span class="kd">var</span> <span class="nx">t1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="nx">text1</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">t2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">410</span><span class="p">,</span> <span class="nx">text2</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    var t1 = game.add.text(100, 210, text1, style);
+    var t2 = game.add.text(100, 410, text2, style);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">blockDragStop</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function blockDragStop(item, pointer) {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'onDragStop'</span><span class="p">);</span>
+    console.log('onDragStop');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">item</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span><span class="na">x</span><span class="p">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">originX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">originY</span> <span class="p">},</span> <span class="mi">400</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Back</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(item).to({x: item.originX, y: item.originY }, 400, Phaser.Easing.Back.Out, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function update() {
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

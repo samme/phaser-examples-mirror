@@ -55,53 +55,54 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/demoscene/atari%20intro.js" title="demoscene/atari intro.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/demoscene/atari%20intro.js" download="" title="Download: demoscene/atari intro.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">,</span> <span class="s1">'assets/demoscene/atari.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'raster'</span><span class="p">,</span> <span class="s1">'assets/demoscene/pink-raster.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'floor'</span><span class="p">,</span> <span class="s1">'assets/demoscene/checker-floor.png'</span><span class="p">);</span>
+    game.load.image('atari', 'assets/demoscene/atari.png');
+    game.load.image('raster', 'assets/demoscene/pink-raster.png');
+    game.load.image('floor', 'assets/demoscene/checker-floor.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">effect</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">image</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mask</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">();</span>
+var effect;
+var image;
+var mask = new Phaser.Rectangle();
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#000042'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#000042';
 
-    <span class="kd">var</span> <span class="nx">floor</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'floor'</span><span class="p">);</span>
-    <span class="nx">floor</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-    <span class="nx">floor</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    var floor = game.add.image(0, game.height, 'floor');
+    floor.width = 800;
+    floor.anchor.y = 1;
 
-    <span class="nx">effect</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
-    <span class="nx">effect</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">);</span>
+    effect = game.make.bitmapData();
+    effect.load('atari');
 
-    <span class="nx">image</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="nx">effect</span><span class="p">);</span>
-    <span class="nx">image</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">image</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    image = game.add.image(game.world.centerX, game.world.centerY, effect);
+    image.anchor.set(0.5);
+    image.smoothed = false;
 
-    <span class="nx">mask</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">effect</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getImage</span><span class="p">(</span><span class="s1">'raster'</span><span class="p">).</span><span class="nx">height</span><span class="p">);</span>
+    mask.setTo(0, 0, effect.width, game.cache.getImage('raster').height);
 
-    <span class="c1">//  Tween the rasters</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">mask</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="nx">mask</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="nx">effect</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span> <span class="p">},</span> <span class="mi">3000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    //  Tween the rasters
+    game.add.tween(mask).to( { y: -(mask.height - effect.height) }, 3000, Phaser.Easing.Sinusoidal.InOut, true, 0, 100, true);
 
-    <span class="c1">//  Tween the image</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">image</span><span class="p">.</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">4</span> <span class="p">},</span> <span class="mi">3000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Quartic</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    //  Tween the image
+    game.add.tween(image.scale).to( { x: 4, y: 4 }, 3000, Phaser.Easing.Quartic.InOut, true, 0, 100, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">effect</span><span class="p">.</span><span class="nx">alphaMask</span><span class="p">(</span><span class="s1">'raster'</span><span class="p">,</span> <span class="nx">effect</span><span class="p">,</span> <span class="nx">mask</span><span class="p">);</span>
+    effect.alphaMask('raster', effect, mask);
 
-    <span class="nx">image</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="mf">0.01</span><span class="p">;</span>
+    image.rotation += 0.01;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

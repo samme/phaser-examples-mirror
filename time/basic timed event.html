@@ -55,43 +55,44 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/time/basic%20timed%20event.js" title="time/basic timed event.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/time/basic%20timed%20event.js" download="" title="Download: time/basic timed event.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bisley'</span><span class="p">,</span> <span class="s1">'assets/pics/alex-bisleys_horsy_5.png'</span><span class="p">);</span>
+    game.load.image('bisley', 'assets/pics/alex-bisleys_horsy_5.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">picture</span><span class="p">;</span>
+var picture;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#6688ee'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#6688ee';
 
-    <span class="nx">picture</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'bisley'</span><span class="p">);</span>
-    <span class="nx">picture</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    picture = game.add.sprite(game.world.centerX, game.world.centerY, 'bisley');
+    picture.anchor.setTo(0.5, 0.5);
 
-    <span class="c1">//  Here we'll create a basic timed event. This is a one-off event, it won't repeat or loop:</span>
-    <span class="c1">//  The first parameter is how long to wait before the event fires. In this case 4 seconds (you could pass in 4000 as the value as well.)</span>
-    <span class="c1">//  The next parameter is the function to call ('fadePicture') and finally the context under which that will happen.</span>
+    //  Here we'll create a basic timed event. This is a one-off event, it won't repeat or loop:
+    //  The first parameter is how long to wait before the event fires. In this case 4 seconds (you could pass in 4000 as the value as well.)
+    //  The next parameter is the function to call ('fadePicture') and finally the context under which that will happen.
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">fadePicture</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.time.events.add(Phaser.Timer.SECOND * 4, fadePicture, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">fadePicture</span><span class="p">()</span> <span class="p">{</span>
+function fadePicture() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">picture</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">alpha</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(picture).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Time until event: "</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">duration</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text("Time until event: " + game.time.events.duration, 32, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

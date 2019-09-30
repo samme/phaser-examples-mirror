@@ -55,74 +55,75 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/p25.js" title="wip/p25.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/p25.js" download="" title="Download: wip/p25.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'backdrop'</span><span class="p">,</span> <span class="s1">'assets/pics/remember-me.jpg'</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ship'</span><span class="p">,</span> <span class="s1">'assets/sprites/thrust_ship2.png'</span><span class="p">);</span>
+    game.load.image('backdrop', 'assets/pics/remember-me.jpg');
+	game.load.image('ship', 'assets/sprites/thrust_ship2.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">ship</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var ship;
+var cursors;
 
-<span class="kd">function</span> <span class="nx">p2px</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">v</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">20</span><span class="p">;</span>
-<span class="p">}</span>
+function p2px(v) {
+	return v *= -20;
+}
 
-<span class="kd">function</span> <span class="nx">px2p</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">v</span> <span class="o">*</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">;</span>
-<span class="p">}</span>
+function px2p(v) {
+	return v * -0.05;
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1920</span><span class="p">,</span> <span class="mi">1200</span><span class="p">);</span>
+    game.world.setBounds(0, 0, 1920, 1200);
 
-    <span class="kd">var</span> <span class="nx">bg</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'backdrop'</span><span class="p">);</span>
-    <span class="nx">bg</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">;</span>
+    var bg = game.add.sprite(0, 0, 'backdrop');
+    bg.alpha = 0.2;
 
-	<span class="nx">ship</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'ship'</span><span class="p">);</span>
-	<span class="nx">ship</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-	<span class="nx">ship</span><span class="p">.</span><span class="nx">physicsEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	ship = game.add.sprite(200, 200, 'ship');
+	ship.anchor.set(0.5);
+	ship.physicsEnabled = true;
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">ship</span><span class="p">);</span>
+	game.camera.follow(ship);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">defaultRestitution</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">;</span>
+    game.physics.defaultRestitution = 0.8;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-		<span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">rotateLeft</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-		<span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">rotateRight</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-		<span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setZeroRotation</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+		ship.body.rotateLeft(100);
+    }
+    else if (cursors.right.isDown)
+    {
+		ship.body.rotateRight(100);
+    }
+    else
+    {
+		ship.body.setZeroRotation();
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-    	<span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">thrust</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+    	ship.body.thrust(400);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'x: '</span> <span class="o">+</span> <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'y: '</span> <span class="o">+</span> <span class="nx">ship</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+	game.debug.text('x: ' + ship.body.x, 32, 32);
+	game.debug.text('y: ' + ship.body.y, 32, 64);
 
-<span class="p">}</span>
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

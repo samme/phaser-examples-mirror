@@ -55,55 +55,56 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/tpo.js" title="wip/tpo.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/tpo.js" download="" title="Download: wip/tpo.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'assets/pics/texturepacker_test.png'</span><span class="p">,</span> <span class="s1">'assets/pics/texturepacker_test.json'</span><span class="p">);</span>
+    game.load.atlas('atlas', 'assets/pics/texturepacker_test.png', 'assets/pics/texturepacker_test.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">chick</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">car</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mech</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">robot</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cop</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+var chick;
+var car;
+var mech;
+var robot;
+var cop;
+var text;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#404040'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#404040';
 
-    <span class="c1">//  This demonstrates pixel perfect click detection even if using sprites in a texture atlas.</span>
+    //  This demonstrates pixel perfect click detection even if using sprites in a texture atlas.
 
-    <span class="nx">chick</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'budbrain_chick.png'</span><span class="p">);</span>
-    <span class="nx">chick</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">chick</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">currentFrame</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="nx">chick</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">chick</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">currentFrame</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    chick = game.add.sprite(0, 0, 'atlas', 'budbrain_chick.png');
+    chick.x = chick.animations.currentFrame.x;
+    chick.y = chick.animations.currentFrame.y;
 
-    <span class="c1">// cop = game.add.sprite(600, 64, 'atlas');</span>
-    <span class="c1">// cop.frameName = 'ladycop.png';</span>
-    <span class="c1">// cop.inputEnabled = true;</span>
-    <span class="c1">// cop.input.pixelPerfectClick = true;</span>
-    <span class="c1">// cop.events.onInputDown.add(clicked, this);</span>
+    // cop = game.add.sprite(600, 64, 'atlas');
+    // cop.frameName = 'ladycop.png';
+    // cop.inputEnabled = true;
+    // cop.input.pixelPerfectClick = true;
+    // cop.events.onInputDown.add(clicked, this);
 
-    <span class="c1">// robot = game.add.sprite(50, 300, 'atlas');</span>
-    <span class="c1">// robot.frameName = 'robot.png';</span>
-    <span class="c1">// robot.inputEnabled = true;</span>
-    <span class="c1">// robot.input.pixelPerfectClick = true;</span>
-    <span class="c1">// robot.events.onInputDown.add(clicked, this);</span>
+    // robot = game.add.sprite(50, 300, 'atlas');
+    // robot.frameName = 'robot.png';
+    // robot.inputEnabled = true;
+    // robot.input.pixelPerfectClick = true;
+    // robot.events.onInputDown.add(clicked, this);
 
-    <span class="nx">car</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'supercars_parsec.png'</span><span class="p">);</span>
-    <span class="nx">car</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">car</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">currentFrame</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="nx">car</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">car</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">currentFrame</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    car = game.add.sprite(0, 0, 'atlas', 'supercars_parsec.png');
+    car.x = car.animations.currentFrame.x;
+    car.y = car.animations.currentFrame.y;
 
-    <span class="c1">// mech = game.add.sprite(250, 100, 'atlas');</span>
-    <span class="c1">// mech.frameName = 'titan_mech.png';</span>
-    <span class="c1">// mech.inputEnabled = true;</span>
-    <span class="c1">// mech.input.pixelPerfectClick = true;</span>
-    <span class="c1">// mech.events.onInputDown.add(clicked, this);</span>
+    // mech = game.add.sprite(250, 100, 'atlas');
+    // mech.frameName = 'titan_mech.png';
+    // mech.inputEnabled = true;
+    // mech.input.pixelPerfectClick = true;
+    // mech.events.onInputDown.add(clicked, this);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

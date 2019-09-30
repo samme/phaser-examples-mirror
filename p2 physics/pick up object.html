@@ -55,114 +55,114 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/p2%20physics/pick%20up%20object.js" title="p2 physics/pick up object.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/p2%20physics/pick%20up%20object.js" download="" title="Download: p2 physics/pick up object.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tetrisblock1'</span><span class="p">,</span> <span class="s1">'assets/sprites/tetrisblock1.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tetrisblock2'</span><span class="p">,</span> <span class="s1">'assets/sprites/tetrisblock2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tetrisblock3'</span><span class="p">,</span> <span class="s1">'assets/sprites/tetrisblock3.png'</span><span class="p">);</span>
+    game.load.image('tetrisblock1', 'assets/sprites/tetrisblock1.png');
+    game.load.image('tetrisblock2', 'assets/sprites/tetrisblock2.png');
+    game.load.image('tetrisblock3', 'assets/sprites/tetrisblock3.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">physics</span><span class="p">(</span><span class="s1">'physicsData'</span><span class="p">,</span> <span class="s1">'assets/physics/sprites.json'</span><span class="p">);</span>
+    game.load.physics('physicsData', 'assets/physics/sprites.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">tetris1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tetris2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tetris3</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mouseBody</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mouseConstraint</span><span class="p">;</span>
+var tetris1;
+var tetris2;
+var tetris3;
+var mouseBody;
+var mouseConstraint;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
         
-    <span class="c1">//  Enable p2 physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">P2JS</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+    //  Enable p2 physics
+    game.physics.startSystem(Phaser.Physics.P2JS);
+    game.physics.p2.gravity.y = 1000;
     
-    <span class="nx">tetris1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'tetrisblock1'</span><span class="p">);</span>
-    <span class="nx">tetris2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">375</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'tetrisblock2'</span><span class="p">);</span>
-    <span class="nx">tetris3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'tetrisblock3'</span><span class="p">);</span>
+    tetris1 = game.add.sprite(300, 100, 'tetrisblock1');
+    tetris2 = game.add.sprite(375, 200, 'tetrisblock2');
+    tetris3 = game.add.sprite(450, 300, 'tetrisblock3');
     
-    <span class="c1">//  Create collision group for the blocks</span>
-    <span class="kd">var</span> <span class="nx">blockCollisionGroup</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">createCollisionGroup</span><span class="p">();</span>
+    //  Create collision group for the blocks
+    var blockCollisionGroup = game.physics.p2.createCollisionGroup();
     
-    <span class="c1">//  This part is vital if you want the objects with their own collision groups to still collide with the world bounds</span>
-    <span class="c1">//  (which we do) - what this does is adjust the bounds to use its own collision group.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">updateBoundsCollisionGroup</span><span class="p">();</span>
+    //  This part is vital if you want the objects with their own collision groups to still collide with the world bounds
+    //  (which we do) - what this does is adjust the bounds to use its own collision group.
+    game.physics.p2.updateBoundsCollisionGroup();
     
-    <span class="c1">//  Enable the physics bodies on all the sprites</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">enable</span><span class="p">([</span> <span class="nx">tetris1</span><span class="p">,</span> <span class="nx">tetris2</span><span class="p">,</span> <span class="nx">tetris3</span> <span class="p">],</span> <span class="kc">false</span><span class="p">);</span>
+    //  Enable the physics bodies on all the sprites
+    game.physics.p2.enable([ tetris1, tetris2, tetris3 ], false);
     
-    <span class="nx">tetris1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clearShapes</span><span class="p">();</span>
-    <span class="nx">tetris1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">loadPolygon</span><span class="p">(</span><span class="s1">'physicsData'</span><span class="p">,</span> <span class="s1">'tetrisblock1'</span><span class="p">);</span>
-    <span class="nx">tetris1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCollisionGroup</span><span class="p">(</span><span class="nx">blockCollisionGroup</span><span class="p">);</span>
-    <span class="nx">tetris1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collides</span><span class="p">([</span><span class="nx">blockCollisionGroup</span><span class="p">]);</span>
+    tetris1.body.clearShapes();
+    tetris1.body.loadPolygon('physicsData', 'tetrisblock1');
+    tetris1.body.setCollisionGroup(blockCollisionGroup);
+    tetris1.body.collides([blockCollisionGroup]);
     
-    <span class="nx">tetris2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clearShapes</span><span class="p">();</span>
-    <span class="nx">tetris2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">loadPolygon</span><span class="p">(</span><span class="s1">'physicsData'</span><span class="p">,</span> <span class="s1">'tetrisblock2'</span><span class="p">);</span>
-    <span class="nx">tetris2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCollisionGroup</span><span class="p">(</span><span class="nx">blockCollisionGroup</span><span class="p">);</span>
-    <span class="nx">tetris2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collides</span><span class="p">([</span><span class="nx">blockCollisionGroup</span><span class="p">]);</span>
+    tetris2.body.clearShapes();
+    tetris2.body.loadPolygon('physicsData', 'tetrisblock2');
+    tetris2.body.setCollisionGroup(blockCollisionGroup);
+    tetris2.body.collides([blockCollisionGroup]);
     
-    <span class="nx">tetris3</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clearShapes</span><span class="p">();</span>
-    <span class="nx">tetris3</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">loadPolygon</span><span class="p">(</span><span class="s1">'physicsData'</span><span class="p">,</span> <span class="s1">'tetrisblock3'</span><span class="p">);</span>
-    <span class="nx">tetris3</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCollisionGroup</span><span class="p">(</span><span class="nx">blockCollisionGroup</span><span class="p">);</span>
-    <span class="nx">tetris3</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collides</span><span class="p">([</span><span class="nx">blockCollisionGroup</span><span class="p">]);</span>   
+    tetris3.body.clearShapes();
+    tetris3.body.loadPolygon('physicsData', 'tetrisblock3');
+    tetris3.body.setCollisionGroup(blockCollisionGroup);
+    tetris3.body.collides([blockCollisionGroup]);   
     
-    <span class="c1">// create physics body for mouse which we will use for dragging clicked bodies</span>
-    <span class="nx">mouseBody</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">Body</span><span class="p">();</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">addBody</span><span class="p">(</span><span class="nx">mouseBody</span><span class="p">);</span>
+    // create physics body for mouse which we will use for dragging clicked bodies
+    mouseBody = new p2.Body();
+    game.physics.p2.world.addBody(mouseBody);
         
-    <span class="c1">// attach pointer events</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">click</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">release</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">move</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-<span class="p">}</span>
+    // attach pointer events
+    game.input.onDown.add(click, this);
+    game.input.onUp.add(release, this);
+    game.input.addMoveCallback(move, this);
+}
 
-<span class="kd">function</span> <span class="nx">click</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function click(pointer) {
 
-    <span class="kd">var</span> <span class="nx">bodies</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">hitTest</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">,</span> <span class="p">[</span> <span class="nx">tetris1</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span> <span class="nx">tetris2</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span> <span class="nx">tetris3</span><span class="p">.</span><span class="nx">body</span> <span class="p">]);</span>
+    var bodies = game.physics.p2.hitTest(pointer.position, [ tetris1.body, tetris2.body, tetris3.body ]);
     
-    <span class="c1">// p2 uses different coordinate system, so convert the pointer position to p2's coordinate system</span>
-    <span class="kd">var</span> <span class="nx">physicsPos</span> <span class="o">=</span> <span class="p">[</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">pxmi</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">pxmi</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="p">)];</span>
+    // p2 uses different coordinate system, so convert the pointer position to p2's coordinate system
+    var physicsPos = [game.physics.p2.pxmi(pointer.position.x), game.physics.p2.pxmi(pointer.position.y)];
     
-    <span class="k">if</span> <span class="p">(</span><span class="nx">bodies</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">clickedBody</span> <span class="o">=</span> <span class="nx">bodies</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    if (bodies.length)
+    {
+        var clickedBody = bodies[0];
         
-        <span class="kd">var</span> <span class="nx">localPointInBody</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">];</span>
-        <span class="c1">// this function takes physicsPos and coverts it to the body's local coordinate system</span>
-        <span class="nx">clickedBody</span><span class="p">.</span><span class="nx">toLocalFrame</span><span class="p">(</span><span class="nx">localPointInBody</span><span class="p">,</span> <span class="nx">physicsPos</span><span class="p">);</span>
+        var localPointInBody = [0, 0];
+        // this function takes physicsPos and coverts it to the body's local coordinate system
+        clickedBody.toLocalFrame(localPointInBody, physicsPos);
         
-        <span class="c1">// use a revoluteContraint to attach mouseBody to the clicked body</span>
-        <span class="nx">mouseConstraint</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">createRevoluteConstraint</span><span class="p">(</span><span class="nx">mouseBody</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="nx">clickedBody</span><span class="p">,</span> <span class="p">[</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">mpxi</span><span class="p">(</span><span class="nx">localPointInBody</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">mpxi</span><span class="p">(</span><span class="nx">localPointInBody</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">]);</span>
-    <span class="p">}</span>   
+        // use a revoluteContraint to attach mouseBody to the clicked body
+        mouseConstraint = this.game.physics.p2.createRevoluteConstraint(mouseBody, [0, 0], clickedBody, [game.physics.p2.mpxi(localPointInBody[0]), game.physics.p2.mpxi(localPointInBody[1]) ]);
+    }   
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">release</span><span class="p">()</span> <span class="p">{</span>
+function release() {
 
-    <span class="c1">// remove constraint from object's body</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">removeConstraint</span><span class="p">(</span><span class="nx">mouseConstraint</span><span class="p">);</span>
+    // remove constraint from object's body
+    game.physics.p2.removeConstraint(mouseConstraint);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">move</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function move(pointer) {
 
-    <span class="c1">// p2 uses different coordinate system, so convert the pointer position to p2's coordinate system</span>
-    <span class="nx">mouseBody</span><span class="p">.</span><span class="nx">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">pxmi</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
-    <span class="nx">mouseBody</span><span class="p">.</span><span class="nx">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">p2</span><span class="p">.</span><span class="nx">pxmi</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+    // p2 uses different coordinate system, so convert the pointer position to p2's coordinate system
+    mouseBody.position[0] = game.physics.p2.pxmi(pointer.position.x);
+    mouseBody.position[1] = game.physics.p2.pxmi(pointer.position.y);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function update() {
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-<span class="c1">//  game.debug.text(result, 32, 32);</span>
+//  game.debug.text(result, 32, 32);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

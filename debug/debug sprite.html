@@ -55,45 +55,46 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/debug/debug%20sprite.js" title="debug/debug sprite.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/debug/debug%20sprite.js" download="" title="Download: debug/debug sprite.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span><span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span><span class="nx">render</span>  <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update:update, render:render  });
 
-<span class="kd">var</span> <span class="nx">sprite</span> <span class="p">;</span>
-<span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span>
-<span class="kd">var</span> <span class="nx">step</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">360</span> <span class="p">;</span>
+var sprite ;
+var counter = 0 ;
+var step = Math.PI * 2 / 360 ;
 
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">// Load images to use as the game sprites</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sprite'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser2.png'</span><span class="p">);</span>
+    // Load images to use as the game sprites
+    game.load.image('sprite', 'assets/sprites/phaser2.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// Create sprite and put it in the middle of the stage</span>
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sprite'</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="p">;</span>
-<span class="p">}</span>
+    // Create sprite and put it in the middle of the stage
+    sprite = game.add.sprite(0, 0, 'sprite');
+    sprite.alpha = 0.5 ;
+    sprite.x = game.width / 2 ;
+    sprite.anchor.x = sprite.anchor.y = 0.5 ;
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="c1">// Move sprite up and down smoothly for show</span>
-    <span class="kd">var</span> <span class="nx">tStep</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span> <span class="nx">counter</span> <span class="p">)</span> <span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nx">tStep</span> <span class="o">*</span> <span class="mi">30</span> <span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">degToRad</span><span class="p">(</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="nx">tStep</span> <span class="p">)</span> <span class="p">;</span>
-    <span class="nx">counter</span> <span class="o">+=</span> <span class="nx">step</span> <span class="p">;</span>
-<span class="p">}</span>
+function update()
+{
+    // Move sprite up and down smoothly for show
+    var tStep = Math.sin( counter ) ;
+    sprite.y = (game.height/2) + tStep * 30 ;
+    sprite.rotation += Phaser.Math.degToRad( 0.1 * tStep ) ;
+    counter += step ;
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">// Sprite debug info</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteInfo</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    // Sprite debug info
+    game.debug.spriteInfo(sprite, 32, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

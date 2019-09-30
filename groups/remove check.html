@@ -55,49 +55,50 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/remove%20check.js" title="groups/remove check.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/remove%20check.js" download="" title="Download: groups/remove check.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
- <span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+ function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'wasp'</span><span class="p">,</span> <span class="s1">'assets/sprites/wasp.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sonic'</span><span class="p">,</span> <span class="s1">'assets/sprites/sonic_havok_sanity.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser.png'</span><span class="p">);</span>
+    game.load.image('wasp', 'assets/sprites/wasp.png');
+    game.load.image('sonic', 'assets/sprites/sonic_havok_sanity.png');
+    game.load.image('phaser', 'assets/sprites/phaser.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">group</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var group;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    group = game.add.group();
 
-    <span class="c1">//  First we'll create 10 'wasp' sprites in the group</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'wasp'</span><span class="p">);</span>
-    <span class="p">}</span>
+    //  First we'll create 10 'wasp' sprites in the group
+    for (var i = 0; i < 10; i++)
+    {
+        group.create(game.world.randomX, game.world.randomY, 'wasp');
+    }
 
-    <span class="c1">//  And now we'll create a sprite that is NOT in the group</span>
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">'sonic'</span><span class="p">);</span>
+    //  And now we'll create a sprite that is NOT in the group
+    sprite = game.add.sprite(200, 20, 'sonic');
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">remove</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    this.input.onDown.addOnce(remove, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">remove</span><span class="p">()</span> <span class="p">{</span>
+function remove() {
 
-    <span class="c1">//  This should do nothing, because sprite isn't a child of the group</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+    //  This should do nothing, because sprite isn't a child of the group
+    group.remove(sprite);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Group size: '</span> <span class="o">+</span> <span class="nx">group</span><span class="p">.</span><span class="nx">total</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text('Group size: ' + group.total, 32, 32);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

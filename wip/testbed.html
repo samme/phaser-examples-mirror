@@ -55,105 +55,106 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/testbed.js" title="wip/testbed.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/testbed.js" download="" title="Download: wip/testbed.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  To load an audio file use the following structure.</span>
-    <span class="c1">//  As with all load operations the first parameter is a unique key, which must be unique between all audio files.</span>
+    //  To load an audio file use the following structure.
+    //  As with all load operations the first parameter is a unique key, which must be unique between all audio files.
 
-    <span class="c1">//  The second parameter is an array containing the same audio file but in different formats.</span>
-    <span class="c1">//  In this example the music is provided as an mp3 and a ogg (Firefox will want the ogg for example)</span>
+    //  The second parameter is an array containing the same audio file but in different formats.
+    //  In this example the music is provided as an mp3 and a ogg (Firefox will want the ogg for example)
 
-    <span class="c1">//  The loader works by checking if the browser can support the first file type in the list (mp3 in this case). If it can, it loads it, otherwise</span>
-    <span class="c1">//  it moves to the next file in the list (the ogg). If it can't load any of them the file will error.</span>
+    //  The loader works by checking if the browser can support the first file type in the list (mp3 in this case). If it can, it loads it, otherwise
+    //  it moves to the next file in the list (the ogg). If it can't load any of them the file will error.
 
-    <span class="c1">//  Both work now :)</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">,</span> <span class="s1">'assets/video/output.webm'</span><span class="p">);</span>
-    <span class="c1">// game.load.video('chrome', 'assets/video/chrome.webm');</span>
+    //  Both work now :)
+    game.load.video('chrome', 'assets/video/output.webm');
+    // game.load.video('chrome', 'assets/video/chrome.webm');
 
-    <span class="c1">// game.load.video('chrome', 'http://gametest.mobi/insideout/fear/v5/assets/hd/videos/intro.mp4?t=' + Date.now());</span>
+    // game.load.video('chrome', 'http://gametest.mobi/insideout/fear/v5/assets/hd/videos/intro.mp4?t=' + Date.now());
 
-    <span class="c1">// game.load.video('chrome', 'assets/video/liquid2.mp4');</span>
-    <span class="c1">// game.load.audio('boden', 'assets/audio/tommy_in_goa.mp3');</span>
+    // game.load.video('chrome', 'assets/video/liquid2.mp4');
+    // game.load.audio('boden', 'assets/audio/tommy_in_goa.mp3');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">video</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">music</span><span class="p">;</span>
+var video;
+var sprite;
+var music;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'create'</span><span class="p">);</span>
+    console.log('create');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#232323'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#232323';
 
-    <span class="c1">// console.log(game.cache.getVideo('chrome'));</span>
+    // console.log(game.cache.getVideo('chrome'));
 
-    <span class="nx">video</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">);</span>
+    video = game.add.video('chrome');
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">video</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    sprite = video.addToWorld(game.world.centerX, game.world.centerY, 0.5, 0.5);
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+    video.play();
 
-    <span class="c1">// music = game.sound.play('boden');</span>
+    // music = game.sound.play('boden');
 
-    <span class="c1">// game.input.onDown.add(play, this);</span>
-    <span class="c1">// game.input.onDown.add(pause, this);</span>
-    <span class="c1">// game.input.onDown.add(speed, this);</span>
-    <span class="c1">// game.input.onDown.add(seek, this);</span>
+    // game.input.onDown.add(play, this);
+    // game.input.onDown.add(pause, this);
+    // game.input.onDown.add(speed, this);
+    // game.input.onDown.add(seek, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">play</span><span class="p">()</span> <span class="p">{</span>
+function play() {
 
-    <span class="c1">// ffmpeg -i %02d.png -i audio.wav output.webm</span>
+    // ffmpeg -i %02d.png -i audio.wav output.webm
 
-    <span class="c1">// console.log('play');</span>
-    <span class="c1">// video.play(true, 1);</span>
-    <span class="c1">// video.play();</span>
+    // console.log('play');
+    // video.play(true, 1);
+    // video.play();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">pause</span><span class="p">()</span> <span class="p">{</span>
+function pause() {
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">paused</span> <span class="o">=</span> <span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">paused</span><span class="p">)</span> <span class="p">?</span> <span class="kc">false</span> <span class="p">:</span> <span class="kc">true</span><span class="p">;</span>
+    video.paused = (video.paused) ? false : true;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">speed</span><span class="p">()</span> <span class="p">{</span>
+function speed() {
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">playbackRate</span><span class="o">++</span><span class="p">;</span>
+    video.playbackRate++;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">seek</span><span class="p">()</span> <span class="p">{</span>
+function seek() {
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">currentTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    video.currentTime = 0;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">// sprite.rotation += 0.01;</span>
+    // sprite.rotation += 0.01;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">// if (music.isDecoding)</span>
-    <span class="c1">// {</span>
-    <span class="c1">//     game.debug.text("Decoding MP3 ...", 300, 32);</span>
-    <span class="c1">// }</span>
+    // if (music.isDecoding)
+    // {
+    //     game.debug.text("Decoding MP3 ...", 300, 32);
+    // }
 
-    <span class="c1">// game.debug.text(video.progress, 32, 32);</span>
-    <span class="c1">// game.debug.text(video.playing, 32, 32);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">currentTime</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">duration</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    // game.debug.text(video.progress, 32, 32);
+    // game.debug.text(video.playing, 32, 32);
+    game.debug.text(video.currentTime, 32, 32);
+    game.debug.text(video.duration, 32, 64);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

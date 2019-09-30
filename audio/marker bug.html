@@ -55,125 +55,126 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/audio/marker%20bug.js" title="audio/marker bug.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/audio/marker%20bug.js" download="" title="Download: audio/marker bug.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'button'</span><span class="p">,</span> <span class="s1">'assets/buttons/button_sprite_sheet.png'</span><span class="p">,</span> <span class="mi">193</span><span class="p">,</span> <span class="mi">71</span><span class="p">);</span>
+    game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="s1">'http://localhost/childrens-template-make-a-picture-2/skins/vanilla/'</span><span class="p">;</span>
+    game.load.path = 'http://localhost/childrens-template-make-a-picture-2/skins/vanilla/';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'menu'</span><span class="p">,</span> <span class="nx">bob</span><span class="p">.</span><span class="nx">audio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">files</span><span class="p">);</span>
-    <span class="c1">// game.load.audio('tools', bob.audio.tools.files);</span>
+    game.load.audio('menu', bob.audio.menu.files);
+    // game.load.audio('tools', bob.audio.tools.files);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">button</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">menuFx</span><span class="p">;</span>
-<span class="c1">// var toolsFx;</span>
+var button;
+var menuFx;
+// var toolsFx;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#ffffff'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#ffffff';
 
-    <span class="nx">menuFx</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'menu'</span><span class="p">);</span>
-    <span class="nx">menuFx</span><span class="p">.</span><span class="nx">override</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    menuFx = this.add.audio('menu');
+    menuFx.override = true;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">bob</span><span class="p">.</span><span class="nx">audio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">markers</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">sample</span> <span class="o">=</span> <span class="nx">bob</span><span class="p">.</span><span class="nx">audio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">markers</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    for (var i = 0; i < bob.audio.menu.markers.length; i++)
+    {
+        var sample = bob.audio.menu.markers[i];
 
-        <span class="nx">menuFx</span><span class="p">.</span><span class="nx">addMarker</span><span class="p">(</span><span class="nx">sample</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">sample</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">sample</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
-    <span class="p">}</span>
+        menuFx.addMarker(sample[0], sample[1], sample[2]);
+    }
 
-    <span class="nx">menuFx</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'praise wow great picture'</span><span class="p">);</span>
+    menuFx.play('praise wow great picture');
 
-    <span class="c1">// button = game.add.button(game.world.centerX - 95, 400, 'button', actionOnClick, this, 2, 1, 0);</span>
+    // button = game.add.button(game.world.centerX - 95, 400, 'button', actionOnClick, this, 2, 1, 0);
 
-    <span class="c1">// button.setOverSound(menuFx, 'save this picture');</span>
-    <span class="c1">// button.setOverSound(menuFx, 'fuck off');</span>
-    <span class="c1">// button.setDownSound(menuFx, 'save this picture');</span>
-    <span class="c1">// button.setDownSound(menuFx, 'fuck off');</span>
+    // button.setOverSound(menuFx, 'save this picture');
+    // button.setOverSound(menuFx, 'fuck off');
+    // button.setDownSound(menuFx, 'save this picture');
+    // button.setDownSound(menuFx, 'fuck off');
 
-    <span class="c1">// button.setOverSound(menuFx, 'done');</span>
-    <span class="c1">// button.setDownSound(menuFx, 'praise well done');</span>
+    // button.setOverSound(menuFx, 'done');
+    // button.setDownSound(menuFx, 'praise well done');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">actionOnClick</span><span class="p">);</span>
+    game.input.onDown.add(actionOnClick);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">actionOnClick</span> <span class="p">()</span> <span class="p">{</span>
+function actionOnClick () {
 
-    <span class="nx">menuFx</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'fuck off'</span><span class="p">);</span>
+    menuFx.play('fuck off');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bob</span> <span class="o">=</span> <span class="p">{</span>
+var bob = {
 
-    <span class="s2">"audio"</span><span class="p">:</span> <span class="p">{</span>
+    "audio": {
 
-        <span class="s2">"menu"</span><span class="p">:</span> <span class="p">{</span>
+        "menu": {
 
-            <span class="s2">"files"</span><span class="p">:</span> <span class="p">[</span> <span class="s2">"audio/menu.mp3"</span><span class="p">,</span> <span class="s2">"audio/menu.m4a"</span><span class="p">,</span> <span class="s2">"audio/menu.ogg"</span> <span class="p">],</span>
-            <span class="s2">"markers"</span><span class="p">:</span> <span class="p">[</span>
+            "files": [ "audio/menu.mp3", "audio/menu.m4a", "audio/menu.ogg" ],
+            "markers": [
 
-                <span class="p">[</span> <span class="s2">"press play"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">3.0</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"audio off"</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">1.2</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"audio on"</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">1.1</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"help"</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">,</span> <span class="mf">0.7</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"home"</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mf">0.6</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"exit"</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mf">0.6</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"how to play"</span><span class="p">,</span> <span class="mf">8.5</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"pause"</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.7</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"play"</span><span class="p">,</span> <span class="mf">11.0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"choose a frame"</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">,</span> <span class="mf">2.1</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"start no webcam"</span><span class="p">,</span> <span class="mf">14.5</span><span class="p">,</span> <span class="mf">4.1</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"start webcam"</span><span class="p">,</span> <span class="mf">19.0</span><span class="p">,</span> <span class="mf">5.5</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"choose one of the frames and save your picture"</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">,</span> <span class="mf">2.6</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"frame your picture"</span><span class="p">,</span> <span class="mf">28.0</span><span class="p">,</span> <span class="mf">1.2</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"lets make a picture"</span><span class="p">,</span> <span class="mf">29.5</span><span class="p">,</span> <span class="mf">1.6</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"scroll to find more pictures to colour in"</span><span class="p">,</span> <span class="mf">31.5</span><span class="p">,</span> <span class="mf">2.7</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"take a photo of something"</span><span class="p">,</span> <span class="mf">34.5</span><span class="p">,</span> <span class="mf">3.1</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"praise fantastic"</span><span class="p">,</span> <span class="mf">38.0</span><span class="p">,</span> <span class="mf">1.2</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"praise i love it"</span><span class="p">,</span> <span class="mf">39.5</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"praise thats great"</span><span class="p">,</span> <span class="mf">41.0</span><span class="p">,</span> <span class="mf">1.2</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"praise well done"</span><span class="p">,</span> <span class="mf">42.5</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"praise wow great picture"</span><span class="p">,</span> <span class="mf">44.0</span><span class="p">,</span> <span class="mf">2.2</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"colour in by selecting a paint"</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">2.7</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"have you finished"</span><span class="p">,</span> <span class="mf">49.5</span><span class="p">,</span> <span class="mf">1.2</span> <span class="p">]</span>
-            <span class="p">]</span>
+                [ "press play", 0, 3.0 ],
+                [ "audio off", 3.5, 1.2 ],
+                [ "audio on", 5.0, 1.1 ],
+                [ "help", 6.5, 0.7 ],
+                [ "home", 7.5, 0.6 ],
+                [ "exit", 7.5, 0.6 ],
+                [ "how to play", 8.5, 1.0 ],
+                [ "pause", 10.0, 0.7 ],
+                [ "play", 11.0, 0.5 ],
+                [ "choose a frame", 12.0, 2.1 ],
+                [ "start no webcam", 14.5, 4.1 ],
+                [ "start webcam", 19.0, 5.5 ],
+                [ "choose one of the frames and save your picture", 25.0, 2.6 ],
+                [ "frame your picture", 28.0, 1.2 ],
+                [ "lets make a picture", 29.5, 1.6 ],
+                [ "scroll to find more pictures to colour in", 31.5, 2.7 ],
+                [ "take a photo of something", 34.5, 3.1 ],
+                [ "praise fantastic", 38.0, 1.2 ],
+                [ "praise i love it", 39.5, 1.0 ],
+                [ "praise thats great", 41.0, 1.2 ],
+                [ "praise well done", 42.5, 1.0 ],
+                [ "praise wow great picture", 44.0, 2.2 ],
+                [ "colour in by selecting a paint", 46.5, 2.7 ],
+                [ "have you finished", 49.5, 1.2 ]
+            ]
 
-        <span class="p">},</span>
+        },
 
-        <span class="s2">"tools"</span><span class="p">:</span> <span class="p">{</span>
+        "tools": {
 
-            <span class="s2">"files"</span><span class="p">:</span> <span class="p">[</span> <span class="s2">"audio/tools.mp3"</span><span class="p">,</span> <span class="s2">"audio/tools.m4a"</span><span class="p">,</span> <span class="s2">"audio/tools.ogg"</span> <span class="p">],</span>
-            <span class="s2">"markers"</span><span class="p">:</span> <span class="p">[</span>
+            "files": [ "audio/tools.mp3", "audio/tools.m4a", "audio/tools.ogg" ],
+            "markers": [
 
-                <span class="p">[</span> <span class="s2">"crayon"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"eraser"</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.8</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"paintbrush"</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">0.9</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"pen"</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.4</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"pencil"</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">0.7</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"stickers"</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">,</span> <span class="mf">1.1</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"glitter"</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">,</span> <span class="mf">0.9</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"shoes"</span><span class="p">,</span> <span class="mf">11.0</span><span class="p">,</span> <span class="mf">1.5</span> <span class="p">],</span>
+                [ "crayon", 0, 0.7 ],
+                [ "eraser", 1.0, 0.8 ],
+                [ "paintbrush", 3.5, 0.9 ],
+                [ "pen", 5.0, 0.4 ],
+                [ "pencil", 6.0, 0.7 ],
+                [ "stickers", 8.0, 1.1 ],
+                [ "glitter", 9.5, 0.9 ],
+                [ "shoes", 11.0, 1.5 ],
 
-                <span class="p">[</span> <span class="s2">"fantastic"</span><span class="p">,</span> <span class="mf">13.0</span><span class="p">,</span> <span class="mf">1.3</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"lookhowitglitters"</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">,</span> <span class="mf">2.8</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"iloveit"</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"watchthemgo"</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">,</span> <span class="mf">1.1</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"thatsgreat"</span><span class="p">,</span> <span class="mf">21.0</span><span class="p">,</span> <span class="mf">1.2</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"welldone"</span><span class="p">,</span> <span class="mf">22.5</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">],</span>
-                <span class="p">[</span> <span class="s2">"greatpicture"</span><span class="p">,</span> <span class="mf">24.0</span><span class="p">,</span> <span class="mf">2.3</span> <span class="p">]</span>
+                [ "fantastic", 13.0, 1.3 ],
+                [ "lookhowitglitters", 15.0, 2.8 ],
+                [ "iloveit", 18.0, 1.0 ],
+                [ "watchthemgo", 19.5, 1.1 ],
+                [ "thatsgreat", 21.0, 1.2 ],
+                [ "welldone", 22.5, 1.0 ],
+                [ "greatpicture", 24.0, 2.3 ]
 
-            <span class="p">]</span>
+            ]
 
-        <span class="p">}</span>
-    <span class="p">}</span>
+        }
+    }
 
-<span class="p">};</span>
+};
 
 </code></pre>
 <meta content="../" name="loadPath">

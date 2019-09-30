@@ -55,84 +55,85 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/call%20all%20animations.js" title="wip/call all animations.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/call%20all%20animations.js" download="" title="Download: wip/call all animations.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'coin'</span><span class="p">,</span> <span class="s1">'assets/sprites/coin.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">coins</span><span class="p">;</span>
+var coins;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Here we create our coins group</span>
-    <span class="nx">coins</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    //  Here we create our coins group
+    coins = game.add.group();
 
-    <span class="c1">//  Now let's add 50 coins into it</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2500</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">coins</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'coin'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="p">}</span>
+    //  Now let's add 50 coins into it
+    for (var i = 0; i < 2500; i++)
+    {
+        coins.create(game.world.randomX, game.world.randomY, 'coin', 0);
+    }
 
-    <span class="c1">//  Now using the power of callAll we can add the same animation to all coins in the group:</span>
+    //  Now using the power of callAll we can add the same animation to all coins in the group:
 
-    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+    var t = Date.now();
 
-    <span class="c1">// coins.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2500</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">coins</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'spin'</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-        <span class="c1">// coins.children[i].animations.add('spin2', [5, 4, 3, 2, 1, 0], 10, true);</span>
-        <span class="c1">// coins.children[i].animations.add('spin3', [5, 4, 3, 2, 1, 0], 10, true);</span>
-        <span class="c1">// coins.children[i].animations.add('spin4', [5, 4, 3, 2, 1, 0], 10, true);</span>
-        <span class="c1">// coins.children[i].animations.add('spin5', [5, 4, 3, 2, 1, 0], 10, true);</span>
-    <span class="p">}</span>
+    // coins.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
+    for (var i = 0; i < 2500; i++)
+    {
+        coins.children[i].animations.add('spin', [5, 4, 3, 2, 1, 0], 10, true);
+        // coins.children[i].animations.add('spin2', [5, 4, 3, 2, 1, 0], 10, true);
+        // coins.children[i].animations.add('spin3', [5, 4, 3, 2, 1, 0], 10, true);
+        // coins.children[i].animations.add('spin4', [5, 4, 3, 2, 1, 0], 10, true);
+        // coins.children[i].animations.add('spin5', [5, 4, 3, 2, 1, 0], 10, true);
+    }
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'step 1'</span><span class="p">,</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">t</span><span class="p">);</span>
-    <span class="nx">t</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+    console.log('step 1', Date.now() - t);
+    t = Date.now();
 
-    <span class="c1">// coins.callAll('animations.add', 'animations', 'spin2', [5, 4, 3, 2, 1, 0], 10, true);</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2500</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">coins</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'spin2'</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+    // coins.callAll('animations.add', 'animations', 'spin2', [5, 4, 3, 2, 1, 0], 10, true);
+    for (var i = 0; i < 2500; i++)
+    {
+        coins.children[i].animations.add('spin2', [5, 4, 3, 2, 1, 0], 10, true);
+    }
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'step 2'</span><span class="p">,</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">t</span><span class="p">);</span>
-    <span class="nx">t</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+    console.log('step 2', Date.now() - t);
+    t = Date.now();
 
-    <span class="c1">// coins.callAll('animations.add', 'animations', 'spin3', [4, 2, 1, 5, 3, 0], 10, true);</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2500</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">coins</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'spin3'</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+    // coins.callAll('animations.add', 'animations', 'spin3', [4, 2, 1, 5, 3, 0], 10, true);
+    for (var i = 0; i < 2500; i++)
+    {
+        coins.children[i].animations.add('spin3', [5, 4, 3, 2, 1, 0], 10, true);
+    }
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'step 3'</span><span class="p">,</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">t</span><span class="p">);</span>
-    <span class="nx">t</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+    console.log('step 3', Date.now() - t);
+    t = Date.now();
 
-    <span class="c1">// coins.callAll('animations.add', 'animations', 'spin4', [5, 0, 0, 3, 2, 1], 10, true);</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2500</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">coins</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'spin4'</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+    // coins.callAll('animations.add', 'animations', 'spin4', [5, 0, 0, 3, 2, 1], 10, true);
+    for (var i = 0; i < 2500; i++)
+    {
+        coins.children[i].animations.add('spin4', [5, 4, 3, 2, 1, 0], 10, true);
+    }
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'step 4'</span><span class="p">,</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">t</span><span class="p">);</span>
-    <span class="nx">t</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+    console.log('step 4', Date.now() - t);
+    t = Date.now();
 
-    <span class="c1">// coins.callAll('animations.add', 'animations', 'spin5', [2, 1, 3, 5, 7, 0], 10, true);</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2500</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">coins</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'spin5'</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+    // coins.callAll('animations.add', 'animations', 'spin5', [2, 1, 3, 5, 7, 0], 10, true);
+    for (var i = 0; i < 2500; i++)
+    {
+        coins.children[i].animations.add('spin5', [5, 4, 3, 2, 1, 0], 10, true);
+    }
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'step 5'</span><span class="p">,</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">t</span><span class="p">);</span>
+    console.log('step 5', Date.now() - t);
 
-    <span class="c1">//  And play them</span>
-    <span class="nx">coins</span><span class="p">.</span><span class="nx">callAll</span><span class="p">(</span><span class="s1">'animations.play'</span><span class="p">,</span> <span class="s1">'animations'</span><span class="p">,</span> <span class="s1">'spin'</span><span class="p">);</span>
+    //  And play them
+    coins.callAll('animations.play', 'animations', 'spin');
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

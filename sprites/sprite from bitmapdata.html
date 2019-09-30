@@ -55,27 +55,28 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/sprite%20from%20bitmapdata.js" title="sprites/sprite from bitmapdata.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/sprite%20from%20bitmapdata.js" download="" title="Download: sprites/sprite from bitmapdata.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// create a new bitmap data object</span>
-    <span class="kd">var</span> <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">);</span>
+    // create a new bitmap data object
+    var bmd = game.add.bitmapData(128,128);
 
-    <span class="c1">// draw to the canvas context like normal</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#ff0000'</span><span class="p">;</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
+    // draw to the canvas context like normal
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0,0,128,128);
+    bmd.ctx.fillStyle = '#ff0000';
+    bmd.ctx.fill();
 
-    <span class="c1">// use the bitmap data as the texture for the sprite</span>
-    <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">);</span>
-<span class="p">}</span>
+    // use the bitmap data as the texture for the sprite
+    var sprite = game.add.sprite(200, 200, bmd);
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

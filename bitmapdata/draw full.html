@@ -55,43 +55,44 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bitmapdata/draw%20full.js" title="bitmapdata/draw full.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bitmapdata/draw%20full.js" download="" title="Download: bitmapdata/draw full.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bg'</span><span class="p">,</span> <span class="s1">'assets/pics/undersea.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'loop'</span><span class="p">,</span> <span class="s1">'assets/sprites/beball1.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.xml'</span><span class="p">);</span>
+    game.load.image('bg', 'assets/pics/undersea.jpg');
+    game.load.image('loop', 'assets/sprites/beball1.png');
+    game.load.bitmapFont('desyrel', 'assets/fonts/bitmapFonts/desyrel.png', 'assets/fonts/bitmapFonts/desyrel.xml');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    var group = game.make.group();
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'bg'</span><span class="p">);</span>
+    group.create(0, 0, 'bg');
 
-    <span class="c1">//  Add a bunch of sprites in random positions to the group</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'loop'</span><span class="p">);</span>
-    <span class="p">}</span>
+    //  Add a bunch of sprites in random positions to the group
+    for (var i = 0; i < 16; i++)
+    {
+        group.create(game.world.randomX, game.world.randomY, 'loop');
+    }
 
-    <span class="kd">var</span> <span class="nx">bmpText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'Bitmap Text in the Group'</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
-    <span class="nx">group</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">bmpText</span><span class="p">);</span>
+    var bmpText = game.make.bitmapText(32, 64, 'desyrel', 'Bitmap Text in the Group', 64);
+    group.add(bmpText);
 
-    <span class="c1">//  This is the BitmapData we're going to be drawing to</span>
-    <span class="kd">var</span> <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    //  This is the BitmapData we're going to be drawing to
+    var bmd = game.add.bitmapData(game.width, game.height);
 
-    <span class="kd">var</span> <span class="nx">bmdContainer</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="mi">390</span><span class="p">,</span> <span class="mi">290</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    var bmdContainer = bmd.addToWorld(390, 290, 0, 0, 0.5, 0.5);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">updateTransform</span><span class="p">();</span>
+    game.stage.updateTransform();
 
-    <span class="c1">//  Draw the whole game world (including the BitmapData!) to the BitmapData</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">drawFull</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">);</span>
+    //  Draw the whole game world (including the BitmapData!) to the BitmapData
+    bmd.drawFull(game.world);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

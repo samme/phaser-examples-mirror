@@ -55,110 +55,110 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/spritesheet%20from%20graphics.js" title="display/spritesheet from graphics.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/spritesheet%20from%20graphics.js" download="" title="Download: display/spritesheet from graphics.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">sprites</span><span class="p">;</span>
+var sprites;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">digitsData</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">'0000    1 2222 3333'</span><span class="p">,</span>
-        <span class="s1">'0  0    1    2    3'</span><span class="p">,</span>
-        <span class="s1">'0  0    1 2222 3333'</span><span class="p">,</span>
-        <span class="s1">'0  0    1 2       3'</span><span class="p">,</span>
-        <span class="s1">'0000    1 2222 3333'</span><span class="p">,</span>
-        <span class="s1">'                   '</span><span class="p">,</span>
-        <span class="s1">'4  4 5555 6666 7777'</span><span class="p">,</span>
-        <span class="s1">'4  4 5    6       7'</span><span class="p">,</span>
-        <span class="s1">'4444 5555 6666    7'</span><span class="p">,</span>
-        <span class="s1">'   4    5 6  6    7'</span><span class="p">,</span>
-        <span class="s1">'   4 5555 6666    7'</span><span class="p">,</span>
-        <span class="s1">'                   '</span><span class="p">,</span>
-        <span class="s1">'8888 9999          '</span><span class="p">,</span>
-        <span class="s1">'8  8 9  9          '</span><span class="p">,</span>
-        <span class="s1">'8888 9999          '</span><span class="p">,</span>
-        <span class="s1">'8  8    9          '</span><span class="p">,</span>
-        <span class="s1">'8888 9999          '</span><span class="p">];</span>
+    var digitsData = [
+        '0000    1 2222 3333',
+        '0  0    1    2    3',
+        '0  0    1 2222 3333',
+        '0  0    1 2       3',
+        '0000    1 2222 3333',
+        '                   ',
+        '4  4 5555 6666 7777',
+        '4  4 5    6       7',
+        '4444 5555 6666    7',
+        '   4    5 6  6    7',
+        '   4 5555 6666    7',
+        '                   ',
+        '8888 9999          ',
+        '8  8 9  9          ',
+        '8888 9999          ',
+        '8  8    9          ',
+        '8888 9999          '];
 
-    <span class="kd">var</span> <span class="nx">pixelSize</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var pixelSize = 8;
+    var x = 0;
+    var y = 0;
 
-    <span class="c1">//  Create our Graphics object and draw the digits to it</span>
-    <span class="c1">//  (one rectangle per character)</span>
+    //  Create our Graphics object and draw the digits to it
+    //  (one rectangle per character)
 
-    <span class="kd">var</span> <span class="nx">g</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var g = game.add.graphics(0, 0);
     
-    <span class="nx">g</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0x00ff00</span><span class="p">);</span>
+    g.beginFill(0x00ff00);
 
-    <span class="nx">digitsData</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
+    digitsData.forEach(function(line) {
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">line</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">line</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">' '</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">g</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">pixelSize</span><span class="p">,</span> <span class="nx">pixelSize</span><span class="p">);</span>
-            <span class="p">}</span>
+        for (var i = 0; i < line.length; i++)
+        {
+            if (line[i] !== ' ')
+            {
+                g.drawRect(x, y, pixelSize, pixelSize);
+            }
 
-            <span class="nx">x</span> <span class="o">+=</span> <span class="nx">pixelSize</span><span class="p">;</span>
-        <span class="p">}</span>
+            x += pixelSize;
+        }
 
-        <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="nx">y</span> <span class="o">+=</span> <span class="nx">pixelSize</span><span class="p">;</span>
+        x = 0;
+        y += pixelSize;
 
-    <span class="p">});</span>
+    });
 
-    <span class="nx">g</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    g.endFill();
 
-    <span class="c1">//  Generate a Texture from the Graphics object</span>
+    //  Generate a Texture from the Graphics object
 
-    <span class="kd">var</span> <span class="nx">texture</span> <span class="o">=</span> <span class="nx">g</span><span class="p">.</span><span class="nx">generateTexture</span><span class="p">();</span>
+    var texture = g.generateTexture();
 
-    <span class="c1">//  This is our Graphics object sprite sheet, alpha'd out a </span>
-    <span class="c1">//  little so you can see the sprites over the top of it</span>
-    <span class="nx">g</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    //  This is our Graphics object sprite sheet, alpha'd out a 
+    //  little so you can see the sprites over the top of it
+    g.alpha = 0.5;
 
-    <span class="c1">//  And create a Sprite Sheet in the cache from the Texture</span>
+    //  And create a Sprite Sheet in the cache from the Texture
 
-    <span class="c1">//  The size of one frame of the sprite sheet</span>
-    <span class="kd">var</span> <span class="nx">frameWidth</span> <span class="o">=</span> <span class="nx">pixelSize</span> <span class="o">*</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">frameHeight</span> <span class="o">=</span> <span class="nx">pixelSize</span> <span class="o">*</span> <span class="mi">5</span><span class="p">;</span>
+    //  The size of one frame of the sprite sheet
+    var frameWidth = pixelSize * 4;
+    var frameHeight = pixelSize * 5;
 
-    <span class="c1">//  The total number of sprites in the sheet</span>
-    <span class="kd">var</span> <span class="nx">frameMax</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    //  The total number of sprites in the sheet
+    var frameMax = 10;
 
-    <span class="c1">//  The spacing between each sprite in the sheet</span>
-    <span class="kd">var</span> <span class="nx">margin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">spacing</span> <span class="o">=</span> <span class="nx">pixelSize</span><span class="p">;</span>
+    //  The spacing between each sprite in the sheet
+    var margin = 0;
+    var spacing = pixelSize;
 
-    <span class="c1">//  Add to the Cache using the 'digits' keyword</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">addSpriteSheet</span><span class="p">(</span><span class="s1">'digits'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">texture</span><span class="p">.</span><span class="nx">baseTexture</span><span class="p">.</span><span class="nx">source</span><span class="p">,</span> <span class="nx">frameWidth</span><span class="p">,</span> <span class="nx">frameHeight</span><span class="p">,</span> <span class="nx">frameMax</span><span class="p">,</span> <span class="nx">margin</span><span class="p">,</span> <span class="nx">spacing</span><span class="p">);</span>
+    //  Add to the Cache using the 'digits' keyword
+    game.cache.addSpriteSheet('digits', null, texture.baseTexture.source, frameWidth, frameHeight, frameMax, margin, spacing);
 
-    <span class="c1">//  Now we can create some sprites using this sprite sheet, just like we would any other</span>
+    //  Now we can create some sprites using this sprite sheet, just like we would any other
 
-    <span class="nx">sprites</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">physicsGroup</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    sprites = game.add.physicsGroup(Phaser.Physics.ARCADE);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">sprites</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'digits'</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
+    for (var i = 0; i < 30; i++)
+    {
+        var s = sprites.create(game.world.randomX, game.world.randomY, 'digits', game.rnd.between(0, 10));
 
-        <span class="nx">s</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'spin'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]);</span>
+        s.animations.add('spin', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-        <span class="nx">s</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'spin'</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
+        s.play('spin', game.rnd.between(2, 6), true);
 
-        <span class="nx">s</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">));</span>
-        <span class="nx">s</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">s</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="p">}</span>
+        s.body.velocity.set(game.rnd.between(-200, 200), game.rnd.between(-200, 200));
+        s.body.collideWorldBounds = true;
+        s.body.bounce.set(1);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">sprites</span><span class="p">);</span>
+    game.physics.arcade.collide(sprites);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

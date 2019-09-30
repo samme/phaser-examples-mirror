@@ -55,28 +55,29 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/multitexture/sample.js" title="multitexture/sample.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/multitexture/sample.js" download="" title="Download: multitexture/sample.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL_MULTI</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.WEBGL_MULTI, 'phaser-example', { preload: preload, create: create});
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'treasure_trap'</span><span class="p">,</span> <span class="s1">'assets/sprites/treasure_trap.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bunny'</span><span class="p">,</span> <span class="s1">'assets/sprites/bunny.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cokecan'</span><span class="p">,</span> <span class="s1">'assets/sprites/cokecan.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ilkke'</span><span class="p">,</span> <span class="s1">'assets/sprites/ilkke.png'</span><span class="p">);</span>
+    game.load.image('treasure_trap', 'assets/sprites/treasure_trap.png');
+    game.load.image('bunny', 'assets/sprites/bunny.png');
+    game.load.image('cokecan', 'assets/sprites/cokecan.png');
+    game.load.image('ilkke', 'assets/sprites/ilkke.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">setTexturePriority</span><span class="p">([</span><span class="s1">'treasure_trap'</span><span class="p">,</span> <span class="s1">'bunny'</span><span class="p">,</span> <span class="s1">'cokecan'</span><span class="p">,</span> <span class="s1">'ilkke'</span><span class="p">]);</span>
+    game.renderer.setTexturePriority(['treasure_trap', 'bunny', 'cokecan', 'ilkke']);
 
-    <span class="kd">var</span> <span class="nx">spriteA</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'treasure_trap'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">spriteB</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">127</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'bunny'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">spriteC</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'cokecan'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">spriteD</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">580</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'ilkke'</span><span class="p">);</span>
+    var spriteA = game.add.sprite(0, 0, 'treasure_trap');
+    var spriteB = game.add.sprite(127, 0, 'bunny');
+    var spriteC = game.add.sprite(500, 0, 'cokecan');
+    var spriteD = game.add.sprite(580, 0, 'ilkke');
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

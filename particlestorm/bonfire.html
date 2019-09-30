@@ -55,108 +55,108 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particlestorm/bonfire.js" title="particlestorm/bonfire.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particlestorm/bonfire.js" download="" title="Download: particlestorm/bonfire.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Particle Storm Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/particlestorm
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">manager</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+var manager = null;
+var emitter = null;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">forceSingleUpdate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    game.forceSingleUpdate = true;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/particlestorm/logo-flat.png'</span><span class="p">);</span>
+    game.load.image('logo', 'assets/particlestorm/logo-flat.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/particlestorm/sprites/haze.png'</span><span class="p">);</span>
+    game.load.image('sky', 'assets/particlestorm/sprites/haze.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="s1">'assets/particlestorm/particles/'</span><span class="p">;</span>
+    game.load.path = 'assets/particlestorm/particles/';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">images</span><span class="p">([</span> <span class="s1">'fire1'</span><span class="p">,</span> <span class="s1">'fire2'</span><span class="p">,</span> <span class="s1">'fire3'</span><span class="p">,</span> <span class="s1">'smoke-puff'</span> <span class="p">]);</span>
+    game.load.images([ 'fire1', 'fire2', 'fire3', 'smoke-puff' ]);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
+    game.add.image(0, 0, 'sky');
 
-    <span class="nx">manager</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">ParticleStorm</span><span class="p">);</span>
+    manager = this.game.plugins.add(Phaser.ParticleStorm);
 
-    <span class="c1">//  This example illustrates:</span>
-    <span class="c1">//  </span>
-    <span class="c1">//  * Creating particles within an area</span>
-    <span class="c1">//  * Fire:</span>
-    <span class="c1">//      Select image randomly from a list</span>
-    <span class="c1">//      Variable lifespan range</span>
-    <span class="c1">//      Variable initial vx</span>
-    <span class="c1">//      vy that increases in magnitude constantly</span>
-    <span class="c1">//      scaleX and scaleY controlled by 'scale', shrink from initial value of 0.5 to final value of 50% (0.25)</span>
-    <span class="c1">//      alpha fade in, hold, then fade out again</span>
-    <span class="c1">//      Create child smoke particles during last 20% of it's life, </span>
-    <span class="c1">//        and prevent children from inheriting my vx, vy values</span>
-    <span class="c1">//  * Smoke:</span>
-    <span class="c1">//      vy accelerates up (delta) but diminishes over time (control scales from 100% to 50%) </span>
-    <span class="c1">//        giving characteristics of smoke</span>
-    <span class="c1">//      Scale increases (delta) initially, but diminishes to 25% in last 40% of it's life (control)</span>
-    <span class="c1">//      Rotation is constant (delta) within range (min -2, max +2)</span>
+    //  This example illustrates:
+    //  
+    //  * Creating particles within an area
+    //  * Fire:
+    //      Select image randomly from a list
+    //      Variable lifespan range
+    //      Variable initial vx
+    //      vy that increases in magnitude constantly
+    //      scaleX and scaleY controlled by 'scale', shrink from initial value of 0.5 to final value of 50% (0.25)
+    //      alpha fade in, hold, then fade out again
+    //      Create child smoke particles during last 20% of it's life, 
+    //        and prevent children from inheriting my vx, vy values
+    //  * Smoke:
+    //      vy accelerates up (delta) but diminishes over time (control scales from 100% to 50%) 
+    //        giving characteristics of smoke
+    //      Scale increases (delta) initially, but diminishes to 25% in last 40% of it's life (control)
+    //      Rotation is constant (delta) within range (min -2, max +2)
 
-    <span class="kd">var</span> <span class="nx">fire</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">image</span><span class="p">:</span> <span class="p">[</span> <span class="s1">'fire1'</span><span class="p">,</span> <span class="s1">'fire2'</span><span class="p">,</span> <span class="s1">'fire3'</span> <span class="p">],</span>
-        <span class="na">blendMode</span><span class="p">:</span> <span class="s1">'HARD_LIGHT'</span><span class="p">,</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">800</span> <span class="p">},</span>
-        <span class="na">vx</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span>
-        <span class="na">vy</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="na">delta</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1</span> <span class="p">},</span>
-        <span class="na">scale</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="na">control</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">alpha</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">bringToFront</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-        <span class="na">emit</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">name</span><span class="p">:</span> <span class="s1">'smoke'</span><span class="p">,</span>
-            <span class="na">value</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">]</span>
-        <span class="p">}</span>
-    <span class="p">};</span>
+    var fire = {
+        image: [ 'fire1', 'fire2', 'fire3' ],
+        blendMode: 'HARD_LIGHT',
+        lifespan: { min: 500, max: 800 },
+        vx: { min: -1, max: 1 },
+        vy: { value: -2, delta: -0.1 },
+        scale: { value: 0.8, control : [ { x: 0, y: 1 }, { x: 1, y: 0.5 } ] },
+        alpha: { value: 1, control: [ { x: 0, y: 0 }, { x: 0.5, y: 1 }, { x: 0.6, y: 1 }, { x: 1, y: 0 } ] },
+        bringToFront: true,
+        emit: {
+            name: 'smoke',
+            value: 4,
+            control: [ { x: 0, y: 0 }, { x: 0.8, y: 0 }, { x: 1, y: 1 } ]
+        }
+    };
 
-    <span class="kd">var</span> <span class="nx">smoke</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">image</span><span class="p">:</span> <span class="s1">'smoke-puff'</span><span class="p">,</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">1000</span> <span class="p">},</span>
-        <span class="na">vx</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="na">vy</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span> <span class="p">},</span> <span class="na">delta</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">scale</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mf">0.6</span> <span class="p">},</span> <span class="na">delta</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.25</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">alpha</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="na">control</span><span class="p">:[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">rotation</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">delta</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">},</span>
-        <span class="na">sendToBack</span><span class="p">:</span> <span class="kc">true</span>
-    <span class="p">};</span>
+    var smoke = {
+        image: 'smoke-puff',
+        lifespan: { min: 700, max: 1000 },
+        vx: 0,
+        vy: { value: { min: -3, max: -2 }, delta: -0.05, control: [ { x: 0, y: 1 }, { x: 1, y: 0.5 } ] },
+        scale: { value: { min: 0.4, max: 0.6 }, delta: 0.005, control: [ { x: 0, y: 1 }, { x: 0.6, y: 1 }, { x: 1, y: 0.25 } ] },
+        alpha: { value: 0.3, control:[ { x: 0, y: 0 }, { x: 0.3, y: 1 }, { x: 1, y: 0 } ] },
+        rotation: { value: 0, delta: { min: -2, max: 2 } },
+        sendToBack: true
+    };
 
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'fire'</span><span class="p">,</span> <span class="nx">fire</span><span class="p">);</span>
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'smoke'</span><span class="p">,</span> <span class="nx">smoke</span><span class="p">);</span>
+    manager.addData('fire', fire);
+    manager.addData('smoke', smoke);
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createEmitter</span><span class="p">();</span>
+    emitter = manager.createEmitter();
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    emitter.addToWorld();
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'fire'</span><span class="p">,</span> <span class="p">[</span><span class="mi">380</span><span class="p">,</span> <span class="mi">420</span><span class="p">],</span> <span class="mi">400</span><span class="p">,</span> <span class="p">{</span> <span class="na">repeat</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="na">frequency</span><span class="p">:</span> <span class="mi">30</span> <span class="p">});</span>
+    emitter.emit('fire', [380, 420], 400, { repeat: -1, frequency: 30 });
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">487</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
+    game.add.image(432, 487, 'logo');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">522</span><span class="p">);</span>
+    emitter.debug(432, 522);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

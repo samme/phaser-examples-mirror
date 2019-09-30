@@ -55,55 +55,56 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/add%20several%20sprites.js" title="sprites/add several sprites.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/add%20several%20sprites.js" download="" title="Download: sprites/add several sprites.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var timer = 0;
+var total = 0;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  37x45 is the size of each frame</span>
-    <span class="c1">//  There are 18 frames in the PNG - you can leave this value blank if the frames fill up the entire PNG, but in this case there are some</span>
-    <span class="c1">//  blank frames at the end, so we tell the loader how many to load</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
+    //  37x45 is the size of each frame
+    //  There are 18 frames in the PNG - you can leave this value blank if the frames fill up the entire PNG, but in this case there are some
+    //  blank frames at the end, so we tell the loader how many to load
+    game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">releaseMummy</span><span class="p">();</span>
+    releaseMummy();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">releaseMummy</span><span class="p">()</span> <span class="p">{</span>
+function releaseMummy() {
 
-    <span class="kd">var</span> <span class="nx">mummy</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">800</span><span class="p">),</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'mummy'</span><span class="p">);</span>
+    var mummy = game.add.sprite(-(Math.random() * 800), game.world.randomY, 'mummy');
 
-    <span class="nx">mummy</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+    mummy.scale.setTo(2, 2);
 
-    <span class="c1">//  If you prefer to work in degrees rather than radians then you can use Phaser.Sprite.angle</span>
-    <span class="c1">//  otherwise use Phaser.Sprite.rotation</span>
-    <span class="nx">mummy</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">angle</span><span class="p">();</span>
+    //  If you prefer to work in degrees rather than radians then you can use Phaser.Sprite.angle
+    //  otherwise use Phaser.Sprite.rotation
+    mummy.angle = game.rnd.angle();
 
-    <span class="nx">mummy</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
-    <span class="nx">mummy</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    mummy.animations.add('walk');
+    mummy.animations.play('walk', 20, true);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">mummy</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">x</span><span class="p">:</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1600</span> <span class="o">+</span> <span class="nx">mummy</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="p">},</span> <span class="mi">20000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(mummy).to({ x: game.width + (1600 + mummy.x) }, 20000, Phaser.Easing.Linear.None, true);
 
-    <span class="nx">total</span><span class="o">++</span><span class="p">;</span>
-    <span class="nx">timer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="mi">100</span><span class="p">;</span>
+    total++;
+    timer = game.time.now + 100;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">total</span> <span class="o">&lt;</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="nx">timer</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">releaseMummy</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (total < 200 && game.time.now > timer)
+    {
+        releaseMummy();
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

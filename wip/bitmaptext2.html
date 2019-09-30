@@ -55,53 +55,54 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/bitmaptext2.js" title="wip/bitmaptext2.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/bitmaptext2.js" download="" title="Download: wip/bitmaptext2.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'goldFont'</span><span class="p">,</span> <span class="s1">'assets/fonts/retroFonts/gold_font.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bluePink'</span><span class="p">,</span> <span class="s1">'assets/fonts/retroFonts/bluepink_font.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'forgotten'</span><span class="p">,</span> <span class="s1">'assets/pics/forgotten_worlds.png'</span><span class="p">);</span>
+    game.load.image('goldFont', 'assets/fonts/retroFonts/gold_font.png');
+    game.load.image('bluePink', 'assets/fonts/retroFonts/bluepink_font.png');
+    game.load.image('forgotten', 'assets/pics/forgotten_worlds.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">font1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">font2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">image1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">image2</span><span class="p">;</span>
+var font1;
+var font2;
+var image1;
+var image2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">font1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">retroFont</span><span class="p">(</span><span class="s1">'goldFont'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s2">"!     :() ,?."</span> <span class="o">+</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RetroFont</span><span class="p">.</span><span class="nx">TEXT_SET10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">font1</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"phaser brings you retro style bitmap fonts"</span><span class="p">;</span>
+    font1 = game.add.retroFont('goldFont', 16, 16, "!     :() ,?." + Phaser.RetroFont.TEXT_SET10, 20, 0, 0);
+    font1.text = "phaser brings you retro style bitmap fonts";
 
-    <span class="nx">image1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="nx">font1</span><span class="p">);</span>
-    <span class="nx">image1</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    image1 = game.add.image(game.world.centerX, 48, font1);
+    image1.anchor.set(0.5);
 
-    <span class="nx">font2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">retroFont</span><span class="p">(</span><span class="s1">'bluePink'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RetroFont</span><span class="p">.</span><span class="nx">TEXT_SET2</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-    <span class="nx">font2</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s2">"phaser 2\nin the house"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RetroFont</span><span class="p">.</span><span class="nx">ALIGN_CENTER</span><span class="p">);</span>
+    font2 = game.add.retroFont('bluePink', 32, 32, Phaser.RetroFont.TEXT_SET2, 10);
+    font2.setText("phaser 2\nin the house", true, 0, 8, Phaser.RetroFont.ALIGN_CENTER);
 
-    <span class="nx">image2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="nx">font2</span><span class="p">);</span>
-    <span class="nx">image2</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    image2 = game.add.image(game.world.centerX, 220, font2);
+    image2.anchor.set(0.5);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">274</span><span class="p">,</span> <span class="s1">'forgotten'</span><span class="p">);</span>
+    game.add.image(0, game.height - 274, 'forgotten');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">loop</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">change</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.time.events.loop(Phaser.Timer.SECOND * 2, change, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">change</span><span class="p">()</span> <span class="p">{</span>
+function change() {
 
-    <span class="nx">image2</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mh">0xFFFFFF</span><span class="p">;</span>
+    image2.tint = Math.random() * 0xFFFFFF;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="nx">image2</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">physicsElapsed</span><span class="p">);</span>
+	image2.rotation += (2 * game.time.physicsElapsed);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

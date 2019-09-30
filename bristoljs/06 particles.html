@@ -55,59 +55,59 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bristoljs/06%20particles.js" title="bristoljs/06 particles.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bristoljs/06%20particles.js" download="" title="Download: bristoljs/06 particles.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">manager</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">circle</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+var manager = null;
+var emitter = null;
+var circle = null;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="s1">'assets/bristoljs/'</span><span class="p">;</span>
+    game.load.path = 'assets/bristoljs/';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">images</span><span class="p">([</span><span class="s1">'red'</span><span class="p">,</span> <span class="s1">'blue'</span><span class="p">,</span> <span class="s1">'yellow'</span><span class="p">,</span> <span class="s1">'white'</span><span class="p">]);</span>
+    game.load.images(['red', 'blue', 'yellow', 'white']);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">manager</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">ParticleStorm</span><span class="p">);</span>
+    manager = this.game.plugins.add(Phaser.ParticleStorm);
 
-    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">image</span><span class="p">:</span> <span class="p">[</span><span class="s1">'red'</span><span class="p">,</span> <span class="s1">'blue'</span><span class="p">,</span> <span class="s1">'yellow'</span><span class="p">,</span> <span class="s1">'white'</span><span class="p">],</span>
-        <span class="na">vy</span><span class="p">:</span> <span class="p">{</span> <span class="na">min</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">max</span><span class="p">:</span> <span class="mi">2</span> <span class="p">},</span>
-        <span class="na">blendMode</span><span class="p">:</span> <span class="s1">'ADD'</span><span class="p">,</span>
-        <span class="na">scale</span><span class="p">:</span> <span class="p">{</span> <span class="na">initial</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">]</span> <span class="p">}</span>
-    <span class="p">};</span>
+    var data = {
+        image: ['red', 'blue', 'yellow', 'white'],
+        vy: { min: 1, max: 2 },
+        blendMode: 'ADD',
+        scale: { initial: 0, value: 0.7, control: [ { x: 0, y: 1 }, { x: 1, y: 0 } ] }
+    };
 
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    manager.addData('basic', data);
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createEmitter</span><span class="p">();</span>
+    emitter = manager.createEmitter();
 
-    <span class="c1">//  1</span>
-    <span class="c1">// var well1 = emitter.createGravityWell(200, 100, -0.5);</span>
-    <span class="c1">// var well2 = emitter.createGravityWell(300, 300, 6, 200);</span>
-    <span class="c1">// var well2 = emitter.createGravityWell(600, 400, 3, 200);</span>
+    //  1
+    // var well1 = emitter.createGravityWell(200, 100, -0.5);
+    // var well2 = emitter.createGravityWell(300, 300, 6, 200);
+    // var well2 = emitter.createGravityWell(600, 400, 3, 200);
 
-    <span class="nx">circle</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createCircleZone</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+    circle = manager.createCircleZone(32);
 
-    <span class="nx">circle</span><span class="p">.</span><span class="nx">shape</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
-    <span class="nx">circle</span><span class="p">.</span><span class="nx">shape</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+    circle.shape.x = 400;
+    circle.shape.y = 100;
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    emitter.addToWorld();
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">{</span> <span class="na">zone</span><span class="p">:</span> <span class="nx">circle</span><span class="p">,</span> <span class="na">total</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="na">repeat</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="na">frequency</span><span class="p">:</span> <span class="mi">20</span> <span class="p">});</span>
+    emitter.emit('basic', 0, 0, { zone: circle, total: 6, repeat: -1, frequency: 20 });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">//  2</span>
-    <span class="c1">// circle.shape.x = game.input.x;</span>
-    <span class="c1">// circle.shape.y = game.input.y;</span>
+    //  2
+    // circle.shape.x = game.input.x;
+    // circle.shape.y = game.input.y;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

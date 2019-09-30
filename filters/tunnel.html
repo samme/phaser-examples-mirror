@@ -55,46 +55,47 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/filters/tunnel.js" title="filters/tunnel.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/filters/tunnel.js" download="" title="Download: filters/tunnel.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.WEBGL, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">background</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
+var background;
+var filter;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'texture'</span><span class="p">,</span> <span class="s1">'assets/textures/ooze.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">script</span><span class="p">(</span><span class="s1">'filter'</span><span class="p">,</span> <span class="s1">'https://cdn.rawgit.com/photonstorm/phaser-ce/master/filters/Tunnel.js'</span><span class="p">);</span>
+    game.load.image('phaser', 'assets/sprites/phaser.png');
+    game.load.image('texture', 'assets/textures/ooze.png');
+    game.load.script('filter', 'https://cdn.rawgit.com/photonstorm/phaser-ce/master/filters/Tunnel.js');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">background</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'texture'</span><span class="p">);</span>
-	<span class="nx">background</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-	<span class="nx">background</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+	background = game.add.sprite(0, 0, 'texture');
+	background.width = 800;
+	background.height = 600;
 
-	<span class="nx">filter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="s1">'Tunnel'</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">background</span><span class="p">.</span><span class="nx">texture</span><span class="p">);</span>
+	filter = game.add.filter('Tunnel', 800, 600, background.texture);
 
-	<span class="c1">//	You have the following value to play with (default value is 2.0):</span>
-	<span class="nx">filter</span><span class="p">.</span><span class="nx">origin</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+	//	You have the following value to play with (default value is 2.0):
+	filter.origin = 1.0;
 
-	<span class="nx">background</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span><span class="nx">filter</span><span class="p">];</span>
+	background.filters = [filter];
 
-	<span class="kd">var</span> <span class="nx">logo</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
-	<span class="nx">logo</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+	var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'phaser');
+	logo.anchor.setTo(0.5, 0.5);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+	filter.update();
 
-	<span class="c1">//	Uncomment for coolness :)</span>
-	<span class="c1">// filter.origin = filter.origin + 0.001;</span>
+	//	Uncomment for coolness :)
+	// filter.origin = filter.origin + 0.001;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

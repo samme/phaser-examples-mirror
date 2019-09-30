@@ -55,79 +55,79 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/box2d/fixture%20types.js" title="box2d/fixture types.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/box2d/fixture%20types.js" download="" title="Download: box2d/fixture types.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Chris Campbell <iforce2d@gmail.com>
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Box2D Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/box2d
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">bodies</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">codes</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">codeCaption</span><span class="p">;</span>
+var bodies = [];
+var codes = [];
+var codeCaption;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#124184';
 
-    <span class="c1">// Enable Box2D physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">debugDraw</span><span class="p">.</span><span class="nx">centerOfMass</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    // Enable Box2D physics
+    game.physics.startSystem(Phaser.Physics.BOX2D);
+    game.physics.box2d.debugDraw.centerOfMass = true;
         
-    <span class="c1">// Make some bodies (no fixtures to start with)</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">7</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">bodies</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">100</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">);</span>
-    <span class="p">}</span>
+    // Make some bodies (no fixtures to start with)
+    for (var i = 0; i < 7; i++)
+    {
+        bodies.push( new Phaser.Physics.Box2D.Body(this.game, null, 100 + i * 100, 300, 0) );
+    }
     
-    <span class="c1">// Add various fixtures</span>
-    <span class="nx">bodies</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">40</span><span class="p">);</span>
-    <span class="nx">bodies</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">bodies</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-    <span class="nx">bodies</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>     
-    <span class="nx">bodies</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">setEdge</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">);</span>    
-    <span class="nx">bodies</span><span class="p">[</span><span class="mi">5</span><span class="p">].</span><span class="nx">setChain</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]);</span>    
-    <span class="nx">bodies</span><span class="p">[</span><span class="mi">6</span><span class="p">].</span><span class="nx">setPolygon</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]);</span>
+    // Add various fixtures
+    bodies[0].setCircle(40);
+    bodies[1].setRectangle(50, 100);
+    bodies[2].setRectangle(50, 100, 0, 0, 10);
+    bodies[3].setRectangle(50, 100, 0, 25, 10);     
+    bodies[4].setEdge(-10, -20, 20, 60);    
+    bodies[5].setChain([-10, -20, 20, 60, 35, -30, -20, -50, -40, 20, -10, 20]);    
+    bodies[6].setPolygon([-10, -20, 20, 60, 35, -30, -20, -50, -40, 20, -10, 20]);
     
-    <span class="c1">// Make it easier for user to match code with result</span>
-    <span class="nx">codes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"setCircle(40)"</span><span class="p">;</span>
-    <span class="nx">codes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"setRectangle(50, 100)"</span><span class="p">;</span>
-    <span class="nx">codes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"setRectangle(50, 100, 0, 0, 10)"</span><span class="p">;</span>
-    <span class="nx">codes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"setRectangle(50, 100, 0, 25, 10)"</span><span class="p">;</span>
-    <span class="nx">codes</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"setEdge(-10, -20, 20, 60)"</span><span class="p">;</span>
-    <span class="nx">codes</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"setChain( [-10, -20, 20, 60, 35, -30, -20, -50, -40, 20, -10, 20] )"</span><span class="p">;</span>
-    <span class="nx">codes</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"setPolygon( [-10, -20, 20, 60, 35, -30, -20, -50, -40, 20, -10, 20] )"</span><span class="p">;</span>
+    // Make it easier for user to match code with result
+    codes[0] = "setCircle(40)";
+    codes[1] = "setRectangle(50, 100)";
+    codes[2] = "setRectangle(50, 100, 0, 0, 10)";
+    codes[3] = "setRectangle(50, 100, 0, 25, 10)";
+    codes[4] = "setEdge(-10, -20, 20, 60)";
+    codes[5] = "setChain( [-10, -20, 20, 60, 35, -30, -20, -50, -40, 20, -10, 20] )";
+    codes[6] = "setPolygon( [-10, -20, 20, 60, 35, -30, -20, -50, -40, 20, -10, 20] )";
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'Manual fixture creation. Move the mouse near each type to see the code used to create it.'</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
-    <span class="nx">codeCaption</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="na">font</span><span class="p">:</span> <span class="s1">'14pt Arial'</span> <span class="p">});</span>
+    game.add.text(5, 5, 'Manual fixture creation. Move the mouse near each type to see the code used to create it.', { fill: '#ffffff', font: '14pt Arial' });
+    codeCaption = game.add.text(5, 25, '', { fill: '#ffffff', font: '14pt Arial' });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">box2dWorld</span><span class="p">();</span>
+    game.debug.box2dWorld();
     
-    <span class="nx">codeCaption</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+    codeCaption.text = "";
     
-    <span class="c1">// Check if the mouse is near one of the bodies and if so, set the code text</span>
-    <span class="c1">// We can't use Body.containsPoint because some of the fixtures are edge and</span>
-    <span class="c1">// chain types which have no area.</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">bodies</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">bodies</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">x</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="mi">50</span> <span class="o">&amp;&amp;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">bodies</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="mi">50</span> <span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">codeCaption</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">codes</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">box2dBody</span><span class="p">(</span><span class="nx">bodies</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="s1">'rgb(255,255,0)'</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    // Check if the mouse is near one of the bodies and if so, set the code text
+    // We can't use Body.containsPoint because some of the fixtures are edge and
+    // chain types which have no area.
+    for (var i = 0; i < bodies.length; i++)
+    {
+        if (Math.abs(game.input.mousePointer.x - bodies[i].x ) < 50 && Math.abs(game.input.mousePointer.y - bodies[i].y ) < 50 )
+        {
+            codeCaption.text = codes[i];
+            game.debug.box2dBody(bodies[i], 'rgb(255,255,0)');
+        }
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

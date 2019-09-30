@@ -55,69 +55,70 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/kern%20of%20duty.js" title="text/kern of duty.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/kern%20of%20duty.js" download="" title="Download: text/kern of duty.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 480, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">" "</span><span class="p">,</span>
-    <span class="s2">"photon storm presents"</span><span class="p">,</span>
-    <span class="s2">"a phaser production"</span><span class="p">,</span>
-    <span class="s2">" "</span><span class="p">,</span>
-    <span class="s2">"Kern of Duty"</span><span class="p">,</span>
-    <span class="s2">" "</span><span class="p">,</span>
-    <span class="s2">"directed by rich davey"</span><span class="p">,</span>
-    <span class="s2">"rendering by mat groves"</span><span class="p">,</span>
-    <span class="s2">"    "</span><span class="p">,</span>
-    <span class="s2">"03:45, November 4th, 2014"</span><span class="p">,</span>
-    <span class="s2">"somewhere in the north pacific"</span><span class="p">,</span>
-    <span class="s2">"mission control bravo ..."</span><span class="p">,</span>
-<span class="p">];</span>
+var content = [
+    " ",
+    "photon storm presents",
+    "a phaser production",
+    " ",
+    "Kern of Duty",
+    " ",
+    "directed by rich davey",
+    "rendering by mat groves",
+    "    ",
+    "03:45, November 4th, 2014",
+    "somewhere in the north pacific",
+    "mission control bravo ...",
+];
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+var text;
+var index = 0;
+var line = '';
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cod'</span><span class="p">,</span> <span class="s1">'assets/pics/cod.jpg'</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.load.image('cod', 'assets/pics/cod.jpg');
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'cod'</span><span class="p">);</span>
+    game.add.sprite(0, 0, 'cod');
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"30pt Courier"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#19cb65"</span><span class="p">,</span> <span class="na">stroke</span><span class="p">:</span> <span class="s2">"#119f4e"</span><span class="p">,</span> <span class="na">strokeThickness</span><span class="p">:</span> <span class="mi">2</span> <span class="p">});</span>
+    text = game.add.text(32, 380, '', { font: "30pt Courier", fill: "#19cb65", stroke: "#119f4e", strokeThickness: 2 });
 
-    <span class="nx">nextLine</span><span class="p">();</span>
+    nextLine();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">updateLine</span><span class="p">()</span> <span class="p">{</span>
+function updateLine() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nx">content</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">length</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">line</span> <span class="o">=</span> <span class="nx">content</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">line</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-        <span class="c1">// text.text = line;</span>
-        <span class="nx">text</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="c1">//  Wait 2 seconds then start a new line</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">nextLine</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (line.length < content[index].length)
+    {
+        line = content[index].substr(0, line.length + 1);
+        // text.text = line;
+        text.setText(line);
+    }
+    else
+    {
+        //  Wait 2 seconds then start a new line
+        game.time.events.add(Phaser.Timer.SECOND * 2, nextLine, this);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">nextLine</span><span class="p">()</span> <span class="p">{</span>
+function nextLine() {
 
-    <span class="nx">index</span><span class="o">++</span><span class="p">;</span>
+    index++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">content</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">line</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="nx">content</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">updateLine</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (index < content.length)
+    {
+        line = '';
+        game.time.events.repeat(80, content[index].length + 1, updateLine, this);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

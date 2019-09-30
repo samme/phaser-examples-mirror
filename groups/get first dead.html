@@ -55,55 +55,56 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/get%20first%20dead.js" title="groups/get first dead.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/get%20first%20dead.js" download="" title="Download: groups/get first dead.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'veg'</span><span class="p">,</span> <span class="s1">'assets/sprites/fruitnveg32wh37.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.load.spritesheet('veg', 'assets/sprites/fruitnveg32wh37.png', 32, 32);
     
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">veg</span><span class="p">;</span>
+var veg;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Create a group</span>
-    <span class="nx">veg</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    //  Create a group
+    veg = game.add.group();
 
-    <span class="c1">//  Add 20 sprites to it - the 'false' parameter sets them all to dead</span>
-    <span class="nx">veg</span><span class="p">.</span><span class="nx">createMultiple</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s1">'veg'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    //  Add 20 sprites to it - the 'false' parameter sets them all to dead
+    veg.createMultiple(20, 'veg', 0, false);
 
-    <span class="c1">//  Set-up a simple repeating timer</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="nx">resurrect</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Set-up a simple repeating timer
+    game.time.events.repeat(Phaser.Timer.SECOND, 20, resurrect, this);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">resurrect</span><span class="p">()</span> <span class="p">{</span>
+function resurrect() {
 
-    <span class="c1">//  Get a dead item</span>
-    <span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">veg</span><span class="p">.</span><span class="nx">getFirstDead</span><span class="p">();</span>
+    //  Get a dead item
+    var item = veg.getFirstDead();
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  And bring it back to life</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">);</span>
+    if (item)
+    {
+        //  And bring it back to life
+        item.reset(game.world.randomX, game.world.randomY);
 
-        <span class="c1">//  This just changes its frame</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">36</span><span class="p">);</span>
-    <span class="p">}</span>
+        //  This just changes its frame
+        item.frame = game.rnd.integerInRange(0, 36);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function update() {
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'One item will be resurrected every second'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Living: '</span> <span class="o">+</span> <span class="nx">veg</span><span class="p">.</span><span class="nx">countLiving</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'   Dead: '</span> <span class="o">+</span> <span class="nx">veg</span><span class="p">.</span><span class="nx">countDead</span><span class="p">(),</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text('One item will be resurrected every second', 32, 32);
+    game.debug.text('Living: ' + veg.countLiving() + '   Dead: ' + veg.countDead(), 32, 64);
     
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

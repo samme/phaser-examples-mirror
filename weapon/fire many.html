@@ -55,67 +55,68 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/weapon/fire%20many.js" title="weapon/fire many.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/weapon/fire%20many.js" download="" title="Download: weapon/fire many.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Bullet Sprites from http://opengameart.org/content/bullet-collection-1-m484</span>
+    //  Bullet Sprites from http://opengameart.org/content/bullet-collection-1-m484
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bullet'</span><span class="p">,</span> <span class="s1">'assets/bullets/bullet22.png'</span><span class="p">);</span>
+    game.load.image('bullet', 'assets/bullets/bullet22.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">weapon</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bulletPositions</span><span class="p">;</span>
+var weapon;
+var bulletPositions;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Creates the bullets, using the 'bullet' graphic</span>
-    <span class="nx">weapon</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">weapon</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span> <span class="s1">'bullet'</span><span class="p">);</span>
+    //  Creates the bullets, using the 'bullet' graphic
+    weapon = game.add.weapon(6*8, 'bullet');
 
-    <span class="c1">//  The bullet will be automatically killed when it leaves the world bounds</span>
-    <span class="nx">weapon</span><span class="p">.</span><span class="nx">bulletKillType</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Weapon</span><span class="p">.</span><span class="nx">KILL_LIFESPAN</span><span class="p">;</span>
+    //  The bullet will be automatically killed when it leaves the world bounds
+    weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
 
-    <span class="c1">//  Bullets live for 2 seconds</span>
-    <span class="nx">weapon</span><span class="p">.</span><span class="nx">bulletLifespan</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>
+    //  Bullets live for 2 seconds
+    weapon.bulletLifespan = 2000;
 
-    <span class="c1">//  Because our bullet is drawn facing up, we need to offset its rotation:</span>
-    <span class="nx">weapon</span><span class="p">.</span><span class="nx">bulletAngleOffset</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
+    //  Because our bullet is drawn facing up, we need to offset its rotation:
+    weapon.bulletAngleOffset = 90;
 
-    <span class="c1">//  The speed at which the bullet is fired</span>
-    <span class="nx">weapon</span><span class="p">.</span><span class="nx">bulletSpeed</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+    //  The speed at which the bullet is fired
+    weapon.bulletSpeed = 400;
 
-    <span class="c1">//  One 'set' of bullets, every second</span>
-    <span class="nx">weapon</span><span class="p">.</span><span class="nx">fireRate</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span>
+    //  One 'set' of bullets, every second
+    weapon.fireRate = 250;
 
-    <span class="nx">bulletPositions</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">600</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">550</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">500</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">450</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">500</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">550</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">600</span> <span class="p">}</span>
-    <span class="p">];</span>
+    bulletPositions = [
+        { x: 100, y: 600 },
+        { x: 200, y: 550 },
+        { x: 300, y: 500 },
+        { x: 400, y: 450 },
+        { x: 500, y: 500 },
+        { x: 600, y: 550 },
+        { x: 700, y: 600 }
+    ];
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">fire</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(fire, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">fire</span> <span class="p">()</span> <span class="p">{</span>
+function fire () {
 
-    <span class="nx">weapon</span><span class="p">.</span><span class="nx">fireMany</span><span class="p">(</span><span class="nx">bulletPositions</span><span class="p">);</span>
+    weapon.fireMany(bulletPositions);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span> <span class="p">()</span> <span class="p">{</span>
+function render () {
 
-    <span class="nx">weapon</span><span class="p">.</span><span class="nx">debug</span><span class="p">();</span>
+    weapon.debug();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Click to fire'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text('Click to fire', 600, 32);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

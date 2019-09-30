@@ -55,55 +55,55 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/001%20crop.js" title="wip/001 crop.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/001%20crop.js" download="" title="Download: wip/001 crop.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(400, 400, Phaser.AUTO, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">text2</span><span class="p">,</span> <span class="nx">text3</span><span class="p">,</span> <span class="nx">text4</span><span class="p">,</span> <span class="nx">cropRect</span><span class="p">;</span>
+var text, text2, text3, text4, cropRect;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">cropRect</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
+    cropRect = new Phaser.Rectangle(0, 0, 50, 50);
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">CanvasPool</span><span class="p">.</span><span class="nx">getTotal</span><span class="p">());</span>
+    console.log('a', PIXI.CanvasPool.getTotal());
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Aaaa"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ff0044"</span> <span class="p">});</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">crop</span><span class="p">(</span><span class="nx">cropRect</span><span class="p">);</span>
+    text = game.add.text(0, 0, "Aaaa", { font: "32px Arial", fill: "#ff0044" });
+    text.crop(cropRect);
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">CanvasPool</span><span class="p">.</span><span class="nx">getTotal</span><span class="p">());</span>
+    console.log('b', PIXI.CanvasPool.getTotal());
 
-    <span class="nx">text2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"Destroy Me"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ff0044"</span> <span class="p">});</span>
+    text2 = game.add.text(0, 50, "Destroy Me", { font: "32px Arial", fill: "#ff0044" });
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'b2'</span><span class="p">,</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">CanvasPool</span><span class="p">.</span><span class="nx">getTotal</span><span class="p">());</span>
+    console.log('b2', PIXI.CanvasPool.getTotal());
 
-    <span class="nx">text2</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+    text2.destroy();
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">CanvasPool</span><span class="p">.</span><span class="nx">getTotal</span><span class="p">());</span>
+    console.log('c', PIXI.CanvasPool.getTotal());
 
-    <span class="c1">// text3 = game.add.text(0, 100, "Cccc", { font: "32px Arial", fill: "#ff0044" });</span>
-    <span class="c1">// text3.crop(cropRect);</span>
+    // text3 = game.add.text(0, 100, "Cccc", { font: "32px Arial", fill: "#ff0044" });
+    // text3.crop(cropRect);
 
-    <span class="nx">text3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">text3</span><span class="p">.</span><span class="nx">fill</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">);</span>
-    <span class="nx">text3</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
-
-
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">CanvasPool</span><span class="p">.</span><span class="nx">getTotal</span><span class="p">());</span>
-
-    <span class="nx">text4</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="s2">"Ddddd"</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ff0044"</span> <span class="p">});</span>
-    <span class="nx">text4</span><span class="p">.</span><span class="nx">crop</span><span class="p">(</span><span class="nx">cropRect</span><span class="p">);</span>
-
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'e'</span><span class="p">,</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">CanvasPool</span><span class="p">.</span><span class="nx">getTotal</span><span class="p">());</span>
-
-<span class="p">}</span>
+    text3 = game.add.bitmapData(100, 100);
+    text3.fill(200,100,200);
+    text3.addToWorld();
 
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+    console.log('d', PIXI.CanvasPool.getTotal());
 
-    <span class="c1">// text.updateCrop();</span>
-    <span class="c1">// text3.updateCrop();</span>
-    <span class="c1">// text4.updateCrop();</span>
+    text4 = game.add.text(0, 150, "Ddddd", { font: "32px Arial", fill: "#ff0044" });
+    text4.crop(cropRect);
 
-<span class="p">}</span></code></pre>
+    console.log('e', PIXI.CanvasPool.getTotal());
+
+}
+
+
+function update() {
+
+    // text.updateCrop();
+    // text3.updateCrop();
+    // text4.updateCrop();
+
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

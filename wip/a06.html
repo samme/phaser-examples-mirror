@@ -55,65 +55,66 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/a06.js" title="wip/a06.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/a06.js" download="" title="Download: wip/a06.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.json'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari130xe.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'assets/pics/giant.png'</span><span class="p">);</span>
+    game.load.atlas('atlas', 'assets/sprites/seacreatures_json.png', 'assets/sprites/seacreatures_json.json');
+    game.load.image('test', 'assets/sprites/atari130xe.png');
+    game.load.image('pic', 'assets/pics/giant.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">r</span><span class="p">;</span>
+var sprite;
+var r;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">r</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    r = new Phaser.Rectangle(0, 0, 320, 10);
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'greenJellyfish0000'</span><span class="p">);</span>
-    <span class="c1">// sprite.animations.add('swim', Phaser.Animation.generateFrameNames('greenJellyfish', 0, 38, '', 4), 20, true);</span>
-    <span class="c1">// sprite.animations.play('swim');</span>
+    sprite = game.add.image(400, 200, 'atlas', 'greenJellyfish0000');
+    // sprite.animations.add('swim', Phaser.Animation.generateFrameNames('greenJellyfish', 0, 38, '', 4), 20, true);
+    // sprite.animations.play('swim');
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">crop</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
+    sprite.crop(r);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">updateCrop</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(updateCrop, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">updateCrop</span><span class="p">()</span> <span class="p">{</span>
+function updateCrop() {
 
-    <span class="c1">// r.width += 4;</span>
+    // r.width += 4;
 
-    <span class="nx">r</span><span class="p">.</span><span class="nx">height</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+    r.height += 4;
 
-    <span class="c1">// r.y += 2;</span>
+    // r.y += 2;
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">updateCrop</span><span class="p">();</span>
+    sprite.updateCrop();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">// sprite.rotation += 0.01;</span>
+    // sprite.rotation += 0.01;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">// game.debug.geom(atari.getBounds());</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteInfo</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    // game.debug.geom(atari.getBounds());
+    game.debug.spriteInfo(sprite, 32, 32);
 
-    <span class="c1">// game.debug.text(atari.texture.frame.x.toString(), 32, 64);</span>
-    <span class="c1">// game.debug.text(atari._cache[9].toString(), 32, 96);</span>
+    // game.debug.text(atari.texture.frame.x.toString(), 32, 64);
+    // game.debug.text(atari._cache[9].toString(), 32, 96);
 
-    <span class="c1">// game.debug.text(sprite.texture.frame.x.toString(), 32, 64);</span>
-    <span class="c1">// game.debug.text(sprite._cache[9].toString(), 32, 96);</span>
+    // game.debug.text(sprite.texture.frame.x.toString(), 32, 64);
+    // game.debug.text(sprite._cache[9].toString(), 32, 96);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

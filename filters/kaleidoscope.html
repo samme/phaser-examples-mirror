@@ -55,77 +55,78 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/filters/kaleidoscope.js" title="filters/kaleidoscope.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/filters/kaleidoscope.js" download="" title="Download: filters/kaleidoscope.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var filter;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  From http://glslsandbox.com/e#18958.2</span>
+    //  From http://glslsandbox.com/e#18958.2
 
-    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+    var fragmentSrc = [
+        "precision mediump float;",
 
-        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
-        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
-        <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+        "uniform float     time;",
+        "uniform vec2      resolution;",
+        "uniform vec2      mouse;",
 
-        <span class="s2">"//MrOMGWTF"</span><span class="p">,</span>
+        "//MrOMGWTF",
 
-        <span class="s2">"float line(vec2 a, float rot, float height, float width, vec2 p)"</span><span class="p">,</span>
-        <span class="s2">"{"</span><span class="p">,</span>
-            <span class="s2">"p = vec2(p.x * cos(rot) + p.y * -sin(rot), p.x * sin(rot) + p.y * cos(rot));"</span><span class="p">,</span>
-            <span class="s2">"vec2 pos = p-a;"</span><span class="p">,</span>
-            <span class="s2">"float radius = width * 0.5 * (2.5+sin(atan(pos.y, pos.x)*5.0));"</span><span class="p">,</span>
-            <span class="s2">"float v = max(0.0, min(1.0, (radius-length(p-a))*40.0));"</span><span class="p">,</span>
-            <span class="s2">"return v;"</span><span class="p">,</span>
-        <span class="s2">"}"</span><span class="p">,</span>
+        "float line(vec2 a, float rot, float height, float width, vec2 p)",
+        "{",
+            "p = vec2(p.x * cos(rot) + p.y * -sin(rot), p.x * sin(rot) + p.y * cos(rot));",
+            "vec2 pos = p-a;",
+            "float radius = width * 0.5 * (2.5+sin(atan(pos.y, pos.x)*5.0));",
+            "float v = max(0.0, min(1.0, (radius-length(p-a))*40.0));",
+            "return v;",
+        "}",
 
-        <span class="s2">"void main( void )"</span><span class="p">,</span>
-        <span class="s2">"{"</span><span class="p">,</span>
-            <span class="s2">"vec2 position = ( gl_FragCoord.xy / resolution.xy * 2.0 - 1.0 );"</span><span class="p">,</span>
-            <span class="s2">"position.x *= resolution.x / resolution.y;"</span><span class="p">,</span>
-            <span class="s2">"position*=3.0;"</span><span class="p">,</span>
-            <span class="s2">"vec2 origin = vec2(mouse)*2.0 - 1.0;"</span><span class="p">,</span>
-            <span class="s2">"origin *= 5.0;"</span><span class="p">,</span>
-            <span class="s2">"float rot = 0.0;"</span><span class="p">,</span>
-            <span class="s2">"float height = 0.5;"</span><span class="p">,</span>
-            <span class="s2">"float width = 0.1;"</span><span class="p">,</span>
-            <span class="s2">"vec3 color = vec3(0.0, 0.0, 0.0);"</span><span class="p">,</span>
-            <span class="s2">"for(float i = 0.; i &lt; 80.; i++)"</span><span class="p">,</span>
-            <span class="s2">"{"</span><span class="p">,</span>
-                <span class="s2">"float lit = line(origin, rot, height, width, position * (7.0/(1.0+i*.12)))*(.95-i*.004)*1.5;"</span><span class="p">,</span>
-                <span class="s2">"float ang = i/50.0*3.14+time;"</span><span class="p">,</span>
-                <span class="s2">"color.r += max(0.0, sin(ang)+0.5)*lit;"</span><span class="p">,</span>
-                <span class="s2">"color.g += max(0.0, sin(ang+2.09)+0.5)*lit;"</span><span class="p">,</span>
-                <span class="s2">"color.b += max(0.0, sin(ang-2.09)+0.5)*lit;"</span><span class="p">,</span>
-                <span class="s2">"width += 0.01;"</span><span class="p">,</span>
-                <span class="s2">"height += 0.05;"</span><span class="p">,</span>
-                <span class="s2">"rot += time*0.1;"</span><span class="p">,</span>
-            <span class="s2">"}"</span><span class="p">,</span>
-            <span class="s2">"color*=0.3;"</span><span class="p">,</span>
-            <span class="s2">"gl_FragColor = vec4( color , 1.0 );"</span><span class="p">,</span>
-        <span class="s2">"}"</span>
-    <span class="p">];</span>
+        "void main( void )",
+        "{",
+            "vec2 position = ( gl_FragCoord.xy / resolution.xy * 2.0 - 1.0 );",
+            "position.x *= resolution.x / resolution.y;",
+            "position*=3.0;",
+            "vec2 origin = vec2(mouse)*2.0 - 1.0;",
+            "origin *= 5.0;",
+            "float rot = 0.0;",
+            "float height = 0.5;",
+            "float width = 0.1;",
+            "vec3 color = vec3(0.0, 0.0, 0.0);",
+            "for(float i = 0.; i < 80.; i++)",
+            "{",
+                "float lit = line(origin, rot, height, width, position * (7.0/(1.0+i*.12)))*(.95-i*.004)*1.5;",
+                "float ang = i/50.0*3.14+time;",
+                "color.r += max(0.0, sin(ang)+0.5)*lit;",
+                "color.g += max(0.0, sin(ang+2.09)+0.5)*lit;",
+                "color.b += max(0.0, sin(ang-2.09)+0.5)*lit;",
+                "width += 0.01;",
+                "height += 0.05;",
+                "rot += time*0.1;",
+            "}",
+            "color*=0.3;",
+            "gl_FragColor = vec4( color , 1.0 );",
+        "}"
+    ];
 
-    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    filter = new Phaser.Filter(game, null, fragmentSrc);
+    filter.setResolution(800, 600);
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+    sprite = game.add.sprite();
+    sprite.width = 800;
+    sprite.height = 600;
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+    sprite.filters = [ filter ];
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">);</span>
+    filter.update(game.input.activePointer);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

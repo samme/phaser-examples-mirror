@@ -55,53 +55,54 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/audio/pause%20and%20resume%20marker.js" title="audio/pause and resume marker.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/audio/pause%20and%20resume%20marker.js" download="" title="Download: audio/pause and resume marker.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">audioJSON</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">spritemap</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'part1'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-        <span class="s1">'part2'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">start</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
-            <span class="na">end</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
-            <span class="na">loop</span><span class="p">:</span> <span class="kc">false</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">};</span>
+var audioJSON = {
+    spritemap: {
+        'part1': {
+            start: 1,
+            end: 20,
+            loop: false
+        },
+        'part2': {
+            start: 21,
+            end: 60,
+            loop: false
+        }
+    }
+};
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'disk'</span><span class="p">,</span> <span class="s1">'assets/sprites/ra_dont_crack_under_pressure.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audiosprite</span><span class="p">(</span><span class="s1">'boden'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'assets/audio/bodenstaendig_2000_in_rock_4bit.mp3'</span><span class="p">,</span> <span class="s1">'assets/audio/bodenstaendig_2000_in_rock_4bit.ogg'</span><span class="p">],</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">audioJSON</span><span class="p">);</span>
+    game.load.image('disk', 'assets/sprites/ra_dont_crack_under_pressure.png');
+    game.load.audiosprite('boden', ['assets/audio/bodenstaendig_2000_in_rock_4bit.mp3', 'assets/audio/bodenstaendig_2000_in_rock_4bit.ogg'], null, audioJSON);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">s</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">music</span><span class="p">;</span>
+var s;
+var music;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#182d3b'</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">touch</span><span class="p">.</span><span class="nx">preventDefault</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    game.stage.backgroundColor = '#182d3b';
+    game.input.touch.preventDefault = false;
 
-    <span class="nx">music</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audioSprite</span><span class="p">(</span><span class="s1">'boden'</span><span class="p">);</span>
-    <span class="nx">music</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'part2'</span><span class="p">);</span>
+    music = game.add.audioSprite('boden');
+    music.play('part2');
 
-    <span class="nx">s</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'disk'</span><span class="p">);</span>
-    <span class="nx">s</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    s = game.add.sprite(game.world.centerX, game.world.centerY, 'disk');
+    s.anchor.setTo(0.5, 0.5);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">s</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="mf">0.01</span><span class="p">;</span>
-<span class="p">}</span>
+function update() {
+    s.rotation += 0.01;
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function render() {
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

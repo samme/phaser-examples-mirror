@@ -55,112 +55,113 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/align%20to%20rectangle.js" title="sprites/align to rectangle.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/align%20to%20rectangle.js" download="" title="Download: sprites/align to rectangle.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mushroom'</span><span class="p">,</span> <span class="s1">'assets/sprites/mushroom2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'orb'</span><span class="p">,</span> <span class="s1">'assets/sprites/orb-red.png'</span><span class="p">);</span>
+    game.load.image('mushroom', 'assets/sprites/mushroom2.png');
+    game.load.image('orb', 'assets/sprites/orb-red.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite3</span><span class="p">;</span>
+var sprite1;
+var sprite2;
+var sprite3;
 
-<span class="kd">var</span> <span class="nx">rect</span><span class="p">;</span>
+var rect;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#3433bb'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#3433bb';
 
-    <span class="c1">//  Scaled + Anchor</span>
-    <span class="nx">sprite3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'mushroom'</span><span class="p">);</span>
-    <span class="nx">sprite3</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">sprite3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    //  Scaled + Anchor
+    sprite3 = game.add.sprite(200, 400, 'mushroom');
+    sprite3.anchor.set(0.5);
+    sprite3.scale.set(2);
 
-    <span class="c1">//  With an anchor</span>
-    <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="s1">'mushroom'</span><span class="p">);</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    //  With an anchor
+    sprite1 = game.add.sprite(200, 150, 'mushroom');
+    sprite1.anchor.set(0.5);
 
-    <span class="c1">//  No anchor set</span>
-    <span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">'orb'</span><span class="p">);</span>
+    //  No anchor set
+    sprite2 = game.add.sprite(200, 250, 'orb');
 
-    <span class="nx">rect</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+    rect = new Phaser.Rectangle(200, 200, 400, 300);
 
-    <span class="c1">//  Aligns the sprites to the outside of the Rectangle</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">alignTo</span><span class="p">(</span><span class="nx">rect</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">TOP_CENTER</span><span class="p">);</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">alignTo</span><span class="p">(</span><span class="nx">rect</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">BOTTOM_RIGHT</span><span class="p">);</span>
-    <span class="nx">sprite3</span><span class="p">.</span><span class="nx">alignTo</span><span class="p">(</span><span class="nx">rect</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">LEFT_CENTER</span><span class="p">);</span>
+    //  Aligns the sprites to the outside of the Rectangle
+    sprite1.alignTo(rect, Phaser.TOP_CENTER);
+    sprite2.alignTo(rect, Phaser.BOTTOM_RIGHT);
+    sprite3.alignTo(rect, Phaser.LEFT_CENTER);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.TOP_LEFT);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.TOP_LEFT);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.TOP_LEFT);</span>
+    // sprite1.alignTo(rect, Phaser.TOP_LEFT);
+    // sprite2.alignTo(rect, Phaser.TOP_LEFT);
+    // sprite3.alignTo(rect, Phaser.TOP_LEFT);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.TOP_CENTER);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.TOP_CENTER);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.TOP_CENTER);</span>
+    // sprite1.alignTo(rect, Phaser.TOP_CENTER);
+    // sprite2.alignTo(rect, Phaser.TOP_CENTER);
+    // sprite3.alignTo(rect, Phaser.TOP_CENTER);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.TOP_RIGHT);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.TOP_RIGHT);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.TOP_RIGHT);</span>
+    // sprite1.alignTo(rect, Phaser.TOP_RIGHT);
+    // sprite2.alignTo(rect, Phaser.TOP_RIGHT);
+    // sprite3.alignTo(rect, Phaser.TOP_RIGHT);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.LEFT_TOP);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.LEFT_TOP);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.LEFT_TOP);</span>
+    // sprite1.alignTo(rect, Phaser.LEFT_TOP);
+    // sprite2.alignTo(rect, Phaser.LEFT_TOP);
+    // sprite3.alignTo(rect, Phaser.LEFT_TOP);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.LEFT_CENTER);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.LEFT_CENTER);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.LEFT_CENTER);</span>
+    // sprite1.alignTo(rect, Phaser.LEFT_CENTER);
+    // sprite2.alignTo(rect, Phaser.LEFT_CENTER);
+    // sprite3.alignTo(rect, Phaser.LEFT_CENTER);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.LEFT_BOTTOM);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.LEFT_BOTTOM);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.LEFT_BOTTOM);</span>
+    // sprite1.alignTo(rect, Phaser.LEFT_BOTTOM);
+    // sprite2.alignTo(rect, Phaser.LEFT_BOTTOM);
+    // sprite3.alignTo(rect, Phaser.LEFT_BOTTOM);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.RIGHT_TOP);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.RIGHT_TOP);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.RIGHT_TOP);</span>
+    // sprite1.alignTo(rect, Phaser.RIGHT_TOP);
+    // sprite2.alignTo(rect, Phaser.RIGHT_TOP);
+    // sprite3.alignTo(rect, Phaser.RIGHT_TOP);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.RIGHT_CENTER);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.RIGHT_CENTER);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.RIGHT_CENTER);</span>
+    // sprite1.alignTo(rect, Phaser.RIGHT_CENTER);
+    // sprite2.alignTo(rect, Phaser.RIGHT_CENTER);
+    // sprite3.alignTo(rect, Phaser.RIGHT_CENTER);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.RIGHT_BOTTOM);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.RIGHT_BOTTOM);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.RIGHT_BOTTOM);</span>
+    // sprite1.alignTo(rect, Phaser.RIGHT_BOTTOM);
+    // sprite2.alignTo(rect, Phaser.RIGHT_BOTTOM);
+    // sprite3.alignTo(rect, Phaser.RIGHT_BOTTOM);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.BOTTOM_LEFT);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.BOTTOM_LEFT);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.BOTTOM_LEFT);</span>
+    // sprite1.alignTo(rect, Phaser.BOTTOM_LEFT);
+    // sprite2.alignTo(rect, Phaser.BOTTOM_LEFT);
+    // sprite3.alignTo(rect, Phaser.BOTTOM_LEFT);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.BOTTOM_CENTER);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.BOTTOM_CENTER);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.BOTTOM_CENTER);</span>
+    // sprite1.alignTo(rect, Phaser.BOTTOM_CENTER);
+    // sprite2.alignTo(rect, Phaser.BOTTOM_CENTER);
+    // sprite3.alignTo(rect, Phaser.BOTTOM_CENTER);
 
-    <span class="c1">// sprite1.alignTo(rect, Phaser.BOTTOM_RIGHT);</span>
-    <span class="c1">// sprite2.alignTo(rect, Phaser.BOTTOM_RIGHT);</span>
-    <span class="c1">// sprite3.alignTo(rect, Phaser.BOTTOM_RIGHT);</span>
+    // sprite1.alignTo(rect, Phaser.BOTTOM_RIGHT);
+    // sprite2.alignTo(rect, Phaser.BOTTOM_RIGHT);
+    // sprite3.alignTo(rect, Phaser.BOTTOM_RIGHT);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">rectangle</span><span class="p">(</span><span class="nx">rect</span><span class="p">,</span> <span class="s1">'#ffffff'</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    game.debug.rectangle(rect, '#ffffff', false);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rect</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">TOP_LEFT</span><span class="p">),</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rect</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">TOP_CENTER</span><span class="p">),</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rect</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">TOP_RIGHT</span><span class="p">),</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    game.debug.geom(rect.getPoint(Phaser.TOP_LEFT), '#ff00ff');
+    game.debug.geom(rect.getPoint(Phaser.TOP_CENTER), '#ff00ff');
+    game.debug.geom(rect.getPoint(Phaser.TOP_RIGHT), '#ff00ff');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rect</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">MIDDLE_LEFT</span><span class="p">),</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rect</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">MIDDLE_CENTER</span><span class="p">),</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rect</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">MIDDLE_RIGHT</span><span class="p">),</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    game.debug.geom(rect.getPoint(Phaser.MIDDLE_LEFT), '#ff00ff');
+    game.debug.geom(rect.getPoint(Phaser.MIDDLE_CENTER), '#ff00ff');
+    game.debug.geom(rect.getPoint(Phaser.MIDDLE_RIGHT), '#ff00ff');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rect</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">BOTTOM_LEFT</span><span class="p">),</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rect</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">BOTTOM_CENTER</span><span class="p">),</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rect</span><span class="p">.</span><span class="nx">getPoint</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">BOTTOM_RIGHT</span><span class="p">),</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
+    game.debug.geom(rect.getPoint(Phaser.BOTTOM_LEFT), '#ff00ff');
+    game.debug.geom(rect.getPoint(Phaser.BOTTOM_CENTER), '#ff00ff');
+    game.debug.geom(rect.getPoint(Phaser.BOTTOM_RIGHT), '#ff00ff');
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

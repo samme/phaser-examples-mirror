@@ -55,69 +55,70 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/tween%20loop%20event.js" title="tweens/tween loop event.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/tween%20loop%20event.js" download="" title="Download: tweens/tween loop event.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'balls'</span><span class="p">,</span> <span class="s1">'assets/sprites/balls.png'</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">);</span>
+    game.load.spritesheet('balls', 'assets/sprites/balls.png', 17, 17);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">ball</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tween</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bounces</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+var ball;
+var tween;
+var bounces = 10;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">ball</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'balls'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    ball = game.add.sprite(400, 0, 'balls', 0);
 
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">ball</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="nx">ball</span><span class="p">.</span><span class="nx">height</span> <span class="p">},</span> <span class="mi">1500</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">2500</span><span class="p">,</span> <span class="nx">bounces</span><span class="p">);</span>
+    tween = game.add.tween(ball).to( { y: game.world.height - ball.height }, 1500, Phaser.Easing.Bounce.Out, true, 2500, bounces);
 
-    <span class="c1">//	There is a 2.5 second delay at the start, then it calls this function</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onStart</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //	There is a 2.5 second delay at the start, then it calls this function
+    tween.onStart.add(onStart, this);
 
-    <span class="c1">//	This tween will repeat 10 times, calling this function every time it loops</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onRepeat</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onLoop</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //	This tween will repeat 10 times, calling this function every time it loops
+    tween.onRepeat.add(onLoop, this);
 
-    <span class="c1">//	When it completes it will call this function</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onComplete</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //	When it completes it will call this function
+    tween.onComplete.add(onComplete, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onStart</span><span class="p">()</span> <span class="p">{</span>
+function onStart() {
 
-	<span class="c1">//	Turn off the delay, so it loops seamlessly from here on</span>
-	<span class="nx">tween</span><span class="p">.</span><span class="nx">delay</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+	//	Turn off the delay, so it loops seamlessly from here on
+	tween.delay(0);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onLoop</span><span class="p">()</span> <span class="p">{</span>
+function onLoop() {
 
-	<span class="nx">bounces</span><span class="o">--</span><span class="p">;</span>
+	bounces--;
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">ball</span><span class="p">.</span><span class="nx">frame</span> <span class="o">===</span> <span class="mi">5</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">ball</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="p">}</span>
-	<span class="k">else</span>
-	<span class="p">{</span>
-		<span class="nx">ball</span><span class="p">.</span><span class="nx">frame</span><span class="o">++</span><span class="p">;</span>
-	<span class="p">}</span>
+	if (ball.frame === 5)
+	{
+		ball.frame = 0;
+	}
+	else
+	{
+		ball.frame++;
+	}
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onComplete</span><span class="p">()</span> <span class="p">{</span>
+function onComplete() {
 
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">ball</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">800</span> <span class="o">-</span> <span class="nx">ball</span><span class="p">.</span><span class="nx">width</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Exponential</span><span class="p">.</span><span class="nx">Out</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    tween = game.add.tween(ball).to( { x: 800 - ball.width }, 2000, Phaser.Easing.Exponential.Out, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Bounces: '</span> <span class="o">+</span> <span class="nx">bounces</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+	game.debug.text('Bounces: ' + bounces, 32, 32);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

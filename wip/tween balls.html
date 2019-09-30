@@ -55,94 +55,95 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/tween%20balls.js" title="wip/tween balls.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/tween%20balls.js" download="" title="Download: wip/tween balls.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/pangball.png'</span><span class="p">);</span>
+    game.load.image('ball', 'assets/sprites/pangball.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">balls</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">data</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">iy</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="c1">// var ox = 170;</span>
-<span class="c1">// var oy = 80;</span>
-<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="p">{</span> <span class="na">ox</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="na">oy</span><span class="p">:</span> <span class="mi">40</span> <span class="p">};</span>
-<span class="c1">// var ox = 60;</span>
-<span class="c1">// var oy = 40;</span>
-<span class="kd">var</span> <span class="nx">spacing</span> <span class="o">=</span> <span class="mi">48</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+var balls;
+var data;
+var idx = 0;
+var iy = [];
+// var ox = 170;
+// var oy = 80;
+var p = { ox: 60, oy: 40 };
+// var ox = 60;
+// var oy = 40;
+var spacing = 48;
+var w = 10;
+var h = 10;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="c1">// game.stage.backgroundColor = 0xff8855;</span>
+	// game.stage.backgroundColor = 0xff8855;
     
 
-    <span class="nx">balls</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    balls = game.add.group();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">h</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">iy</span><span class="p">[</span><span class="nx">y</span><span class="p">]</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span>
+    for (var y = 0; y < h; y++)
+    {
+        iy[y] = y * 3;
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">w</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">ball</span> <span class="o">=</span> <span class="nx">balls</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">ox</span> <span class="o">+</span> <span class="p">(</span><span class="nx">spacing</span> <span class="o">*</span> <span class="nx">x</span><span class="p">),</span> <span class="nx">p</span><span class="p">.</span><span class="nx">oy</span> <span class="o">+</span> <span class="p">(</span><span class="nx">spacing</span> <span class="o">*</span> <span class="nx">y</span><span class="p">),</span> <span class="s1">'ball'</span><span class="p">);</span>
-            <span class="nx">ball</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        for (var x = 0; x < w; x++)
+        {
+            var ball = balls.create(p.ox + (spacing * x), p.oy + (spacing * y), 'ball');
+            ball.anchor.set(0.5);
+        }
+    }
 
-    <span class="kd">var</span> <span class="nx">tweenData</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="na">sx</span><span class="p">:</span> <span class="mf">1.4</span> <span class="p">};</span>
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">tweenData</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="na">sx</span><span class="p">:</span> <span class="mf">0.8</span> <span class="p">},</span> <span class="mi">500</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">InOut</span><span class="p">);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">yoyo</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-    <span class="c1">// tween.interpolation(game.math.bezierInterpolation);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">interpolation</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">catmullRomInterpolation</span><span class="p">);</span>
-    <span class="nx">data</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+    var tweenData = { x: -20, y: -30, sx: 1.4 };
+    tween = game.make.tween(tweenData).to( { x: 20, y: 30, sx: 0.8 }, 500, Phaser.Easing.Sinusoidal.InOut);
+    tween.yoyo(true);
+    // tween.interpolation(game.math.bezierInterpolation);
+    tween.interpolation(game.math.catmullRomInterpolation);
+    data = tween.generateData(60);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">p</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">ox</span><span class="p">:</span> <span class="mi">400</span> <span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="c1">// game.add.tween(p).to( { oy: 160 }, 2000, Phaser.Easing.Sinusoidal.InOut, true, 0, 1000, true);</span>
+    game.add.tween(p).to( { ox: 400 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, 1000, true);
+    // game.add.tween(p).to( { oy: 160 }, 2000, Phaser.Easing.Sinusoidal.InOut, true, 0, 1000, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var i = 0;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">h</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">w</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">ball</span> <span class="o">=</span> <span class="nx">balls</span><span class="p">.</span><span class="nx">getAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+    for (var y = 0; y < h; y++)
+    {
+        for (var x = 0; x < w; x++)
+        {
+            var ball = balls.getAt(i);
 
-            <span class="kd">var</span> <span class="nx">bi</span> <span class="o">=</span> <span class="nx">iy</span><span class="p">[</span><span class="nx">y</span><span class="p">]</span> <span class="o">+</span> <span class="nx">idx</span><span class="p">;</span>
-            <span class="nx">bi</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">bi</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+            var bi = iy[y] + idx;
+            bi = Phaser.Math.wrap(bi, 0, data.length);
 
-            <span class="c1">// ball.x = p.ox + (spacing * x) + data[bi].x;</span>
-            <span class="nx">ball</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">ox</span> <span class="o">+</span> <span class="p">(</span><span class="nx">spacing</span> <span class="o">*</span> <span class="nx">x</span><span class="p">);</span>
-            <span class="nx">ball</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">oy</span> <span class="o">+</span> <span class="p">(</span><span class="nx">spacing</span> <span class="o">*</span> <span class="nx">y</span><span class="p">)</span> <span class="o">+</span> <span class="nx">data</span><span class="p">[</span><span class="nx">bi</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
+            // ball.x = p.ox + (spacing * x) + data[bi].x;
+            ball.x = p.ox + (spacing * x);
+            ball.y = p.oy + (spacing * y) + data[bi].y;
 
-            <span class="nx">ball</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">bi</span><span class="p">].</span><span class="nx">sx</span><span class="p">);</span>
+            ball.scale.set(data[bi].sx);
 
-            <span class="nx">i</span><span class="o">++</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+            i++;
+        }
+    }
 
 
-    <span class="nx">idx</span><span class="o">++</span><span class="p">;</span>
+    idx++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">idx</span> <span class="o">===</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (idx === data.length)
+    {
+        idx = 0;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

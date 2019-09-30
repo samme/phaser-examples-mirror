@@ -55,43 +55,44 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bitmapdata/sprite%20texture.js" title="bitmapdata/sprite texture.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bitmapdata/sprite%20texture.js" download="" title="Download: bitmapdata/sprite texture.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'assets/pics/questar.png'</span><span class="p">);</span>
+    game.load.image('pic', 'assets/pics/questar.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Create a BitmapData</span>
-    <span class="kd">var</span> <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">256</span><span class="p">);</span>
+    //  Create a BitmapData
+    var bmd = game.make.bitmapData(320, 256);
 
-    <span class="c1">//  Draw an image to it</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">);</span>
+    //  Draw an image to it
+    bmd.copy('pic');
 
-    <span class="c1">//  Draw a few random shapes to it</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'rgba(255,0,0,0.8)'</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">'rgba(255,0,255,0.8)'</span><span class="p">);</span>
+    //  Draw a few random shapes to it
+    bmd.circle(100, 100, 32, 'rgba(255,0,0,0.8)');
+    bmd.rect(110, 40, 64, 120, 'rgba(255,0,255,0.8)');
 
-    <span class="c1">//  Here the sprite uses the BitmapData as a texture</span>
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">);</span>
+    //  Here the sprite uses the BitmapData as a texture
+    sprite = game.add.sprite(300, 300, bmd);
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    sprite.anchor.set(0.5);
 
-    <span class="c1">//  And you can do Spritey things with it as usual</span>
+    //  And you can do Spritey things with it as usual
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="mf">0.01</span><span class="p">;</span>
+    sprite.rotation += 0.01;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

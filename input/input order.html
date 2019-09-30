@@ -55,56 +55,57 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/input%20order.js" title="input/input order.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/input%20order.js" download="" title="Download: input/input order.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+var text = '';
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'block'</span><span class="p">,</span> <span class="s1">'assets/sprites/block.png'</span><span class="p">);</span>
+    game.load.image('block', 'assets/sprites/block.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  When you click a Sprite, the top-most one in the display list,</span>
-    <span class="c1">//  i.e. the one created LAST, will receive the input event.</span>
-    <span class="c1">//  Not the ones below it.</span>
+    //  When you click a Sprite, the top-most one in the display list,
+    //  i.e. the one created LAST, will receive the input event.
+    //  Not the ones below it.
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">64</span> <span class="o">+</span> <span class="p">(</span><span class="mi">64</span> <span class="o">*</span> <span class="nx">i</span><span class="p">),</span> <span class="mi">200</span> <span class="o">+</span> <span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">4</span><span class="p">),</span> <span class="s1">'block'</span><span class="p">);</span>
+    for (var i = 0; i < 10; i++)
+    {
+        var sprite = game.add.sprite(64 + (64 * i), 200 + (i*4), 'block');
 
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'block'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">;</span>
+        sprite.name = 'block' + i;
 
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        sprite.inputEnabled = true;
 
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">clickedSprite</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+        sprite.events.onInputDown.add(clickedSprite, this);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">clickedSprite</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+function clickedSprite (sprite) {
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">' RenderOrderID: '</span> <span class="o">+</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">renderOrderID</span><span class="p">;</span>
+    text = sprite.name + ' RenderOrderID: ' + sprite.renderOrderID;
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">tint</span> <span class="o">=</span> <span class="mh">0xff0000</span><span class="p">;</span>
+    sprite.tint = 0xff0000;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">text</span> <span class="o">===</span> <span class="s1">''</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Click the Sprites"</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"You clicked: "</span> <span class="o">+</span> <span class="nx">text</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (text === '')
+    {
+        game.debug.text("Click the Sprites", 32, 32);
+    }
+    else
+    {
+        game.debug.text("You clicked: " + text, 32, 32);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

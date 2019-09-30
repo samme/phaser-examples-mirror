@@ -55,118 +55,119 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/arcade%20physics/group%20vs%20group.js" title="arcade physics/group vs group.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/arcade%20physics/group%20vs%20group.js" download="" title="Download: arcade physics/group vs group.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser-dude.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bullet'</span><span class="p">,</span> <span class="s1">'assets/misc/bullet0.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'veggies'</span><span class="p">,</span> <span class="s1">'assets/sprites/fruitnveg32wh37.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.load.image('phaser', 'assets/sprites/phaser-dude.png');
+    game.load.image('bullet', 'assets/misc/bullet0.png');
+    game.load.spritesheet('veggies', 'assets/sprites/fruitnveg32wh37.png', 32, 32);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bullets</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">veggies</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var sprite;
+var bullets;
+var veggies;
+var cursors;
 
-<span class="kd">var</span> <span class="nx">bulletTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bullet</span><span class="p">;</span>
+var bulletTime = 0;
+var bullet;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#2d2d2d';
 
-    <span class="c1">//  This will check Group vs. Group collision (bullets vs. veggies!)</span>
+    //  This will check Group vs. Group collision (bullets vs. veggies!)
 
-    <span class="nx">veggies</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">veggies</span><span class="p">.</span><span class="nx">enableBody</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">veggies</span><span class="p">.</span><span class="nx">physicsBodyType</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">;</span>
+    veggies = game.add.group();
+    veggies.enableBody = true;
+    veggies.physicsBodyType = Phaser.Physics.ARCADE;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">veggies</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'veggies'</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">36</span><span class="p">));</span>
-        <span class="nx">c</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'veg'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">;</span>
-        <span class="nx">c</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">immovable</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 50; i++)
+    {
+        var c = veggies.create(game.world.randomX, Math.random() * 500, 'veggies', game.rnd.integerInRange(0, 36));
+        c.name = 'veg' + i;
+        c.body.immovable = true;
+    }
 
-    <span class="nx">bullets</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">bullets</span><span class="p">.</span><span class="nx">enableBody</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">bullets</span><span class="p">.</span><span class="nx">physicsBodyType</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">;</span>
+    bullets = game.add.group();
+    bullets.enableBody = true;
+    bullets.physicsBodyType = Phaser.Physics.ARCADE;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">bullets</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'bullet'</span><span class="p">);</span>
-        <span class="nx">b</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'bullet'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">;</span>
-        <span class="nx">b</span><span class="p">.</span><span class="nx">exists</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">b</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">b</span><span class="p">.</span><span class="nx">checkWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">b</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onOutOfBounds</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">resetBullet</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 20; i++)
+    {
+        var b = bullets.create(0, 0, 'bullet');
+        b.name = 'bullet' + i;
+        b.exists = false;
+        b.visible = false;
+        b.checkWorldBounds = true;
+        b.events.onOutOfBounds.add(resetBullet, this);
+    }
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    sprite = game.add.sprite(400, 550, 'phaser');
+    game.physics.enable(sprite, Phaser.Physics.ARCADE);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKeyCapture</span><span class="p">([</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span> <span class="p">]);</span>
+    cursors = game.input.keyboard.createCursorKeys();
+    game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">//  As we don't need to exchange any velocities or motion we can the 'overlap' check instead of 'collide'</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">overlap</span><span class="p">(</span><span class="nx">bullets</span><span class="p">,</span> <span class="nx">veggies</span><span class="p">,</span> <span class="nx">collisionHandler</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  As we don't need to exchange any velocities or motion we can the 'overlap' check instead of 'collide'
+    game.physics.arcade.overlap(bullets, veggies, collisionHandler, null, this);
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    sprite.body.velocity.x = 0;
+    sprite.body.velocity.y = 0;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">300</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        sprite.body.velocity.x = -300;
+    }
+    else if (cursors.right.isDown)
+    {
+        sprite.body.velocity.x = 300;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">fireBullet</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+    {
+        fireBullet();
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">fireBullet</span> <span class="p">()</span> <span class="p">{</span>
+function fireBullet () {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="nx">bulletTime</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">bullet</span> <span class="o">=</span> <span class="nx">bullets</span><span class="p">.</span><span class="nx">getFirstExists</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    if (game.time.now > bulletTime)
+    {
+        bullet = bullets.getFirstExists(false);
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">bullet</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">bullet</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">8</span><span class="p">);</span>
-            <span class="nx">bullet</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">300</span><span class="p">;</span>
-            <span class="nx">bulletTime</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="mi">150</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        if (bullet)
+        {
+            bullet.reset(sprite.x + 6, sprite.y - 8);
+            bullet.body.velocity.y = -300;
+            bulletTime = game.time.now + 150;
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="c1">//  Called if the bullet goes out of the screen</span>
-<span class="kd">function</span> <span class="nx">resetBullet</span> <span class="p">(</span><span class="nx">bullet</span><span class="p">)</span> <span class="p">{</span>
+//  Called if the bullet goes out of the screen
+function resetBullet (bullet) {
 
-    <span class="nx">bullet</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+    bullet.kill();
 
-<span class="p">}</span>
+}
 
-<span class="c1">//  Called if the bullet hits one of the veg sprites</span>
-<span class="kd">function</span> <span class="nx">collisionHandler</span> <span class="p">(</span><span class="nx">bullet</span><span class="p">,</span> <span class="nx">veg</span><span class="p">)</span> <span class="p">{</span>
+//  Called if the bullet hits one of the veg sprites
+function collisionHandler (bullet, veg) {
 
-    <span class="nx">bullet</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
-    <span class="nx">veg</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
+    bullet.kill();
+    veg.kill();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

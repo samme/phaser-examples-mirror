@@ -55,49 +55,50 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particles/destroy%20emitter.js" title="particles/destroy emitter.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particles/destroy%20emitter.js" download="" title="Download: particles/destroy emitter.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">var</span> <span class="nx">emitter</span><span class="p">;</span>
+var emitter;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'diamond'</span><span class="p">,</span> <span class="s1">'assets/sprites/diamond.png'</span><span class="p">);</span>
+    game.load.image('diamond', 'assets/sprites/diamond.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x337799</span><span class="p">;</span>
+    game.stage.backgroundColor = 0x337799;
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">emitter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    emitter = game.add.emitter(0, 0, 100);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">makeParticles</span><span class="p">(</span><span class="s1">'diamond'</span><span class="p">);</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">gravity</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+    emitter.makeParticles('diamond');
+    emitter.gravity = 200;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">particleBurst</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.addOnce(particleBurst, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">particleBurst</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function particleBurst(pointer) {
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    emitter.x = pointer.x;
+    emitter.y = pointer.y;
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    emitter.start(true, 4000, null, 10);
 
-    <span class="c1">//  And 2 seconds later we'll destroy the emitter</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="nx">destroyEmitter</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  And 2 seconds later we'll destroy the emitter
+    game.time.events.add(2000, destroyEmitter, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">destroyEmitter</span><span class="p">()</span> <span class="p">{</span>
+function destroyEmitter() {
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+    emitter.destroy();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

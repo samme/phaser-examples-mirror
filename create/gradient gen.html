@@ -55,246 +55,246 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/create/gradient%20gen.js" title="create/gradient gen.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/create/gradient%20gen.js" download="" title="Download: create/gradient gen.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">conf</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">width</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
-    <span class="na">height</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span>
-    <span class="na">renderer</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span>
-    <span class="na">parent</span><span class="p">:</span> <span class="s1">'phaser-example'</span><span class="p">,</span>
-    <span class="na">transparent</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="na">antialias</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="na">state</span><span class="p">:</span> <span class="k">this</span><span class="p">,</span>
-    <span class="na">resolution</span><span class="p">:</span> <span class="mi">2</span>
-<span class="p">};</span>
+</div>
+<pre class="highlight javascript"><code>var conf = {
+    width: 800,
+    height: 600,
+    renderer: Phaser.CANVAS,
+    parent: 'phaser-example',
+    transparent: false,
+    antialias: false,
+    state: this,
+    resolution: 2
+};
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="nx">conf</span><span class="p">);</span>
+var game = new Phaser.Game(conf);
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'colors'</span><span class="p">,</span> <span class="s1">'assets/misc/gradient-palettes.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'arrow'</span><span class="p">,</span> <span class="s1">'assets/misc/arrows.png'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    game.load.image('colors', 'assets/misc/gradient-palettes.png');
+    game.load.spritesheet('arrow', 'assets/misc/arrows.png', 16, 16);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bmdSprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">markers</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">swatchBMD</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">swatch</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">isDragging</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">isOnSwatch</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">arrow1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">arrow2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">currentArrow</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">chunk</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+var bmd;
+var bmdSprite;
+var markers;
+var swatchBMD;
+var swatch;
+var isDragging = false;
+var isOnSwatch = false;
+var arrow1;
+var arrow2;
+var currentArrow = null;
+var chunk = 8;
 
-<span class="c1">// rgba(52,3,98,1) to rgba(247,130,11,1) chunk 16</span>
+// rgba(52,3,98,1) to rgba(247,130,11,1) chunk 16
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#535353'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#535353';
 
-	<span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">550</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="nx">bmdSprite</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+	bmd = game.make.bitmapData(500, 550);
+    bmd.smoothed = false;
+    bmdSprite = bmd.addToWorld(30, 20);
 
-    <span class="nx">markers</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    markers = game.add.group();
 
-    <span class="nx">createMarker</span><span class="p">(</span><span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-    <span class="nx">createMarker</span><span class="p">(</span><span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    createMarker(bmdSprite.y);
+    createMarker(bmdSprite.y + bmd.height);
 
-    <span class="nx">arrow1</span> <span class="o">=</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-    <span class="nx">arrow2</span> <span class="o">=</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    arrow1 = markers.children[0];
+    arrow2 = markers.children[1];
 
-    <span class="nx">currentArrow</span> <span class="o">=</span> <span class="nx">arrow1</span><span class="p">;</span>
-    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    currentArrow = arrow1;
+    currentArrow.frame = 1;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">checkClick</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(checkClick, this);
 
-    <span class="nx">swatchBMD</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
-    <span class="nx">swatchBMD</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'colors'</span><span class="p">);</span>
+    swatchBMD = game.make.bitmapData();
+    swatchBMD.load('colors');
 
-    <span class="nx">swatch</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">800</span> <span class="o">-</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">swatchBMD</span><span class="p">);</span>
-    <span class="nx">swatch</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">swatch</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">startSwatch</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">swatch</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">stopSwatch</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">swatch</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">stopSwatch</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    swatch = game.add.sprite(800 - 220, 10, swatchBMD);
+    swatch.inputEnabled = true;
+    swatch.events.onInputDown.add(startSwatch, this);
+    swatch.events.onInputUp.add(stopSwatch, this);
+    swatch.events.onInputOut.add(stopSwatch, this);
 
-    <span class="nx">refresh</span><span class="p">();</span>
+    refresh();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">updateColor</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.addMoveCallback(updateColor, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">startSwatch</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function startSwatch(sprite, pointer) {
 
-    <span class="nx">isOnSwatch</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    isOnSwatch = true;
 
-    <span class="nx">updateColor</span><span class="p">(</span><span class="nx">pointer</span><span class="p">);</span>
+    updateColor(pointer);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">stopSwatch</span><span class="p">()</span> <span class="p">{</span>
+function stopSwatch() {
 
-    <span class="nx">isOnSwatch</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    isOnSwatch = false;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">updateColor</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function updateColor(pointer) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">isOnSwatch</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">swatch</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">swatch</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="nx">swatchBMD</span><span class="p">.</span><span class="nx">getPixelRGB</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+    if (isOnSwatch)
+    {
+        var x = pointer.x - swatch.x;
+        var y = pointer.y - swatch.y;
+        var color = swatchBMD.getPixelRGB(x, y);
 
-        <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getColor32</span><span class="p">(</span><span class="nx">color</span><span class="p">.</span><span class="nx">a</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">g</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
-        <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">webrgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
-        <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">rgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getRGB</span><span class="p">(</span><span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+        currentArrow.color = Phaser.Color.getColor32(color.a, color.r, color.g, color.b);
+        currentArrow.webrgb = Phaser.Color.getWebRGB(currentArrow.color);
+        currentArrow.rgb = Phaser.Color.getRGB(currentArrow.color);
 
-        <span class="nx">refresh</span><span class="p">();</span>
-    <span class="p">}</span>
+        refresh();
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">makeCurrent</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+function makeCurrent(sprite) {
 
-    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    currentArrow.frame = 0;
 
-    <span class="nx">currentArrow</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">;</span>
+    currentArrow = sprite;
 
-    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    currentArrow.frame = 1;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">checkClick</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function checkClick(pointer) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;=</span> <span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">createMarker</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-        <span class="nx">markers</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="s1">'y'</span><span class="p">);</span>
-        <span class="nx">refresh</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (pointer.x > bmdSprite.x && pointer.x <= bmdSprite.right)
+    {
+        createMarker(pointer.y);
+        markers.sort('y');
+        refresh();
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createMarker</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function createMarker(y) {
 
-    <span class="kd">var</span> <span class="nx">arrow</span> <span class="o">=</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">18</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s1">'arrow'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var arrow = markers.create(bmdSprite.x - 18, y, 'arrow', 0);
 
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    arrow.anchor.set(0, 0.5);
+    arrow.inputEnabled = true;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">markers</span><span class="p">.</span><span class="nx">total</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">arrow</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
-        <span class="nx">arrow</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">allowHorizontalDrag</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">arrow</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">boundsRect</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
-        <span class="nx">arrow</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">startRefresh</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-        <span class="nx">arrow</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">stopRefresh</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (markers.total > 2)
+    {
+        arrow.input.enableDrag();
+        arrow.input.allowHorizontalDrag = false;
+        arrow.input.boundsRect = new Phaser.Rectangle(0, 50, 50, 500);
+        arrow.events.onDragStart.add(startRefresh, this);
+        arrow.events.onDragStop.add(stopRefresh, this);
+    }
 
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getRandomColor</span><span class="p">();</span>
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">webrgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">arrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">rgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getRGB</span><span class="p">(</span><span class="nx">arrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+    arrow.color = Phaser.Color.getRandomColor();
+    arrow.webrgb = Phaser.Color.getWebRGB(arrow.color);
+    arrow.rgb = Phaser.Color.getRGB(arrow.color);
 
-    <span class="nx">arrow</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">pickColor</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    arrow.events.onInputDown.add(pickColor, this);
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">markers</span><span class="p">.</span><span class="nx">total</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">makeCurrent</span><span class="p">(</span><span class="nx">arrow</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (markers.total > 2)
+    {
+        makeCurrent(arrow);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">pickColor</span><span class="p">(</span><span class="nx">arrow</span><span class="p">)</span> <span class="p">{</span>
+function pickColor(arrow) {
 
-    <span class="nx">makeCurrent</span><span class="p">(</span><span class="nx">arrow</span><span class="p">);</span>
+    makeCurrent(arrow);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">selectColor</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function selectColor(sprite, pointer) {
 
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">swatch</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">swatch</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="nx">swatchBMD</span><span class="p">.</span><span class="nx">getPixelRGB</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+    var x = pointer.x - swatch.x;
+    var y = pointer.y - swatch.y;
+    var color = swatchBMD.getPixelRGB(x, y);
 
-    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getColor32</span><span class="p">(</span><span class="nx">color</span><span class="p">.</span><span class="nx">a</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">g</span><span class="p">,</span> <span class="nx">color</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
-    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">webrgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
-    <span class="nx">currentArrow</span><span class="p">.</span><span class="nx">rgb</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getRGB</span><span class="p">(</span><span class="nx">currentArrow</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+    currentArrow.color = Phaser.Color.getColor32(color.a, color.r, color.g, color.b);
+    currentArrow.webrgb = Phaser.Color.getWebRGB(currentArrow.color);
+    currentArrow.rgb = Phaser.Color.getRGB(currentArrow.color);
 
-    <span class="nx">refresh</span><span class="p">();</span>
+    refresh();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">startRefresh</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+function startRefresh(sprite) {
 
-    <span class="nx">makeCurrent</span><span class="p">(</span><span class="nx">sprite</span><span class="p">);</span>
+    makeCurrent(sprite);
 
-    <span class="nx">isDragging</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    isDragging = true;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">stopRefresh</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+function stopRefresh(sprite) {
 
-    <span class="nx">isDragging</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="nx">markers</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="s1">'y'</span><span class="p">);</span>
-    <span class="nx">refresh</span><span class="p">();</span>
+    isDragging = false;
+    markers.sort('y');
+    refresh();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">refresh</span><span class="p">()</span> <span class="p">{</span>
+function refresh() {
 
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">step</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">marker1</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">marker2</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">distance</span><span class="p">;</span>
+    var y = 0;
+    var step;
+    var marker1;
+    var marker2;
+    var distance;
 
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">cls</span><span class="p">();</span>
+    bmd.cls();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">c</span> <span class="o">&lt;</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">c</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">marker1</span> <span class="o">=</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">c</span><span class="p">];</span>
-        <span class="nx">marker2</span> <span class="o">=</span> <span class="nx">markers</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    for (var c = 0; c < markers.children.length - 1; c++)
+    {
+        marker1 = markers.children[c];
+        marker2 = markers.children[c + 1];
 
-        <span class="kd">var</span> <span class="nx">dy</span> <span class="o">=</span> <span class="nx">marker1</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">sy</span> <span class="o">=</span> <span class="nx">marker2</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">bmdSprite</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+        var dy = marker1.y - bmdSprite.y;
+        var sy = marker2.y - bmdSprite.y;
 
-        <span class="nx">distance</span> <span class="o">=</span> <span class="nx">sy</span> <span class="o">-</span> <span class="nx">dy</span><span class="p">;</span>
-        <span class="nx">y</span> <span class="o">=</span> <span class="nx">dy</span><span class="p">;</span>
-        <span class="nx">step</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">distance</span> <span class="o">/</span> <span class="nx">chunk</span><span class="p">);</span>
-        <span class="nx">remainder</span> <span class="o">=</span> <span class="nx">distance</span> <span class="o">-</span> <span class="p">(</span><span class="nx">step</span> <span class="o">*</span> <span class="nx">chunk</span><span class="p">);</span>
+        distance = sy - dy;
+        y = dy;
+        step = Math.floor(distance / chunk);
+        remainder = distance - (step * chunk);
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">step</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">ci</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">interpolateRGB</span><span class="p">(</span><span class="nx">marker1</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span> <span class="nx">marker1</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">g</span><span class="p">,</span> <span class="nx">marker1</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">b</span><span class="p">,</span> <span class="nx">marker2</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span> <span class="nx">marker2</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">g</span><span class="p">,</span> <span class="nx">marker2</span><span class="p">.</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">b</span><span class="p">,</span> <span class="nx">step</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
-            <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">getWebRGB</span><span class="p">(</span><span class="nx">ci</span><span class="p">);</span>
+        for (var i = 0; i < step; i++)
+        {
+            var ci = Phaser.Color.interpolateRGB(marker1.rgb.r, marker1.rgb.g, marker1.rgb.b, marker2.rgb.r, marker2.rgb.g, marker2.rgb.b, step, i);
+            bmd.ctx.fillStyle = Phaser.Color.getWebRGB(ci);
 
-            <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">dy</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">chunk</span><span class="p">);</span>
+            bmd.ctx.fillRect(0, dy, bmd.width, chunk);
 
-            <span class="nx">dy</span> <span class="o">+=</span> <span class="nx">chunk</span><span class="p">;</span>
-        <span class="p">}</span>
+            dy += chunk;
+        }
 
-        <span class="c1">//  Fill in the little gap that is left (if any)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">remainder</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">dy</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">remainder</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        //  Fill in the little gap that is left (if any)
+        if (remainder > 0)
+        {
+            bmd.ctx.fillRect(0, dy, bmd.width, remainder);
+        }
+    }
 
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">dirty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    bmd.dirty = true;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">isDragging</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">refresh</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (isDragging)
+    {
+        refresh();
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

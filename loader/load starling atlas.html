@@ -55,44 +55,45 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/loader/load%20starling%20atlas.js" title="loader/load starling atlas.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/loader/load%20starling%20atlas.js" download="" title="Download: loader/load starling atlas.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Phaser can load texture atlas files that use the Starling XML file format.</span>
+    //  Phaser can load texture atlas files that use the Starling XML file format.
 
-    <span class="c1">//  As with all load operations the first parameter is a unique key, which must be unique between all image files.</span>
+    //  As with all load operations the first parameter is a unique key, which must be unique between all image files.
 
-    <span class="c1">//  Next is the texture atlas itself, in this case seacreatures.png</span>
-    <span class="c1">//  Finally is the path to the XML file that goes with the atlas.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlasXML</span><span class="p">(</span><span class="s1">'seacreatures'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures.xml'</span><span class="p">);</span>
+    //  Next is the texture atlas itself, in this case seacreatures.png
+    //  Finally is the path to the XML file that goes with the atlas.
+    game.load.atlasXML('seacreatures', 'assets/sprites/seacreatures.png', 'assets/sprites/seacreatures.xml');
 
-    <span class="c1">//  Note that the XML file should be saved with UTF-8 encoding or some browsers (such as Firefox) won't load it.</span>
+    //  Note that the XML file should be saved with UTF-8 encoding or some browsers (such as Firefox) won't load it.
 
 
 
-    <span class="c1">//  These are just a few images to use in our underwater scene.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'undersea'</span><span class="p">,</span> <span class="s1">'assets/pics/undersea.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'coral'</span><span class="p">,</span> <span class="s1">'assets/pics/seabed.png'</span><span class="p">);</span>
+    //  These are just a few images to use in our underwater scene.
+    game.load.image('undersea', 'assets/pics/undersea.jpg');
+    game.load.image('coral', 'assets/pics/seabed.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">jellyfish</span><span class="p">;</span>
+var jellyfish;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'undersea'</span><span class="p">);</span>
+    game.add.sprite(0, 0, 'undersea');
 
-    <span class="nx">jellyfish</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">330</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'seacreatures'</span><span class="p">);</span>
-    <span class="nx">jellyfish</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'swim'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Animation</span><span class="p">.</span><span class="nx">generateFrameNames</span><span class="p">(</span><span class="s1">'greenJellyfish'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">jellyfish</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'swim'</span><span class="p">);</span>
+    jellyfish = game.add.sprite(330, 100, 'seacreatures');
+    jellyfish.animations.add('swim', Phaser.Animation.generateFrameNames('greenJellyfish', 0, 39, '', 4), 30, true);
+    jellyfish.animations.play('swim');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="s1">'coral'</span><span class="p">);</span>
+    game.add.sprite(0, 466, 'coral');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">jellyfish</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span> <span class="na">y</span><span class="p">:</span> <span class="mi">250</span> <span class="p">},</span> <span class="mi">4000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Quadratic</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(jellyfish).to({ y: 250 }, 4000, Phaser.Easing.Quadratic.InOut, true, 0, 10000, true);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

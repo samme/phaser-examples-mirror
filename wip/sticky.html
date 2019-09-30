@@ -55,54 +55,54 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/sticky.js" title="wip/sticky.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/sticky.js" download="" title="Download: wip/sticky.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span>
-<span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create:
+create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari130xe.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'mushroom'</span><span class="p">,</span> <span class="s1">'assets/sprites/mushroom2.png'</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.load.image('atari', 'assets/sprites/atari130xe.png');
+    game.load.image('mushroom', 'assets/sprites/mushroom2.png');
+}
 
-<span class="kd">var</span> <span class="nx">sprite1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">force2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">takeOff2</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">count2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var sprite1;
+var sprite2;
+var force2 = 0;
+var takeOff2 = false;
+var count2 = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+function create() {
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'atari'</span><span class="p">);</span>
-    <span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'mushroom'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">([</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">sprite2</span><span class="p">],</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    sprite1 = game.add.sprite(300, game.world.height, 'atari');
+    sprite2 = game.add.sprite(300, game.world.height - 200, 'mushroom');
+    game.physics.enable([sprite1, sprite2], Phaser.Physics.ARCADE);
     
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'atari'</span><span class="p">;</span>
-<span class="c1">//    sprite1.body.immovable = true;</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    sprite1.name = 'atari';
+//    sprite1.body.immovable = true;
+    sprite1.body.collideWorldBounds = true;
     
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'mushroom'</span><span class="p">;</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-<span class="p">}</span>
+    sprite2.name = 'mushroom';
+    sprite2.body.gravity.y = 100;
+    sprite2.body.collideWorldBounds = true;
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">sprite2</span><span class="p">,</span> <span class="nx">collisionHandler</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">takeOff2</span><span class="p">)</span>
-        <span class="nx">force2</span> <span class="o">-=</span> <span class="p">.</span><span class="mi">5</span><span class="p">;</span>
-    <span class="nx">sprite2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">force2</span><span class="p">;</span>
-<span class="p">}</span>
+function update() {
+    game.physics.arcade.collide(sprite1, sprite2, collisionHandler, null, this);
+    if (takeOff2)
+        force2 -= .5;
+    sprite2.body.velocity.y += force2;
+}
 
-<span class="kd">function</span> <span class="nx">collisionHandler</span>
-<span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// let it sit in contact for one frame before attempting to take off</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">count2</span><span class="o">++</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="nx">takeOff2</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-<span class="p">}</span>
+function collisionHandler
+(obj1, obj2) {
+    // let it sit in contact for one frame before attempting to take off
+    if (count2++ > 0)
+        takeOff2 = true;
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"force "</span> <span class="o">+</span> <span class="nx">force2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-<span class="p">}</span></code></pre>
+function render() {
+    game.debug.text("force " + force2, 0, 50);
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

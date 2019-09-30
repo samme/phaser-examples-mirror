@@ -55,140 +55,141 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/framedebugger.js" title="wip/framedebugger.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/framedebugger.js" download="" title="Download: wip/framedebugger.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'assets/pics/lance-overdose-loader_eye.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'sheet'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/seacreatures_json.json'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.xml'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'star'</span><span class="p">,</span> <span class="s1">'assets/demoscene/star.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'starfield'</span><span class="p">,</span> <span class="s1">'assets/misc/starfield.jpg'</span><span class="p">);</span>
+    game.load.image('pic', 'assets/pics/lance-overdose-loader_eye.png');
+    game.load.spritesheet('sheet', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
+    game.load.atlas('atlas', 'assets/sprites/seacreatures_json.png', 'assets/sprites/seacreatures_json.json');
+    game.load.bitmapFont('desyrel', 'assets/fonts/bitmapFonts/desyrel.png', 'assets/fonts/bitmapFonts/desyrel.xml');
+    game.load.image('star', 'assets/demoscene/star.png');
+    game.load.image('starfield', 'assets/misc/starfield.jpg');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">distance</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">speed</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">stars</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">max</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">xx</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">yy</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">zz</span> <span class="o">=</span> <span class="p">[];</span>
+var distance = 300;
+var speed = 4;
+var stars;
+var max = 10;
+var xx = [];
+var yy = [];
+var zz = [];
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'starfield'</span><span class="p">);</span>
+    game.add.tileSprite(0, 0, 800, 600, 'starfield');
 
-    <span class="kd">var</span> <span class="nx">graphics</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    var graphics = game.add.graphics(100, 100);
 
-    <span class="c1">// set a fill and line style</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFF3300</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0xffd900</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    // set a fill and line style
+    graphics.beginFill(0xFF3300);
+    graphics.lineStyle(10, 0xffd900, 1);
     
-    <span class="c1">// draw a shape</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">220</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">220</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    // draw a shape
+    graphics.moveTo(50,50);
+    graphics.lineTo(250, 50);
+    graphics.lineTo(100, 100);
+    graphics.lineTo(250, 220);
+    graphics.lineTo(50, 220);
+    graphics.lineTo(50, 50);
+    graphics.endFill();
     
-    <span class="c1">// set a fill and line style again</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0xFF0000</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFF700B</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    // set a fill and line style again
+    graphics.lineStyle(10, 0xFF0000, 0.8);
+    graphics.beginFill(0xFF700B, 1);
     
-    <span class="c1">// draw a second shape</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">210</span><span class="p">,</span><span class="mi">300</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span><span class="mi">320</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">570</span><span class="p">,</span><span class="mi">350</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">quadraticCurveTo</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span><span class="mi">100</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">330</span><span class="p">,</span><span class="mi">120</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">410</span><span class="p">,</span><span class="mi">200</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">210</span><span class="p">,</span><span class="mi">300</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    // draw a second shape
+    graphics.moveTo(210,300);
+    graphics.lineTo(450,320);
+    graphics.lineTo(570,350);
+    graphics.quadraticCurveTo(600, 0, 480,100);
+    graphics.lineTo(330,120);
+    graphics.lineTo(410,200);
+    graphics.lineTo(210,300);
+    graphics.endFill();
     
-    <span class="c1">// draw a rectangle</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x0000FF</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    // draw a rectangle
+    graphics.lineStyle(2, 0x0000FF, 1);
+    graphics.drawRect(50, 250, 100, 100);
     
-    <span class="c1">// draw a circle</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xFFFF0B</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawCircle</span><span class="p">(</span><span class="mi">470</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    // draw a circle
+    graphics.lineStyle(0);
+    graphics.beginFill(0xFFFF0B, 0.5);
+    graphics.drawCircle(470, 200, 200);
+    graphics.endFill();
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mh">0x33FF00</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">);</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+    graphics.lineStyle(20, 0x33FF00);
+    graphics.moveTo(30,30);
+    graphics.lineTo(600, 300);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'pic'</span><span class="p">);</span>
+    game.add.image(0, 0, 'pic');
 
 
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'sheet'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'sheet'</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'sheet'</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+    game.add.sprite(100, 100, 'sheet', 0);
+    game.add.sprite(180, 100, 'sheet', 3);
+    game.add.sprite(240, 100, 'sheet', 6);
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ff0044"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">};</span>
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s2">"Click to run FrameDebugger"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    var style = { font: "32px Arial", fill: "#ff0044", align: "center" };
+    var text = game.add.text(0, game.world.centerY, "Click to run FrameDebugger", style);
 
-    <span class="kd">var</span> <span class="nx">sprites</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">spriteBatch</span><span class="p">();</span>
+    var sprites = game.add.spriteBatch();
 
-    <span class="nx">stars</span> <span class="o">=</span> <span class="p">[];</span>
+    stars = [];
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">max</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">xx</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">800</span><span class="p">)</span> <span class="o">-</span> <span class="mi">400</span><span class="p">;</span>
-        <span class="nx">yy</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">600</span><span class="p">)</span> <span class="o">-</span> <span class="mi">300</span><span class="p">;</span>
-        <span class="nx">zz</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1700</span><span class="p">)</span> <span class="o">-</span> <span class="mi">100</span><span class="p">;</span>
+    for (var i = 0; i < max; i++)
+    {
+        xx[i] = Math.floor(Math.random() * 800) - 400;
+        yy[i] = Math.floor(Math.random() * 600) - 300;
+        zz[i] = Math.floor(Math.random() * 1700) - 100;
 
-        <span class="kd">var</span> <span class="nx">star</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'star'</span><span class="p">);</span>
-        <span class="nx">star</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+        var star = game.make.sprite(0, 0, 'star');
+        star.anchor.set(0.5);
 
-        <span class="nx">sprites</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">star</span><span class="p">);</span>
+        sprites.addChild(star);
 
-        <span class="nx">stars</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">star</span><span class="p">);</span>
-    <span class="p">}</span>
+        stars.push(star);
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'FrameDebugger'</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.add.bitmapText(200, 100, 'desyrel', 'FrameDebugger', 64);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    game.add.sprite(300, 300, 'atlas', 0);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(record, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">record</span><span class="p">()</span> <span class="p">{</span>
+function record() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">fd</span><span class="p">.</span><span class="nx">record</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+    game.fd.record(4);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">max</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">perspective</span> <span class="o">=</span> <span class="nx">distance</span> <span class="o">/</span> <span class="p">(</span><span class="nx">distance</span> <span class="o">-</span> <span class="nx">zz</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span> <span class="o">+</span> <span class="nx">xx</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">*</span> <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">perspective</span><span class="p">;</span>
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span> <span class="o">+</span> <span class="nx">yy</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">*</span> <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">perspective</span><span class="p">;</span>
+    for (var i = 0; i < max; i++)
+    {
+        stars[i].perspective = distance / (distance - zz[i]);
+        stars[i].x = game.world.centerX + xx[i] * stars[i].perspective;
+        stars[i].y = game.world.centerY + yy[i] * stars[i].perspective;
 
-        <span class="nx">zz</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">speed</span><span class="p">;</span>
+        zz[i] += speed;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">zz</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">290</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">zz</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">600</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (zz[i] > 290)
+        {
+            zz[i] -= 600;
+        }
 
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">alpha</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">perspective</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">perspective</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-        <span class="nx">stars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">rotation</span> <span class="o">+=</span> <span class="mf">0.1</span><span class="p">;</span>
+        stars[i].alpha = Math.min(stars[i].perspective / 2, 1);
+        stars[i].scale.set(stars[i].perspective / 2);
+        stars[i].rotation += 0.1;
 
-    <span class="p">}</span>
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

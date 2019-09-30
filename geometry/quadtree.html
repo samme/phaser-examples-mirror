@@ -55,91 +55,92 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/geometry/quadtree.js" title="geometry/quadtree.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/geometry/quadtree.js" download="" title="Download: geometry/quadtree.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">marker</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">quadTree</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">rects</span> <span class="o">=</span> <span class="p">[];</span>
+var marker;
+var quadTree;
+var rects = [];
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">quadTree</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">QuadTree</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    quadTree = new Phaser.QuadTree(0, 0, 800, 600, 10, 4, 0);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">48</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">;</span>
+    for (var i = 0; i < 48; i++)
+    {
+        var x = game.world.randomX;
+        var y = game.world.randomY;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">760</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">x</span> <span class="o">=</span> <span class="mi">760</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (x > 760)
+        {
+            x = 760;
+        }
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="mi">560</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">y</span> <span class="o">=</span> <span class="mi">560</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (y > 560)
+        {
+            y = 560;
+        }
 
-        <span class="kd">var</span> <span class="nx">rect</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-        <span class="nx">rect</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
-        <span class="nx">rect</span><span class="p">.</span><span class="nx">flagged</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">rects</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">rect</span><span class="p">);</span>
-        <span class="nx">quadTree</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">rect</span><span class="p">);</span>
-    <span class="p">}</span>
+        var rect = new Phaser.Rectangle(x, y, 32, 32);
+        rect.id = i;
+        rect.flagged = false;
+        rects.push(rect);
+        quadTree.insert(rect);
+    }
 
-    <span class="nx">marker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">);</span>
+    marker = new Phaser.Rectangle(0, 0, 128, 128);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">retrieve</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(retrieve, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">retrieve</span><span class="p">()</span> <span class="p">{</span>
+function retrieve() {
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">rects</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">rects</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">flagged</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
+    for (var i = 0; i < rects.length; i++)
+    {
+        rects[i].flagged = false;
+    }
 
-    <span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="nx">quadTree</span><span class="p">.</span><span class="nx">retrieve</span><span class="p">(</span><span class="nx">marker</span><span class="p">);</span>
+    var found = quadTree.retrieve(marker);
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">found</span><span class="p">);</span>
+    console.log(found);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">found</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">found</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">flagged</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
+    for (var i = 0; i < found.length; i++)
+    {
+        found[i].flagged = true;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">marker</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-    <span class="nx">marker</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    marker.x = game.input.x;
+    marker.y = game.input.y;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">quadTree</span><span class="p">(</span><span class="nx">quadTree</span><span class="p">);</span>
+    game.debug.quadTree(quadTree);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">rects</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">rects</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">flagged</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rects</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="s1">'#ff0000'</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">rects</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-        <span class="p">}</span>
+    for (var i = 0; i < rects.length; i++)
+    {
+        if (rects[i].flagged)
+        {
+            game.debug.geom(rects[i], '#ff0000');
+        }
+        else
+        {
+            game.debug.geom(rects[i]);
+        }
 
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">rects</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">id</span><span class="p">,</span> <span class="nx">rects</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">rects</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">16</span><span class="p">);</span>
-    <span class="p">}</span>
+        game.debug.text(rects[i].id, rects[i].x + 4, rects[i].y + 16);
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">marker</span><span class="p">,</span> <span class="s1">'#00bff3'</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    game.debug.geom(marker, '#00bff3', false);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,39 +55,40 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bitmapdata/radial%20gradient.js" title="bitmapdata/radial gradient.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bitmapdata/radial%20gradient.js" download="" title="Download: bitmapdata/radial gradient.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">innerCircle</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">outerCircle</span><span class="p">;</span>
+var bmd;
+var innerCircle;
+var outerCircle;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Our BitmapData (same size as our canvas)</span>
-    <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    //  Our BitmapData (same size as our canvas)
+    bmd = game.make.bitmapData(800, 600);
 
-    <span class="c1">//  Add it to the world or we can't see it</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    //  Add it to the world or we can't see it
+    bmd.addToWorld();
 
-    <span class="c1">//  Create the Circles</span>
-    <span class="nx">innerCircle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Circle</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-    <span class="nx">outerCircle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Circle</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+    //  Create the Circles
+    innerCircle = new Phaser.Circle(200, 200, 100);
+    outerCircle = new Phaser.Circle(200, 200, 300);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">innerCircle</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="na">radius</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="mi">3000</span><span class="p">,</span> <span class="s2">"Sine.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(innerCircle).to( { x: 100, y: 100, radius: 1 }, 3000, "Sine.easeInOut", true, 0, -1, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="kd">var</span> <span class="nx">grd</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">createRadialGradient</span><span class="p">(</span><span class="nx">innerCircle</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">innerCircle</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">innerCircle</span><span class="p">.</span><span class="nx">radius</span><span class="p">,</span> <span class="nx">outerCircle</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">outerCircle</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">outerCircle</span><span class="p">.</span><span class="nx">radius</span><span class="p">);</span>
-    <span class="nx">grd</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'#8ED6FF'</span><span class="p">);</span>
-    <span class="nx">grd</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'#003BA2'</span><span class="p">);</span>
+    var grd = bmd.context.createRadialGradient(innerCircle.x, innerCircle.y, innerCircle.radius, outerCircle.x, outerCircle.y, outerCircle.radius);
+    grd.addColorStop(0, '#8ED6FF');
+    grd.addColorStop(1, '#003BA2');
 
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">cls</span><span class="p">();</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">outerCircle</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">outerCircle</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">outerCircle</span><span class="p">.</span><span class="nx">radius</span><span class="p">,</span> <span class="nx">grd</span><span class="p">);</span>
+    bmd.cls();
+    bmd.circle(outerCircle.x, outerCircle.y, outerCircle.radius, grd);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

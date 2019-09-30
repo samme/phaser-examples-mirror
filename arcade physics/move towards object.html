@@ -55,46 +55,47 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/arcade%20physics/move%20towards%20object.js" title="arcade physics/move towards object.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/arcade%20physics/move%20towards%20object.js" download="" title="Download: arcade physics/move towards object.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/shinyball.png'</span><span class="p">);</span>
+    game.load.image('ball', 'assets/sprites/shinyball.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">balls</span><span class="p">;</span>
+var balls;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">balls</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">balls</span><span class="p">.</span><span class="nx">enableBody</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    balls = game.add.group();
+    balls.enableBody = true;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">ball</span> <span class="o">=</span> <span class="nx">balls</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 50; i++)
+    {
+        var ball = balls.create(game.world.randomX, game.world.randomY, 'ball');
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  First is the callback</span>
-        <span class="c1">//  Second is the context in which the callback runs, in this case game.physics.arcade</span>
-        <span class="c1">//  Third is the parameter the callback expects - it is always sent the Group child as the first parameter</span>
-        <span class="nx">balls</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">moveToPointer</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">balls</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'body.velocity.x'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-        <span class="nx">balls</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'body.velocity.y'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    if (game.input.mousePointer.isDown)
+    {
+        //  First is the callback
+        //  Second is the context in which the callback runs, in this case game.physics.arcade
+        //  Third is the parameter the callback expects - it is always sent the Group child as the first parameter
+        balls.forEach(game.physics.arcade.moveToPointer, game.physics.arcade, false, 200);
+    }
+    else
+    {
+        balls.setAll('body.velocity.x', 0);
+        balls.setAll('body.velocity.y', 0);
+    }
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,84 +55,85 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/filters/plane%20deformation.js" title="filters/plane deformation.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/filters/plane%20deformation.js" download="" title="Download: filters/plane deformation.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cyberglow'</span><span class="p">,</span> <span class="s1">'assets/textures/cyberglow.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tron'</span><span class="p">,</span> <span class="s1">'assets/textures/tron.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'metal'</span><span class="p">,</span> <span class="s1">'assets/textures/metal.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'factory'</span><span class="p">,</span> <span class="s1">'assets/textures/factory.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ooze'</span><span class="p">,</span> <span class="s1">'assets/textures/ooze.png'</span><span class="p">);</span>
+    game.load.image('cyberglow', 'assets/textures/cyberglow.png');
+    game.load.image('tron', 'assets/textures/tron.png');
+    game.load.image('metal', 'assets/textures/metal.png');
+    game.load.image('factory', 'assets/textures/factory.png');
+    game.load.image('ooze', 'assets/textures/ooze.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var filter;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Shader by cce (https://www.shadertoy.com/view/XsXGWM)</span>
+    //  Shader by cce (https://www.shadertoy.com/view/XsXGWM)
 
-    <span class="c1">// "vec4 blips = texture2D(iChannel1, maa);",</span>
-    <span class="c1">// "vec4 mixer = texture2D(iChannel1, maa2);",</span>
+    // "vec4 blips = texture2D(iChannel1, maa);",
+    // "vec4 mixer = texture2D(iChannel1, maa2);",
 
-    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+    var fragmentSrc = [
 
-        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+        "precision mediump float;",
 
-        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
-        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
-        <span class="s2">"uniform sampler2D iChannel0;"</span><span class="p">,</span>
+        "uniform float     time;",
+        "uniform vec2      resolution;",
+        "uniform sampler2D iChannel0;",
 
-        <span class="s2">"void main( void ) {"</span><span class="p">,</span>
+        "void main( void ) {",
 
-            <span class="s2">"float t = time;"</span><span class="p">,</span>
+            "float t = time;",
 
-            <span class="s2">"vec2 uv = gl_FragCoord.xy / resolution.xy;"</span><span class="p">,</span>
-            <span class="s2">"vec2 texcoord = gl_FragCoord.xy / vec2(resolution.y);"</span><span class="p">,</span>
+            "vec2 uv = gl_FragCoord.xy / resolution.xy;",
+            "vec2 texcoord = gl_FragCoord.xy / vec2(resolution.y);",
 
-            <span class="s2">"texcoord.y -= t*0.2;"</span><span class="p">,</span>
+            "texcoord.y -= t*0.2;",
 
-            <span class="s2">"float zz = 1.0/(1.0-uv.y*1.7);"</span><span class="p">,</span>
-            <span class="s2">"texcoord.y -= zz * sign(zz);"</span><span class="p">,</span>
+            "float zz = 1.0/(1.0-uv.y*1.7);",
+            "texcoord.y -= zz * sign(zz);",
 
-            <span class="s2">"vec2 maa = texcoord.xy * vec2(zz, 1.0) - vec2(zz, 0.0) ;"</span><span class="p">,</span>
-            <span class="s2">"vec2 maa2 = (texcoord.xy * vec2(zz, 1.0) - vec2(zz, 0.0))*0.3 ;"</span><span class="p">,</span>
-            <span class="s2">"vec4 stone = texture2D(iChannel0, maa);"</span><span class="p">,</span>
-            <span class="s2">"vec4 blips = texture2D(iChannel0, maa);"</span><span class="p">,</span>
-            <span class="s2">"vec4 mixer = texture2D(iChannel0, maa2);"</span><span class="p">,</span>
+            "vec2 maa = texcoord.xy * vec2(zz, 1.0) - vec2(zz, 0.0) ;",
+            "vec2 maa2 = (texcoord.xy * vec2(zz, 1.0) - vec2(zz, 0.0))*0.3 ;",
+            "vec4 stone = texture2D(iChannel0, maa);",
+            "vec4 blips = texture2D(iChannel0, maa);",
+            "vec4 mixer = texture2D(iChannel0, maa2);",
 
-            <span class="s2">"float shade = abs(1.0/zz);"</span><span class="p">,</span>
+            "float shade = abs(1.0/zz);",
 
-            <span class="s2">"vec3 outp = mix(shade*stone.rgb, mix(1.0, shade, abs(sin(t+maa.y-sin(maa.x))))*blips.rgb, min(1.0, pow(mixer.g*2.1, 2.0)));"</span><span class="p">,</span>
-            <span class="s2">"gl_FragColor = vec4(outp,1.0);"</span><span class="p">,</span>
+            "vec3 outp = mix(shade*stone.rgb, mix(1.0, shade, abs(sin(t+maa.y-sin(maa.x))))*blips.rgb, min(1.0, pow(mixer.g*2.1, 2.0)));",
+            "gl_FragColor = vec4(outp,1.0);",
 
-        <span class="s2">"}"</span>
-    <span class="p">];</span>
+        "}"
+    ];
 
-    <span class="c1">//  Texture must be power-of-two sized or the filter will break</span>
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'cyberglow'</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+    //  Texture must be power-of-two sized or the filter will break
+    sprite = game.add.sprite(0, 0, 'cyberglow');
+    sprite.width = 800;
+    sprite.height = 600;
 
-    <span class="kd">var</span> <span class="nx">customUniforms</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">iChannel0</span><span class="p">:</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="s1">'sampler2D'</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">texture</span><span class="p">,</span> <span class="na">textureData</span><span class="p">:</span> <span class="p">{</span> <span class="na">repeat</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">}</span>
-    <span class="p">};</span>
+    var customUniforms = {
+        iChannel0: { type: 'sampler2D', value: sprite.texture, textureData: { repeat: true } }
+    };
 
-    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">customUniforms</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    filter = new Phaser.Filter(game, customUniforms, fragmentSrc);
+    filter.setResolution(800, 600);
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+    sprite.filters = [ filter ];
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+    filter.update();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

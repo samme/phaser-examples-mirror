@@ -55,288 +55,288 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/virtualjoystick/shoot%20em%20up.js" title="virtualjoystick/shoot em up.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/virtualjoystick/shoot%20em%20up.js" download="" title="Download: virtualjoystick/shoot em up.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Virtual Joystick Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/virtualjoystick
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example');
 
-<span class="kd">var</span> <span class="nx">PhaserGame</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+var PhaserGame = function () {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    this.background = null;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">player</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">speed</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
+    this.player = null;
+    this.speed = 300;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">weapon1</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">weapon2</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">weapon3</span><span class="p">;</span>
+    this.weapon1;
+    this.weapon2;
+    this.weapon3;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">;</span>
+    this.pad;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">;</span>
+    this.stick;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">buttonA</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">buttonB</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">buttonC</span><span class="p">;</span>
+    this.buttonA;
+    this.buttonB;
+    this.buttonC;
 
-<span class="p">};</span>
+};
 
-<span class="nx">PhaserGame</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+PhaserGame.prototype = {
 
-    <span class="na">init</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    init: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">renderSession</span><span class="p">.</span><span class="nx">roundPixels</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+        this.game.renderer.renderSession.roundPixels = true;
+        this.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    preload: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'arcade'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/arcade-joystick.png'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/arcade-joystick.json'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'background'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/back.png'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'player'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/ship.png'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bullet2'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/bullet2.png'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bullet9'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/bullet9.png'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bullet10'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/bullet10.png'</span><span class="p">);</span>
+        this.load.atlas('arcade', 'assets/virtualjoystick/skins/arcade-joystick.png', 'assets/virtualjoystick/skins/arcade-joystick.json');
+        this.load.image('background', 'assets/virtualjoystick/back.png');
+        this.load.image('player', 'assets/virtualjoystick/ship.png');
+        this.load.image('bullet2', 'assets/virtualjoystick/bullet2.png');
+        this.load.image('bullet9', 'assets/virtualjoystick/bullet9.png');
+        this.load.image('bullet10', 'assets/virtualjoystick/bullet10.png');
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'background'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">background</span><span class="p">.</span><span class="nx">autoScroll</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        this.background = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'background');
+        this.background.autoScroll(-40, 0);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">weapon1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Weapon</span><span class="p">.</span><span class="nx">SingleBullet</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">weapon2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Weapon</span><span class="p">.</span><span class="nx">Rockets</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">weapon3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Weapon</span><span class="p">.</span><span class="nx">ScaleBullet</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">);</span>
+        this.weapon1 = new Weapon.SingleBullet(this.game);
+        this.weapon2 = new Weapon.Rockets(this.game);
+        this.weapon3 = new Weapon.ScaleBullet(this.game);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">player</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'player'</span><span class="p">);</span>
+        this.player = this.add.sprite(64, 200, 'player');
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">player</span><span class="p">);</span>
+        this.physics.arcade.enable(this.player);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        this.player.body.collideWorldBounds = true;
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">pad</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">VirtualJoystick</span><span class="p">);</span>
+        this.pad = this.game.plugins.add(Phaser.VirtualJoystick);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addStick</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">520</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">deadZone</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">scale</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+        this.stick = this.pad.addStick(80, 520, 100, 'arcade');
+        this.stick.deadZone = 0;
+        this.stick.scale = 0.5;
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonA</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">520</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">,</span> <span class="s1">'button1-up'</span><span class="p">,</span> <span class="s1">'button1-down'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonA</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fireBullet</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonA</span><span class="p">.</span><span class="nx">scale</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonA</span><span class="p">.</span><span class="nx">repeatRate</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonA</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">CONTROL</span><span class="p">);</span>
+        this.buttonA = this.pad.addButton(450, 520, 'arcade', 'button1-up', 'button1-down');
+        this.buttonA.onDown.add(this.fireBullet, this);
+        this.buttonA.scale = 0.9;
+        this.buttonA.repeatRate = 100;
+        this.buttonA.addKey(Phaser.Keyboard.CONTROL);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonB</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="mi">590</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">,</span> <span class="s1">'button2-up'</span><span class="p">,</span> <span class="s1">'button2-down'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonB</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fireRocket</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonB</span><span class="p">.</span><span class="nx">scale</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonB</span><span class="p">.</span><span class="nx">repeatRate</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonB</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">Z</span><span class="p">);</span>
+        this.buttonB = this.pad.addButton(590, 420, 'arcade', 'button2-up', 'button2-down');
+        this.buttonB.onDown.add(this.fireRocket, this);
+        this.buttonB.scale = 0.9;
+        this.buttonB.repeatRate = 500;
+        this.buttonB.addKey(Phaser.Keyboard.Z);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonC</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="mi">720</span><span class="p">,</span> <span class="mi">520</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">,</span> <span class="s1">'button3-up'</span><span class="p">,</span> <span class="s1">'button3-down'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonC</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fireSpreadShot</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonC</span><span class="p">.</span><span class="nx">scale</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">buttonC</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span><span class="p">);</span>
+        this.buttonC = this.pad.addButton(720, 520, 'arcade', 'button3-up', 'button3-down');
+        this.buttonC.onDown.add(this.fireSpreadShot, this);
+        this.buttonC.scale = 0.9;
+        this.buttonC.addKey(Phaser.Keyboard.SPACEBAR);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">fireBullet</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    fireBullet: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">weapon1</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">player</span><span class="p">);</span>
+        this.weapon1.fire(this.player);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">fireRocket</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    fireRocket: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">weapon2</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">player</span><span class="p">);</span>
+        this.weapon2.fire(this.player);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">fireSpreadShot</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    fireSpreadShot: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">weapon3</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">player</span><span class="p">);</span>
+        this.weapon3.fire(this.player);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    update: function () {
 
-        <span class="kd">var</span> <span class="nx">maxSpeed</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
+        var maxSpeed = 300;
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">velocityFromRotation</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">rotation</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick</span><span class="p">.</span><span class="nx">force</span> <span class="o">*</span> <span class="nx">maxSpeed</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-        <span class="p">}</span>
+        if (this.stick.isDown)
+        {
+            this.physics.arcade.velocityFromRotation(this.stick.rotation, this.stick.force * maxSpeed, this.player.body.velocity);
+        }
+        else
+        {
+            this.player.body.velocity.set(0);
+        }
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="kd">var</span> <span class="nx">Bullet</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+var Bullet = function (game, key) {
 
-    <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">game</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">key</span><span class="p">);</span>
+    Phaser.Sprite.call(this, game, 0, 0, key);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">baseTexture</span><span class="p">.</span><span class="nx">scaleMode</span> <span class="o">=</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">scaleModes</span><span class="p">.</span><span class="nx">NEAREST</span><span class="p">;</span>
+    this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    this.anchor.set(0.5);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">checkWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">outOfBoundsKill</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">exists</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    this.checkWorldBounds = true;
+    this.outOfBoundsKill = true;
+    this.exists = false;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">tracking</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">scaleSpeed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    this.tracking = false;
+    this.scaleSpeed = 0;
 
-<span class="p">};</span>
+};
 
-<span class="nx">Bullet</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
-<span class="nx">Bullet</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Bullet</span><span class="p">;</span>
+Bullet.prototype = Object.create(Phaser.Sprite.prototype);
+Bullet.prototype.constructor = Bullet;
 
-<span class="nx">Bullet</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">fire</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">angle</span><span class="p">,</span> <span class="nx">speed</span><span class="p">,</span> <span class="nx">gx</span><span class="p">,</span> <span class="nx">gy</span><span class="p">)</span> <span class="p">{</span>
+Bullet.prototype.fire = function (x, y, angle, speed, gx, gy) {
 
-    <span class="nx">gx</span> <span class="o">=</span> <span class="nx">gx</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nx">gy</span> <span class="o">=</span> <span class="nx">gy</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+    gx = gx || 0;
+    gy = gy || 0;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    this.reset(x, y);
+    this.scale.set(1);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">velocityFromAngle</span><span class="p">(</span><span class="nx">angle</span><span class="p">,</span> <span class="nx">speed</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
+    this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="nx">angle</span><span class="p">;</span>
+    this.angle = angle;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">gx</span><span class="p">,</span> <span class="nx">gy</span><span class="p">);</span>
+    this.body.gravity.set(gx, gy);
 
-<span class="p">};</span>
+};
 
-<span class="nx">Bullet</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">update</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+Bullet.prototype.update = function () {
 
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tracking</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (this.tracking)
+    {
+        this.rotation = Math.atan2(this.body.velocity.y, this.body.velocity.x);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">scaleSpeed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">scaleSpeed</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">scaleSpeed</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (this.scaleSpeed > 0)
+    {
+        this.scale.x += this.scaleSpeed;
+        this.scale.y += this.scaleSpeed;
+    }
 
-<span class="p">};</span>
+};
 
-<span class="kd">var</span> <span class="nx">Weapon</span> <span class="o">=</span> <span class="p">{};</span>
+var Weapon = {};
 
-<span class="c1">////////////////////////////////////////////////////</span>
-<span class="c1">//  A single bullet is fired in front of the ship //</span>
-<span class="c1">////////////////////////////////////////////////////</span>
+////////////////////////////////////////////////////
+//  A single bullet is fired in front of the ship //
+////////////////////////////////////////////////////
 
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">SingleBullet</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+Weapon.SingleBullet = function (game) {
 
-    <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">game</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">,</span> <span class="s1">'Single Bullet'</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">nextFire</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">bulletSpeed</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">fireRate</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+    this.nextFire = 0;
+    this.bulletSpeed = 600;
+    this.fireRate = 100;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">64</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Bullet</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="s1">'bullet2'</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 64; i++)
+    {
+        this.add(new Bullet(game, 'bullet2'), true);
+    }
 
-    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    return this;
 
-<span class="p">};</span>
+};
 
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">SingleBullet</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">SingleBullet</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Weapon</span><span class="p">.</span><span class="nx">SingleBullet</span><span class="p">;</span>
+Weapon.SingleBullet.prototype = Object.create(Phaser.Group.prototype);
+Weapon.SingleBullet.prototype.constructor = Weapon.SingleBullet;
 
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">SingleBullet</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">fire</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">source</span><span class="p">)</span> <span class="p">{</span>
+Weapon.SingleBullet.prototype.fire = function (source) {
 
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">source</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">source</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
+    var x = source.x + 10;
+    var y = source.y + 10;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">getFirstExists</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">fire</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">bulletSpeed</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
 
-<span class="p">};</span>
+};
 
-<span class="c1">///////////////////////////////////////////////////////////////////</span>
-<span class="c1">//  Rockets that visually track the direction they're heading in //</span>
-<span class="c1">///////////////////////////////////////////////////////////////////</span>
+///////////////////////////////////////////////////////////////////
+//  Rockets that visually track the direction they're heading in //
+///////////////////////////////////////////////////////////////////
 
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">Rockets</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+Weapon.Rockets = function (game) {
 
-    <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">game</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">,</span> <span class="s1">'Rockets'</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    Phaser.Group.call(this, game, game.world, 'Rockets', false, true, Phaser.Physics.ARCADE);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">bulletSpeed</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+    this.bulletSpeed = 400;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Bullet</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="s1">'bullet10'</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 32; i++)
+    {
+        this.add(new Bullet(game, 'bullet10'), true);
+    }
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'tracking'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    this.setAll('tracking', true);
 
-    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    return this;
 
-<span class="p">};</span>
+};
 
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">Rockets</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">Rockets</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Weapon</span><span class="p">.</span><span class="nx">Rockets</span><span class="p">;</span>
+Weapon.Rockets.prototype = Object.create(Phaser.Group.prototype);
+Weapon.Rockets.prototype.constructor = Weapon.Rockets;
 
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">Rockets</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">fire</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">source</span><span class="p">)</span> <span class="p">{</span>
+Weapon.Rockets.prototype.fire = function (source) {
 
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">source</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">source</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
+    var x = source.x + 10;
+    var y = source.y + 10;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">getFirstExists</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">fire</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">bulletSpeed</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">700</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">getFirstExists</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">fire</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">bulletSpeed</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">700</span><span class="p">);</span>
+    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, -700);
+    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 700);
 
-<span class="p">};</span>
+};
 
-<span class="c1">////////////////////////////////////////////////////////////////////////</span>
-<span class="c1">//  A single bullet that scales in size as it moves across the screen //</span>
-<span class="c1">////////////////////////////////////////////////////////////////////////</span>
+////////////////////////////////////////////////////////////////////////
+//  A single bullet that scales in size as it moves across the screen //
+////////////////////////////////////////////////////////////////////////
 
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">ScaleBullet</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+Weapon.ScaleBullet = function (game) {
 
-    <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">game</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">,</span> <span class="s1">'Scale Bullet'</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    Phaser.Group.call(this, game, game.world, 'Scale Bullet', false, true, Phaser.Physics.ARCADE);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">bulletSpeed</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    this.bulletSpeed = 800;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Bullet</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="s1">'bullet9'</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 32; i++)
+    {
+        this.add(new Bullet(game, 'bullet9'), true);
+    }
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'scaleSpeed'</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">);</span>
+    this.setAll('scaleSpeed', 0.05);
 
-    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    return this;
 
-<span class="p">};</span>
+};
 
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">ScaleBullet</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">ScaleBullet</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Weapon</span><span class="p">.</span><span class="nx">ScaleBullet</span><span class="p">;</span>
+Weapon.ScaleBullet.prototype = Object.create(Phaser.Group.prototype);
+Weapon.ScaleBullet.prototype.constructor = Weapon.ScaleBullet;
 
-<span class="nx">Weapon</span><span class="p">.</span><span class="nx">ScaleBullet</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">fire</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">source</span><span class="p">)</span> <span class="p">{</span>
+Weapon.ScaleBullet.prototype.fire = function (source) {
 
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">source</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">source</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
+    var x = source.x + 10;
+    var y = source.y + 10;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">getFirstExists</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">fire</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">bulletSpeed</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
 
-<span class="p">};</span>
+};
 
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Game'</span><span class="p">,</span> <span class="nx">PhaserGame</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+game.state.add('Game', PhaserGame, true);
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

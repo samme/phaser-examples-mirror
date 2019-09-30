@@ -55,78 +55,78 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tilemaps/phaser%20tiled%20plugin.js" title="tilemaps/phaser tiled plugin.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tilemaps/phaser%20tiled%20plugin.js" download="" title="Download: tilemaps/phaser tiled plugin.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">init</span><span class="p">:</span> <span class="nx">init</span><span class="p">,</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { init: init, preload: preload, create: create, update: update });
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">lastPos</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">pan</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+var lastPos;
+var pan = false;
 
-<span class="kd">function</span> <span class="nx">init</span> <span class="p">()</span> <span class="p">{</span>
+function init () {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Tiled</span><span class="p">);</span>
+    game.add.plugin(Phaser.Plugin.Tiled);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">preload</span> <span class="p">()</span> <span class="p">{</span>
+function preload () {
 
-    <span class="c1">// game.load.pack('Ortho_1_16__16_large.json', '/phaser-tiled/testmaps/maps/tilemap-assets2.json', null, this);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">pack</span><span class="p">(</span><span class="s1">'Ortho_1_32__32_objects.json'</span><span class="p">,</span> <span class="s1">'/phaser-tiled/testmaps/maps/tilemap-assets2.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    // game.load.pack('Ortho_1_16__16_large.json', '/phaser-tiled/testmaps/maps/tilemap-assets2.json', null, this);
+    game.load.pack('Ortho_1_32__32_objects.json', '/phaser-tiled/testmaps/maps/tilemap-assets2.json', null, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span> <span class="p">()</span> <span class="p">{</span>
+function create () {
 
-    <span class="c1">// var map = game.add.tiledmap('Ortho_1_16__16_large.json');</span>
-    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tiledmap</span><span class="p">(</span><span class="s1">'Ortho_1_32__32_objects.json'</span><span class="p">);</span>
+    // var map = game.add.tiledmap('Ortho_1_16__16_large.json');
+    var map = game.add.tiledmap('Ortho_1_32__32_objects.json');
 
-    <span class="nx">map</span><span class="p">.</span><span class="nx">spawnObjects</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+    map.spawnObjects(function (obj) {
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">type</span> <span class="o">!==</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">SPRITE</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        if (obj.type !== Phaser.SPRITE) return;
 
-        <span class="nx">obj</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">obj</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
+        obj.inputEnabled = true;
+        obj.input.enableDrag();
 
-    <span class="p">});</span>
+    });
 
-    <span class="nx">lastPos</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">();</span>
-<span class="p">}</span>
+    lastPos = new Phaser.Point();
+}
 
-<span class="kd">function</span> <span class="nx">update</span> <span class="p">()</span> <span class="p">{</span>
+function update () {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">active</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">moveCamera</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (game.input.mousePointer.active)
+    {
+        moveCamera(game.input.mousePointer);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pointer1</span><span class="p">.</span><span class="nx">active</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">moveCamera</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pointer1</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (game.input.pointer1.active)
+    {
+        moveCamera(game.input.pointer1);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">moveCamera</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function moveCamera (pointer) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">timeDown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    if (!pointer.timeDown) return;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">isDown</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">targetObject</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">pan</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">lastPos</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">lastPos</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="p">}</span>
+    if (pointer.isDown && !pointer.targetObject)
+    {
+        if (pan)
+        {
+            game.camera.x += lastPos.x - pointer.position.x;
+            game.camera.y += lastPos.y - pointer.position.y;
+        }
 
-        <span class="nx">lastPos</span><span class="p">.</span><span class="nx">copyFrom</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">position</span><span class="p">);</span>
-        <span class="nx">pan</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
+        lastPos.copyFrom(pointer.position);
+        pan = true;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">isUp</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">pan</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    if (pointer.isUp)
+    {
+        pan = false;
+    }
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

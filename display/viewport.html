@@ -55,57 +55,58 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/viewport.js" title="display/viewport.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/viewport.js" download="" title="Download: display/viewport.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#440e62'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#440e62';
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span> <span class="p">()</span> <span class="p">{</span>
+function render () {
 
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">yi</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+    var x = 32;
+    var y = 0;
+    var yi = 32;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Viewport'</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
+    game.debug.text('Viewport', x, y += yi);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Viewport Width: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">viewportWidth</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'window.innerWidth: '</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'window.outerWidth: '</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">outerWidth</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
+    game.debug.text('Viewport Width: ' + game.scale.viewportWidth, x, y += yi);
+    game.debug.text('window.innerWidth: ' + window.innerWidth, x, y += yi);
+    game.debug.text('window.outerWidth: ' + window.outerWidth, x, y += yi);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Viewport Height: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">viewportHeight</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'window.innerHeight: '</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'window.outerHeight: '</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">outerHeight</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
+    game.debug.text('Viewport Height: ' + game.scale.viewportHeight, x, y += yi);
+    game.debug.text('window.innerHeight: ' + window.innerHeight, x, y += yi);
+    game.debug.text('window.outerHeight: ' + window.outerHeight, x, y += yi);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Document'</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
+    game.debug.text('Document', x, y += yi*2);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Document Width: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">documentWidth</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Document Height: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">documentHeight</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
+    game.debug.text('Document Width: ' + game.scale.documentWidth, x, y += yi);
+    game.debug.text('Document Height: ' + game.scale.documentHeight, x, y += yi);
 
-    <span class="c1">//  Device: How to get device size.</span>
+    //  Device: How to get device size.
 
-    <span class="c1">//  Use window.screen.width for device width and window.screen.height for device height. </span>
-    <span class="c1">//  .availWidth and .availHeight give you the device size minus UI taskbars. (Try on an iPhone.) </span>
-    <span class="c1">//  Device size is static and does not change when the page is resized or rotated.</span>
+    //  Use window.screen.width for device width and window.screen.height for device height. 
+    //  .availWidth and .availHeight give you the device size minus UI taskbars. (Try on an iPhone.) 
+    //  Device size is static and does not change when the page is resized or rotated.
 
-    <span class="nx">x</span> <span class="o">=</span> <span class="mi">350</span><span class="p">;</span>
-    <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    x = 350;
+    y = 0;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Device'</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
+    game.debug.text('Device', x, y += yi);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'window.screen.width: '</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">screen</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'window.screen.availWidth: '</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">screen</span><span class="p">.</span><span class="nx">availWidth</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'window.screen.height: '</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">screen</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'window.screen.availHeight: '</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">screen</span><span class="p">.</span><span class="nx">availHeight</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="nx">yi</span><span class="p">);</span>
+    game.debug.text('window.screen.width: ' + window.screen.width, x, y += yi);
+    game.debug.text('window.screen.availWidth: ' + window.screen.availWidth, x, y += yi);
+    game.debug.text('window.screen.height: ' + window.screen.height, x, y += yi);
+    game.debug.text('window.screen.availHeight: ' + window.screen.availHeight, x, y += yi);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

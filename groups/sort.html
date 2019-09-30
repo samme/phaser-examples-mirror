@@ -55,62 +55,62 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/sort.js" title="groups/sort.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/sort.js" download="" title="Download: groups/sort.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'trees'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/walls_1x2.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.load.spritesheet('trees', 'assets/tilemaps/tiles/walls_1x2.png', 32, 64);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    group = game.add.group();
 
-    <span class="kd">var</span> <span class="nx">locs</span> <span class="o">=</span> <span class="p">[];</span>
+    var locs = [];
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  This line tests integer sorting</span>
-        <span class="c1">// locs.push((i * 32) + Math.random());</span>
+    for (var i = 0; i < 16; i++)
+    {
+        //  This line tests integer sorting
+        // locs.push((i * 32) + Math.random());
 
-        <span class="c1">//  This one tests float sorting</span>
-        <span class="nx">locs</span><span class="p">.</span><span class="nx">push</span><span class="p">((</span><span class="nx">i</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">());</span>
-    <span class="p">}</span>
+        //  This one tests float sorting
+        locs.push((i * 32) + Math.random());
+    }
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">locs</span><span class="p">);</span>
+    console.log(locs);
 
-    <span class="c1">//  Shuffle our positions</span>
-    <span class="nx">locs</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">ArrayUtils</span><span class="p">.</span><span class="nx">shuffle</span><span class="p">(</span><span class="nx">locs</span><span class="p">);</span>
+    //  Shuffle our positions
+    locs = Phaser.ArrayUtils.shuffle(locs);
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">locs</span><span class="p">);</span>
+    console.log(locs);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="nx">locs</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="s1">'trees'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 16; i++)
+    {
+        group.create(400, locs[i], 'trees', 0);
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">sort</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.addOnce(sort, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">sort</span><span class="p">()</span> <span class="p">{</span>
+function sort() {
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">SORT_ASCENDING</span><span class="p">);</span>
+    group.sort('y', Phaser.Group.SORT_ASCENDING);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">group</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">z</span><span class="p">,</span> <span class="s1">'='</span><span class="p">,</span> <span class="nx">group</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 16; i++)
+    {
+        console.log(group.children[i].z, '=', group.children[i].y);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Click to sort'</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    game.debug.text('Click to sort', 10, 20);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,58 +55,59 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/filters/rainbow%20bars.js" title="filters/rainbow bars.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/filters/rainbow%20bars.js" download="" title="Download: filters/rainbow bars.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var filter;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// By: Brandon Fogerty</span>
-    <span class="c1">// bfogerty at gmail dot com</span>
+    // By: Brandon Fogerty
+    // bfogerty at gmail dot com
 
-    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
-        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
-        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
+    var fragmentSrc = [
+        "precision mediump float;",
+        "uniform vec2      resolution;",
+        "uniform float     time;",
 
-        <span class="s2">"void main( void )"</span><span class="p">,</span>
-        <span class="s2">"{"</span><span class="p">,</span>
-            <span class="s2">"vec2 p = ( gl_FragCoord.xy / resolution.xy ) * 2.0 - 1.0;"</span><span class="p">,</span>
+        "void main( void )",
+        "{",
+            "vec2 p = ( gl_FragCoord.xy / resolution.xy ) * 2.0 - 1.0;",
 
-            <span class="s2">"vec3 c = vec3( 0.0 );"</span><span class="p">,</span>
+            "vec3 c = vec3( 0.0 );",
 
-            <span class="s2">"float amplitude = 0.50;"</span><span class="p">,</span>
-            <span class="s2">"float glowT = sin(time) * 0.5 + 0.5;"</span><span class="p">,</span>
-            <span class="s2">"float glowFactor = mix( 0.15, 0.35, glowT );"</span><span class="p">,</span>
+            "float amplitude = 0.50;",
+            "float glowT = sin(time) * 0.5 + 0.5;",
+            "float glowFactor = mix( 0.15, 0.35, glowT );",
 
-            <span class="s2">"c += vec3(0.02, 0.03, 0.13) * ( glowFactor * abs( 1.0 / sin(p.x + sin( p.y + time ) * amplitude ) ));"</span><span class="p">,</span>
-            <span class="s2">"c += vec3(0.02, 0.10, 0.03) * ( glowFactor * abs( 1.0 / sin(p.x + cos( p.y + time+1.00 ) * amplitude+0.1 ) ));"</span><span class="p">,</span>
-            <span class="s2">"c += vec3(0.15, 0.05, 0.20) * ( glowFactor * abs( 1.0 / sin(p.y + sin( p.x + time+1.30 ) * amplitude+0.15 ) ));"</span><span class="p">,</span>
-            <span class="s2">"c += vec3(0.20, 0.05, 0.05) * ( glowFactor * abs( 1.0 / sin(p.y + cos( p.x + time+3.00 ) * amplitude+0.3 ) ));"</span><span class="p">,</span>
-            <span class="s2">"c += vec3(0.17, 0.17, 0.05) * ( glowFactor * abs( 1.0 / sin(p.y + cos( p.x + time+5.00 ) * amplitude+0.2 ) ));"</span><span class="p">,</span>
+            "c += vec3(0.02, 0.03, 0.13) * ( glowFactor * abs( 1.0 / sin(p.x + sin( p.y + time ) * amplitude ) ));",
+            "c += vec3(0.02, 0.10, 0.03) * ( glowFactor * abs( 1.0 / sin(p.x + cos( p.y + time+1.00 ) * amplitude+0.1 ) ));",
+            "c += vec3(0.15, 0.05, 0.20) * ( glowFactor * abs( 1.0 / sin(p.y + sin( p.x + time+1.30 ) * amplitude+0.15 ) ));",
+            "c += vec3(0.20, 0.05, 0.05) * ( glowFactor * abs( 1.0 / sin(p.y + cos( p.x + time+3.00 ) * amplitude+0.3 ) ));",
+            "c += vec3(0.17, 0.17, 0.05) * ( glowFactor * abs( 1.0 / sin(p.y + cos( p.x + time+5.00 ) * amplitude+0.2 ) ));",
 
-            <span class="s2">"gl_FragColor = vec4( c, 1.0 );"</span><span class="p">,</span>
-        <span class="s2">"}"</span>
-    <span class="p">];</span>
+            "gl_FragColor = vec4( c, 1.0 );",
+        "}"
+    ];
 
-    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    filter = new Phaser.Filter(game, null, fragmentSrc);
+    filter.setResolution(800, 600);
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+    sprite = game.add.sprite();
+    sprite.width = 800;
+    sprite.height = 600;
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+    sprite.filters = [ filter ];
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+    filter.update();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

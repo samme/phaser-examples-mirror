@@ -55,168 +55,168 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/games/defender.js" title="games/defender.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/games/defender.js" download="" title="Download: games/defender.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span> <span class="p">()</span> <span class="p">{</span>
+function preload () {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'player'</span><span class="p">,</span> <span class="s1">'assets/games/defender/ship.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'star'</span><span class="p">,</span> <span class="s1">'assets/demoscene/star2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'baddie'</span><span class="p">,</span> <span class="s1">'assets/sprites/space-baddie.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'lazer'</span><span class="p">,</span> <span class="s1">'assets/games/defender/laser.png'</span><span class="p">,</span> <span class="s1">'assets/games/defender/laser.json'</span><span class="p">);</span>
+    game.load.image('player', 'assets/games/defender/ship.png');
+    game.load.image('star', 'assets/demoscene/star2.png');
+    game.load.image('baddie', 'assets/sprites/space-baddie.png');
+    game.load.atlas('lazer', 'assets/games/defender/laser.png', 'assets/games/defender/laser.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">stars</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">baddies</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">lazers</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">player</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">fireButton</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bulletTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">frameTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">frames</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">prevCamX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var stars;
+var baddies;
+var lazers;
+var player;
+var cursors;
+var fireButton;
+var bulletTime = 0;
+var frameTime = 0;
+var frames;
+var prevCamX = 0;
 
-<span class="kd">function</span> <span class="nx">create</span> <span class="p">()</span> <span class="p">{</span>
+function create () {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    game.world.setBounds(0, 0, 800*4, 600);
 
-    <span class="nx">frames</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Animation</span><span class="p">.</span><span class="nx">generateFrameNames</span><span class="p">(</span><span class="s1">'frame'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">frames</span><span class="p">.</span><span class="nx">unshift</span><span class="p">(</span><span class="s1">'frame02'</span><span class="p">);</span>
+    frames = Phaser.Animation.generateFrameNames('frame', 2, 30, '', 2);
+    frames.unshift('frame02');
 
-    <span class="nx">stars</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    stars = game.add.group();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">stars</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'star'</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 128; i++)
+    {
+        stars.create(game.world.randomX, game.world.randomY, 'star');
+    }
 
-    <span class="nx">baddies</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    baddies = game.add.group();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">baddies</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'baddie'</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 16; i++)
+    {
+        baddies.create(game.world.randomX, game.world.randomY, 'baddie');
+    }
 
-    <span class="nx">lazers</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    lazers = game.add.group();
 
-    <span class="nx">player</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'player'</span><span class="p">);</span>
-    <span class="nx">player</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    player = game.add.sprite(100, 300, 'player');
+    player.anchor.x = 0.5;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">player</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Camera</span><span class="p">.</span><span class="nx">FOLLOW_LOCKON</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+    game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON, 0.1);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
-    <span class="nx">fireButton</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span><span class="p">);</span>
+    cursors = game.input.keyboard.createCursorKeys();
+    fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
-    <span class="nx">prevCamX</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    prevCamX = game.camera.x;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span> <span class="p">()</span> <span class="p">{</span>
+function update () {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="mi">8</span><span class="p">;</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">8</span><span class="p">;</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        player.x -= 8;
+        player.scale.x = -1;
+    }
+    else if (cursors.right.isDown)
+    {
+        player.x += 8;
+        player.scale.x = 1;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="mi">8</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">player</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mi">8</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        player.y -= 8;
+    }
+    else if (cursors.down.isDown)
+    {
+        player.y += 8;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">fireButton</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">fireBullet</span><span class="p">();</span>
-    <span class="p">}</span>
+    if (fireButton.isDown)
+    {
+        fireBullet();
+    }
 
-    <span class="nx">lazers</span><span class="p">.</span><span class="nx">forEachAlive</span><span class="p">(</span><span class="nx">updateBullets</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    lazers.forEachAlive(updateBullets, this);
 
-    <span class="nx">prevCamX</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    prevCamX = game.camera.x;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">updateBullets</span> <span class="p">(</span><span class="nx">lazer</span><span class="p">)</span> <span class="p">{</span>
+function updateBullets (lazer) {
 
-    <span class="c1">// if (game.time.now &gt; frameTime)</span>
-    <span class="c1">// {</span>
-    <span class="c1">//     frameTime = game.time.now + 500;</span>
-    <span class="c1">// }</span>
-    <span class="c1">// else</span>
-    <span class="c1">// {</span>
-    <span class="c1">//     return;</span>
-    <span class="c1">// }</span>
+    // if (game.time.now > frameTime)
+    // {
+    //     frameTime = game.time.now + 500;
+    // }
+    // else
+    // {
+    //     return;
+    // }
 
-    <span class="c1">//  Adjust for camera scrolling</span>
-    <span class="kd">var</span> <span class="nx">camDelta</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">prevCamX</span><span class="p">;</span>
-    <span class="nx">lazer</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">camDelta</span><span class="p">;</span>
+    //  Adjust for camera scrolling
+    var camDelta = game.camera.x - prevCamX;
+    lazer.x += camDelta;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">lazer</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">!==</span> <span class="s1">'frame30'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">lazer</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">lazer</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">lazer</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">16</span><span class="p">;</span>
+    if (lazer.animations.frameName !== 'frame30')
+    {
+        lazer.animations.next();
+    }
+    else
+    {
+        if (lazer.scale.x === 1)
+        {
+            lazer.x += 16;
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">lazer</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">right</span> <span class="o">-</span> <span class="mi">224</span><span class="p">))</span>
-            <span class="p">{</span>
-                <span class="nx">lazer</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="nx">lazer</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="mi">16</span><span class="p">;</span>
+            if (lazer.x > (game.camera.view.right - 224))
+            {
+                lazer.kill();
+            }
+        }
+        else
+        {
+            lazer.x -= 16;
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">lazer</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="mi">224</span><span class="p">))</span>
-            <span class="p">{</span>
-                <span class="nx">lazer</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+            if (lazer.x < (game.camera.view.left - 224))
+            {
+                lazer.kill();
+            }
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">fireBullet</span> <span class="p">()</span> <span class="p">{</span>
+function fireBullet () {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;</span> <span class="nx">bulletTime</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Grab the first bullet we can from the pool</span>
-        <span class="nx">lazer</span> <span class="o">=</span> <span class="nx">lazers</span><span class="p">.</span><span class="nx">getFirstDead</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="nx">player</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">24</span> <span class="o">*</span> <span class="nx">player</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">player</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">'lazer'</span><span class="p">);</span>
+    if (game.time.now > bulletTime)
+    {
+        //  Grab the first bullet we can from the pool
+        lazer = lazers.getFirstDead(true, player.x + 24 * player.scale.x, player.y + 8, 'lazer');
 
-        <span class="nx">lazer</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'fire'</span><span class="p">,</span> <span class="nx">frames</span><span class="p">,</span> <span class="mi">60</span><span class="p">);</span>
-        <span class="nx">lazer</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">frameName</span> <span class="o">=</span> <span class="s1">'frame02'</span><span class="p">;</span>
+        lazer.animations.add('fire', frames, 60);
+        lazer.animations.frameName = 'frame02';
 
-        <span class="nx">lazer</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">player</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+        lazer.scale.x = player.scale.x;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">lazer</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="c1">// lazer.anchor.x = 1;</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="c1">// lazer.anchor.x = 0;</span>
-        <span class="p">}</span>
+        if (lazer.scale.x === 1)
+        {
+            // lazer.anchor.x = 1;
+        }
+        else
+        {
+            // lazer.anchor.x = 0;
+        }
 
-        <span class="c1">//  Lazers start out with a width of 96 and expand over time</span>
-        <span class="c1">// lazer.crop(new Phaser.Rectangle(244-96, 0, 96, 2), true);</span>
+        //  Lazers start out with a width of 96 and expand over time
+        // lazer.crop(new Phaser.Rectangle(244-96, 0, 96, 2), true);
 
-        <span class="nx">bulletTime</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">+</span> <span class="mi">250</span><span class="p">;</span>
-    <span class="p">}</span>
+        bulletTime = game.time.now + 250;
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

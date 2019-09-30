@@ -55,47 +55,47 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/body%20pos.js" title="wip/body pos.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/body%20pos.js" download="" title="Download: wip/body pos.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
-<span class="kd">var</span> <span class="nx">atari1</span><span class="p">,</span> <span class="nx">atari2</span><span class="p">;</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var atari1, atari2;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari800xl.png'</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.load.image('atari', 'assets/sprites/atari800xl.png');
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">atari1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">'atari'</span><span class="p">);</span>
-    <span class="nx">atari2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'atari'</span><span class="p">);</span>
+function create() {
+    atari1 = game.add.sprite(300, 20, 'atari');
+    atari2 = game.add.sprite(300, 300, 'atari');
 
-    <span class="c1">//  Input enable the second sprite and allow dragging</span>
-    <span class="nx">atari2</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">atari2</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    //  Input enable the second sprite and allow dragging
+    atari2.inputEnabled = true;
+    atari2.input.enableDrag(false);
 
-    <span class="c1">//  Enable physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">([</span><span class="nx">atari1</span><span class="p">,</span> <span class="nx">atari2</span><span class="p">],</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
-    <span class="c1">// atari1.body.moves = false;</span>
-    <span class="c1">// atari2.body.moves = false;</span>
+    //  Enable physics
+    game.physics.enable([atari1, atari2], Phaser.Physics.ARCADE);
+    // atari1.body.moves = false;
+    // atari2.body.moves = false;
 
-    <span class="nx">atari1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
-<span class="p">}</span>
+    atari1.body.velocity.x = 50;
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">// If the second sprite was dropped on top of the first sprite</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">overlap</span><span class="p">(</span><span class="nx">atari1</span><span class="p">,</span> <span class="nx">atari2</span><span class="p">,</span> <span class="nx">droppedOverlap</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span> <span class="k">return</span> <span class="o">!</span><span class="nx">atari2</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">isDragged</span><span class="p">;</span> <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+    // If the second sprite was dropped on top of the first sprite
+    game.physics.arcade.overlap(atari1, atari2, droppedOverlap, function(){ return !atari2.input.isDragged; }, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteBounds</span><span class="p">(</span><span class="nx">atari1</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteBounds</span><span class="p">(</span><span class="nx">atari2</span><span class="p">);</span>
-<span class="p">}</span>
+function render() {
+    game.debug.spriteBounds(atari1);
+    game.debug.spriteBounds(atari2);
+}
 
-<span class="kd">function</span> <span class="nx">droppedOverlap</span><span class="p">()</span> <span class="p">{</span>
+function droppedOverlap() {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Sprite has been dropped on top of other sprite'</span><span class="p">);</span>
+    console.log('Sprite has been dropped on top of other sprite');
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

@@ -55,54 +55,55 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/out%20of%20bounds.js" title="sprites/out of bounds.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/out%20of%20bounds.js" download="" title="Download: sprites/out of bounds.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'alien'</span><span class="p">,</span> <span class="s1">'assets/sprites/space-baddie.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ship'</span><span class="p">,</span> <span class="s1">'assets/sprites/shmup-ship.png'</span><span class="p">);</span>
+    game.load.image('alien', 'assets/sprites/space-baddie.png');
+    game.load.image('ship', 'assets/sprites/shmup-ship.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">player</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">aliens</span><span class="p">;</span>
+var player;
+var aliens;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  We only want world bounds on the left and right</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">setBoundsToWorld</span><span class="p">();</span>
+    //  We only want world bounds on the left and right
+    game.physics.setBoundsToWorld();
 
-    <span class="nx">player</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'ship'</span><span class="p">);</span>
-    <span class="nx">player</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    player = game.add.sprite(400, 500, 'ship');
+    player.anchor.setTo(0.5, 0.5);
 
-    <span class="nx">aliens</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
-    <span class="nx">aliens</span><span class="p">.</span><span class="nx">enableBody</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">aliens</span><span class="p">.</span><span class="nx">physicsBodyType</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">;</span>
+    aliens = game.add.group();
+    aliens.enableBody = true;
+    aliens.physicsBodyType = Phaser.Physics.ARCADE;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">alien</span> <span class="o">=</span> <span class="nx">aliens</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">200</span> <span class="o">+</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">48</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">'alien'</span><span class="p">);</span>
-            <span class="nx">alien</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'alien'</span> <span class="o">+</span> <span class="nx">x</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="nx">y</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
-            <span class="nx">alien</span><span class="p">.</span><span class="nx">checkWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-            <span class="nx">alien</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onOutOfBounds</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">alienOut</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-            <span class="nx">alien</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">200</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    for (var y = 0; y < 4; y++)
+    {
+        for (var x = 0; x < 10; x++)
+        {
+            var alien = aliens.create(200 + x * 48, y * 50, 'alien');
+            alien.name = 'alien' + x.toString() + y.toString();
+            alien.checkWorldBounds = true;
+            alien.events.onOutOfBounds.add(alienOut, this);
+            alien.body.velocity.y = 50 + Math.random() * 200;
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">alienOut</span><span class="p">(</span><span class="nx">alien</span><span class="p">)</span> <span class="p">{</span>
+function alienOut(alien) {
 
-    <span class="c1">//  Move the alien to the top of the screen again</span>
-    <span class="nx">alien</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">alien</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    //  Move the alien to the top of the screen again
+    alien.reset(alien.x, 0);
 
-    <span class="c1">//  And give it a new random velocity</span>
-    <span class="nx">alien</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">200</span><span class="p">;</span>
+    //  And give it a new random velocity
+    alien.body.velocity.y = 50 + Math.random() * 200;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

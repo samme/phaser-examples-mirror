@@ -55,76 +55,76 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/touch%20joystick.js" title="input/touch joystick.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/touch%20joystick.js" download="" title="Download: input/touch joystick.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">ufo</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">ufoSpeed</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+var ufo;
+var ufoSpeed = 200;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ufo'</span><span class="p">,</span> <span class="s1">'assets/sprites/ufo.png'</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.world.setBounds(0,0,800, 600);
+    game.load.image('ufo', 'assets/sprites/ufo.png');
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// Create a ufo sprite as player.</span>
-    <span class="nx">ufo</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="s1">'ufo'</span><span class="p">);</span>
-    <span class="nx">ufo</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+function create() {
+    // Create a ufo sprite as player.
+    ufo = game.add.sprite(320, 240, 'ufo');
+    ufo.anchor.setTo(0.5, 0.5);
 	
-	<span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">ufo</span><span class="p">,</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+	game.physics.enable(ufo,Phaser.Physics.ARCADE);
 
-    <span class="c1">// Use Austin Hallock's HTML5 Virtual Game Controller</span>
-    <span class="c1">// https://github.com/austinhallock/html5-virtual-game-controller/</span>
-    <span class="c1">// Note: you must also require gamecontroller.js on your host page.</span>
+    // Use Austin Hallock's HTML5 Virtual Game Controller
+    // https://github.com/austinhallock/html5-virtual-game-controller/
+    // Note: you must also require gamecontroller.js on your host page.
 
-    <span class="c1">// Init game controller with left thumb stick</span>
-    <span class="nx">GameController</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span>
-        <span class="na">left</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">type</span><span class="p">:</span> <span class="s1">'joystick'</span><span class="p">,</span>
-            <span class="na">joystick</span><span class="p">:</span> <span class="p">{</span>
-                <span class="na">touchStart</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                    <span class="c1">// Don't need this, but the event is here if you want it.</span>
-                <span class="p">},</span>
-                <span class="na">touchMove</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">joystick_details</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">joystickLeft</span> <span class="o">=</span> <span class="nx">joystick_details</span><span class="p">;</span>
-                <span class="p">},</span>
-                <span class="na">touchEnd</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">joystickLeft</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">},</span>
-        <span class="na">right</span><span class="p">:</span> <span class="p">{</span>
-            <span class="c1">// We're not using anything on the right for this demo, but you can add buttons, etc.</span>
-            <span class="c1">// See https://github.com/austinhallock/html5-virtual-game-controller/ for examples.</span>
-            <span class="na">type</span><span class="p">:</span> <span class="s1">'none'</span>
-        <span class="p">}</span>
-    <span class="p">});</span>
+    // Init game controller with left thumb stick
+    GameController.init({
+        left: {
+            type: 'joystick',
+            joystick: {
+                touchStart: function() {
+                    // Don't need this, but the event is here if you want it.
+                },
+                touchMove: function(joystick_details) {
+                    game.input.joystickLeft = joystick_details;
+                },
+                touchEnd: function() {
+                    game.input.joystickLeft = null;
+                }
+            }
+        },
+        right: {
+            // We're not using anything on the right for this demo, but you can add buttons, etc.
+            // See https://github.com/austinhallock/html5-virtual-game-controller/ for examples.
+            type: 'none'
+        }
+    });
 
-    <span class="c1">// This is an ugly hack to get this to show up over the Phaser Canvas</span>
-    <span class="c1">// (which has a manually set z-index in the example code) and position it in the right place,</span>
-    <span class="c1">// because it's positioned relatively...</span>
-    <span class="c1">// You probably don't need to do this in your game unless your game's canvas is positioned in a manner</span>
-    <span class="c1">// similar to this example page, where the canvas isn't the whole screen.</span>
-    <span class="nx">$</span><span class="p">(</span><span class="s1">'canvas'</span><span class="p">).</span><span class="nx">last</span><span class="p">().</span><span class="nx">css</span><span class="p">(</span><span class="s1">'z-index'</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
-    <span class="nx">$</span><span class="p">(</span><span class="s1">'canvas'</span><span class="p">).</span><span class="nx">last</span><span class="p">().</span><span class="nx">offset</span><span class="p">(</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'canvas'</span><span class="p">).</span><span class="nx">first</span><span class="p">().</span><span class="nx">offset</span><span class="p">()</span> <span class="p">);</span>
-<span class="p">}</span>
+    // This is an ugly hack to get this to show up over the Phaser Canvas
+    // (which has a manually set z-index in the example code) and position it in the right place,
+    // because it's positioned relatively...
+    // You probably don't need to do this in your game unless your game's canvas is positioned in a manner
+    // similar to this example page, where the canvas isn't the whole screen.
+    $('canvas').last().css('z-index', 20);
+    $('canvas').last().offset( $('canvas').first().offset() );
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// Check key states every frame.</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">joystickLeft</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// Move the ufo using the joystick's normalizedX and Y values,</span>
-        <span class="c1">// which range from -1 to 1.</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">joystickLeft</span><span class="p">.</span><span class="nx">normalizedX</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">joystickLeft</span><span class="p">.</span><span class="nx">normalizedY</span> <span class="o">*</span> <span class="nx">ufoSpeed</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+function update() {
+    // Check key states every frame.
+    if (game.input.joystickLeft) {
+        // Move the ufo using the joystick's normalizedX and Y values,
+        // which range from -1 to 1.
+        ufo.body.velocity.setTo(game.input.joystickLeft.normalizedX * 200, game.input.joystickLeft.normalizedY * ufoSpeed * -1);
+    }
+    else {
+        ufo.body.velocity.setTo(0, 0);
+    }
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Use the virtual joystick to move the UFO.'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'This requires touch events, so try on your phone.'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
-<span class="p">}</span>
+function render() {
+    game.debug.text('Use the virtual joystick to move the UFO.', 20, 20);
+    game.debug.text('This requires touch events, so try on your phone.', 20, 40);
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

@@ -55,464 +55,464 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/games/gemmatch.js" title="games/gemmatch.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/games/gemmatch.js" download="" title="Download: games/gemmatch.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// Example by https://twitter.com/awapblog</span>
-<span class="c1">// Updated by https://twitter.com/boldbigflank</span>
+</div>
+<pre class="highlight javascript"><code>// Example by https://twitter.com/awapblog
+// Updated by https://twitter.com/boldbigflank
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">var</span> <span class="nx">GEM_SIZE</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">GEM_SPACING</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">GEM_SIZE_SPACED</span> <span class="o">=</span> <span class="nx">GEM_SIZE</span> <span class="o">+</span> <span class="nx">GEM_SPACING</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">BOARD_COLS</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">BOARD_ROWS</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">MATCH_MIN</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> <span class="c1">// min number of same color gems required in a row to be considered a match</span>
+var GEM_SIZE = 64;
+var GEM_SPACING = 2;
+var GEM_SIZE_SPACED = GEM_SIZE + GEM_SPACING;
+var BOARD_COLS;
+var BOARD_ROWS;
+var MATCH_MIN = 3; // min number of same color gems required in a row to be considered a match
 
-<span class="kd">var</span> <span class="nx">gems</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">selectedGem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">selectedGemStartPos</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">selectedGemTween</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tempShiftedGem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">allowInput</span><span class="p">;</span>
+var gems;
+var selectedGem = null;
+var selectedGemStartPos;
+var selectedGemTween;
+var tempShiftedGem = null;
+var allowInput;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s2">"GEMS"</span><span class="p">,</span> <span class="s2">"assets/sprites/diamonds32x5.png"</span><span class="p">,</span> <span class="nx">GEM_SIZE</span><span class="p">,</span> <span class="nx">GEM_SIZE</span><span class="p">);</span>
+    game.load.spritesheet("GEMS", "assets/sprites/diamonds32x5.png", GEM_SIZE, GEM_SIZE);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// fill the screen with as many gems as possible</span>
-    <span class="nx">spawnBoard</span><span class="p">();</span>
+    // fill the screen with as many gems as possible
+    spawnBoard();
 
-    <span class="c1">// currently selected gem starting position. used to stop player form moving gems too far.</span>
-    <span class="nx">selectedGemStartPos</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">};</span>
+    // currently selected gem starting position. used to stop player form moving gems too far.
+    selectedGemStartPos = { x: 0, y: 0 };
     
-    <span class="c1">// used to disable input while gems are dropping down and respawning</span>
-    <span class="nx">allowInput</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    // used to disable input while gems are dropping down and respawning
+    allowInput = false;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">slideGem</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.addMoveCallback(slideGem, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">releaseGem</span><span class="p">()</span> <span class="p">{</span>
+function releaseGem() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">tempShiftedGem</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">selectedGem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-        <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (tempShiftedGem === null) {
+        selectedGem = null;
+        return;
+    }
 
-    <span class="c1">// when the mouse is released with a gem selected</span>
-    <span class="c1">// 1) check for matches</span>
-    <span class="c1">// 2) remove matched gems</span>
-    <span class="c1">// 3) drop down gems above removed gems</span>
-    <span class="c1">// 4) refill the board</span>
+    // when the mouse is released with a gem selected
+    // 1) check for matches
+    // 2) remove matched gems
+    // 3) drop down gems above removed gems
+    // 4) refill the board
 
-    <span class="kd">var</span> <span class="nx">canKill</span> <span class="o">=</span> <span class="nx">checkAndKillGemMatches</span><span class="p">(</span><span class="nx">selectedGem</span><span class="p">);</span>
-    <span class="nx">canKill</span> <span class="o">=</span> <span class="nx">checkAndKillGemMatches</span><span class="p">(</span><span class="nx">tempShiftedGem</span><span class="p">)</span> <span class="o">||</span> <span class="nx">canKill</span><span class="p">;</span>
+    var canKill = checkAndKillGemMatches(selectedGem);
+    canKill = checkAndKillGemMatches(tempShiftedGem) || canKill;
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">canKill</span><span class="p">)</span> <span class="c1">// there are no matches so swap the gems back to the original positions</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">gem</span> <span class="o">=</span> <span class="nx">selectedGem</span><span class="p">;</span>
+    if (! canKill) // there are no matches so swap the gems back to the original positions
+    {
+        var gem = selectedGem;
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span> <span class="o">!==</span> <span class="nx">selectedGemStartPos</span><span class="p">.</span><span class="nx">x</span> <span class="o">||</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span> <span class="o">!==</span> <span class="nx">selectedGemStartPos</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">selectedGemTween</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">game</span><span class="p">.</span><span class="nx">tweens</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">selectedGemTween</span><span class="p">);</span>
-            <span class="p">}</span>
-
-            <span class="nx">selectedGemTween</span> <span class="o">=</span> <span class="nx">tweenGemPos</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="nx">selectedGemStartPos</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">selectedGemStartPos</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+        if (gem.posX !== selectedGemStartPos.x || gem.posY !== selectedGemStartPos.y)
+        {
+            if (selectedGemTween !== null)
+            {
+                game.tweens.remove(selectedGemTween);
+            }
+
+            selectedGemTween = tweenGemPos(gem, selectedGemStartPos.x, selectedGemStartPos.y);
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">tempShiftedGem</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">tweenGemPos</span><span class="p">(</span><span class="nx">tempShiftedGem</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span><span class="p">);</span>
-            <span class="p">}</span>
+            if (tempShiftedGem !== null)
+            {
+                tweenGemPos(tempShiftedGem, gem.posX, gem.posY);
+            }
 
-            <span class="nx">swapGemPosition</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="nx">tempShiftedGem</span><span class="p">);</span>
+            swapGemPosition(gem, tempShiftedGem);
 
-            <span class="nx">tempShiftedGem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            tempShiftedGem = null;
 
-        <span class="p">}</span>
-    <span class="p">}</span>
+        }
+    }
 
-    <span class="nx">removeKilledGems</span><span class="p">();</span>
+    removeKilledGems();
 
-    <span class="kd">var</span> <span class="nx">dropGemDuration</span> <span class="o">=</span> <span class="nx">dropGems</span><span class="p">();</span>
+    var dropGemDuration = dropGems();
 
-    <span class="c1">// delay board refilling until all existing gems have dropped down</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">dropGemDuration</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="nx">refillBoard</span><span class="p">);</span>
+    // delay board refilling until all existing gems have dropped down
+    game.time.events.add(dropGemDuration * 100, refillBoard);
 
-    <span class="nx">allowInput</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    allowInput = false;
 
-    <span class="nx">selectedGem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="nx">tempShiftedGem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    selectedGem = null;
+    tempShiftedGem = null;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">slideGem</span><span class="p">(</span><span class="nx">pointer</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function slideGem(pointer, x, y) {
 
-    <span class="c1">// check if a selected gem should be moved and do it</span>
+    // check if a selected gem should be moved and do it
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">selectedGem</span> <span class="o">&amp;&amp;</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">cursorGemPosX</span> <span class="o">=</span> <span class="nx">getGemPos</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">cursorGemPosY</span> <span class="o">=</span> <span class="nx">getGemPos</span><span class="p">(</span><span class="nx">y</span><span class="p">);</span>
+    if (selectedGem && pointer.isDown)
+    {
+        var cursorGemPosX = getGemPos(x);
+        var cursorGemPosY = getGemPos(y);
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">checkIfGemCanBeMovedHere</span><span class="p">(</span><span class="nx">selectedGemStartPos</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">selectedGemStartPos</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">cursorGemPosX</span><span class="p">,</span> <span class="nx">cursorGemPosY</span><span class="p">))</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">cursorGemPosX</span> <span class="o">!==</span> <span class="nx">selectedGem</span><span class="p">.</span><span class="nx">posX</span> <span class="o">||</span> <span class="nx">cursorGemPosY</span> <span class="o">!==</span> <span class="nx">selectedGem</span><span class="p">.</span><span class="nx">posY</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="c1">// move currently selected gem</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">selectedGemTween</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="nx">game</span><span class="p">.</span><span class="nx">tweens</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">selectedGemTween</span><span class="p">);</span>
-                <span class="p">}</span>
+        if (checkIfGemCanBeMovedHere(selectedGemStartPos.x, selectedGemStartPos.y, cursorGemPosX, cursorGemPosY))
+        {
+            if (cursorGemPosX !== selectedGem.posX || cursorGemPosY !== selectedGem.posY)
+            {
+                // move currently selected gem
+                if (selectedGemTween !== null)
+                {
+                    game.tweens.remove(selectedGemTween);
+                }
 
-                <span class="nx">selectedGemTween</span> <span class="o">=</span> <span class="nx">tweenGemPos</span><span class="p">(</span><span class="nx">selectedGem</span><span class="p">,</span> <span class="nx">cursorGemPosX</span><span class="p">,</span> <span class="nx">cursorGemPosY</span><span class="p">);</span>
+                selectedGemTween = tweenGemPos(selectedGem, cursorGemPosX, cursorGemPosY);
 
-                <span class="nx">gems</span><span class="p">.</span><span class="nx">bringToTop</span><span class="p">(</span><span class="nx">selectedGem</span><span class="p">);</span>
+                gems.bringToTop(selectedGem);
 
-                <span class="c1">// if we moved a gem to make way for the selected gem earlier, move it back into its starting position</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">tempShiftedGem</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="nx">tweenGemPos</span><span class="p">(</span><span class="nx">tempShiftedGem</span><span class="p">,</span> <span class="nx">selectedGem</span><span class="p">.</span><span class="nx">posX</span> <span class="p">,</span> <span class="nx">selectedGem</span><span class="p">.</span><span class="nx">posY</span><span class="p">);</span>
-                    <span class="nx">swapGemPosition</span><span class="p">(</span><span class="nx">selectedGem</span><span class="p">,</span> <span class="nx">tempShiftedGem</span><span class="p">);</span>
-                <span class="p">}</span>
+                // if we moved a gem to make way for the selected gem earlier, move it back into its starting position
+                if (tempShiftedGem !== null)
+                {
+                    tweenGemPos(tempShiftedGem, selectedGem.posX , selectedGem.posY);
+                    swapGemPosition(selectedGem, tempShiftedGem);
+                }
 
-                <span class="c1">// when the player moves the selected gem, we need to swap the position of the selected gem with the gem currently in that position </span>
-                <span class="nx">tempShiftedGem</span> <span class="o">=</span> <span class="nx">getGem</span><span class="p">(</span><span class="nx">cursorGemPosX</span><span class="p">,</span> <span class="nx">cursorGemPosY</span><span class="p">);</span>
+                // when the player moves the selected gem, we need to swap the position of the selected gem with the gem currently in that position 
+                tempShiftedGem = getGem(cursorGemPosX, cursorGemPosY);
 
-                <span class="k">if</span> <span class="p">(</span><span class="nx">tempShiftedGem</span> <span class="o">===</span> <span class="nx">selectedGem</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="nx">tempShiftedGem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-                <span class="p">}</span>
-                <span class="k">else</span>
-                <span class="p">{</span>
-                    <span class="nx">tweenGemPos</span><span class="p">(</span><span class="nx">tempShiftedGem</span><span class="p">,</span> <span class="nx">selectedGem</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">selectedGem</span><span class="p">.</span><span class="nx">posY</span><span class="p">);</span>
-                    <span class="nx">swapGemPosition</span><span class="p">(</span><span class="nx">selectedGem</span><span class="p">,</span> <span class="nx">tempShiftedGem</span><span class="p">);</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+                if (tempShiftedGem === selectedGem)
+                {
+                    tempShiftedGem = null;
+                }
+                else
+                {
+                    tweenGemPos(tempShiftedGem, selectedGem.posX, selectedGem.posY);
+                    swapGemPosition(selectedGem, tempShiftedGem);
+                }
+            }
+        }
+    }
+}
 
-<span class="c1">// fill the screen with as many gems as possible</span>
-<span class="kd">function</span> <span class="nx">spawnBoard</span><span class="p">()</span> <span class="p">{</span>
+// fill the screen with as many gems as possible
+function spawnBoard() {
 
-    <span class="nx">BOARD_COLS</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="nx">GEM_SIZE_SPACED</span><span class="p">);</span>
-    <span class="nx">BOARD_ROWS</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="nx">GEM_SIZE_SPACED</span><span class="p">);</span>
+    BOARD_COLS = Math.floor(game.world.width / GEM_SIZE_SPACED);
+    BOARD_ROWS = Math.floor(game.world.height / GEM_SIZE_SPACED);
 
-    <span class="nx">gems</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    gems = game.add.group();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">BOARD_COLS</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">BOARD_ROWS</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">gem</span> <span class="o">=</span> <span class="nx">gems</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="nx">GEM_SIZE_SPACED</span><span class="p">,</span> <span class="nx">j</span> <span class="o">*</span> <span class="nx">GEM_SIZE_SPACED</span><span class="p">,</span> <span class="s2">"GEMS"</span><span class="p">);</span>
-            <span class="nx">gem</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'gem'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'x'</span> <span class="o">+</span> <span class="nx">j</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
-            <span class="nx">gem</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-            <span class="nx">gem</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">selectGem</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-            <span class="nx">gem</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">releaseGem</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-            <span class="nx">randomizeGemColor</span><span class="p">(</span><span class="nx">gem</span><span class="p">);</span>
-            <span class="nx">setGemPos</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">);</span> <span class="c1">// each gem has a position on the board</span>
-            <span class="nx">gem</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    for (var i = 0; i < BOARD_COLS; i++)
+    {
+        for (var j = 0; j < BOARD_ROWS; j++)
+        {
+            var gem = gems.create(i * GEM_SIZE_SPACED, j * GEM_SIZE_SPACED, "GEMS");
+            gem.name = 'gem' + i.toString() + 'x' + j.toString();
+            gem.inputEnabled = true;
+            gem.events.onInputDown.add(selectGem, this);
+            gem.events.onInputUp.add(releaseGem, this);
+            randomizeGemColor(gem);
+            setGemPos(gem, i, j); // each gem has a position on the board
+            gem.kill();
+        }
+    }
 
-    <span class="nx">removeKilledGems</span><span class="p">();</span>
+    removeKilledGems();
 
-    <span class="kd">var</span> <span class="nx">dropGemDuration</span> <span class="o">=</span> <span class="nx">dropGems</span><span class="p">();</span>
+    var dropGemDuration = dropGems();
 
-    <span class="c1">// delay board refilling until all existing gems have dropped down</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">dropGemDuration</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="nx">refillBoard</span><span class="p">);</span>
+    // delay board refilling until all existing gems have dropped down
+    game.time.events.add(dropGemDuration * 100, refillBoard);
 
-    <span class="nx">allowInput</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    allowInput = false;
 
-    <span class="nx">selectedGem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="nx">tempShiftedGem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    selectedGem = null;
+    tempShiftedGem = null;
 
-    <span class="c1">// refillBoard();</span>
-<span class="p">}</span>
+    // refillBoard();
+}
 
-<span class="c1">// select a gem and remember its starting position</span>
-<span class="kd">function</span> <span class="nx">selectGem</span><span class="p">(</span><span class="nx">gem</span><span class="p">)</span> <span class="p">{</span>
+// select a gem and remember its starting position
+function selectGem(gem) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">allowInput</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">selectedGem</span> <span class="o">=</span> <span class="nx">gem</span><span class="p">;</span>
-        <span class="nx">selectedGemStartPos</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span><span class="p">;</span>
-        <span class="nx">selectedGemStartPos</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (allowInput)
+    {
+        selectedGem = gem;
+        selectedGemStartPos.x = gem.posX;
+        selectedGemStartPos.y = gem.posY;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="c1">// find a gem on the board according to its position on the board</span>
-<span class="kd">function</span> <span class="nx">getGem</span><span class="p">(</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">posY</span><span class="p">)</span> <span class="p">{</span>
+// find a gem on the board according to its position on the board
+function getGem(posX, posY) {
 
-    <span class="k">return</span> <span class="nx">gems</span><span class="p">.</span><span class="nx">iterate</span><span class="p">(</span><span class="s2">"id"</span><span class="p">,</span> <span class="nx">calcGemId</span><span class="p">(</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">posY</span><span class="p">),</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">RETURN_CHILD</span><span class="p">);</span>
+    return gems.iterate("id", calcGemId(posX, posY), Phaser.Group.RETURN_CHILD);
 
-<span class="p">}</span>
+}
 
-<span class="c1">// convert world coordinates to board position</span>
-<span class="kd">function</span> <span class="nx">getGemPos</span><span class="p">(</span><span class="nx">coordinate</span><span class="p">)</span> <span class="p">{</span>
+// convert world coordinates to board position
+function getGemPos(coordinate) {
 
-    <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">coordinate</span> <span class="o">/</span> <span class="nx">GEM_SIZE_SPACED</span><span class="p">);</span>
+    return Math.floor(coordinate / GEM_SIZE_SPACED);
 
-<span class="p">}</span>
+}
 
-<span class="c1">// set the position on the board for a gem</span>
-<span class="kd">function</span> <span class="nx">setGemPos</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="nx">posX</span><span class="p">,</span> <span class="nx">posY</span><span class="p">)</span> <span class="p">{</span>
+// set the position on the board for a gem
+function setGemPos(gem, posX, posY) {
 
-    <span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span> <span class="o">=</span> <span class="nx">posX</span><span class="p">;</span>
-    <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span> <span class="o">=</span> <span class="nx">posY</span><span class="p">;</span>
-    <span class="nx">gem</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">calcGemId</span><span class="p">(</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">posY</span><span class="p">);</span>
+    gem.posX = posX;
+    gem.posY = posY;
+    gem.id = calcGemId(posX, posY);
 
-<span class="p">}</span>
+}
 
-<span class="c1">// the gem id is used by getGem() to find specific gems in the group</span>
-<span class="c1">// each position on the board has a unique id</span>
-<span class="kd">function</span> <span class="nx">calcGemId</span><span class="p">(</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">posY</span><span class="p">)</span> <span class="p">{</span>
+// the gem id is used by getGem() to find specific gems in the group
+// each position on the board has a unique id
+function calcGemId(posX, posY) {
 
-    <span class="k">return</span> <span class="nx">posX</span> <span class="o">+</span> <span class="nx">posY</span> <span class="o">*</span> <span class="nx">BOARD_COLS</span><span class="p">;</span>
+    return posX + posY * BOARD_COLS;
 
-<span class="p">}</span>
+}
 
-<span class="c1">// since the gems are a spritesheet, their color is the same as the current frame number</span>
-<span class="kd">function</span> <span class="nx">getGemColor</span><span class="p">(</span><span class="nx">gem</span><span class="p">)</span> <span class="p">{</span>
+// since the gems are a spritesheet, their color is the same as the current frame number
+function getGemColor(gem) {
 
-    <span class="k">return</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">frame</span><span class="p">;</span>
+    return gem.frame;
 
-<span class="p">}</span>
+}
 
-<span class="c1">// set the gem spritesheet to a random frame</span>
-<span class="kd">function</span> <span class="nx">randomizeGemColor</span><span class="p">(</span><span class="nx">gem</span><span class="p">)</span> <span class="p">{</span>
+// set the gem spritesheet to a random frame
+function randomizeGemColor(gem) {
 
-    <span class="nx">gem</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">frameTotal</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    gem.frame = game.rnd.integerInRange(0, gem.animations.frameTotal - 1);
 
-<span class="p">}</span>
+}
 
-<span class="c1">// gems can only be moved 1 square up/down or left/right</span>
-<span class="kd">function</span> <span class="nx">checkIfGemCanBeMovedHere</span><span class="p">(</span><span class="nx">fromPosX</span><span class="p">,</span> <span class="nx">fromPosY</span><span class="p">,</span> <span class="nx">toPosX</span><span class="p">,</span> <span class="nx">toPosY</span><span class="p">)</span> <span class="p">{</span>
+// gems can only be moved 1 square up/down or left/right
+function checkIfGemCanBeMovedHere(fromPosX, fromPosY, toPosX, toPosY) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">toPosX</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">toPosX</span> <span class="o">&gt;=</span> <span class="nx">BOARD_COLS</span> <span class="o">||</span> <span class="nx">toPosY</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">toPosY</span> <span class="o">&gt;=</span> <span class="nx">BOARD_ROWS</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (toPosX < 0 || toPosX >= BOARD_COLS || toPosY < 0 || toPosY >= BOARD_ROWS)
+    {
+        return false;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">fromPosX</span> <span class="o">===</span> <span class="nx">toPosX</span> <span class="o">&amp;&amp;</span> <span class="nx">fromPosY</span> <span class="o">&gt;=</span> <span class="nx">toPosY</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">fromPosY</span> <span class="o">&lt;=</span> <span class="nx">toPosY</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (fromPosX === toPosX && fromPosY >= toPosY - 1 && fromPosY <= toPosY + 1)
+    {
+        return true;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">fromPosY</span> <span class="o">===</span> <span class="nx">toPosY</span> <span class="o">&amp;&amp;</span> <span class="nx">fromPosX</span> <span class="o">&gt;=</span> <span class="nx">toPosX</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">fromPosX</span> <span class="o">&lt;=</span> <span class="nx">toPosX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (fromPosY === toPosY && fromPosX >= toPosX - 1 && fromPosX <= toPosX + 1)
+    {
+        return true;
+    }
 
-    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-<span class="p">}</span>
+    return false;
+}
 
-<span class="c1">// count how many gems of the same color lie in a given direction</span>
-<span class="c1">// eg if moveX=1 and moveY=0, it will count how many gems of the same color lie to the right of the gem</span>
-<span class="c1">// stops counting as soon as a gem of a different color or the board end is encountered</span>
-<span class="kd">function</span> <span class="nx">countSameColorGems</span><span class="p">(</span><span class="nx">startGem</span><span class="p">,</span> <span class="nx">moveX</span><span class="p">,</span> <span class="nx">moveY</span><span class="p">)</span> <span class="p">{</span>
+// count how many gems of the same color lie in a given direction
+// eg if moveX=1 and moveY=0, it will count how many gems of the same color lie to the right of the gem
+// stops counting as soon as a gem of a different color or the board end is encountered
+function countSameColorGems(startGem, moveX, moveY) {
 
-    <span class="kd">var</span> <span class="nx">curX</span> <span class="o">=</span> <span class="nx">startGem</span><span class="p">.</span><span class="nx">posX</span> <span class="o">+</span> <span class="nx">moveX</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">curY</span> <span class="o">=</span> <span class="nx">startGem</span><span class="p">.</span><span class="nx">posY</span> <span class="o">+</span> <span class="nx">moveY</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var curX = startGem.posX + moveX;
+    var curY = startGem.posY + moveY;
+    var count = 0;
 
-    <span class="k">while</span> <span class="p">(</span><span class="nx">curX</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">curY</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">curX</span> <span class="o">&lt;</span> <span class="nx">BOARD_COLS</span> <span class="o">&amp;&amp;</span> <span class="nx">curY</span> <span class="o">&lt;</span> <span class="nx">BOARD_ROWS</span> <span class="o">&amp;&amp;</span> <span class="nx">getGemColor</span><span class="p">(</span><span class="nx">getGem</span><span class="p">(</span><span class="nx">curX</span><span class="p">,</span> <span class="nx">curY</span><span class="p">))</span> <span class="o">===</span> <span class="nx">getGemColor</span><span class="p">(</span><span class="nx">startGem</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">count</span><span class="o">++</span><span class="p">;</span>
-        <span class="nx">curX</span> <span class="o">+=</span> <span class="nx">moveX</span><span class="p">;</span>
-        <span class="nx">curY</span> <span class="o">+=</span> <span class="nx">moveY</span><span class="p">;</span>
-    <span class="p">}</span>
+    while (curX >= 0 && curY >= 0 && curX < BOARD_COLS && curY < BOARD_ROWS && getGemColor(getGem(curX, curY)) === getGemColor(startGem))
+    {
+        count++;
+        curX += moveX;
+        curY += moveY;
+    }
 
-    <span class="k">return</span> <span class="nx">count</span><span class="p">;</span>
+    return count;
 
-<span class="p">}</span>
+}
 
-<span class="c1">// swap the position of 2 gems when the player drags the selected gem into a new location</span>
-<span class="kd">function</span> <span class="nx">swapGemPosition</span><span class="p">(</span><span class="nx">gem1</span><span class="p">,</span> <span class="nx">gem2</span><span class="p">)</span> <span class="p">{</span>
+// swap the position of 2 gems when the player drags the selected gem into a new location
+function swapGemPosition(gem1, gem2) {
 
-    <span class="kd">var</span> <span class="nx">tempPosX</span> <span class="o">=</span> <span class="nx">gem1</span><span class="p">.</span><span class="nx">posX</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">tempPosY</span> <span class="o">=</span> <span class="nx">gem1</span><span class="p">.</span><span class="nx">posY</span><span class="p">;</span>
-    <span class="nx">setGemPos</span><span class="p">(</span><span class="nx">gem1</span><span class="p">,</span> <span class="nx">gem2</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">gem2</span><span class="p">.</span><span class="nx">posY</span><span class="p">);</span>
-    <span class="nx">setGemPos</span><span class="p">(</span><span class="nx">gem2</span><span class="p">,</span> <span class="nx">tempPosX</span><span class="p">,</span> <span class="nx">tempPosY</span><span class="p">);</span>
+    var tempPosX = gem1.posX;
+    var tempPosY = gem1.posY;
+    setGemPos(gem1, gem2.posX, gem2.posY);
+    setGemPos(gem2, tempPosX, tempPosY);
 
-<span class="p">}</span>
+}
 
-<span class="c1">// count how many gems of the same color are above, below, to the left and right</span>
-<span class="c1">// if there are more than 3 matched horizontally or vertically, kill those gems</span>
-<span class="c1">// if no match was made, move the gems back into their starting positions</span>
-<span class="kd">function</span> <span class="nx">checkAndKillGemMatches</span><span class="p">(</span><span class="nx">gem</span><span class="p">)</span> <span class="p">{</span>
+// count how many gems of the same color are above, below, to the left and right
+// if there are more than 3 matched horizontally or vertically, kill those gems
+// if no match was made, move the gems back into their starting positions
+function checkAndKillGemMatches(gem) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">gem</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+    if (gem === null) { return; }
 
-    <span class="kd">var</span> <span class="nx">canKill</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    var canKill = false;
 
-    <span class="c1">// process the selected gem</span>
+    // process the selected gem
 
-    <span class="kd">var</span> <span class="nx">countUp</span> <span class="o">=</span> <span class="nx">countSameColorGems</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">countDown</span> <span class="o">=</span> <span class="nx">countSameColorGems</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">countLeft</span> <span class="o">=</span> <span class="nx">countSameColorGems</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">countRight</span> <span class="o">=</span> <span class="nx">countSameColorGems</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var countUp = countSameColorGems(gem, 0, -1);
+    var countDown = countSameColorGems(gem, 0, 1);
+    var countLeft = countSameColorGems(gem, -1, 0);
+    var countRight = countSameColorGems(gem, 1, 0);
 
-    <span class="kd">var</span> <span class="nx">countHoriz</span> <span class="o">=</span> <span class="nx">countLeft</span> <span class="o">+</span> <span class="nx">countRight</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">countVert</span> <span class="o">=</span> <span class="nx">countUp</span> <span class="o">+</span> <span class="nx">countDown</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    var countHoriz = countLeft + countRight + 1;
+    var countVert = countUp + countDown + 1;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">countVert</span> <span class="o">&gt;=</span> <span class="nx">MATCH_MIN</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">killGemRange</span><span class="p">(</span><span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span> <span class="o">-</span> <span class="nx">countUp</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span> <span class="o">+</span> <span class="nx">countDown</span><span class="p">);</span>
-        <span class="nx">canKill</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (countVert >= MATCH_MIN)
+    {
+        killGemRange(gem.posX, gem.posY - countUp, gem.posX, gem.posY + countDown);
+        canKill = true;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">countHoriz</span> <span class="o">&gt;=</span> <span class="nx">MATCH_MIN</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">killGemRange</span><span class="p">(</span><span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span> <span class="o">-</span> <span class="nx">countLeft</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span> <span class="o">+</span> <span class="nx">countRight</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span><span class="p">);</span>
-        <span class="nx">canKill</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (countHoriz >= MATCH_MIN)
+    {
+        killGemRange(gem.posX - countLeft, gem.posY, gem.posX + countRight, gem.posY);
+        canKill = true;
+    }
 
-    <span class="k">return</span> <span class="nx">canKill</span><span class="p">;</span>
+    return canKill;
 
-<span class="p">}</span>
+}
 
-<span class="c1">// kill all gems from a starting position to an end position</span>
-<span class="kd">function</span> <span class="nx">killGemRange</span><span class="p">(</span><span class="nx">fromX</span><span class="p">,</span> <span class="nx">fromY</span><span class="p">,</span> <span class="nx">toX</span><span class="p">,</span> <span class="nx">toY</span><span class="p">)</span> <span class="p">{</span>
+// kill all gems from a starting position to an end position
+function killGemRange(fromX, fromY, toX, toY) {
 
-    <span class="nx">fromX</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">clamp</span><span class="p">(</span><span class="nx">fromX</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">BOARD_COLS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">fromY</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">clamp</span><span class="p">(</span><span class="nx">fromY</span> <span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">BOARD_ROWS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">toX</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">clamp</span><span class="p">(</span><span class="nx">toX</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">BOARD_COLS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">toY</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">clamp</span><span class="p">(</span><span class="nx">toY</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">BOARD_ROWS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
+    fromY = Phaser.Math.clamp(fromY , 0, BOARD_ROWS - 1);
+    toX = Phaser.Math.clamp(toX, 0, BOARD_COLS - 1);
+    toY = Phaser.Math.clamp(toY, 0, BOARD_ROWS - 1);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">fromX</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">toX</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">fromY</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;=</span> <span class="nx">toY</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">gem</span> <span class="o">=</span> <span class="nx">getGem</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">);</span>
-            <span class="nx">gem</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    for (var i = fromX; i <= toX; i++)
+    {
+        for (var j = fromY; j <= toY; j++)
+        {
+            var gem = getGem(i, j);
+            gem.kill();
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="c1">// move gems that have been killed off the board</span>
-<span class="kd">function</span> <span class="nx">removeKilledGems</span><span class="p">()</span> <span class="p">{</span>
+// move gems that have been killed off the board
+function removeKilledGems() {
 
-    <span class="nx">gems</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">gem</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">gem</span><span class="p">.</span><span class="nx">alive</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">setGemPos</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">});</span>
+    gems.forEach(function(gem) {
+        if (!gem.alive) {
+            setGemPos(gem, -1,-1);
+        }
+    });
 
-<span class="p">}</span>
+}
 
-<span class="c1">// animated gem movement</span>
-<span class="kd">function</span> <span class="nx">tweenGemPos</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="nx">newPosX</span><span class="p">,</span> <span class="nx">newPosY</span><span class="p">,</span> <span class="nx">durationMultiplier</span><span class="p">)</span> <span class="p">{</span>
+// animated gem movement
+function tweenGemPos(gem, newPosX, newPosY, durationMultiplier) {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tween '</span><span class="p">,</span><span class="nx">gem</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span><span class="s1">' from '</span><span class="p">,</span><span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span> <span class="s1">','</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span><span class="p">,</span> <span class="s1">' to '</span><span class="p">,</span> <span class="nx">newPosX</span><span class="p">,</span> <span class="s1">','</span><span class="p">,</span> <span class="nx">newPosY</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">durationMultiplier</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span> <span class="k">typeof</span> <span class="nx">durationMultiplier</span> <span class="o">===</span> <span class="s1">'undefined'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">durationMultiplier</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span>
+    console.log('Tween ',gem.name,' from ',gem.posX, ',', gem.posY, ' to ', newPosX, ',', newPosY);
+    if (durationMultiplier === null || typeof durationMultiplier === 'undefined')
+    {
+        durationMultiplier = 1;
+    }
 
-    <span class="k">return</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">gem</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span><span class="na">x</span><span class="p">:</span> <span class="nx">newPosX</span>  <span class="o">*</span> <span class="nx">GEM_SIZE_SPACED</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">newPosY</span> <span class="o">*</span> <span class="nx">GEM_SIZE_SPACED</span><span class="p">},</span> <span class="mi">100</span> <span class="o">*</span> <span class="nx">durationMultiplier</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    return game.add.tween(gem).to({x: newPosX  * GEM_SIZE_SPACED, y: newPosY * GEM_SIZE_SPACED}, 100 * durationMultiplier, Phaser.Easing.Linear.None, true);
 
-<span class="p">}</span>
+}
 
-<span class="c1">// look for gems with empty space beneath them and move them down</span>
-<span class="kd">function</span> <span class="nx">dropGems</span><span class="p">()</span> <span class="p">{</span>
+// look for gems with empty space beneath them and move them down
+function dropGems() {
 
-    <span class="kd">var</span> <span class="nx">dropRowCountMax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var dropRowCountMax = 0;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">BOARD_COLS</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">dropRowCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    for (var i = 0; i < BOARD_COLS; i++)
+    {
+        var dropRowCount = 0;
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">BOARD_ROWS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">--</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">gem</span> <span class="o">=</span> <span class="nx">getGem</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">);</span>
+        for (var j = BOARD_ROWS - 1; j >= 0; j--)
+        {
+            var gem = getGem(i, j);
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">gem</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">dropRowCount</span><span class="o">++</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">dropRowCount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">gem</span><span class="p">.</span><span class="nx">dirty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-                <span class="nx">setGemPos</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span> <span class="o">+</span> <span class="nx">dropRowCount</span><span class="p">);</span>
-                <span class="nx">tweenGemPos</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span><span class="p">,</span> <span class="nx">dropRowCount</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+            if (gem === null)
+            {
+                dropRowCount++;
+            }
+            else if (dropRowCount > 0)
+            {
+                gem.dirty = true;
+                setGemPos(gem, gem.posX, gem.posY + dropRowCount);
+                tweenGemPos(gem, gem.posX, gem.posY, dropRowCount);
+            }
+        }
 
-        <span class="nx">dropRowCountMax</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">dropRowCount</span><span class="p">,</span> <span class="nx">dropRowCountMax</span><span class="p">);</span>
-    <span class="p">}</span>
+        dropRowCountMax = Math.max(dropRowCount, dropRowCountMax);
+    }
 
-    <span class="k">return</span> <span class="nx">dropRowCountMax</span><span class="p">;</span>
+    return dropRowCountMax;
 
-<span class="p">}</span>
+}
 
-<span class="c1">// look for any empty spots on the board and spawn new gems in their place that fall down from above</span>
-<span class="kd">function</span> <span class="nx">refillBoard</span><span class="p">()</span> <span class="p">{</span>
+// look for any empty spots on the board and spawn new gems in their place that fall down from above
+function refillBoard() {
 
-    <span class="kd">var</span> <span class="nx">maxGemsMissingFromCol</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var maxGemsMissingFromCol = 0;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">BOARD_COLS</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">gemsMissingFromCol</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    for (var i = 0; i < BOARD_COLS; i++)
+    {
+        var gemsMissingFromCol = 0;
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">BOARD_ROWS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">--</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">gem</span> <span class="o">=</span> <span class="nx">getGem</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">);</span>
+        for (var j = BOARD_ROWS - 1; j >= 0; j--)
+        {
+            var gem = getGem(i, j);
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">gem</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">gemsMissingFromCol</span><span class="o">++</span><span class="p">;</span>
-                <span class="nx">gem</span> <span class="o">=</span> <span class="nx">gems</span><span class="p">.</span><span class="nx">getFirstDead</span><span class="p">();</span>
-                <span class="nx">gem</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="nx">GEM_SIZE_SPACED</span><span class="p">,</span> <span class="o">-</span><span class="nx">gemsMissingFromCol</span> <span class="o">*</span> <span class="nx">GEM_SIZE_SPACED</span><span class="p">);</span>
-                <span class="nx">gem</span><span class="p">.</span><span class="nx">dirty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-                <span class="nx">randomizeGemColor</span><span class="p">(</span><span class="nx">gem</span><span class="p">);</span>
-                <span class="nx">setGemPos</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">);</span>
-                <span class="nx">tweenGemPos</span><span class="p">(</span><span class="nx">gem</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posX</span><span class="p">,</span> <span class="nx">gem</span><span class="p">.</span><span class="nx">posY</span><span class="p">,</span> <span class="nx">gemsMissingFromCol</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+            if (gem === null)
+            {
+                gemsMissingFromCol++;
+                gem = gems.getFirstDead();
+                gem.reset(i * GEM_SIZE_SPACED, -gemsMissingFromCol * GEM_SIZE_SPACED);
+                gem.dirty = true;
+                randomizeGemColor(gem);
+                setGemPos(gem, i, j);
+                tweenGemPos(gem, gem.posX, gem.posY, gemsMissingFromCol * 2);
+            }
+        }
 
-        <span class="nx">maxGemsMissingFromCol</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">maxGemsMissingFromCol</span><span class="p">,</span> <span class="nx">gemsMissingFromCol</span><span class="p">);</span>
-    <span class="p">}</span>
+        maxGemsMissingFromCol = Math.max(maxGemsMissingFromCol, gemsMissingFromCol);
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">maxGemsMissingFromCol</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="nx">boardRefilled</span><span class="p">);</span>
+    game.time.events.add(maxGemsMissingFromCol * 2 * 100, boardRefilled);
 
-<span class="p">}</span>
+}
 
-<span class="c1">// when the board has finished refilling, re-enable player input</span>
-<span class="kd">function</span> <span class="nx">boardRefilled</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">canKill</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">BOARD_COLS</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">BOARD_ROWS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">--</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">gem</span> <span class="o">=</span> <span class="nx">getGem</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">);</span>
+// when the board has finished refilling, re-enable player input
+function boardRefilled() {
+    var canKill = false;
+    for (var i = 0; i < BOARD_COLS; i++)
+    {
+        for (var j = BOARD_ROWS - 1; j >= 0; j--)
+        {
+            var gem = getGem(i, j);
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">gem</span><span class="p">.</span><span class="nx">dirty</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">gem</span><span class="p">.</span><span class="nx">dirty</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-                <span class="nx">canKill</span> <span class="o">=</span> <span class="nx">checkAndKillGemMatches</span><span class="p">(</span><span class="nx">gem</span><span class="p">)</span> <span class="o">||</span> <span class="nx">canKill</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+            if (gem.dirty)
+            {
+                gem.dirty = false;
+                canKill = checkAndKillGemMatches(gem) || canKill;
+            }
+        }
+    }
 
-    <span class="k">if</span><span class="p">(</span><span class="nx">canKill</span><span class="p">){</span>
-        <span class="nx">removeKilledGems</span><span class="p">();</span>
-        <span class="kd">var</span> <span class="nx">dropGemDuration</span> <span class="o">=</span> <span class="nx">dropGems</span><span class="p">();</span>
-        <span class="c1">// delay board refilling until all existing gems have dropped down</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">dropGemDuration</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="nx">refillBoard</span><span class="p">);</span>
-        <span class="nx">allowInput</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">allowInput</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    if(canKill){
+        removeKilledGems();
+        var dropGemDuration = dropGems();
+        // delay board refilling until all existing gems have dropped down
+        game.time.events.add(dropGemDuration * 100, refillBoard);
+        allowInput = false;
+    } else {
+        allowInput = true;
+    }
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

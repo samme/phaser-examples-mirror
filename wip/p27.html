@@ -55,104 +55,105 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/p27.js" title="wip/p27.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/p27.js" download="" title="Download: wip/p27.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'box'</span><span class="p">,</span> <span class="s1">'assets/sprites/diamond.png'</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">physics</span><span class="p">(</span><span class="s1">'physobjects'</span><span class="p">,</span> <span class="s1">'assets/physics/diamond.json'</span><span class="p">);</span>
+	game.load.image('box', 'assets/sprites/diamond.png');
+	game.load.physics('physobjects', 'assets/physics/diamond.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">box</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">move</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">end</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var box;
+var bmd;
+var move = false;
+var start = 0;
+var end = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bmd</span><span class="p">);</span>
+	bmd = game.add.bitmapData(800, 600);
+	game.add.image(0, 0, bmd);
 
-	<span class="nx">box</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'box'</span><span class="p">);</span>
-	<span class="c1">// box.anchor.set(0.5);</span>
+	box = game.add.sprite(300, 300, 'box');
+	// box.anchor.set(0.5);
 
-	<span class="nx">box</span><span class="p">.</span><span class="nx">physicsEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	box.physicsEnabled = true;
 
-	<span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clearShapes</span><span class="p">();</span>
+	box.body.clearShapes();
 
-	<span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">loadPolygon</span><span class="p">(</span><span class="s1">'physobjects'</span><span class="p">,</span> <span class="s1">'diamond'</span><span class="p">);</span>
+	box.body.loadPolygon('physobjects', 'diamond');
 
-	<span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">rotateLeft</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+	box.body.rotateLeft(20);
 
-	<span class="c1">// console.log(game.cache.getPhysicsData('physobjects', 'diamond'));</span>
+	// console.log(game.cache.getPhysicsData('physobjects', 'diamond'));
 
-	<span class="c1">//	95x95</span>
-	<span class="c1">// box.body.setRectangle(64, 64);</span>
+	//	95x95
+	// box.body.setRectangle(64, 64);
 
-	<span class="c1">// box.body.setRectangle(64, 64, 95/2,95/2);</span>
+	// box.body.setRectangle(64, 64, 95/2,95/2);
 
-	<span class="c1">//	Works</span>
-	<span class="c1">// box.body.clearShapes();</span>
-	<span class="c1">// box.body.addPolygon({}, [	[-1, 1], [-1, 0], [1, 0], [1, 1], [0.5, 0.5]	]);</span>
+	//	Works
+	// box.body.clearShapes();
+	// box.body.addPolygon({}, [	[-1, 1], [-1, 0], [1, 0], [1, 1], [0.5, 0.5]	]);
 
-	<span class="c1">//	Works</span>
-	<span class="c1">// box.body.setPolygon({}, [-1, 1], [-1, 0], [1, 0], [1, 1], [0.5, 0.5]);</span>
+	//	Works
+	// box.body.setPolygon({}, [-1, 1], [-1, 0], [1, 0], [1, 1], [0.5, 0.5]);
 
-	<span class="c1">//	Works</span>
-	<span class="c1">// box.body.addPolygon({}, -100, 100, -100, 0, 100, 0, 100, 100, 50, 50);</span>
+	//	Works
+	// box.body.addPolygon({}, -100, 100, -100, 0, 100, 0, 100, 100, 50, 50);
 
-	<span class="c1">// box.body.addPolygon({}, -100, 100, -100, 0, 100, 0, 100, 100, 50, 50 );</span>
+	// box.body.addPolygon({}, -100, 100, -100, 0, 100, 0, 100, 100, 50, 50 );
 
-	<span class="c1">// box.body.addPolygon({},    32, 13  ,  17, 28  ,  15, 28  ,  0, 13  ,  0, 7  ,  7, 0  ,  25, 0  ,  32, 7  );</span>
+	// box.body.addPolygon({},    32, 13  ,  17, 28  ,  15, 28  ,  0, 13  ,  0, 7  ,  7, 0  ,  25, 0  ,  32, 7  );
 
-	<span class="c1">//	Works</span>
-	<span class="c1">// box.body.setPolygon({}, -1, 1, -1, 0, 1, 0, 1, 1, 0.5, 0.5);</span>
+	//	Works
+	// box.body.setPolygon({}, -1, 1, -1, 0, 1, 0, 1, 1, 0.5, 0.5);
 
-	<span class="c1">// box.body.setZeroDamping();</span>
+	// box.body.setZeroDamping();
 
-	<span class="c1">// game.input.onDown.addOnce(startTiming, this);</span>
+	// game.input.onDown.addOnce(startTiming, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">startTiming</span><span class="p">()</span> <span class="p">{</span>
+function startTiming() {
 
-	<span class="nx">start</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span><span class="p">;</span>
-	<span class="nx">end</span> <span class="o">=</span> <span class="nx">start</span> <span class="o">+</span> <span class="mi">1000</span><span class="p">;</span>
-	<span class="nx">move</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	start = game.time.now;
+	end = start + 1000;
+	move = true;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">move</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+	if (move)
+	{
+		box.body.moveLeft(100);
 
-		<span class="c1">// if (game.time.now &gt;= end)</span>
-		<span class="c1">// {</span>
-		<span class="c1">// 	move = false;</span>
-		<span class="c1">// 	var duration = game.time.now - start;</span>
-		<span class="c1">// 	console.log('Test over. Distance: ', box.x, 'duration', duration);</span>
-		<span class="c1">// }</span>
-	<span class="p">}</span>
-	<span class="k">else</span>
-	<span class="p">{</span>
-		<span class="c1">// box.body.setZeroVelocity();</span>
-	<span class="p">}</span>
+		// if (game.time.now >= end)
+		// {
+		// 	move = false;
+		// 	var duration = game.time.now - start;
+		// 	console.log('Test over. Distance: ', box.x, 'duration', duration);
+		// }
+	}
+	else
+	{
+		// box.body.setZeroVelocity();
+	}
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">physicsBody</span><span class="p">(</span><span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+	game.debug.physicsBody(box.body, 0);
 
-	<span class="c1">// game.debug.text(box.body., 32, 32);</span>
-	<span class="c1">// game.debug.text('y: ' + box.body.velocity.y, 32, 64);</span>
+	// game.debug.text(box.body., 32, 32);
+	// game.debug.text('y: ' + box.body.velocity.y, 32, 64);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,64 +55,65 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/interpolation.js" title="tweens/interpolation.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/interpolation.js" download="" title="Download: tweens/interpolation.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.WEBGL, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser2.png'</span><span class="p">);</span>
+    game.load.image('logo', 'assets/sprites/phaser2.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">logo</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tween</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">method</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var logo;
+var text;
+var tween;
+var method = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">logo</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
-    <span class="nx">logo</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    logo = this.add.sprite(0, 0, 'logo');
+    logo.scale.set(0.5);
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"48px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ff0044"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">};</span>
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s2">"Linear Interpolation"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    var style = { font: "48px Arial", fill: "#ff0044", align: "center" };
+    text = game.add.text(game.world.centerX, game.world.centerY, "Linear Interpolation", style);
+    text.anchor.set(0.5);
 
-    <span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="nx">logo</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="nx">logo</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+    var w = game.width - logo.width;
+    var h = game.height - logo.height;
 
-    <span class="c1">//  You can tween between an array of values by defining an array as the destination value</span>
-    <span class="c1">//  It will tween through them using the interpolation function (default is linear)</span>
-    <span class="c1">//  The -1 at the end just makes the tween repeat forever.</span>
+    //  You can tween between an array of values by defining an array as the destination value
+    //  It will tween through them using the interpolation function (default is linear)
+    //  The -1 at the end just makes the tween repeat forever.
 
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">logo</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="p">[</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">w</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">],</span> <span class="na">y</span><span class="p">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">},</span> <span class="mi">4000</span><span class="p">,</span> <span class="s2">"Sine.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    tween = game.add.tween(logo).to( { x: [ w, w, 0, 0 ], y: [ 0, h, h, 0 ] }, 4000, "Sine.easeInOut", true, -1, false);
 
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onLoop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">changeMethod</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    tween.onLoop.add(changeMethod, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">changeMethod</span><span class="p">()</span> <span class="p">{</span>
+function changeMethod() {
 
-    <span class="nx">method</span><span class="o">++</span><span class="p">;</span>
+    method++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">method</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">tween</span><span class="p">.</span><span class="nx">interpolation</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">bezierInterpolation</span><span class="p">);</span>
-        <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Bezier Interpolation"</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">method</span> <span class="o">===</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">tween</span><span class="p">.</span><span class="nx">interpolation</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">catmullRomInterpolation</span><span class="p">);</span>
-        <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"CatmullRom Interpolation"</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">method</span> <span class="o">===</span> <span class="mi">3</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">method</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="nx">tween</span><span class="p">.</span><span class="nx">interpolation</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nb">Math</span><span class="p">.</span><span class="nx">linearInterpolation</span><span class="p">);</span>
-        <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s2">"Linear Interpolation"</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (method === 1)
+    {
+        tween.interpolation(Phaser.Math.bezierInterpolation);
+        text.text = "Bezier Interpolation";
+    }
+    else if (method === 2)
+    {
+        tween.interpolation(Phaser.Math.catmullRomInterpolation);
+        text.text = "CatmullRom Interpolation";
+    }
+    else if (method === 3)
+    {
+        method = 0;
+        tween.interpolation(Phaser.Math.linearInterpolation);
+        text.text = "Linear Interpolation";
+    }
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

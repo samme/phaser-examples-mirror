@@ -55,79 +55,79 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/earthquake.js" title="tweens/earthquake.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/earthquake.js" download="" title="Download: tweens/earthquake.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
+</div>
+<pre class="highlight javascript"><code>/**
  * @author    Jorge Palacios (@pctroll)
  *            http://jorge.palacios.co/
- */</span>
+ */
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-  <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'tile'</span><span class="p">,</span> <span class="s1">'assets/sprites/p2.jpeg'</span><span class="p">);</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'monster'</span><span class="p">,</span> <span class="s1">'assets/sprites/pixi_monsters.png'</span><span class="p">,</span> <span class="mi">154</span><span class="p">,</span> <span class="mi">170</span><span class="p">);</span>
+  game.load.image('tile', 'assets/sprites/p2.jpeg');
+  game.load.spritesheet('monster', 'assets/sprites/pixi_monsters.png', 154, 170);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
   
-  <span class="c1">// we need to add margin to the world, so the camera can move</span>
-  <span class="kd">var</span> <span class="nx">margin</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
-  <span class="c1">// and set the world's bounds according to the given margin</span>
-  <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="nx">margin</span><span class="p">;</span>
-  <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="nx">margin</span><span class="p">;</span>
-  <span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="nx">margin</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-  <span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="nx">margin</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-  <span class="c1">// it's not necessary to increase height, we do it to keep uniformity</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">);</span>
+  // we need to add margin to the world, so the camera can move
+  var margin = 50;
+  // and set the world's bounds according to the given margin
+  var x = -margin;
+  var y = -margin;
+  var w = game.world.width + margin * 2;
+  var h = game.world.height + margin * 2;
+  // it's not necessary to increase height, we do it to keep uniformity
+  game.world.setBounds(x, y, w, h);
   
-  <span class="c1">// we make sure camera is at position (0,0)</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  // we make sure camera is at position (0,0)
+  game.world.camera.position.set(0);
   
-  <span class="c1">// include some props on the scene</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="s1">'tile'</span><span class="p">);</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'monster'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'monster'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'monster'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-  <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'monster'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  // include some props on the scene
+  game.add.tileSprite(x, y, w, h, 'tile');
+  game.add.sprite(100, 100, 'monster', 0);
+  game.add.sprite(500, 100, 'monster', 0);
+  game.add.sprite(100, 400, 'monster', 0);
+  game.add.sprite(500, 400, 'monster', 0);
   
-  <span class="c1">// this is where the magic happens</span>
-  <span class="nx">addQuake</span><span class="p">();</span>
+  // this is where the magic happens
+  addQuake();
   
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">addQuake</span><span class="p">()</span> <span class="p">{</span>
+function addQuake() {
   
-  <span class="c1">// define the camera offset for the quake</span>
-  <span class="kd">var</span> <span class="nx">rumbleOffset</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  // define the camera offset for the quake
+  var rumbleOffset = 10;
   
-  <span class="c1">// we need to move according to the camera's current position</span>
-  <span class="kd">var</span> <span class="nx">properties</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">x</span><span class="p">:</span> <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">rumbleOffset</span>
-  <span class="p">};</span>
+  // we need to move according to the camera's current position
+  var properties = {
+    x: game.camera.x - rumbleOffset
+  };
   
-  <span class="c1">// we make it a relly fast movement</span>
-  <span class="kd">var</span> <span class="nx">duration</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-  <span class="c1">// because it will repeat</span>
-  <span class="kd">var</span> <span class="nx">repeat</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
-  <span class="c1">// we use bounce in-out to soften it a little bit</span>
-  <span class="kd">var</span> <span class="nx">ease</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Bounce</span><span class="p">.</span><span class="nx">InOut</span><span class="p">;</span>
-  <span class="kd">var</span> <span class="nx">autoStart</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="c1">// a little delay because we will run it indefinitely</span>
-  <span class="kd">var</span> <span class="nx">delay</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
-  <span class="c1">// we want to go back to the original position</span>
-  <span class="kd">var</span> <span class="nx">yoyo</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  // we make it a relly fast movement
+  var duration = 100;
+  // because it will repeat
+  var repeat = 4;
+  // we use bounce in-out to soften it a little bit
+  var ease = Phaser.Easing.Bounce.InOut;
+  var autoStart = false;
+  // a little delay because we will run it indefinitely
+  var delay = 1000;
+  // we want to go back to the original position
+  var yoyo = true;
   
-  <span class="kd">var</span> <span class="nx">quake</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">to</span><span class="p">(</span><span class="nx">properties</span><span class="p">,</span> <span class="nx">duration</span><span class="p">,</span> <span class="nx">ease</span><span class="p">,</span> <span class="nx">autoStart</span><span class="p">,</span> <span class="nx">delay</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">yoyo</span><span class="p">);</span>
+  var quake = game.add.tween(game.camera)
+    .to(properties, duration, ease, autoStart, delay, 4, yoyo);
   
-  <span class="c1">// we're using this line for the example to run indefinitely</span>
-  <span class="nx">quake</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">addQuake</span><span class="p">);</span>
+  // we're using this line for the example to run indefinitely
+  quake.onComplete.addOnce(addQuake);
   
-  <span class="c1">// let the earthquake begins</span>
-  <span class="nx">quake</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
-<span class="p">}</span>
+  // let the earthquake begins
+  quake.start();
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

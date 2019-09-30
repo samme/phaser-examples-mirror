@@ -55,94 +55,95 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/tween%20generate%202.js" title="wip/tween generate 2.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/tween%20generate%202.js" download="" title="Download: wip/tween generate 2.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'wasp'</span><span class="p">,</span> <span class="s1">'assets/sprites/wasp.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/skies/cavern1.png'</span><span class="p">);</span>
+    game.load.image('wasp', 'assets/sprites/wasp.png');
+    game.load.image('sky', 'assets/skies/cavern1.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bugs</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">data</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">pos</span> <span class="o">=</span> <span class="p">[];</span>
+var bugs;
+var index = 0;
+var data;
+var pos = [];
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
+    game.add.image(0, 0, 'sky');
 
-    <span class="c1">// image = game.add.image(0, 0, 'wasp');</span>
+    // image = game.add.image(0, 0, 'wasp');
 
-    <span class="c1">//  We don't want it to actually run, so we use game.make.tween instead of game.add.tween</span>
+    //  We don't want it to actually run, so we use game.make.tween instead of game.add.tween
 
-    <span class="kd">var</span> <span class="nx">tweenData</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">};</span>
+    var tweenData = { x: 0, y: 0 };
 
-    <span class="c1">//  Here we'll tween the values held in the tweenData object to x: 500, y: 300</span>
-    <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">tweenData</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">400</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">InOut</span><span class="p">);</span>
+    //  Here we'll tween the values held in the tweenData object to x: 500, y: 300
+    tween = game.make.tween(tweenData).to( { x: 100, y: 400 }, 2000, Phaser.Easing.Sinusoidal.InOut);
 
-    <span class="c1">//  Set the tween to yoyo so it loops smoothly</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">yoyo</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    //  Set the tween to yoyo so it loops smoothly
+    tween.yoyo(true);
 
-    <span class="c1">//  We have 3 interpolation methods available: linearInterpolation (the default), bezierInterpolation and catmullRomInterpolation.</span>
+    //  We have 3 interpolation methods available: linearInterpolation (the default), bezierInterpolation and catmullRomInterpolation.
 
-    <span class="c1">// tween.interpolation(game.math.bezierInterpolation);</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">interpolation</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">catmullRomInterpolation</span><span class="p">);</span>
+    // tween.interpolation(game.math.bezierInterpolation);
+    tween.interpolation(game.math.catmullRomInterpolation);
 
-    <span class="c1">//  Generates the tween data at a rate of 60 frames per second.</span>
-    <span class="c1">//  This is useful if you've got a lot of objects all using the same tween, just at different coordinates.</span>
-    <span class="c1">//  It saves having to calculate the same tween across the properties of all objects involved in the motion.</span>
-    <span class="c1">//  Instead you can pre-calculate it in advance and trade that in for a bit of memory to store it in an array.</span>
-    <span class="nx">data</span> <span class="o">=</span> <span class="nx">tween</span><span class="p">.</span><span class="nx">generateData</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+    //  Generates the tween data at a rate of 60 frames per second.
+    //  This is useful if you've got a lot of objects all using the same tween, just at different coordinates.
+    //  It saves having to calculate the same tween across the properties of all objects involved in the motion.
+    //  Instead you can pre-calculate it in advance and trade that in for a bit of memory to store it in an array.
+    data = tween.generateData(60);
 
-    <span class="c1">//  Now create some sprites to shown the tween data in action</span>
-    <span class="nx">bugs</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    //  Now create some sprites to shown the tween data in action
+    bugs = game.add.group();
 
-    <span class="nx">pos</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
-    <span class="nx">pos</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">));</span>
-    <span class="nx">pos</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">70</span><span class="p">));</span>
+    pos.push(new Phaser.Point(32, 0));
+    pos.push(new Phaser.Point(300, 100));
+    pos.push(new Phaser.Point(600, 70));
 
-    <span class="nx">bugs</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">y</span><span class="p">,</span> <span class="s1">'wasp'</span><span class="p">);</span>
-    <span class="nx">bugs</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">y</span><span class="p">,</span> <span class="s1">'wasp'</span><span class="p">);</span>
-    <span class="nx">bugs</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">y</span><span class="p">,</span> <span class="s1">'wasp'</span><span class="p">);</span>
+    bugs.create(pos[0].x, pos[0].y, 'wasp');
+    bugs.create(pos[1].x, pos[1].y, 'wasp');
+    bugs.create(pos[2].x, pos[2].y, 'wasp');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">//  A simple data playback.</span>
+    //  A simple data playback.
 
-    <span class="c1">//  Each element of the array contains an object that includes whatever properties were tweened</span>
-    <span class="c1">//  In this case the x and y properties</span>
+    //  Each element of the array contains an object that includes whatever properties were tweened
+    //  In this case the x and y properties
 
-    <span class="c1">//  Because the tween data is pre-generated we can apply it however we want:</span>
-    <span class="c1">//  Directly, by adding to the coordinates</span>
-    <span class="nx">bugs</span><span class="p">.</span><span class="nx">getAt</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">data</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">x</span><span class="p">;</span>
-    <span class="nx">bugs</span><span class="p">.</span><span class="nx">getAt</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">data</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
+    //  Because the tween data is pre-generated we can apply it however we want:
+    //  Directly, by adding to the coordinates
+    bugs.getAt(0).x = pos[0].x + data[index].x;
+    bugs.getAt(0).y = pos[0].y + data[index].y;
 
-    <span class="c1">//  Half one of the values</span>
-    <span class="nx">bugs</span><span class="p">.</span><span class="nx">getAt</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">x</span> <span class="o">+</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">x</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">bugs</span><span class="p">.</span><span class="nx">getAt</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">data</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
+    //  Half one of the values
+    bugs.getAt(1).x = pos[1].x + (data[index].x / 2);
+    bugs.getAt(1).y = pos[1].y + data[index].y;
 
-    <span class="c1">//  Inverse one of the values</span>
-    <span class="nx">bugs</span><span class="p">.</span><span class="nx">getAt</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">data</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">x</span><span class="p">;</span>
-    <span class="nx">bugs</span><span class="p">.</span><span class="nx">getAt</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">data</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">y</span><span class="p">;</span>
+    //  Inverse one of the values
+    bugs.getAt(2).x = pos[2].x - data[index].x;
+    bugs.getAt(2).y = pos[2].y + data[index].y;
 
-    <span class="c1">//  You can do all kinds of effects by modifying the tween data,</span>
-    <span class="c1">//  without having loads of active tweens running.</span>
+    //  You can do all kinds of effects by modifying the tween data,
+    //  without having loads of active tweens running.
 
-    <span class="c1">//  This just advances the tween data index</span>
-    <span class="c1">//  It's crude and doesn't take target device speed into account at all, but works as an example</span>
-    <span class="nx">index</span><span class="o">++</span><span class="p">;</span>
+    //  This just advances the tween data index
+    //  It's crude and doesn't take target device speed into account at all, but works as an example
+    index++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">===</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (index === data.length)
+    {
+        index = 0;
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

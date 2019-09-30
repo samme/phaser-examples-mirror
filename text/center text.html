@@ -55,41 +55,42 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/center%20text.js" title="text/center text.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/center%20text.js" download="" title="Download: text/center text.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
+var text;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bg'</span><span class="p">,</span> <span class="s1">'assets/skies/deepblue.png'</span><span class="p">);</span>
+    game.load.image('bg', 'assets/skies/deepblue.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'bg'</span><span class="p">);</span>
+    game.add.image(0, 0, 'bg');
 
-    <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">();</span>
-    <span class="nx">bar</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0x000000</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">);</span>
-    <span class="nx">bar</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    var bar = game.add.graphics();
+    bar.beginFill(0x000000, 0.2);
+    bar.drawRect(0, 100, 800, 100);
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"bold 32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#fff"</span><span class="p">,</span> <span class="na">boundsAlignH</span><span class="p">:</span> <span class="s2">"center"</span><span class="p">,</span> <span class="na">boundsAlignV</span><span class="p">:</span> <span class="s2">"middle"</span> <span class="p">};</span>
+    var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
 
-    <span class="c1">//  The Text is positioned at 0, 100</span>
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"phaser 2.4 text bounds"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setShadow</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'rgba(0,0,0,0.5)'</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+    //  The Text is positioned at 0, 100
+    text = game.add.text(0, 0, "phaser 2.4 text bounds", style);
+    text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
 
-    <span class="c1">//  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">setTextBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
+    text.setTextBounds(0, 100, 800, 100);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">// game.debug.geom(text.textBounds);</span>
+    // game.debug.geom(text.textBounds);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

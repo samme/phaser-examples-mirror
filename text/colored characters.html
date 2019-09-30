@@ -55,25 +55,25 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/colored%20characters.js" title="text/colored characters.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/colored%20characters.js" download="" title="Download: text/colored characters.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"65px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ffffff"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">};</span>
+	var style = { font: "65px Arial", fill: "#ffffff", align: "center" };
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s2">"- phaser -\nwith a sprinkle of\npixi dust"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+    var text = game.add.text(game.world.centerX, game.world.centerY, "- phaser -\nwith a sprinkle of\npixi dust", style);
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    text.anchor.set(0.5);
 
-    <span class="c1">//  And now we'll color in some of the letters</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">addColor</span><span class="p">(</span><span class="s1">'#ffff00'</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">addColor</span><span class="p">(</span><span class="s1">'#ffffff'</span><span class="p">,</span> <span class="mi">25</span><span class="p">);</span>
+    //  And now we'll color in some of the letters
+    text.addColor('#ffff00', 16);
+    text.addColor('#ffffff', 25);
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">addColor</span><span class="p">(</span><span class="s1">'#ff00ff'</span><span class="p">,</span> <span class="mi">28</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">addColor</span><span class="p">(</span><span class="s1">'#ffffff'</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    text.addColor('#ff00ff', 28);
+    text.addColor('#ffffff', 32);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

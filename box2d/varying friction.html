@@ -55,85 +55,85 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/box2d/varying%20friction.js" title="box2d/varying friction.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/box2d/varying%20friction.js" download="" title="Download: box2d/varying friction.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Chris Campbell <iforce2d@gmail.com>
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Box2D Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/box2d
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#124184';
 
-    <span class="c1">// Enable Box2D physics</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
+    // Enable Box2D physics
+    game.physics.startSystem(Phaser.Physics.BOX2D);
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">setBoundsToWorld</span><span class="p">();</span>
+    game.physics.box2d.gravity.y = 500;
+    game.physics.box2d.setBoundsToWorld();
     
-    <span class="c1">//Create a rotated static rectangle for squares to slide on.</span>
-    <span class="kd">var</span> <span class="nx">rectangle1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span> <span class="o">-</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">rectangle1</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">12</span><span class="p">);</span>
-    <span class="nx">rectangle1</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //Create a rotated static rectangle for squares to slide on.
+    var rectangle1 = new Phaser.Physics.Box2D.Body(this.game, null, game.world.centerX - 80, 150, 0);
+    rectangle1.setRectangle(600, 15, 0, 0, Math.PI / 12);
+    rectangle1.static = true;
     
-    <span class="c1">//Another static rectangle to slide down after the first one</span>
-    <span class="kd">var</span> <span class="nx">rectangle2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span> <span class="o">+</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">330</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">rectangle2</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">12</span><span class="p">);</span>
-    <span class="nx">rectangle2</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //Another static rectangle to slide down after the first one
+    var rectangle2 = new Phaser.Physics.Box2D.Body(this.game, null, game.world.centerX + 80, 330, 0);
+    rectangle2.setRectangle(600, 15, 0, 0, -Math.PI / 12);
+    rectangle2.static = true;
     
-    <span class="c1">//One more rectangle platform to slide down</span>
-    <span class="kd">var</span> <span class="nx">rectangle3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span> <span class="o">-</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">510</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">rectangle3</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">12</span><span class="p">);</span>
-    <span class="nx">rectangle3</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //One more rectangle platform to slide down
+    var rectangle3 = new Phaser.Physics.Box2D.Body(this.game, null, game.world.centerX - 80, 510, 0);
+    rectangle3.setRectangle(600, 15, 0, 0, Math.PI / 12);
+    rectangle3.static = true;
     
-    <span class="c1">//static rectangle bodies that act as walls for the squares to bounce off of when they fall from platform to platform.</span>
-    <span class="kd">var</span> <span class="nx">wall1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">655</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">wall1</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">wall1</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //static rectangle bodies that act as walls for the squares to bounce off of when they fall from platform to platform.
+    var wall1 = new Phaser.Physics.Box2D.Body(this.game, null, 655, 230, 0);
+    wall1.setRectangle(20, 50, 0, 0, 0);
+    wall1.static = true;
     
-    <span class="kd">var</span> <span class="nx">wall2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">145</span><span class="p">,</span> <span class="mi">410</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">wall2</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">wall2</span><span class="p">.</span><span class="kr">static</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    var wall2 = new Phaser.Physics.Box2D.Body(this.game, null, 145, 410, 0);
+    wall2.setRectangle(20, 50, 0, 0, 0);
+    wall2.static = true;
     
-    <span class="c1">//dynamic square bodies with varying levels of friction. These are created at the top and will slide down the rectangle platforms at varying speeds based on friction</span>
+    //dynamic square bodies with varying levels of friction. These are created at the top and will slide down the rectangle platforms at varying speeds based on friction
 
-    <span class="c1">//Slowest square</span>
-    <span class="kd">var</span> <span class="nx">square1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">square1</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">square1</span><span class="p">.</span><span class="nx">friction</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">;</span>
+    //Slowest square
+    var square1 = new Phaser.Physics.Box2D.Body(this.game, null, 50, 30, 2);
+    square1.setRectangle(20, 20, 0, 0, 0);
+    square1.friction = 0.4;
     
-    <span class="kd">var</span> <span class="nx">square2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">square2</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">square2</span><span class="p">.</span><span class="nx">friction</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">;</span>
+    var square2 = new Phaser.Physics.Box2D.Body(this.game, null, 100, 30, 2);
+    square2.setRectangle(20, 20, 0, 0, 0);
+    square2.friction = 0.3;
 
-    <span class="c1">//Average square</span>
-    <span class="kd">var</span> <span class="nx">square3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">square3</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">square3</span><span class="p">.</span><span class="nx">friction</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">;</span>
+    //Average square
+    var square3 = new Phaser.Physics.Box2D.Body(this.game, null, 150, 30, 2);
+    square3.setRectangle(20, 20, 0, 0, 0);
+    square3.friction = 0.2;
     
-    <span class="kd">var</span> <span class="nx">square4</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">square4</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">square4</span><span class="p">.</span><span class="nx">friction</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
+    var square4 = new Phaser.Physics.Box2D.Body(this.game, null, 200, 30, 2);
+    square4.setRectangle(20, 20, 0, 0, 0);
+    square4.friction = 0.1;
 
-    <span class="c1">//Fastest square</span>
-    <span class="kd">var</span> <span class="nx">square5</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">square5</span><span class="p">.</span><span class="nx">setRectangle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">square5</span><span class="p">.</span><span class="nx">friction</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    //Fastest square
+    var square5 = new Phaser.Physics.Box2D.Body(this.game, null, 250, 30, 2);
+    square5.setRectangle(20, 20, 0, 0, 0);
+    square5.friction = 0;
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">box2dWorld</span><span class="p">();</span>
+    game.debug.box2dWorld();
     
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

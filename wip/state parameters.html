@@ -55,101 +55,101 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/state%20parameters.js" title="wip/state parameters.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/state%20parameters.js" download="" title="Download: wip/state parameters.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">BasicGame</span> <span class="o">=</span> <span class="p">{};</span>
+</div>
+<pre class="highlight javascript"><code>var BasicGame = {};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Boot</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+BasicGame.Boot = function (game) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">b</span><span class="p">;</span>
+    this.a;
+    this.b;
 
-<span class="p">};</span>
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Boot</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+BasicGame.Boot.prototype = {
 
-    <span class="na">init</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    init: function (a, b) {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="nx">b</span><span class="p">;</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Boot is alive'</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'A: '</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'B: '</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
+        this.a = a;
+        this.b = b;
+        console.log('Boot is alive');
+        console.log('A: ', this.a);
+        console.log('B: ', this.b);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Boot create'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'Preloader'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
+        console.log('Boot create');
+        this.game.state.start('Preloader', true, false, this.a, this.b);
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Preloader</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+BasicGame.Preloader = function (game) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">b</span><span class="p">;</span>
+    this.a;
+    this.b;
 
-<span class="p">};</span>
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Preloader</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+BasicGame.Preloader.prototype = {
 
-    <span class="na">init</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    init: function (a, b) {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="nx">b</span><span class="p">;</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Preloader is alive'</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'A: '</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'B: '</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
+        this.a = a;
+        this.b = b;
+        console.log('Preloader is alive');
+        console.log('A: ', this.a);
+        console.log('B: ', this.b);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Preloader create'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'MainMenu'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
+        console.log('Preloader create');
+        this.game.state.start('MainMenu', true, false, this.a, this.b);
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">MainMenu</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">game</span><span class="p">)</span> <span class="p">{</span>
+BasicGame.MainMenu = function (game) {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">b</span><span class="p">;</span>
+    this.a;
+    this.b;
 
-<span class="p">};</span>
+};
 
-<span class="nx">BasicGame</span><span class="p">.</span><span class="nx">MainMenu</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+BasicGame.MainMenu.prototype = {
 
-    <span class="na">init</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    init: function (a, b) {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="nx">b</span><span class="p">;</span>
+        this.a = a;
+        this.b = b;
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x2d2d2d</span><span class="p">;</span>
+        this.game.stage.backgroundColor = 0x2d2d2d;
 
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Main Menu is alive'</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'A: '</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'B: '</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">);</span>
+        console.log('Main Menu is alive');
+        console.log('A: ', this.a);
+        console.log('B: ', this.b);
+        console.log(this.game);
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">768</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaser-example');
 
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Boot'</span><span class="p">,</span> <span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Boot</span><span class="p">);</span>
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Preloader'</span><span class="p">,</span> <span class="nx">BasicGame</span><span class="p">.</span><span class="nx">Preloader</span><span class="p">);</span>
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'MainMenu'</span><span class="p">,</span> <span class="nx">BasicGame</span><span class="p">.</span><span class="nx">MainMenu</span><span class="p">);</span>
+game.state.add('Boot', BasicGame.Boot);
+game.state.add('Preloader', BasicGame.Preloader);
+game.state.add('MainMenu', BasicGame.MainMenu);
 
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">'Boot'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="s1">'hello'</span><span class="p">,</span> <span class="s1">'world'</span><span class="p">);</span>
+game.state.start('Boot', true, false, 'hello', 'world');
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

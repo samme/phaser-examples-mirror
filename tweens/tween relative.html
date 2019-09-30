@@ -55,63 +55,64 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/tweens/tween%20relative.js" title="tweens/tween relative.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/tweens/tween%20relative.js" download="" title="Download: tweens/tween relative.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser1.png'</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'arrows'</span><span class="p">,</span> <span class="s1">'assets/sprites/arrows.png'</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">31</span><span class="p">);</span>
+	game.load.image('phaser', 'assets/sprites/phaser1.png');
+	game.load.spritesheet('arrows', 'assets/sprites/arrows.png', 23, 31);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">arrowStart</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">arrowEnd</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var arrowStart;
+var arrowEnd;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2384e7'</span><span class="p">;</span>
+	game.stage.backgroundColor = '#2384e7';
 
-	<span class="nx">arrowStart</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'arrows'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+	arrowStart = game.add.sprite(100, 100, 'arrows', 0);
 
-	<span class="nx">arrowEnd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'arrows'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+	arrowEnd = game.add.sprite(400, 100, 'arrows', 1);
 
-	<span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">164</span><span class="p">,</span> <span class="s1">'phaser'</span><span class="p">);</span>
-	<span class="nx">sprite</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	sprite = game.add.sprite(100, 164, 'phaser');
+	sprite.inputEnabled = true;
 
-	<span class="nx">sprite</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">move</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	sprite.events.onInputDown.add(move, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">move</span><span class="p">()</span> <span class="p">{</span>
+function move() {
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="mi">100</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="c1">//	Here you'll notice we are using a relative value for the tween.</span>
-		<span class="c1">//	You can specify a number as a string with either + or - at the start of it.</span>
-		<span class="c1">//	When the tween starts it will take the sprites current X value and add +300 to it.</span>
+	if (sprite.x === 100)
+	{
+		//	Here you'll notice we are using a relative value for the tween.
+		//	You can specify a number as a string with either + or - at the start of it.
+		//	When the tween starts it will take the sprites current X value and add +300 to it.
 
-		<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="s1">'+300'</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-	<span class="p">}</span>
-	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="mi">400</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="s1">'-300'</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-	<span class="p">}</span>
+		game.add.tween(sprite).to( { x: '+300' }, 2000, Phaser.Easing.Linear.None, true);
+	}
+	else if (sprite.x === 400)
+	{
+		game.add.tween(sprite).to( { x: '-300' }, 2000, Phaser.Easing.Linear.None, true);
+	}
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="mi">100</span> <span class="o">||</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="mi">400</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Click sprite to tween'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-	<span class="p">}</span>
+	if (sprite.x === 100 || sprite.x === 400)
+	{
+		game.debug.text('Click sprite to tween', 32, 32);
+	}
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'x: '</span> <span class="o">+</span> <span class="nx">arrowStart</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">arrowStart</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">arrowStart</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">4</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'x: '</span> <span class="o">+</span> <span class="nx">arrowEnd</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">arrowEnd</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">arrowEnd</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">4</span><span class="p">);</span>
+	game.debug.text('x: ' + arrowStart.x, arrowStart.x, arrowStart.y - 4);
+	game.debug.text('x: ' + arrowEnd.x, arrowEnd.x, arrowEnd.y - 4);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

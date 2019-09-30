@@ -55,68 +55,69 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/timetest.js" title="wip/timetest.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/timetest.js" download="" title="Download: wip/timetest.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">timmy</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">before</span><span class="p">;</span>
+var timmy;
+var before;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-  	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">disableVisibilityChange</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  	game.stage.disableVisibilityChange = true;
 
-	<span class="nx">before</span> <span class="o">=</span> <span class="o">+</span><span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+	before = +new Date();
 
-	<span class="nx">timmy</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+	timmy = game.time.create(false);
 
- 	<span class="nx">timmy</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'&gt;&gt;&gt; timmy diff (should be 500): '</span><span class="p">,</span> <span class="o">+</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()</span> <span class="o">-</span> <span class="nx">before</span><span class="p">);</span>
-      <span class="nx">before</span> <span class="o">=</span> <span class="o">+</span><span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
-    <span class="p">});</span>
+ 	timmy.repeat(500, 20, function(){
+      console.log('>>> timmy diff (should be 500): ', +new Date() - before);
+      before = +new Date();
+    });
 
-  	<span class="c1">// timmy.loop(5000, function(){ console.log('timmy loop'); });</span>
-	<span class="nx">timmy</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+  	// timmy.loop(5000, function(){ console.log('timmy loop'); });
+	timmy.start();
 
-  	<span class="c1">// game.time.events.loop(2500, function(){ console.log('event loop'); });</span>
+  	// game.time.events.loop(2500, function(){ console.log('event loop'); });
 
 
- 	<span class="c1">// game.time.events.repeat(500, 20, function(){</span>
-      <span class="c1">// console.log('&gt;&gt;&gt; time diff (should be 500): ', +new Date() - before);</span>
-      <span class="c1">// before = +new Date();</span>
-    <span class="c1">// });</span>
+ 	// game.time.events.repeat(500, 20, function(){
+      // console.log('>>> time diff (should be 500): ', +new Date() - before);
+      // before = +new Date();
+    // });
 
-	<span class="c1">// game.input.onDown.add(handleClick);</span>
+	// game.input.onDown.add(handleClick);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">t1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var t1 = 0;
 
-<span class="kd">function</span> <span class="nx">handleClick</span><span class="p">(){</span>
+function handleClick(){
 
-	<span class="c1">//	Toggle pause</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">paused</span> <span class="o">=</span> <span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">paused</span>
+	//	Toggle pause
+	game.paused = !game.paused
 
-	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">game</span><span class="p">.</span><span class="nx">paused</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">t1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span><span class="p">;</span>
-		<span class="c1">// game.time.events.add(500, function(){ console.log('&gt;&gt;&gt; hello from game timer after', game.time.now - t1); });</span>
-		<span class="c1">// timmy.add(1500, function(){ console.log('&gt;&gt;&gt; hello from timmy timer after', game.time.now - t1); });</span>
-	<span class="p">}</span>
+	if (!game.paused)
+	{
+		t1 = game.time.now;
+		// game.time.events.add(500, function(){ console.log('>>> hello from game timer after', game.time.now - t1); });
+		// timmy.add(1500, function(){ console.log('>>> hello from timmy timer after', game.time.now - t1); });
+	}
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function update() {
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Custom Timer'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">timer</span><span class="p">(</span><span class="nx">timmy</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+	game.debug.text('Custom Timer', 32, 32);
+	game.debug.timer(timmy, 32, 64);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Game Timer'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">timer</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">232</span><span class="p">);</span>
+	game.debug.text('Game Timer', 32, 200);
+	game.debug.timer(game.time.events, 32, 232);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

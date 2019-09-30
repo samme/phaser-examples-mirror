@@ -55,49 +55,50 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/pixel%20perfect%20click%20detection.js" title="input/pixel perfect click detection.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/pixel%20perfect%20click%20detection.js" download="" title="Download: input/pixel perfect click detection.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bunny'</span><span class="p">,</span> <span class="s1">'assets/sprites/bunny.png'</span><span class="p">);</span>
+    game.load.image('bunny', 'assets/sprites/bunny.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bunny</span><span class="p">;</span>
+var bunny;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">bunny</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'bunny'</span><span class="p">);</span>
+    bunny = game.add.sprite(game.world.centerX, game.world.centerY, 'bunny');
 
-    <span class="nx">bunny</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    bunny.anchor.set(0.5);
 
-    <span class="c1">//  Listen for input events on this sprite</span>
-    <span class="nx">bunny</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //  Listen for input events on this sprite
+    bunny.inputEnabled = true;
 
-    <span class="c1">//  This will check the pixel every time the mouse moves, which is really expensive!</span>
-    <span class="c1">//  You can also only do a pixel perfect check on click, which is much cheaper - so</span>
-    <span class="c1">//  pick the right one accordingly.</span>
-    <span class="nx">bunny</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">pixelPerfectOver</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //  This will check the pixel every time the mouse moves, which is really expensive!
+    //  You can also only do a pixel perfect check on click, which is much cheaper - so
+    //  pick the right one accordingly.
+    bunny.input.pixelPerfectOver = true;
 
-    <span class="c1">//  Enable the hand cursor</span>
-    <span class="nx">bunny</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">useHandCursor</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //  Enable the hand cursor
+    bunny.input.useHandCursor = true;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">//  Rotate slowly</span>
-    <span class="nx">bunny</span><span class="p">.</span><span class="nx">angle</span> <span class="o">+=</span> <span class="mf">0.05</span><span class="p">;</span>
+    //  Rotate slowly
+    bunny.angle += 0.05;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">spriteInputInfo</span><span class="p">(</span><span class="nx">bunny</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">bunny</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">_tempPoint</span><span class="p">);</span>
+    game.debug.spriteInputInfo(bunny, 32, 32);
+    game.debug.geom(bunny.input._tempPoint);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,103 +55,104 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/audio/loop.js" title="audio/loop.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/audio/loop.js" download="" title="Download: audio/loop.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'speakers'</span><span class="p">,</span><span class="s1">'assets/sprites/speakers.png'</span><span class="p">);</span>
+    game.load.image('speakers','assets/sprites/speakers.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'bass'</span><span class="p">,</span> <span class="s1">'assets/audio/tech/bass.mp3'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'drums'</span><span class="p">,</span> <span class="s1">'assets/audio/tech/drums.mp3'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'percussion'</span><span class="p">,</span> <span class="s1">'assets/audio/tech/percussion.mp3'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'synth1'</span><span class="p">,</span> <span class="s1">'assets/audio/tech/synth1.mp3'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'synth2'</span><span class="p">,</span> <span class="s1">'assets/audio/tech/synth2.mp3'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'top1'</span><span class="p">,</span> <span class="s1">'assets/audio/tech/top1.mp3'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'top2'</span><span class="p">,</span> <span class="s1">'assets/audio/tech/top2.mp3'</span><span class="p">);</span>
+    game.load.audio('bass', 'assets/audio/tech/bass.mp3');
+    game.load.audio('drums', 'assets/audio/tech/drums.mp3');
+    game.load.audio('percussion', 'assets/audio/tech/percussion.mp3');
+    game.load.audio('synth1', 'assets/audio/tech/synth1.mp3');
+    game.load.audio('synth2', 'assets/audio/tech/synth2.mp3');
+    game.load.audio('top1', 'assets/audio/tech/top1.mp3');
+    game.load.audio('top2', 'assets/audio/tech/top2.mp3');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bass</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">drums</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">percussion</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">synth1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">synth2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">top1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">top2</span><span class="p">;</span>
+var bass;
+var drums;
+var percussion;
+var synth1;
+var synth2;
+var top1;
+var top2;
 
-<span class="kd">var</span> <span class="nx">text</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sounds</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">current</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">speakers</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">loopCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var text;
+var sounds;
+var current;
+var speakers;
+var loopCount = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#838282'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#838282';
 
-    <span class="nx">speakers</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'speakers'</span><span class="p">);</span>
-    <span class="nx">speakers</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    speakers = game.add.image(game.world.centerX, 500, 'speakers');
+    speakers.anchor.set(0.5, 1);
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"65px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#52bace"</span><span class="p">,</span> <span class="na">align</span><span class="p">:</span> <span class="s2">"center"</span> <span class="p">};</span>
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"decoding"</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    var style = { font: "65px Arial", fill: "#52bace", align: "center" };
+    text = game.add.text(game.world.centerX, 100, "decoding", style);
+    text.anchor.set(0.5);
 
-    <span class="nx">bass</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'bass'</span><span class="p">);</span>
-    <span class="nx">drums</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'drums'</span><span class="p">);</span>
-    <span class="nx">percussion</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'percussion'</span><span class="p">);</span>
-    <span class="nx">synth1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'synth1'</span><span class="p">);</span>
-    <span class="nx">synth2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'synth2'</span><span class="p">);</span>
-    <span class="nx">top1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'top1'</span><span class="p">);</span>
-    <span class="nx">top2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'top2'</span><span class="p">);</span>
+    bass = game.add.audio('bass');
+    drums = game.add.audio('drums');
+    percussion = game.add.audio('percussion');
+    synth1 = game.add.audio('synth1');
+    synth2 = game.add.audio('synth2');
+    top1 = game.add.audio('top1');
+    top2 = game.add.audio('top2');
 
-    <span class="nx">sounds</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">bass</span><span class="p">,</span> <span class="nx">drums</span><span class="p">,</span> <span class="nx">percussion</span><span class="p">,</span> <span class="nx">synth1</span><span class="p">,</span> <span class="nx">synth2</span><span class="p">,</span> <span class="nx">top1</span><span class="p">,</span> <span class="nx">top2</span> <span class="p">];</span>
+    sounds = [ bass, drums, percussion, synth1, synth2, top1, top2 ];
 
-    <span class="c1">//  Being mp3 files these take time to decode, so we can't play them instantly</span>
-    <span class="c1">//  Using setDecodedCallback we can be notified when they're ALL ready for use.</span>
-    <span class="c1">//  The audio files could decode in ANY order, we can never be sure which it'll be.</span>
+    //  Being mp3 files these take time to decode, so we can't play them instantly
+    //  Using setDecodedCallback we can be notified when they're ALL ready for use.
+    //  The audio files could decode in ANY order, we can never be sure which it'll be.
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">sound</span><span class="p">.</span><span class="nx">setDecodedCallback</span><span class="p">(</span><span class="nx">sounds</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.sound.setDecodedCallback(sounds, start, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">start</span><span class="p">()</span> <span class="p">{</span>
+function start() {
 
-    <span class="nx">sounds</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+    sounds.shift();
 
-    <span class="nx">bass</span><span class="p">.</span><span class="nx">loopFull</span><span class="p">(</span><span class="mf">0.6</span><span class="p">);</span>
-    <span class="nx">bass</span><span class="p">.</span><span class="nx">onLoop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">hasLooped</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    bass.loopFull(0.6);
+    bass.onLoop.add(hasLooped, this);
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'bass'</span><span class="p">;</span>
+    text.text = 'bass';
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">hasLooped</span><span class="p">(</span><span class="nx">sound</span><span class="p">)</span> <span class="p">{</span>
+function hasLooped(sound) {
 
-    <span class="nx">loopCount</span><span class="o">++</span><span class="p">;</span>
+    loopCount++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">loopCount</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sounds</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
-        <span class="nx">drums</span><span class="p">.</span><span class="nx">loopFull</span><span class="p">(</span><span class="mf">0.6</span><span class="p">);</span>
-        <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="s1">'drums'</span><span class="p">;</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">speakers</span><span class="p">.</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">1.1</span> <span class="p">},</span> <span class="mi">230</span><span class="p">,</span> <span class="s2">"Sine.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">loopCount</span> <span class="o">===</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">current</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">pick</span><span class="p">(</span><span class="nx">sounds</span><span class="p">);</span>
-        <span class="nx">current</span><span class="p">.</span><span class="nx">loopFull</span><span class="p">();</span>
-        <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">current</span><span class="p">.</span><span class="nx">key</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">loopCount</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">current</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
-        <span class="nx">current</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">pick</span><span class="p">(</span><span class="nx">sounds</span><span class="p">);</span>
-        <span class="nx">current</span><span class="p">.</span><span class="nx">loopFull</span><span class="p">();</span>
-        <span class="nx">text</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">current</span><span class="p">.</span><span class="nx">key</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (loopCount === 1)
+    {
+        sounds.shift();
+        drums.loopFull(0.6);
+        text.text = 'drums';
+        game.add.tween(speakers.scale).to( { x: 1.3, y: 1.1 }, 230, "Sine.easeInOut", true, 0, -1, true);
+    }
+    else if (loopCount === 2)
+    {
+        current = game.rnd.pick(sounds);
+        current.loopFull();
+        text.text = current.key;
+    }
+    else if (loopCount > 2)
+    {
+        current.stop();
+        current = game.rnd.pick(sounds);
+        current.loopFull();
+        text.text = current.key;
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

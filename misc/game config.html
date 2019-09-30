@@ -55,40 +55,41 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/misc/game%20config.js" title="misc/game config.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/misc/game%20config.js" download="" title="Download: misc/game config.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">//  You can pass in a configuration object to the Game constructor </span>
-<span class="c1">//  instead of using the parameters, like this:</span>
+</div>
+<pre class="highlight javascript"><code>
+//  You can pass in a configuration object to the Game constructor 
+//  instead of using the parameters, like this:
 
-<span class="kd">var</span> <span class="nx">conf</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">width</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
-    <span class="na">height</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span>
-    <span class="na">renderer</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span>
-    <span class="na">parent</span><span class="p">:</span> <span class="s1">'phaser-example'</span><span class="p">,</span>
-    <span class="na">transparent</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="na">antialias</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="na">state</span><span class="p">:</span> <span class="k">this</span><span class="p">,</span>
-    <span class="na">scaleMode</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">ScaleManager</span><span class="p">.</span><span class="nx">EXACT_FIT</span>
-<span class="p">};</span>
+var conf = {
+    width: 800,
+    height: 600,
+    renderer: Phaser.AUTO,
+    parent: 'phaser-example',
+    transparent: false,
+    antialias: false,
+    state: this,
+    scaleMode: Phaser.ScaleManager.EXACT_FIT
+};
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="nx">conf</span><span class="p">);</span>
+var game = new Phaser.Game(conf);
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'robota'</span><span class="p">,</span> <span class="s1">'assets/pics/Robota_UXO_by_Made_of_Bomb.jpg'</span><span class="p">);</span>
+    game.load.image('robota', 'assets/pics/Robota_UXO_by_Made_of_Bomb.jpg');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#0076a3'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#0076a3';
 
-    <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">'robota'</span><span class="p">);</span>
+    var sprite = game.add.sprite(0, 50, 'robota');
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    sprite.scale.set(0.5);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">sprite</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="o">-</span><span class="mi">160</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="s2">"Sine.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(sprite).to( { x: -160 }, 2000, "Sine.easeInOut", true, false, -1, true);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,86 +55,87 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/anim%20new.js" title="wip/anim new.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/anim%20new.js" download="" title="Download: wip/anim new.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'rain'</span><span class="p">,</span> <span class="s1">'wip/razor.png'</span><span class="p">,</span> <span class="s1">'wip/razor.json'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'rain-notrim'</span><span class="p">,</span> <span class="s1">'wip/razor-notrim.png'</span><span class="p">,</span> <span class="s1">'wip/razor-notrim.json'</span><span class="p">);</span>
+    game.load.atlas('rain', 'wip/razor.png', 'wip/razor.json');
+    game.load.atlas('rain-notrim', 'wip/razor-notrim.png', 'wip/razor-notrim.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">rain</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">rain2</span><span class="p">;</span>
+var rain;
+var rain2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#2d2d2d';
 
-    <span class="nx">rain</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'rain'</span><span class="p">,</span> <span class="s1">'razor_rain_vertical_10'</span><span class="p">);</span>
-    <span class="nx">rain2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'rain'</span><span class="p">,</span> <span class="s1">'razor_rain_vertical_30'</span><span class="p">);</span>
+    rain = game.add.sprite(32, 100, 'rain', 'razor_rain_vertical_10');
+    rain2 = game.add.sprite(300, 100, 'rain', 'razor_rain_vertical_30');
 
-    <span class="nx">rain</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'pouring'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Animation</span><span class="p">.</span><span class="nx">generateFrameNames</span><span class="p">(</span><span class="s1">'razor_rain_vertical_'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">rain2</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'pouring'</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Animation</span><span class="p">.</span><span class="nx">generateFrameNames</span><span class="p">(</span><span class="s1">'razor_rain_vertical_'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    rain.animations.add('pouring', Phaser.Animation.generateFrameNames('razor_rain_vertical_', 0, 42, '', 2), 30, true);
+    rain2.animations.add('pouring', Phaser.Animation.generateFrameNames('razor_rain_vertical_', 0, 42, '', 2), 30, true);
 
-    <span class="c1">//  Issue is specifically an ANCHOR set on a TRIMMED frame</span>
-    <span class="c1">// rain2.anchor.x = 0.5;</span>
-    <span class="c1">// rain2.angle = 10;</span>
+    //  Issue is specifically an ANCHOR set on a TRIMMED frame
+    // rain2.anchor.x = 0.5;
+    // rain2.angle = 10;
 
-    <span class="c1">// rain.crop(new Phaser.Rectangle(0, 0, rain.width, 100));</span>
-    <span class="nx">rain2</span><span class="p">.</span><span class="nx">crop</span><span class="p">(</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">));</span>
+    // rain.crop(new Phaser.Rectangle(0, 0, rain.width, 100));
+    rain2.crop(new Phaser.Rectangle(0, 0, 100, 100));
 
-    <span class="nx">rain</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'pouring'</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">rain2</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'pouring'</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    rain.animations.play('pouring', 30, true);
+    rain2.animations.play('pouring', 30, true);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">onPressCallback</span> <span class="o">=</span> <span class="nx">nextFrame</span><span class="p">;</span>
+    game.input.keyboard.onPressCallback = nextFrame;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">nextFrame</span><span class="p">(</span><span class="kr">char</span><span class="p">)</span> <span class="p">{</span>
+function nextFrame(char) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="kr">char</span> <span class="o">===</span> <span class="s1">'+'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">rain</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-        <span class="nx">rain2</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="kr">char</span> <span class="o">===</span> <span class="s1">'-'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">rain</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">previous</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-        <span class="nx">rain2</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">previous</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (char === '+')
+    {
+        rain.animations.next(2);
+        rain2.animations.next(2);
+    }
+    else if (char === '-')
+    {
+        rain.animations.previous(2);
+        rain2.animations.previous(2);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="c1">// game.debug.geom(rain.texture.frame);</span>
+    // game.debug.geom(rain.texture.frame);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Frame: '</span> <span class="o">+</span> <span class="nx">rain</span><span class="p">.</span><span class="nx">frameName</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text('Frame: ' + rain.frameName, 32, 64);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'x: '</span> <span class="o">+</span> <span class="nx">rain</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">frame</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'y: '</span> <span class="o">+</span> <span class="nx">rain</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">frame</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">64</span><span class="o">+</span><span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'width: '</span> <span class="o">+</span> <span class="nx">rain</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">frame</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">64</span><span class="o">+</span><span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'height: '</span> <span class="o">+</span> <span class="nx">rain</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">frame</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">64</span><span class="o">+</span><span class="mi">96</span><span class="p">);</span>
+    game.debug.text('x: ' + rain.texture.frame.x, 500, 64);
+    game.debug.text('y: ' + rain.texture.frame.y, 500, 64+32);
+    game.debug.text('width: ' + rain.texture.frame.width, 500, 64+64);
+    game.debug.text('height: ' + rain.texture.frame.height, 500, 64+96);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'tx: '</span> <span class="o">+</span> <span class="nx">rain</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">trim</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">264</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'ty: '</span> <span class="o">+</span> <span class="nx">rain</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">trim</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">264</span><span class="o">+</span><span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'twidth: '</span> <span class="o">+</span> <span class="nx">rain</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">trim</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">264</span><span class="o">+</span><span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'theight: '</span> <span class="o">+</span> <span class="nx">rain</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">trim</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">264</span><span class="o">+</span><span class="mi">96</span><span class="p">);</span>
+    game.debug.text('tx: ' + rain.texture.trim.x, 500, 264);
+    game.debug.text('ty: ' + rain.texture.trim.y, 500, 264+32);
+    game.debug.text('twidth: ' + rain.texture.trim.width, 500, 264+64);
+    game.debug.text('theight: ' + rain.texture.trim.height, 500, 264+96);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'x: '</span> <span class="o">+</span> <span class="nx">rain2</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">frame</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'y: '</span> <span class="o">+</span> <span class="nx">rain2</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">frame</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">64</span><span class="o">+</span><span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'width: '</span> <span class="o">+</span> <span class="nx">rain2</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">frame</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">64</span><span class="o">+</span><span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'height: '</span> <span class="o">+</span> <span class="nx">rain2</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">frame</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">64</span><span class="o">+</span><span class="mi">96</span><span class="p">);</span>
+    game.debug.text('x: ' + rain2.texture.frame.x, 640, 64);
+    game.debug.text('y: ' + rain2.texture.frame.y, 640, 64+32);
+    game.debug.text('width: ' + rain2.texture.frame.width, 640, 64+64);
+    game.debug.text('height: ' + rain2.texture.frame.height, 640, 64+96);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'tx: '</span> <span class="o">+</span> <span class="nx">rain2</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">trim</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">264</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'ty: '</span> <span class="o">+</span> <span class="nx">rain2</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">trim</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">264</span><span class="o">+</span><span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'twidth: '</span> <span class="o">+</span> <span class="nx">rain2</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">trim</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">264</span><span class="o">+</span><span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'theight: '</span> <span class="o">+</span> <span class="nx">rain2</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">trim</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">264</span><span class="o">+</span><span class="mi">96</span><span class="p">);</span>
+    game.debug.text('tx: ' + rain2.texture.trim.x, 640, 264);
+    game.debug.text('ty: ' + rain2.texture.trim.y, 640, 264+32);
+    game.debug.text('twidth: ' + rain2.texture.trim.width, 640, 264+64);
+    game.debug.text('theight: ' + rain2.texture.trim.height, 640, 264+96);
 
 
-<span class="p">}</span>
+}
 
 
 </code></pre>

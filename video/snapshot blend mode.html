@@ -55,67 +55,68 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/video/snapshot%20blend%20mode.js" title="video/snapshot blend mode.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/video/snapshot%20blend%20mode.js" download="" title="Download: video/snapshot blend mode.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">var</span> <span class="nx">video</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">alpha</span> <span class="o">=</span> <span class="p">{</span> <span class="na">alpha</span><span class="p">:</span> <span class="mf">0.2</span> <span class="p">};</span>
+var video;
+var bmd;
+var alpha = { alpha: 0.2 };
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'swirl'</span><span class="p">,</span> <span class="s1">'assets/pics/swirl1.jpg'</span><span class="p">);</span>
+    game.load.image('swirl', 'assets/pics/swirl1.jpg');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  No properties at all means we'll create a video stream from a webcam</span>
-    <span class="nx">video</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">video</span><span class="p">();</span>
+    //  No properties at all means we'll create a video stream from a webcam
+    video = game.add.video();
 
-    <span class="c1">//  If access to the camera is allowed</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">onAccess</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">camAllowed</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  If access to the camera is allowed
+    video.onAccess.add(camAllowed, this);
 
-    <span class="c1">//  If access to the camera is denied</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">onError</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">camBlocked</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  If access to the camera is denied
+    video.onError.add(camBlocked, this);
 
-    <span class="c1">//  Start the stream</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">startMediaStream</span><span class="p">();</span>
+    //  Start the stream
+    video.startMediaStream();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">camAllowed</span><span class="p">()</span> <span class="p">{</span>
+function camAllowed() {
 
-    <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">video</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    bmd = game.add.bitmapData(video.width, video.height);
+    bmd.addToWorld(game.world.centerX, game.world.centerY, 0.5, 0.5);
 
-    <span class="c1">//  Grab a new frame every 50ms</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">loop</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="nx">takeSnapshot</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Grab a new frame every 50ms
+    game.time.events.loop(50, takeSnapshot, this);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">alpha</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">alpha</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">"Cubic.easeInOut"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(alpha).to( { alpha: 0.5 }, 1000, "Cubic.easeInOut", true, 0, -1, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">camBlocked</span><span class="p">(</span><span class="nx">video</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+function camBlocked(video, error) {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Camera was blocked'</span><span class="p">,</span> <span class="nx">video</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+    console.log('Camera was blocked', video, error);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">takeSnapshot</span><span class="p">()</span> <span class="p">{</span>
+function takeSnapshot() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">bmd</span><span class="p">.</span><span class="nx">width</span> <span class="o">!==</span> <span class="nx">video</span><span class="p">.</span><span class="nx">width</span> <span class="o">||</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">height</span> <span class="o">!==</span> <span class="nx">video</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">video</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (bmd.width !== video.width || bmd.height !== video.height)
+    {
+        bmd.resize(video.width, video.height);
+    }
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">grab</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="nx">alpha</span><span class="p">.</span><span class="nx">alpha</span><span class="p">);</span>
+    video.grab(true, alpha.alpha);
 
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="nx">video</span><span class="p">.</span><span class="nx">snapshot</span><span class="p">);</span>
+    bmd.draw(video.snapshot);
 
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="s1">'swirl'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">video</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">video</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">);</span>
+    bmd.draw('swirl', 0, 0, video.width, video.height, 'color');
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

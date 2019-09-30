@@ -55,139 +55,141 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/animation/dragon_bones.js" title="animation/dragon_bones.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/animation/dragon_bones.js" download="" title="Download: animation/dragon_bones.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/*
+</div>
+<pre class="highlight javascript"><code>
+
+/*
 * preload dragonBones scripts
-*/</span>
-<span class="kd">var</span> <span class="nx">ScriptLoader</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-    <span class="kd">var</span> <span class="nx">manifest</span><span class="p">,</span><span class="nx">callback</span><span class="p">;</span>
-    <span class="kd">function</span> <span class="nx">load</span><span class="p">(</span><span class="nx">p_manifest</span><span class="p">,</span><span class="nx">p_callback</span><span class="p">){</span>
-        <span class="nx">manifest</span> <span class="o">=</span> <span class="nx">p_manifest</span><span class="p">;</span>
-        <span class="nx">callback</span> <span class="o">=</span> <span class="nx">p_callback</span><span class="p">;</span>
-        <span class="nx">loadNext</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="kd">function</span> <span class="nx">loadNext</span><span class="p">(){</span>
-        <span class="k">if</span><span class="p">(</span><span class="nx">manifest</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
-            <span class="kd">var</span> <span class="nx">nextFile</span> <span class="o">=</span> <span class="nx">manifest</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
-            <span class="nx">loadScript</span><span class="p">(</span><span class="nx">nextFile</span><span class="p">,</span><span class="nx">loadNext</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">callback</span><span class="p">();</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="kd">function</span> <span class="nx">loadScript</span><span class="p">(</span><span class="nx">p_path</span><span class="p">,</span> <span class="nx">p_callback</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">head</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">'head'</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
-        <span class="kd">var</span> <span class="nx">script</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'script'</span><span class="p">);</span>
-        <span class="nx">script</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="s1">'text/javascript'</span><span class="p">;</span>
-        <span class="nx">script</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">p_path</span><span class="p">;</span>
-        <span class="nx">script</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="nx">p_callback</span><span class="p">;</span>
-        <span class="nx">script</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">==</span> <span class="s1">'complete'</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">p_callback</span><span class="p">();</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="nx">head</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">script</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="p">{</span><span class="na">load</span><span class="p">:</span><span class="nx">load</span><span class="p">};</span>
-<span class="p">})();</span>
+*/
+var ScriptLoader = (function(){
+    var manifest,callback;
+    function load(p_manifest,p_callback){
+        manifest = p_manifest;
+        callback = p_callback;
+        loadNext();
+    }
+    function loadNext(){
+        if(manifest.length > 0){
+            var nextFile = manifest.shift();
+            loadScript(nextFile,loadNext);
+        } else {
+            callback();
+        }
+    }
+    function loadScript(p_path, p_callback) {
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = p_path;
+        script.onload = p_callback;
+        script.onreadystatechange = function() {
+            if (this.readyState == 'complete') {
+                p_callback();
+            }
+        }
+        head.appendChild(script);
+    }
+    return {load:load};
+})();
 
-<span class="c1">// ------------------------------------------------------------</span>
-<span class="cm">/*
+// ------------------------------------------------------------
+/*
 * Phaser DragonBones example
-*/</span>
-<span class="c1">// ------------------------------------------------------------</span>
+*/
+// ------------------------------------------------------------
 
-<span class="c1">//the phaser game object</span>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+//the phaser game object
+var game = null;
 
-<span class="c1">//wait for scripts to load first</span>
-<span class="nx">ScriptLoader</span><span class="p">.</span><span class="nx">load</span><span class="p">([</span><span class="s2">"animation/dragonBones.js"</span><span class="p">,</span><span class="s2">"animation/phaser_dragonbones.js"</span><span class="p">],</span> <span class="nx">createGame</span><span class="p">)</span>
+//wait for scripts to load first
+ScriptLoader.load(["animation/dragonBones.js","animation/phaser_dragonbones.js"], createGame)
 
-<span class="c1">//now instantiate the game</span>
-<span class="kd">function</span> <span class="nx">createGame</span><span class="p">(){</span>
-    <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
-<span class="p">}</span>
+//now instantiate the game
+function createGame(){
+    game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+}
 
-<span class="c1">//preload game assets</span>
-<span class="kd">function</span> <span class="nx">preload</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// the texture atlas image that includes the images for the dragon bones sprite </span>
-    <span class="c1">// (loaded independently to make it easily accessible to dragonbones)</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'dragon_image'</span><span class="p">,</span> <span class="s1">'assets/sprites/dragon_atlas.png'</span><span class="p">);</span>
-    <span class="c1">// the texture atlas data (TexturePacker JSON Array format) for the dragon bones sprite </span>
-    <span class="c1">// (loaded independently to make it easily accessible to dragonbones)</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'dragon_atlas'</span><span class="p">,</span> <span class="s1">'assets/sprites/dragon_atlas.json'</span><span class="p">);</span>
-    <span class="c1">// load the texture atlas again so that it's content is registered in the atlas frame cache</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'atlas1'</span><span class="p">,</span> <span class="s1">'assets/sprites/dragon_atlas.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/dragon_atlas.json'</span><span class="p">);</span>  
-    <span class="c1">// the dragonbones skeleton data</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'dragon'</span><span class="p">,</span> <span class="s1">'assets/sprites/dragon_skeleton.json'</span><span class="p">);</span>   
-<span class="p">}</span>
+//preload game assets
+function preload () {
+    // the texture atlas image that includes the images for the dragon bones sprite 
+    // (loaded independently to make it easily accessible to dragonbones)
+    game.load.image('dragon_image', 'assets/sprites/dragon_atlas.png');
+    // the texture atlas data (TexturePacker JSON Array format) for the dragon bones sprite 
+    // (loaded independently to make it easily accessible to dragonbones)
+    game.load.json('dragon_atlas', 'assets/sprites/dragon_atlas.json');
+    // load the texture atlas again so that it's content is registered in the atlas frame cache
+    game.load.atlas('atlas1', 'assets/sprites/dragon_atlas.png', 'assets/sprites/dragon_atlas.json');  
+    // the dragonbones skeleton data
+    game.load.json('dragon', 'assets/sprites/dragon_skeleton.json');   
+}
 
-<span class="c1">//let's get this show on the road!</span>
-<span class="kd">function</span> <span class="nx">create</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="c1">//call setup method for dragon bones</span>
-    <span class="nx">addDragonBones</span><span class="p">();</span>
-    <span class="c1">//start a run-loop for dragonbones, firing every 20ms</span>
-   <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">loop</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="nx">update</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-<span class="p">}</span>
+//let's get this show on the road!
+function create () {
+    //call setup method for dragon bones
+    addDragonBones();
+    //start a run-loop for dragonbones, firing every 20ms
+   game.time.events.loop(20, update, this);
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// call advanceTime on the dragonBones world clock to progress the animation.</span>
-    <span class="c1">//</span>
-    <span class="c1">// For simplicity just using a hardcoded value of 0.02 secs</span>
-    <span class="c1">// but ideally should evaluate how much time has really passed since last call</span>
-    <span class="c1">// and send that value through instead -&gt; eg use Date.now()</span>
-    <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">WorldClock</span><span class="p">.</span><span class="nx">clock</span><span class="p">.</span><span class="nx">advanceTime</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
-<span class="p">}</span>
+function update() {
+    // call advanceTime on the dragonBones world clock to progress the animation.
+    //
+    // For simplicity just using a hardcoded value of 0.02 secs
+    // but ideally should evaluate how much time has really passed since last call
+    // and send that value through instead -> eg use Date.now()
+    dragonBones.animation.WorldClock.clock.advanceTime(0.02)
+}
 
 
-<span class="kd">function</span> <span class="nx">addDragonBones</span><span class="p">(){</span>
+function addDragonBones(){
 
-    <span class="c1">//give dragonBones a reference to the game object</span>
-    <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">game</span> <span class="o">=</span> <span class="nx">game</span><span class="p">;</span>
+    //give dragonBones a reference to the game object
+    dragonBones.game = game;
 
-    <span class="c1">// hardcoded ids for the dragonBones elements to target</span>
-    <span class="kd">var</span> <span class="nx">armatureName</span> <span class="o">=</span> <span class="s2">"Dragon"</span><span class="p">;</span><span class="c1">//PigDragonBones";</span>
-    <span class="kd">var</span> <span class="nx">skeletonId</span> <span class="o">=</span> <span class="s2">"Dragon"</span><span class="p">;</span><span class="c1">//piggy";</span>
-    <span class="kd">var</span> <span class="nx">animationId</span> <span class="o">=</span> <span class="s2">"walk"</span><span class="p">;</span><span class="c1">//run";</span>
-    <span class="c1">// fetch the skeletonData from cache</span>
-    <span class="kd">var</span> <span class="nx">skeletonData</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">'dragon'</span><span class="p">);</span>
-    <span class="c1">// fetch the atlas data from cache</span>
-    <span class="kd">var</span> <span class="nx">atlasJson</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">'dragon_atlas'</span><span class="p">);</span>
-    <span class="c1">// make an array listing the names of which images to use from the atlas</span>
-    <span class="c1">//var partsList = ["arm_front", "head_ninja", "body", "fore_leg", "rear_leg", "rear arm"];</span>
-    <span class="kd">var</span> <span class="nx">partsList</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="s2">"armL.png"</span><span class="p">,</span>
-                <span class="s2">"armR.png"</span><span class="p">,</span>
-                <span class="s2">"armUpperL.png"</span><span class="p">,</span>
-                <span class="s2">"armUpperR.png"</span><span class="p">,</span>
-                <span class="s2">"beardL.png"</span><span class="p">,</span>
-                <span class="s2">"beardR.png"</span><span class="p">,</span>
-                <span class="s2">"body.png"</span><span class="p">,</span>
-                <span class="s2">"clothes1.png"</span><span class="p">,</span>
-                <span class="s2">"eyeL.png"</span><span class="p">,</span>
-                <span class="s2">"eyeR.png"</span><span class="p">,</span>
-                <span class="s2">"hair.png"</span><span class="p">,</span>
-                <span class="s2">"handL.png"</span><span class="p">,</span>
-                <span class="s2">"handR.png"</span><span class="p">,</span>
-                <span class="s2">"head.png"</span><span class="p">,</span>
-                <span class="s2">"legL.png"</span><span class="p">,</span>
-                <span class="s2">"legR.png"</span><span class="p">,</span>
-                <span class="s2">"tail.png"</span><span class="p">,</span>
-                <span class="s2">"tailTip.png"</span>
-                <span class="p">];</span>
-    <span class="c1">// fetch the atlas image</span>
-    <span class="kd">var</span> <span class="nx">texture</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getImage</span><span class="p">(</span><span class="s2">"dragon_image"</span><span class="p">);</span>
-    <span class="c1">// and the atlas id</span>
-    <span class="kd">var</span> <span class="nx">atlasId</span> <span class="o">=</span> <span class="s1">'atlas1'</span><span class="p">;</span>
-    <span class="c1">// pass the variables all through to a utility method to generate the dragonBones armature</span>
-    <span class="kd">var</span> <span class="nx">armature</span> <span class="o">=</span> <span class="nx">dragonBones</span><span class="p">.</span><span class="nx">makePhaserArmature</span><span class="p">(</span><span class="nx">armatureName</span><span class="p">,</span> <span class="nx">skeletonId</span><span class="p">,</span> <span class="nx">animationId</span><span class="p">,</span> <span class="nx">skeletonData</span><span class="p">,</span> <span class="nx">atlasJson</span><span class="p">,</span> <span class="nx">texture</span><span class="p">,</span> <span class="nx">partsList</span><span class="p">,</span> <span class="nx">atlasId</span><span class="p">);</span>
-    <span class="c1">// get the root display object from the armature</span>
-    <span class="kd">var</span> <span class="nx">bonesBase</span> <span class="o">=</span> <span class="nx">armature</span><span class="p">.</span><span class="nx">getDisplay</span><span class="p">();</span>
-    <span class="c1">// position it</span>
-    <span class="nx">bonesBase</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
-    <span class="nx">bonesBase</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>
-    <span class="c1">// add it to the display list</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">bonesBase</span><span class="p">);</span>
-<span class="p">}</span>
+    // hardcoded ids for the dragonBones elements to target
+    var armatureName = "Dragon";//PigDragonBones";
+    var skeletonId = "Dragon";//piggy";
+    var animationId = "walk";//run";
+    // fetch the skeletonData from cache
+    var skeletonData = game.cache.getJSON('dragon');
+    // fetch the atlas data from cache
+    var atlasJson = game.cache.getJSON('dragon_atlas');
+    // make an array listing the names of which images to use from the atlas
+    //var partsList = ["arm_front", "head_ninja", "body", "fore_leg", "rear_leg", "rear arm"];
+    var partsList = [
+                "armL.png",
+                "armR.png",
+                "armUpperL.png",
+                "armUpperR.png",
+                "beardL.png",
+                "beardR.png",
+                "body.png",
+                "clothes1.png",
+                "eyeL.png",
+                "eyeR.png",
+                "hair.png",
+                "handL.png",
+                "handR.png",
+                "head.png",
+                "legL.png",
+                "legR.png",
+                "tail.png",
+                "tailTip.png"
+                ];
+    // fetch the atlas image
+    var texture = game.cache.getImage("dragon_image");
+    // and the atlas id
+    var atlasId = 'atlas1';
+    // pass the variables all through to a utility method to generate the dragonBones armature
+    var armature = dragonBones.makePhaserArmature(armatureName, skeletonId, animationId, skeletonData, atlasJson, texture, partsList, atlasId);
+    // get the root display object from the armature
+    var bonesBase = armature.getDisplay();
+    // position it
+    bonesBase.x = 300;
+    bonesBase.y = 500;
+    // add it to the display list
+    game.world.add(bonesBase);
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

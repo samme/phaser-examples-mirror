@@ -55,91 +55,92 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/p26.js" title="wip/p26.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/p26.js" download="" title="Download: wip/p26.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'box'</span><span class="p">,</span> <span class="s1">'assets/sprites/block.png'</span><span class="p">);</span>
+	game.load.image('box', 'assets/sprites/block.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">box</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">move</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">end</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var box;
+var move = false;
+var start = 0;
+var end = 0;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">box</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'box'</span><span class="p">);</span>
-	<span class="nx">box</span><span class="p">.</span><span class="nx">physicsEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	box = game.add.sprite(200, 200, 'box');
+	box.physicsEnabled = true;
 
-	<span class="c1">//	Works</span>
-	<span class="c1">// box.body.setPolygon({}, [	[-1, 1], [-1, 0], [1, 0], [1, 1], [0.5, 0.5]	]);</span>
+	//	Works
+	// box.body.setPolygon({}, [	[-1, 1], [-1, 0], [1, 0], [1, 1], [0.5, 0.5]	]);
 
-	<span class="c1">//	Works</span>
-	<span class="c1">// box.body.setPolygon({}, [-1, 1], [-1, 0], [1, 0], [1, 1], [0.5, 0.5]);</span>
+	//	Works
+	// box.body.setPolygon({}, [-1, 1], [-1, 0], [1, 0], [1, 1], [0.5, 0.5]);
 
-	<span class="c1">//	Works</span>
-	<span class="c1">// box.body.setPolygon({}, -100, 100, -100, 0, 100, 0, 100, 100, 50, 50);</span>
+	//	Works
+	// box.body.setPolygon({}, -100, 100, -100, 0, 100, 0, 100, 100, 50, 50);
 
-	<span class="c1">//	Works</span>
-	<span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setPolygon</span><span class="p">({},</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-
-
-        <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-                    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-                    <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]];</span>
-
-	<span class="c1">// box.body.data.fromPolygon(path);</span>
-
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'real path'</span><span class="p">);</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
+	//	Works
+	box.body.setPolygon({}, -1, 1, -1, 0, 1, 0, 1, 1, 0.5, 0.5);
 
 
+        var path = [[-1, 1],
+                    [-1, 0],
+                    [1, 0],
+                    [1, 1],
+                    [0.5, 0.5]];
 
-	<span class="c1">// box.body.setZeroDamping();</span>
+	// box.body.data.fromPolygon(path);
 
-	<span class="c1">// game.input.onDown.addOnce(startTiming, this);</span>
+console.log('real path');
+console.log(path);
 
-<span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">startTiming</span><span class="p">()</span> <span class="p">{</span>
 
-	<span class="nx">start</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span><span class="p">;</span>
-	<span class="nx">end</span> <span class="o">=</span> <span class="nx">start</span> <span class="o">+</span> <span class="mi">1000</span><span class="p">;</span>
-	<span class="nx">move</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	// box.body.setZeroDamping();
 
-<span class="p">}</span>
+	// game.input.onDown.addOnce(startTiming, this);
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+}
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">move</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+function startTiming() {
 
-		<span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">&gt;=</span> <span class="nx">end</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="nx">move</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-			<span class="kd">var</span> <span class="nx">duration</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span> <span class="o">-</span> <span class="nx">start</span><span class="p">;</span>
-			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Test over. Distance: '</span><span class="p">,</span> <span class="nx">box</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="s1">'duration'</span><span class="p">,</span> <span class="nx">duration</span><span class="p">);</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	<span class="k">else</span>
-	<span class="p">{</span>
-		<span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setZeroVelocity</span><span class="p">();</span>
-	<span class="p">}</span>
+	start = game.time.now;
+	end = start + 1000;
+	move = true;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'x: '</span> <span class="o">+</span> <span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'y: '</span> <span class="o">+</span> <span class="nx">box</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+	if (move)
+	{
+		box.body.moveLeft(100);
 
-<span class="p">}</span>
+		if (game.time.now >= end)
+		{
+			move = false;
+			var duration = game.time.now - start;
+			console.log('Test over. Distance: ', box.x, 'duration', duration);
+		}
+	}
+	else
+	{
+		box.body.setZeroVelocity();
+	}
+
+}
+
+function render() {
+
+	game.debug.text('x: ' + box.body.velocity.x, 32, 32);
+	game.debug.text('y: ' + box.body.velocity.y, 32, 64);
+
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

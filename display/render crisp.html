@@ -55,50 +55,51 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/render%20crisp.js" title="display/render crisp.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/render%20crisp.js" download="" title="Download: display/render crisp.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'boss'</span><span class="p">,</span> <span class="s1">'assets/misc/boss1.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'melon'</span><span class="p">,</span> <span class="s1">'assets/sprites/melon.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'button'</span><span class="p">,</span> <span class="s1">'assets/buttons/button_sprite_sheet.png'</span><span class="p">,</span> <span class="mi">193</span><span class="p">,</span> <span class="mi">71</span><span class="p">);</span>
+    game.load.image('boss', 'assets/misc/boss1.png');
+    game.load.image('melon', 'assets/sprites/melon.png');
+    game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">boss</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">melon</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">button</span><span class="p">;</span>
+var boss;
+var melon;
+var button;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
     
-    <span class="nx">boss</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'boss'</span><span class="p">);</span>
-    <span class="nx">boss</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    boss = game.add.sprite(game.world.centerX, game.world.centerY, 'boss');
+    boss.anchor.setTo(0.5, 0.5);
 
-    <span class="nx">melon</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'melon'</span><span class="p">);</span>
-    <span class="nx">melon</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    melon = game.add.sprite(500, game.world.centerY, 'melon');
+    melon.anchor.setTo(0.5, 0.5);
 
-    <span class="c1">//  For browsers that support it, this keeps our pixel art looking crisp (works across Canvas and WebGL)</span>
+    //  For browsers that support it, this keeps our pixel art looking crisp (works across Canvas and WebGL)
 
-    <span class="c1">//  You can either set smoothing on a specific sprite, like this:</span>
-    <span class="nx">boss</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    //  You can either set smoothing on a specific sprite, like this:
+    boss.smoothed = false;
 
-    <span class="c1">//  Or across the whole stage, like this:</span>
-    <span class="c1">// game.stage.smoothed = false;</span>
+    //  Or across the whole stage, like this:
+    // game.stage.smoothed = false;
 
-    <span class="c1">//  Zoom in each time we press the button</span>
-    <span class="nx">button</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">clickedIt</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-<span class="p">}</span>
+    //  Zoom in each time we press the button
+    button = game.add.button(32, 32, 'button', clickedIt, this, 2, 1, 0);
+}
 
-<span class="kd">function</span> <span class="nx">clickedIt</span><span class="p">()</span> <span class="p">{</span>
+function clickedIt() {
 
-    <span class="nx">boss</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="nx">boss</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mf">0.5</span><span class="p">;</span>
+    boss.scale.x += 0.5;
+    boss.scale.y += 0.5;
 
-    <span class="nx">melon</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="nx">melon</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mf">0.5</span><span class="p">;</span>
+    melon.scale.x += 0.5;
+    melon.scale.y += 0.5;
     
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

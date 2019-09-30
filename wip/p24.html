@@ -55,95 +55,96 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/p24.js" title="wip/p24.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/p24.js" download="" title="Download: wip/p24.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'backdrop'</span><span class="p">,</span> <span class="s1">'assets/pics/remember-me.jpg'</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'box'</span><span class="p">,</span> <span class="s1">'assets/sprites/block.png'</span><span class="p">);</span>
+    game.load.image('backdrop', 'assets/pics/remember-me.jpg');
+	game.load.image('box', 'assets/sprites/block.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">box</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">box2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var box;
+var box2;
+var cursors;
 
-<span class="kd">function</span> <span class="nx">p2px</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">v</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">20</span><span class="p">;</span>
-<span class="p">}</span>
+function p2px(v) {
+	return v *= -20;
+}
 
-<span class="kd">function</span> <span class="nx">px2p</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">v</span> <span class="o">*</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">;</span>
-<span class="p">}</span>
+function px2p(v) {
+	return v * -0.05;
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1920</span><span class="p">,</span> <span class="mi">1200</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'backdrop'</span><span class="p">);</span>
+    game.world.setBounds(0, 0, 1920, 1200);
+    game.add.sprite(0, 0, 'backdrop');
 
-	<span class="nx">box</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'box'</span><span class="p">);</span>
-	<span class="nx">box</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
-	<span class="nx">box</span><span class="p">.</span><span class="nx">physicsEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	box = game.add.sprite(200, 200, 'box');
+	box.anchor.set(0.5);
+	box.physicsEnabled = true;
 
-	<span class="nx">box2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'box'</span><span class="p">);</span>
-	<span class="nx">box2</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span> <span class="c1">// if using physics you nearly always need to anchor from the center like this unless you don't need rotation</span>
-	<span class="c1">// box2.scale.set(2); // if you need to scale, do it BEFORE enabling physics. You can't do it at run-time.</span>
-	<span class="nx">box2</span><span class="p">.</span><span class="nx">physicsEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	box2 = game.add.sprite(400, 200, 'box');
+	box2.anchor.set(0.5); // if using physics you nearly always need to anchor from the center like this unless you don't need rotation
+	// box2.scale.set(2); // if you need to scale, do it BEFORE enabling physics. You can't do it at run-time.
+	box2.physicsEnabled = true;
 
-	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setZeroDamping</span><span class="p">();</span>
-	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">fixedRotation</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+	box2.body.setZeroDamping();
+	box2.body.fixedRotation = true;
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">box2</span><span class="p">);</span>
+	game.camera.follow(box2);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">defaultRestitution</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">;</span>
+    game.physics.defaultRestitution = 0.8;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setZeroVelocity</span><span class="p">();</span>
+	box2.body.setZeroVelocity();
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-    	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-    	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+    	box2.body.moveLeft(400);
+    }
+    else if (cursors.right.isDown)
+    {
+    	box2.body.moveRight(400);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-    	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-    	<span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveDown</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+    	box2.body.moveUp(400);
+    }
+    else if (cursors.down.isDown)
+    {
+    	box2.body.moveDown(400);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'x: '</span> <span class="o">+</span> <span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'y: '</span> <span class="o">+</span> <span class="nx">box2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+	game.debug.text('x: ' + box2.body.velocity.x, 32, 32);
+	game.debug.text('y: ' + box2.body.velocity.y, 32, 64);
 
-	<span class="c1">// game.debug.text('x: ' + p2px(boxBody.position[0]), 32, 32);</span>
-	<span class="c1">// game.debug.text('y: ' + p2px(boxBody.position[1]), 32, 64);</span>
-	<span class="c1">// game.debug.text('r: ' + boxBody.angle, 32, 96);</span>
+	// game.debug.text('x: ' + p2px(boxBody.position[0]), 32, 32);
+	// game.debug.text('y: ' + p2px(boxBody.position[1]), 32, 64);
+	// game.debug.text('r: ' + boxBody.angle, 32, 96);
 
-	<span class="c1">// drawbox();</span>
+	// drawbox();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">drawbox</span><span class="p">()</span> <span class="p">{</span>
+function drawbox() {
 
-	<span class="c1">// var ctx = game.context;</span>
+	// var ctx = game.context;
 
-<span class="cm">/*
+/*
     ctx.save();
     ctx.translate(game.width/2, game.height/2);  // Translate to the center
     ctx.scale(50, -50);       // Zoom in and flip y axis
@@ -162,25 +163,25 @@
 	ctx.stroke();
 	ctx.closePath();
 	// ctx.restore();
-*/</span>
+*/
 
- <span class="c1">//    ctx.save();</span>
- <span class="c1">//    ctx.translate(game.width/2, game.height/2);  // Translate to the center</span>
- <span class="c1">//    ctx.scale(20, -20);       // Zoom in and flip y axis</span>
+ //    ctx.save();
+ //    ctx.translate(game.width/2, game.height/2);  // Translate to the center
+ //    ctx.scale(20, -20);       // Zoom in and flip y axis
 
-	<span class="c1">// ctx.lineWidth = 0.05;</span>
-	<span class="c1">// ctx.strokeStyle = 'rgb(255,255,255)';</span>
-	<span class="c1">// ctx.beginPath();</span>
+	// ctx.lineWidth = 0.05;
+	// ctx.strokeStyle = 'rgb(255,255,255)';
+	// ctx.beginPath();
 
- <span class="c1">//        var y = planeBody.position[1];</span>
-	<span class="c1">// 	ctx.rotate(0);  // Rotate to the box body frame</span>
- <span class="c1">//        ctx.moveTo(-game.width, y);</span>
- <span class="c1">//        ctx.lineTo( game.width, y);</span>
- <span class="c1">//        ctx.stroke();</span>
+ //        var y = planeBody.position[1];
+	// 	ctx.rotate(0);  // Rotate to the box body frame
+ //        ctx.moveTo(-game.width, y);
+ //        ctx.lineTo( game.width, y);
+ //        ctx.stroke();
 
-	<span class="c1">// ctx.closePath();</span>
-	<span class="c1">// ctx.restore();</span>
-<span class="p">}</span>
+	// ctx.closePath();
+	// ctx.restore();
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

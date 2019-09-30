@@ -55,49 +55,50 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/for%20each.js" title="groups/for each.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/for%20each.js" download="" title="Download: groups/for each.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">baseAlphaIncSpeed</span> <span class="o">=</span> <span class="mf">0.006</span><span class="p">;</span>
+var baseAlphaIncSpeed = 0.006;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'item'</span><span class="p">,</span> <span class="s1">'assets/buttons/number-buttons-90x90.png'</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">);</span>
-<span class="p">}</span>
+function preload() {
+    game.load.spritesheet('item', 'assets/buttons/number-buttons-90x90.png', 90, 90);
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Note: alphaIncSpeed is a new property we're adding to Phaser.Sprite, not a pre-existing one</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">290</span><span class="p">,</span> <span class="mi">98</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'item'</span><span class="p">,</span> <span class="nx">i</span><span class="p">).</span><span class="nx">alphaIncSpeed</span> <span class="o">=</span> <span class="nx">baseAlphaIncSpeed</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">388</span><span class="p">,</span> <span class="mi">98</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'item'</span><span class="p">,</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">).</span><span class="nx">alphaIncSpeed</span> <span class="o">=</span> <span class="nx">baseAlphaIncSpeed</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 3; i++)
+    {
+        //  Note: alphaIncSpeed is a new property we're adding to Phaser.Sprite, not a pre-existing one
+        game.add.sprite(290, 98 * (i + 1), 'item', i).alphaIncSpeed = baseAlphaIncSpeed * (i + 1);
+        game.add.sprite(388, 98 * (i + 1), 'item', i + 3).alphaIncSpeed = baseAlphaIncSpeed * (i + 4);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">// Animating alpha property of each item using forEach() method.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    // Animating alpha property of each item using forEach() method.
+    game.world.forEach(function(item) {
 
-        <span class="c1">// Update alpha first.</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">-=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">alphaIncSpeed</span><span class="p">;</span>
+        // Update alpha first.
+        item.alpha -= item.alphaIncSpeed;
 
-        <span class="c1">// Check for switch between increasing and descreasing.</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">&lt;</span> <span class="mf">0.001</span> <span class="o">||</span> <span class="nx">item</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">&gt;</span> <span class="mf">0.999</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">item</span><span class="p">.</span><span class="nx">alphaIncSpeed</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-        <span class="p">}</span>
+        // Check for switch between increasing and descreasing.
+        if (item.alpha < 0.001 || item.alpha > 0.999)
+        {
+            item.alphaIncSpeed *= -1;
+        }
         
-    <span class="p">});</span>
+    });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Alpha of items is always changing.'</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="mi">480</span><span class="p">);</span>
+    game.debug.text('Alpha of items is always changing.', 280, 480);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

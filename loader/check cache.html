@@ -55,38 +55,39 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/loader/check%20cache.js" title="loader/check cache.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/loader/check%20cache.js" download="" title="Download: loader/check cache.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Load different types of assets in ...</span>
+    //  Load different types of assets in ...
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'image'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'html'</span><span class="p">,</span> <span class="s1">'http://phaser.io'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'mario'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/maps/super_mario.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">TILED_JSON</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'sfx'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'assets/audio/SoundEffects/squit.mp3'</span><span class="p">,</span> <span class="s1">'assets/audio/SoundEffects/squit.ogg'</span> <span class="p">]);</span>
+    game.load.image('image', 'assets/sprites/phaser2.png');
+    game.load.text('html', 'http://phaser.io');
+    game.load.tilemap('mario', 'assets/tilemaps/maps/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.audio('sfx', [ 'assets/audio/SoundEffects/squit.mp3', 'assets/audio/SoundEffects/squit.ogg' ]);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//   Here we can check if they are in the cache or not</span>
-    <span class="kd">var</span> <span class="nx">image</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">checkImageKey</span><span class="p">(</span><span class="s1">'image'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">checkTextKey</span><span class="p">(</span><span class="s1">'html'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">tilemap</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">checkTilemapKey</span><span class="p">(</span><span class="s1">'mario'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">audio</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">checkSoundKey</span><span class="p">(</span><span class="s1">'sfx'</span><span class="p">);</span>
+    //   Here we can check if they are in the cache or not
+    var image = game.cache.checkImageKey('image');
+    var text = game.cache.checkTextKey('html');
+    var tilemap = game.cache.checkTilemapKey('mario');
+    var audio = game.cache.checkSoundKey('sfx');
 
-    <span class="c1">//  Here we'll check for a key that we know doesn't exist on purpose</span>
-    <span class="kd">var</span> <span class="nx">broken</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">checkImageKey</span><span class="p">(</span><span class="s1">'playerHead'</span><span class="p">);</span>
+    //  Here we'll check for a key that we know doesn't exist on purpose
+    var broken = game.cache.checkImageKey('playerHead');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="s1">'Check Image Key: '</span> <span class="o">+</span> <span class="nx">image</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">'Check Text Key: '</span> <span class="o">+</span> <span class="nx">text</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">'Check Tilemap Key: '</span> <span class="o">+</span> <span class="nx">tilemap</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="s1">'Check Audio Key: '</span> <span class="o">+</span> <span class="nx">audio</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'Check Image 2 Key: '</span> <span class="o">+</span> <span class="nx">broken</span><span class="p">,</span> <span class="p">{</span> <span class="na">fill</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="p">});</span>
+    game.add.text(40, 40, 'Check Image Key: ' + image, { fill: '#ffffff' });
+    game.add.text(40, 80, 'Check Text Key: ' + text, { fill: '#ffffff' });
+    game.add.text(40, 120, 'Check Tilemap Key: ' + tilemap, { fill: '#ffffff' });
+    game.add.text(40, 160, 'Check Audio Key: ' + audio, { fill: '#ffffff' });
+    game.add.text(40, 200, 'Check Image 2 Key: ' + broken, { fill: '#ffffff' });
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

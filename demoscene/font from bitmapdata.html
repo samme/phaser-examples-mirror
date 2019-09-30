@@ -55,99 +55,100 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/demoscene/font%20from%20bitmapdata.js" title="demoscene/font from bitmapdata.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/demoscene/font%20from%20bitmapdata.js" download="" title="Download: demoscene/font from bitmapdata.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'knightHawks'</span><span class="p">,</span> <span class="s1">'assets/demoscene/knighthawks.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'raster'</span><span class="p">,</span> <span class="s1">'assets/demoscene/multi-color-raster.png'</span><span class="p">);</span>
+    game.load.image('knightHawks', 'assets/demoscene/knighthawks.png');
+    game.load.image('raster', 'assets/demoscene/multi-color-raster.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">retroFont</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">font</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">alpha</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">raster</span><span class="p">;</span>
+var retroFont;
+var font;
+var alpha;
+var raster;
 
-<span class="kd">var</span> <span class="nx">mask</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">();</span>
+var mask = new Phaser.Rectangle();
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  This generates the FrameData object we need, based on the font set</span>
-    <span class="nx">retroFont</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">retroFont</span><span class="p">(</span><span class="s1">'knightHawks'</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RetroFont</span><span class="p">.</span><span class="nx">TEXT_SET2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    //  This generates the FrameData object we need, based on the font set
+    retroFont = game.add.retroFont('knightHawks', 31, 25, Phaser.RetroFont.TEXT_SET2, 10, 1, 0);
 
-    <span class="c1">//  This creates our display font with the rasters running through it</span>
-    <span class="nx">font</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
-    <span class="nx">alpha</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
-    <span class="nx">raster</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
+    //  This creates our display font with the rasters running through it
+    font = game.make.bitmapData();
+    alpha = game.make.bitmapData();
+    raster = game.make.bitmapData();
 
-    <span class="c1">//  Load the font</span>
-    <span class="nx">font</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'knightHawks'</span><span class="p">);</span>
+    //  Load the font
+    font.load('knightHawks');
 
-    <span class="c1">//  Extract all the pink pixels into the alpha bmd</span>
-    <span class="nx">font</span><span class="p">.</span><span class="nx">extract</span><span class="p">(</span><span class="nx">alpha</span><span class="p">,</span> <span class="mi">237</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    //  Extract all the pink pixels into the alpha bmd
+    font.extract(alpha, 237, 0, 140, 255, true);
 
-    <span class="nx">raster</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">font</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">font</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    raster.resize(font.width, font.height);
 
-    <span class="c1">//  Display the 4 stages of the process</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'knightHawks'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">alpha</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="nx">raster</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="nx">font</span><span class="p">);</span>
+    //  Display the 4 stages of the process
+    game.add.image(0, 0, 'knightHawks');
+    game.add.image(360, 0, alpha);
+    game.add.image(0, 200, raster);
+    game.add.image(360, 200, font);
 
-    <span class="c1">//  Tween the rasters</span>
-    <span class="nx">mask</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">font</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getImage</span><span class="p">(</span><span class="s1">'raster'</span><span class="p">).</span><span class="nx">height</span><span class="p">);</span>
+    //  Tween the rasters
+    mask.setTo(0, 0, font.width, game.cache.getImage('raster').height);
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">font</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">frame</span><span class="p">);</span>
+    console.log(font.texture.frame);
 
-    <span class="c1">//  Now create a few Sprites using the bitmapData as it's texture</span>
-    <span class="kd">var</span> <span class="nx">s1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="nx">font</span><span class="p">);</span>
-    <span class="nx">s1</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">copyFrameData</span><span class="p">(</span><span class="nx">retroFont</span><span class="p">.</span><span class="nx">frameData</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    //  Now create a few Sprites using the bitmapData as it's texture
+    var s1 = game.add.sprite(32, 500, font);
+    s1.animations.copyFrameData(retroFont.frameData, 1);
 
-    <span class="kd">var</span> <span class="nx">s2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="nx">font</span><span class="p">);</span>
-    <span class="nx">s2</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">copyFrameData</span><span class="p">(</span><span class="nx">retroFont</span><span class="p">.</span><span class="nx">frameData</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+    var s2 = game.add.sprite(100, 500, font);
+    s2.animations.copyFrameData(retroFont.frameData, 2);
 
-    <span class="c1">// console.log(s1.animations._frameData);</span>
-    <span class="c1">// console.log(s2.animations._frameData);</span>
-    <span class="c1">// console.log(s1._frame);</span>
-    <span class="c1">// console.log(s2._frame);</span>
+    // console.log(s1.animations._frameData);
+    // console.log(s2.animations._frameData);
+    // console.log(s1._frame);
+    // console.log(s2._frame);
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">font</span><span class="p">.</span><span class="nx">texture</span><span class="p">.</span><span class="nx">frame</span><span class="p">);</span>
+    console.log(font.texture.frame);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">mask</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="nx">mask</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="nx">font</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span> <span class="p">},</span> <span class="mi">4000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Sinusoidal</span><span class="p">.</span><span class="nx">InOut</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    game.add.tween(mask).to( { y: -(mask.height - font.height) }, 4000, Phaser.Easing.Sinusoidal.InOut, true, 0, 100, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">setLetters</span><span class="p">()</span> <span class="p">{</span>
+function setLetters() {
 
-    <span class="nx">page</span><span class="o">++</span><span class="p">;</span>
+    page++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">page</span> <span class="o">===</span> <span class="mi">3</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">page</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (page === 3)
+    {
+        page = 0;
+    }
 
-    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    var i = 0;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">letters</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">frame</span> <span class="o">=</span> <span class="nx">font</span><span class="p">.</span><span class="nx">grabData</span><span class="p">[</span><span class="nx">scroller</span><span class="p">[(</span><span class="nx">page</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="nx">y</span><span class="p">].</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">x</span><span class="p">)];</span>
-            <span class="nx">i</span><span class="o">++</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    for (var y = 0; y < 8; y++)
+    {
+        for (var x = 0; x < 10; x++)
+        {
+            letters[i].frame = font.grabData[scroller[(page * 8) + y].charCodeAt(x)];
+            i++;
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">raster</span><span class="p">.</span><span class="nx">cls</span><span class="p">();</span>
-    <span class="nx">raster</span><span class="p">.</span><span class="nx">alphaMask</span><span class="p">(</span><span class="s1">'raster'</span><span class="p">,</span> <span class="nx">alpha</span><span class="p">,</span> <span class="nx">mask</span><span class="p">);</span>
-    <span class="nx">font</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="nx">raster</span><span class="p">);</span>
+    raster.cls();
+    raster.alphaMask('raster', alpha, mask);
+    font.draw(raster);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

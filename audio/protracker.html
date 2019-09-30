@@ -55,132 +55,132 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/audio/protracker.js" title="audio/protracker.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/audio/protracker.js" download="" title="Download: audio/protracker.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">mods</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var mods = [];
+var current = 0;
 
-<span class="kd">var</span> <span class="nx">vumeter</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">channels</span> <span class="o">=</span> <span class="p">[];</span>
+var vumeter = [];
+var channels = [];
 
-<span class="kd">var</span> <span class="nx">module</span><span class="p">;</span>
+var module;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">script</span><span class="p">(</span><span class="s1">'protracker'</span><span class="p">,</span> <span class="s1">'_plugins/ProTracker.js'</span><span class="p">);</span>
+    game.load.script('protracker', '_plugins/ProTracker.js');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'vu'</span><span class="p">,</span> <span class="s1">'assets/sprites/vu.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/sprites/soundtracker.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bg'</span><span class="p">,</span> <span class="s1">'assets/skies/sky2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'vulkaiser'</span><span class="p">,</span> <span class="s1">'assets/pics/vulkaiser_red.png'</span><span class="p">);</span>
+    game.load.image('vu', 'assets/sprites/vu.png');
+    game.load.image('logo', 'assets/sprites/soundtracker.png');
+    game.load.image('bg', 'assets/skies/sky2.png');
+    game.load.image('vulkaiser', 'assets/pics/vulkaiser_red.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">binary</span><span class="p">(</span><span class="s1">'shampoo'</span><span class="p">,</span> <span class="s1">'assets/audio/protracker/shampoo.mod'</span><span class="p">,</span> <span class="nx">modLoaded</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">binary</span><span class="p">(</span><span class="s1">'macrocosm'</span><span class="p">,</span> <span class="s1">'assets/audio/protracker/macrocosm.mod'</span><span class="p">,</span> <span class="nx">modLoaded</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">binary</span><span class="p">(</span><span class="s1">'impulse'</span><span class="p">,</span> <span class="s1">'assets/audio/protracker/act_of_impulse.mod'</span><span class="p">,</span> <span class="nx">modLoaded</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">binary</span><span class="p">(</span><span class="s1">'enigma'</span><span class="p">,</span> <span class="s1">'assets/audio/protracker/enigma.mod'</span><span class="p">,</span> <span class="nx">modLoaded</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">binary</span><span class="p">(</span><span class="s1">'elysium'</span><span class="p">,</span> <span class="s1">'assets/audio/protracker/elysium.mod'</span><span class="p">,</span> <span class="nx">modLoaded</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">binary</span><span class="p">(</span><span class="s1">'stardust'</span><span class="p">,</span> <span class="s1">'assets/audio/protracker/sd-ingame1.mod'</span><span class="p">,</span> <span class="nx">modLoaded</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">binary</span><span class="p">(</span><span class="s1">'globaltrash'</span><span class="p">,</span> <span class="s1">'assets/audio/protracker/global_trash_3_v2.mod'</span><span class="p">,</span> <span class="nx">modLoaded</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.load.binary('shampoo', 'assets/audio/protracker/shampoo.mod', modLoaded, this);
+    game.load.binary('macrocosm', 'assets/audio/protracker/macrocosm.mod', modLoaded, this);
+    game.load.binary('impulse', 'assets/audio/protracker/act_of_impulse.mod', modLoaded, this);
+    game.load.binary('enigma', 'assets/audio/protracker/enigma.mod', modLoaded, this);
+    game.load.binary('elysium', 'assets/audio/protracker/elysium.mod', modLoaded, this);
+    game.load.binary('stardust', 'assets/audio/protracker/sd-ingame1.mod', modLoaded, this);
+    game.load.binary('globaltrash', 'assets/audio/protracker/global_trash_3_v2.mod', modLoaded, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">modLoaded</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+function modLoaded(key, data) {
 
-    <span class="nx">mods</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Uint8Array</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">buffer</span><span class="p">;</span>
+    mods.push(key);
+    var buffer = new Uint8Array(data);
+    return buffer;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">load_next_module</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="nx">current</span> <span class="o">==</span> <span class="nx">mods</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">?</span> <span class="nx">current</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">current</span><span class="o">++</span><span class="p">;</span>
+function load_next_module()
+{
+    current == mods.length - 1 ? current = 0 : current++;
 
-    <span class="nx">module</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
-    <span class="nx">module</span><span class="p">.</span><span class="nx">clearsong</span><span class="p">();</span>
+    module.stop();
+    module.clearsong();
 
-    <span class="nx">module</span><span class="p">.</span><span class="nx">buffer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getBinary</span><span class="p">(</span><span class="nx">mods</span><span class="p">[</span><span class="nx">current</span><span class="p">]);</span>
-    <span class="nx">module</span><span class="p">.</span><span class="nx">parse</span><span class="p">();</span>
+    module.buffer = game.cache.getBinary(mods[current]);
+    module.parse();
 
-    <span class="c1">// BUG if width==0</span>
-    <span class="c1">// for (var i = 0; i &lt; vumeter.length; i++)</span>
-    <span class="c1">// {</span>
-    <span class="c1">//     vumeter[i].width = 1;</span>
-    <span class="c1">// }</span>
+    // BUG if width==0
+    // for (var i = 0; i < vumeter.length; i++)
+    // {
+    //     vumeter[i].width = 1;
+    // }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'bg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">580</span><span class="p">,</span> <span class="mi">371</span><span class="p">,</span> <span class="s1">'vulkaiser'</span><span class="p">);</span>
+    game.add.sprite(0, 0, 'bg');
+    game.add.sprite(500, 32, 'logo');
+    game.add.sprite(580, 371, 'vulkaiser');
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="mi">50</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">vumeter</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s1">'vu'</span><span class="p">);</span>
-        <span class="nx">vumeter</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">crop</span><span class="p">(</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">30</span><span class="p">));</span>
-    <span class="p">}</span>
+    for (var i = 0, y = 200; i < 4; i++, y += 50)
+    {
+        vumeter[i] = game.add.sprite(400, y, 'vu');
+        vumeter[i].crop(new Phaser.Rectangle(0, 0, 300, 30));
+    }
 
-    <span class="nx">module</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Protracker</span><span class="p">();</span>
+    module = new Protracker();
 
-    <span class="c1">//module.play() has to be called from a callback</span>
-    <span class="nx">module</span><span class="p">.</span><span class="nx">onReady</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">module</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
-    <span class="p">};</span>
+    //module.play() has to be called from a callback
+    module.onReady = function() {
+        module.play();
+    };
 
-    <span class="nx">module</span><span class="p">.</span><span class="nx">buffer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">getBinary</span><span class="p">(</span><span class="nx">mods</span><span class="p">[</span><span class="nx">current</span><span class="p">]);</span>
-    <span class="nx">module</span><span class="p">.</span><span class="nx">parse</span><span class="p">();</span>
+    module.buffer = game.cache.getBinary(mods[current]);
+    module.parse();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">load_next_module</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(load_next_module, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="c1">//  module.sample = array of Objects containing informations about a played sample</span>
+    //  module.sample = array of Objects containing informations about a played sample
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">vumeter</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">channel</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">smp_index</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">channel</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">sample</span><span class="p">;</span>
-            <span class="nx">channels</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="na">sample_index</span><span class="p">:</span><span class="nx">smp_index</span><span class="p">,</span> <span class="na">sample_name</span><span class="p">:</span> <span class="nx">module</span><span class="p">.</span><span class="nx">sample</span><span class="p">[</span><span class="nx">smp_index</span><span class="p">].</span><span class="nx">name</span> <span class="p">};</span>
+    for (var i = 0; i < vumeter.length; i++)
+    {
+        if (module.channel[i])
+        {
+            var smp_index = module.channel[i].sample;
+            channels[i] = { sample_index:smp_index, sample_name: module.sample[smp_index].name };
 
-            <span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">vu</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1200</span><span class="p">);</span>
+            var w = Math.round(module.vu[i] * 1200);
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">w</span> <span class="o">&gt;</span> <span class="mi">300</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">w</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
-            <span class="p">}</span>
+            if (w > 300)
+            {
+                w = 300;
+            }
 
-            <span class="nx">vumeter</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">cropRect</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">w</span><span class="p">;</span>
-            <span class="nx">vumeter</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">updateCrop</span><span class="p">();</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+            vumeter[i].cropRect.width = w;
+            vumeter[i].updateCrop();
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">vumeter</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+=</span> <span class="mi">32</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">channels</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
-        <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Channel #'</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="s1">' : sample '</span> <span class="o">+</span> <span class="nx">channels</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">sample_index</span> <span class="o">+</span> <span class="s1">'  '</span> <span class="o">+</span> <span class="nx">channels</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">sample_name</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
-            <span class="c1">// game.debug.text('vu' + i + ': ' + module.vu[i], 16, 350 + y);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    for (var i = 0, y = 32; i < vumeter.length; i++, y += 32)
+    {
+        if (channels[i])
+        {
+            game.debug.text('Channel #' + i + ' : sample ' + channels[i].sample_index + '  ' + channels[i].sample_name, 16, y);
+            // game.debug.text('vu' + i + ': ' + module.vu[i], 16, 350 + y);
+        }
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Position: '</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">position</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">160</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Pattern: '</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">row</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">192</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'BPM: '</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">bpm</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">224</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Speed: '</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">speed</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">256</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Name: '</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">title</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">288</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Signature: '</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">signature</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">320</span><span class="p">);</span>
+    game.debug.text('Position: ' + module.position, 16, 160);
+    game.debug.text('Pattern: ' + module.row, 16, 192);
+    game.debug.text('BPM: ' + module.bpm, 16, 224);
+    game.debug.text('Speed: ' + module.speed, 16, 256);
+    game.debug.text('Name: ' + module.title, 16, 288);
+    game.debug.text('Signature: ' + module.signature, 16, 320);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

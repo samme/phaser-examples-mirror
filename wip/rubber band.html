@@ -55,179 +55,180 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/rubber%20band.js" title="wip/rubber band.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/rubber%20band.js" download="" title="Download: wip/rubber band.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'balls'</span><span class="p">,</span> <span class="s1">'assets/sprites/balls.png'</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">);</span>
+    game.load.spritesheet('balls', 'assets/sprites/balls.png', 17, 17);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">balls</span><span class="p">;</span>
+var balls;
 
-<span class="kd">var</span> <span class="nx">draggingBand</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">draggingSprite</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">dragPoint</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">dragDelta</span><span class="p">;</span>
+var draggingBand = false;
+var draggingSprite = null;
+var dragPoint;
+var dragDelta;
 
-<span class="kd">var</span> <span class="nx">band</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bandDisplay</span><span class="p">;</span>
+var band;
+var bandDisplay;
 
-<span class="kd">var</span> <span class="nx">selection</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+var selection = [];
+var target = null;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#08538a'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#08538a';
 
-    <span class="nx">balls</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    balls = game.add.group();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">balls</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'balls'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="c1">// sprite.input.enableDrag();</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">startDrag</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">stopDrag</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 40; i++)
+    {
+        var sprite = balls.create(game.world.randomX, game.world.randomY, 'balls', 1);
+        sprite.inputEnabled = true;
+        // sprite.input.enableDrag();
+        sprite.events.onDragStart.add(startDrag, this);
+        sprite.events.onDragStop.add(stopDrag, this);
+    }
 
-    <span class="nx">band</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">();</span>
+    band = new Phaser.Rectangle();
 
-    <span class="nx">bandDisplay</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">bandDisplay</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0xffffff</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    bandDisplay = game.add.graphics(0, 0);
+    bandDisplay.lineStyle(1, 0xffffff, 1);
 
-    <span class="nx">dragPoint</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">;</span>
-    <span class="nx">dragDelta</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">;</span>
+    dragPoint = new Phaser.Point;
+    dragDelta = new Phaser.Point;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">startRubberBand</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">stopRubberBand</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">updatePointer</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(startRubberBand, this);
+    game.input.onUp.add(stopRubberBand, this);
+    game.input.addMoveCallback(updatePointer, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">startRubberBand</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function startRubberBand (pointer) {
 
-    <span class="c1">//  Check this, otherwise they've clicked on a Sprite</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">targetObject</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">draggingBand</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    //  Check this, otherwise they've clicked on a Sprite
+    if (pointer.targetObject === null)
+    {
+        draggingBand = true;
 
-        <span class="nx">band</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">band</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-        <span class="nx">band</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="nx">band</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        band.x = pointer.x;
+        band.y = pointer.y;
+        band.width = 1;
+        band.height = 1;
 
-        <span class="nx">selection</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="nx">balls</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">clearSelection</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+        selection.length = 0;
+        balls.forEach(clearSelection, this);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">clearSelection</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+function clearSelection (item) {
 
-    <span class="nx">item</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="nx">item</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">disableDrag</span><span class="p">();</span>
+    item.frame = 1;
+    item.input.disableDrag();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">stopRubberBand</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function stopRubberBand (pointer) {
 
-    <span class="nx">draggingBand</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    draggingBand = false;
 
-    <span class="c1">//  Normalise the rubber band, so the intersects check works</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">band</span><span class="p">.</span><span class="nx">width</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">band</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">band</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
-        <span class="nx">band</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">band</span><span class="p">.</span><span class="nx">width</span><span class="p">);</span>
-    <span class="p">}</span>
+    //  Normalise the rubber band, so the intersects check works
+    if (band.width < 0)
+    {
+        band.x += band.width;
+        band.width = Math.abs(band.width);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">band</span><span class="p">.</span><span class="nx">height</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">band</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">band</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
-        <span class="nx">band</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">band</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (band.height < 0)
+    {
+        band.y += band.height;
+        band.height = Math.abs(band.height);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">band</span><span class="p">.</span><span class="nx">empty</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Get all the sprites inside or touching the rubber band</span>
-        <span class="nx">balls</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">addToSelection</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (!band.empty)
+    {
+        //  Get all the sprites inside or touching the rubber band
+        balls.forEach(addToSelection, this);
+    }
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">addToSelection</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+function addToSelection (item) {
 
-    <span class="kd">var</span> <span class="nx">bounds</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">getBounds</span><span class="p">();</span>
+    var bounds = item.getBounds();
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">.</span><span class="nx">intersects</span><span class="p">(</span><span class="nx">bounds</span><span class="p">,</span> <span class="nx">band</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">originPoint</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">item</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+    if (Phaser.Rectangle.intersects(bounds, band))
+    {
+        item.frame = 0;
+        item.input.enableDrag();
+        item.originPoint = new Phaser.Point(item.x, item.y);
 
-        <span class="nx">selection</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
-    <span class="p">}</span>
+        selection.push(item);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">updatePointer</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function updatePointer (pointer) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">draggingBand</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">band</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">band</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="nx">band</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">band</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">draggingSprite</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">dragDelta</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">dragPoint</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">dragPoint</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+    if (draggingBand)
+    {
+        band.width = pointer.x - band.x;
+        band.height = pointer.y - band.y;
+    }
+    else if (draggingSprite !== null)
+    {
+        dragDelta.set(pointer.x - dragPoint.x, pointer.y - dragPoint.y);
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">selection</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">selection</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">!==</span> <span class="nx">draggingSprite</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">selection</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">selection</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">originPoint</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">dragDelta</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-                <span class="nx">selection</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">selection</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">originPoint</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">dragDelta</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        for (var i = 0; i < selection.length; i++)
+        {
+            if (selection[i] !== draggingSprite)
+            {
+                selection[i].x = selection[i].originPoint.x + dragDelta.x;
+                selection[i].y = selection[i].originPoint.y + dragDelta.y;
+            }
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">startDrag</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function startDrag (sprite, pointer) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">selection</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">dragPoint</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-        <span class="nx">draggingSprite</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (selection.indexOf(sprite) > -1)
+    {
+        dragPoint.set(sprite.x, sprite.y);
+        draggingSprite = sprite;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">stopDrag</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function stopDrag (sprite, pointer) {
 
-    <span class="nx">draggingSprite</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    draggingSprite = null;
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-<span class="p">}</span>
+function update() {
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">bandDisplay</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+    bandDisplay.clear();
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">draggingBand</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">bandDisplay</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mh">0xffffff</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-        <span class="nx">bandDisplay</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xffffff</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
-        <span class="nx">bandDisplay</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="nx">band</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">band</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">band</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">band</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (draggingBand)
+    {
+        bandDisplay.lineStyle(1, 0xffffff, 1);
+        bandDisplay.beginFill(0xffffff, 0.1);
+        bandDisplay.drawRect(band.x, band.y, band.width, band.height);
+    }
 
-    <span class="c1">// game.debug.text(dragPoint, 32, 32);</span>
-    <span class="c1">// game.debug.text(dragDelta, 32, 64);</span>
+    // game.debug.text(dragPoint, 32, 32);
+    // game.debug.text(dragDelta, 32, 64);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

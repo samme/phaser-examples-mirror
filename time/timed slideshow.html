@@ -55,100 +55,101 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/time/timed%20slideshow.js" title="time/timed slideshow.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/time/timed%20slideshow.js" download="" title="Download: time/timed slideshow.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture1'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar_sanity_train.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture2'</span><span class="p">,</span> <span class="s1">'assets/pics/cougar-face_of_nature.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture3'</span><span class="p">,</span> <span class="s1">'assets/pics/destop-rewarding.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture4'</span><span class="p">,</span> <span class="s1">'assets/pics/destop-unknown.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture5'</span><span class="p">,</span> <span class="s1">'assets/pics/questar.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture6'</span><span class="p">,</span> <span class="s1">'assets/pics/seven_seas_andromeda_fairfax.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'picture7'</span><span class="p">,</span> <span class="s1">'assets/pics/slayer-sorry_im_the_beast.png'</span><span class="p">);</span>
+    game.load.image('picture1', 'assets/pics/cougar_sanity_train.png');
+    game.load.image('picture2', 'assets/pics/cougar-face_of_nature.png');
+    game.load.image('picture3', 'assets/pics/destop-rewarding.png');
+    game.load.image('picture4', 'assets/pics/destop-unknown.png');
+    game.load.image('picture5', 'assets/pics/questar.png');
+    game.load.image('picture6', 'assets/pics/seven_seas_andromeda_fairfax.png');
+    game.load.image('picture7', 'assets/pics/slayer-sorry_im_the_beast.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">pictureA</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">pictureB</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">timer</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+var pictureA;
+var pictureB;
+var timer;
+var current = 3;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#000'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#000';
 
-    <span class="nx">pictureA</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'picture1'</span><span class="p">);</span>
-    <span class="nx">pictureA</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">pictureA</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+    pictureA = game.add.sprite(game.world.centerX, game.world.centerY, 'picture1');
+    pictureA.anchor.setTo(0.5, 0.5);
+    pictureA.scale.setTo(2, 2);
 
-    <span class="nx">pictureB</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'picture2'</span><span class="p">);</span>
-    <span class="nx">pictureB</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">pictureB</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="nx">pictureB</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    pictureB = game.add.sprite(game.world.centerX, game.world.centerY, 'picture2');
+    pictureB.anchor.setTo(0.5, 0.5);
+    pictureB.scale.setTo(2, 2);
+    pictureB.alpha = 0;
 
-    <span class="c1">//  Create our Timer</span>
-    <span class="nx">timer</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    //  Create our Timer
+    timer = game.time.create(false);
 
-    <span class="c1">//  Set a TimerEvent to occur after 3 seconds</span>
-    <span class="nx">timer</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="nx">fadePictures</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Set a TimerEvent to occur after 3 seconds
+    timer.add(3000, fadePictures, this);
 
-    <span class="c1">//  Start the timer running - this is important!</span>
-    <span class="c1">//  It won't start automatically, allowing you to hook it to button events and the like.</span>
-    <span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    //  Start the timer running - this is important!
+    //  It won't start automatically, allowing you to hook it to button events and the like.
+    timer.start();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">fadePictures</span><span class="p">()</span> <span class="p">{</span>
+function fadePictures() {
 
-    <span class="c1">//  Cross-fade the two pictures</span>
-    <span class="kd">var</span> <span class="nx">tween</span><span class="p">;</span>
+    //  Cross-fade the two pictures
+    var tween;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pictureA</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">pictureA</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">alpha</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">pictureB</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">alpha</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">pictureA</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">alpha</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-        <span class="nx">tween</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">pictureB</span><span class="p">).</span><span class="nx">to</span><span class="p">(</span> <span class="p">{</span> <span class="na">alpha</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">Linear</span><span class="p">.</span><span class="nx">None</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (pictureA.alpha === 1)
+    {
+        tween = game.add.tween(pictureA).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+        game.add.tween(pictureB).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+    }
+    else
+    {
+        game.add.tween(pictureA).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+        tween = game.add.tween(pictureB).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+    }
 
-    <span class="c1">//  When the cross-fade is complete we swap the image being shown by the now hidden picture</span>
-    <span class="nx">tween</span><span class="p">.</span><span class="nx">onComplete</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">changePicture</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  When the cross-fade is complete we swap the image being shown by the now hidden picture
+    tween.onComplete.add(changePicture, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">changePicture</span><span class="p">()</span> <span class="p">{</span>
+function changePicture() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pictureA</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">pictureA</span><span class="p">.</span><span class="nx">loadTexture</span><span class="p">(</span><span class="s1">'picture'</span> <span class="o">+</span> <span class="nx">current</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">pictureB</span><span class="p">.</span><span class="nx">loadTexture</span><span class="p">(</span><span class="s1">'picture'</span> <span class="o">+</span> <span class="nx">current</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (pictureA.alpha === 0)
+    {
+        pictureA.loadTexture('picture' + current);
+    }
+    else
+    {
+        pictureB.loadTexture('picture' + current);
+    }
 
-    <span class="nx">current</span><span class="o">++</span><span class="p">;</span>
+    current++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">current</span> <span class="o">&gt;</span> <span class="mi">7</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">current</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (current > 7)
+    {
+        current = 1;
+    }
 
-    <span class="c1">//  And set a new TimerEvent to occur after 3 seconds</span>
-    <span class="nx">timer</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="nx">fadePictures</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  And set a new TimerEvent to occur after 3 seconds
+    timer.add(3000, fadePictures, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Time until event: "</span> <span class="o">+</span> <span class="nx">timer</span><span class="p">.</span><span class="nx">duration</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    game.debug.text("Time until event: " + timer.duration.toFixed(0), 10, 20);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

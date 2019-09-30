@@ -55,62 +55,62 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/rope.js" title="sprites/rope.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/rope.js" download="" title="Download: sprites/rope.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">rope</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">debugKey</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">shouldDebug</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+var rope;
+var debugKey;
+var shouldDebug = false;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'snake'</span><span class="p">,</span> <span class="s1">'assets/sprites/snake.png'</span><span class="p">);</span>
+    game.load.image('snake', 'assets/sprites/snake.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">length</span> <span class="o">=</span> <span class="mi">918</span> <span class="o">/</span> <span class="mi">20</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">points</span> <span class="o">=</span> <span class="p">[];</span>
+    var count = 0;
+    var length = 918 / 20;
+    var points = [];
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">points</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="nx">length</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
-    <span class="p">}</span>
-    <span class="nx">rope</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">rope</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="s1">'snake'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">points</span><span class="p">);</span>
-    <span class="nx">rope</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.8</span><span class="p">);</span>
+    for (var i = 0; i < 20; i++)
+    {
+        points.push(new Phaser.Point(i * length, 0));
+    }
+    rope = game.add.rope(32, this.game.world.centerY, 'snake', null, points);
+    rope.scale.set(0.8);
 
-    <span class="nx">rope</span><span class="p">.</span><span class="nx">updateAnimation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">count</span> <span class="o">+=</span> <span class="mf">0.1</span><span class="p">;</span>
+    rope.updateAnimation = function() {
+        count += 0.1;
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">points</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">points</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">y</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="nx">count</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">};</span>
+        for (var i = 0; i < this.points.length; i++)
+        {
+            this.points[i].y = Math.sin(i * 0.5 + count) * 20;
+        }
+    };
 
-    <span class="nx">debugKey</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKey</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">D</span><span class="p">);</span>
-    <span class="nx">debugKey</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">toggleDebug</span><span class="p">);</span>
+    debugKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
+    debugKey.onDown.add(toggleDebug);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">shouldDebug</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">ropeSegments</span><span class="p">(</span><span class="nx">rope</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (shouldDebug)
+    {
+        game.debug.ropeSegments(rope);
+    }
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'(D) to show debug'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text('(D) to show debug', 20, 32);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">toggleDebug</span><span class="p">()</span> <span class="p">{</span>
+function toggleDebug() {
 
-    <span class="nx">shouldDebug</span> <span class="o">=</span> <span class="o">!</span><span class="nx">shouldDebug</span><span class="p">;</span>
+    shouldDebug = !shouldDebug;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

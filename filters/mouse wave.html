@@ -55,79 +55,80 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/filters/mouse%20wave.js" title="filters/mouse wave.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/filters/mouse%20wave.js" download="" title="Download: filters/mouse wave.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { create: create, update: update });
 
-<span class="kd">var</span> <span class="nx">filter</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var filter;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  From http://glslsandbox.com/e#18418.1</span>
+    //  From http://glslsandbox.com/e#18418.1
 
-    <span class="kd">var</span> <span class="nx">fragmentSrc</span> <span class="o">=</span> <span class="p">[</span>
+    var fragmentSrc = [
 
-        <span class="s2">"precision mediump float;"</span><span class="p">,</span>
+        "precision mediump float;",
 
-        <span class="s2">"uniform float     time;"</span><span class="p">,</span>
-        <span class="s2">"uniform vec2      resolution;"</span><span class="p">,</span>
-        <span class="s2">"uniform vec2      mouse;"</span><span class="p">,</span>
+        "uniform float     time;",
+        "uniform vec2      resolution;",
+        "uniform vec2      mouse;",
 
-        <span class="s2">"#define PI 3.1415926535897932384626433832795"</span><span class="p">,</span>
+        "#define PI 3.1415926535897932384626433832795",
 
-        <span class="s2">"float rand(vec2 v)"</span><span class="p">,</span>
-        <span class="s2">"{"</span><span class="p">,</span>
-            <span class="s2">"return fract(sin(dot(v.xy,vec2(33.9898,78.233))) * 43758.5453);"</span><span class="p">,</span>
-        <span class="s2">"}"</span><span class="p">,</span>
+        "float rand(vec2 v)",
+        "{",
+            "return fract(sin(dot(v.xy,vec2(33.9898,78.233))) * 43758.5453);",
+        "}",
 
-        <span class="s2">"void main()"</span><span class="p">,</span>
-        <span class="s2">"{"</span><span class="p">,</span>
+        "void main()",
+        "{",
 
-            <span class="s2">"vec2 pos = (gl_FragCoord.xy / resolution) * 2. - 1.;"</span><span class="p">,</span>
+            "vec2 pos = (gl_FragCoord.xy / resolution) * 2. - 1.;",
 
-            <span class="s2">"float m = mouse.y * 2. - 1.;"</span><span class="p">,</span>
+            "float m = mouse.y * 2. - 1.;",
 
-            <span class="s2">"float amp = 0.50;          // amplitud"</span><span class="p">,</span>
-            <span class="s2">"float offset = m * .01 * 50. * time;   // periodo en segundos"</span><span class="p">,</span>
+            "float amp = 0.50;          // amplitud",
+            "float offset = m * .01 * 50. * time;   // periodo en segundos",
 
-            <span class="s2">"vec3 color;"</span><span class="p">,</span>
+            "vec3 color;",
 
-            <span class="s2">"const float wide = 0.5;"</span><span class="p">,</span>
+            "const float wide = 0.5;",
 
-            <span class="s2">"for(float n = -wide; n &lt;= wide; n += .05){"</span><span class="p">,</span>
+            "for(float n = -wide; n <= wide; n += .05){",
 
-                <span class="s2">"float rnd1 = rand(vec2(1.,n));"</span><span class="p">,</span>
-                <span class="s2">"float rnd2 = rand(vec2(n,1.));"</span><span class="p">,</span>
-                <span class="s2">"float rnd3 = rand(vec2(n,n));"</span><span class="p">,</span>
+                "float rnd1 = rand(vec2(1.,n));",
+                "float rnd2 = rand(vec2(n,1.));",
+                "float rnd3 = rand(vec2(n,n));",
 
-                <span class="s2">"float r = 0.006 / abs(sin(PI * pos.x * pow(3., rnd1) + offset * rnd1) + ((pos.y + (rnd1 * n)) / amp));"</span><span class="p">,</span>
-                <span class="s2">"float g = 0.006 / abs(sin(PI * pos.x * pow(3., rnd2) + offset * rnd2) + ((pos.y + (rnd2 * n)) / amp));"</span><span class="p">,</span>
-                <span class="s2">"float b = 0.006 / abs(sin(PI * pos.x * pow(3., rnd3) + offset * rnd3) + ((pos.y + (rnd3 * n)) / amp));"</span><span class="p">,</span>
+                "float r = 0.006 / abs(sin(PI * pos.x * pow(3., rnd1) + offset * rnd1) + ((pos.y + (rnd1 * n)) / amp));",
+                "float g = 0.006 / abs(sin(PI * pos.x * pow(3., rnd2) + offset * rnd2) + ((pos.y + (rnd2 * n)) / amp));",
+                "float b = 0.006 / abs(sin(PI * pos.x * pow(3., rnd3) + offset * rnd3) + ((pos.y + (rnd3 * n)) / amp));",
 
-                <span class="s2">"color += vec3(r, g, b);"</span><span class="p">,</span>
+                "color += vec3(r, g, b);",
 
-            <span class="s2">"}"</span><span class="p">,</span>
+            "}",
 
-            <span class="s2">"gl_FragColor = vec4(color, 1);"</span><span class="p">,</span>
-        <span class="s2">"}"</span>
-    <span class="p">];</span>
+            "gl_FragColor = vec4(color, 1);",
+        "}"
+    ];
 
-    <span class="nx">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Filter</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fragmentSrc</span><span class="p">);</span>
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">setResolution</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
+    filter = new Phaser.Filter(game, null, fragmentSrc);
+    filter.setResolution(800, 600);
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">();</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+    sprite = game.add.sprite();
+    sprite.width = 800;
+    sprite.height = 600;
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">filter</span> <span class="p">];</span>
+    sprite.filters = [ filter ];
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">filter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
+    filter.update(game.input.mousePointer);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

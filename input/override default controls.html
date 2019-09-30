@@ -55,119 +55,120 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/override%20default%20controls.js" title="input/override default controls.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/override%20default%20controls.js" download="" title="Download: input/override default controls.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">ufo</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sky</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">leftBtn</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">rightBtn</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">speed</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+var ufo;
+var sky;
+var leftBtn;
+var rightBtn;
+var speed = 4;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1280</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ground'</span><span class="p">,</span> <span class="s1">'assets/tests/ground-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'river'</span><span class="p">,</span> <span class="s1">'assets/tests/river-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/tests/sky-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cloud0'</span><span class="p">,</span> <span class="s1">'assets/tests/cloud-big-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cloud1'</span><span class="p">,</span> <span class="s1">'assets/tests/cloud-narrow-2x.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'cloud2'</span><span class="p">,</span> <span class="s1">'assets/tests/cloud-small-2x.png'</span><span class="p">);</span>
+    game.world.setBounds(0, 0, 1280, 600);
+    game.load.image('ground', 'assets/tests/ground-2x.png');
+    game.load.image('river', 'assets/tests/river-2x.png');
+    game.load.image('sky', 'assets/tests/sky-2x.png');
+    game.load.image('cloud0', 'assets/tests/cloud-big-2x.png');
+    game.load.image('cloud1', 'assets/tests/cloud-narrow-2x.png');
+    game.load.image('cloud2', 'assets/tests/cloud-small-2x.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'button'</span><span class="p">,</span> <span class="s1">'assets/buttons/arrow-button.png'</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">95</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'spacebar'</span><span class="p">,</span> <span class="s1">'assets/buttons/spacebar.png'</span><span class="p">);</span>
+    game.load.spritesheet('button', 'assets/buttons/arrow-button.png', 112, 95);
+    game.load.image('spacebar', 'assets/buttons/spacebar.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ufo'</span><span class="p">,</span> <span class="s1">'assets/sprites/ufo.png'</span><span class="p">);</span>
+    game.load.image('ufo', 'assets/sprites/ufo.png');
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">// background images</span>
-    <span class="nx">sky</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="s1">'ground'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'river'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">'cloud0'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">'cloud1'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">900</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="s1">'cloud2'</span><span class="p">);</span>
+    // background images
+    sky = game.add.sprite(0, 0, 'sky');
+    game.add.sprite(0, 360, 'ground');
+    game.add.sprite(0, 400, 'river');
+    game.add.sprite(200, 120, 'cloud0');
+    game.add.sprite(-60, 120, 'cloud1');
+    game.add.sprite(900, 170, 'cloud2');
 
-    <span class="c1">// Create a ufo sprite as a player.</span>
-    <span class="nx">ufo</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="s1">'ufo'</span><span class="p">);</span>
-    <span class="nx">ufo</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    // Create a ufo sprite as a player.
+    ufo = game.add.sprite(320, 240, 'ufo');
+    ufo.anchor.setTo(0.5, 0.5);
     
-    <span class="c1">// Stretch sky horizontally:</span>
-    <span class="nx">sky</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    // Stretch sky horizontally:
+    sky.scale.setTo(2, 1);
     
-    <span class="c1">// Make the camera follow the ufo.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">ufo</span><span class="p">);</span>
+    // Make the camera follow the ufo.
+    game.camera.follow(ufo);
 
-    <span class="c1">// Add 2 sprite to display hold direction.</span>
-    <span class="nx">leftBtn</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">160</span> <span class="o">-</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">leftBtn</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nx">rightBtn</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">640</span> <span class="o">-</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">rightBtn</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    // Add 2 sprite to display hold direction.
+    leftBtn = game.add.sprite(160 - 112, 200, 'button', 0);
+    leftBtn.alpha = 0;
+    rightBtn = game.add.sprite(640 - 112, 200, 'button', 1);
+    rightBtn.alpha = 0;
 
-    <span class="c1">// Add a sprite to display spacebar press.</span>
-    <span class="nx">spaceBtn</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">400</span> <span class="o">-</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'spacebar'</span><span class="p">);</span>
-    <span class="nx">spaceBtn</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    // Add a sprite to display spacebar press.
+    spaceBtn = game.add.sprite(400 - 112, 100, 'spacebar');
+    spaceBtn.alpha = 0;
 
-    <span class="c1">// Prevent directions and space key events bubbling up to browser,</span>
-    <span class="c1">// since these keys will make web page scroll which is not</span>
-    <span class="c1">// expected.</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKeyCapture</span><span class="p">([</span>
-        <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">LEFT</span><span class="p">,</span>
-        <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">RIGHT</span><span class="p">,</span>
-        <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">UP</span><span class="p">,</span>
-        <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">DOWN</span><span class="p">,</span>
-        <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span>
-    <span class="p">]);</span>
+    // Prevent directions and space key events bubbling up to browser,
+    // since these keys will make web page scroll which is not
+    // expected.
+    game.input.keyboard.addKeyCapture([
+        Phaser.Keyboard.LEFT,
+        Phaser.Keyboard.RIGHT,
+        Phaser.Keyboard.UP,
+        Phaser.Keyboard.DOWN,
+        Phaser.Keyboard.SPACEBAR
+    ]);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
     
-    <span class="c1">// Check key states every frame.</span>
-    <span class="c1">// Move ONLY one of the left and right key is hold.</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">LEFT</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="nx">speed</span><span class="p">;</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">15</span><span class="p">;</span>
-        <span class="nx">leftBtn</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">RIGHT</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">speed</span><span class="p">;</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
-        <span class="nx">rightBtn</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">ufo</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="nx">leftBtn</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="nx">rightBtn</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
+    // Check key states every frame.
+    // Move ONLY one of the left and right key is hold.
+    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
+    {
+        ufo.x -= speed;
+        ufo.angle = -15;
+        leftBtn.alpha = 0.6;
+    }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
+    {
+        ufo.x += speed;
+        ufo.angle = 15;
+        rightBtn.alpha = 0.6;
+    }
+    else
+    {
+        ufo.rotation = 0;
+        leftBtn.alpha = rightBtn.alpha = 0;
+    }
 
-    <span class="c1">// 50 as a second parameter is a good choice if you are running 60FPS.</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">downDuration</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'space bar pressed'</span><span class="p">);</span>
-        <span class="nx">spaceBtn</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span>
+    // 50 as a second parameter is a good choice if you are running 60FPS.
+    if (game.input.keyboard.downDuration(Phaser.Keyboard.SPACEBAR, 50))
+    {
+        console.log('space bar pressed');
+        spaceBtn.alpha = 1;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">spaceBtn</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">spaceBtn</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">-=</span> <span class="mf">0.03</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (spaceBtn.alpha > 0)
+    {
+        spaceBtn.alpha -= 0.03;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Hold left/right to move the ufo.'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Direction and Space key events are stopped by Phaser now,'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">48</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'so they will no longer be sent to the browser'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Now you can press UP/DOWN or SPACE to see what happened.'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
+    game.debug.text('Hold left/right to move the ufo.', 16, 32);
+    game.debug.text('Direction and Space key events are stopped by Phaser now,', 16, 48);
+    game.debug.text('so they will no longer be sent to the browser', 16, 64);
+    game.debug.text('Now you can press UP/DOWN or SPACE to see what happened.', 16, 80);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

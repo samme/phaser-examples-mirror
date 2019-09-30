@@ -55,30 +55,31 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/atlas_trim_array.js" title="wip/atlas_trim_array.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/atlas_trim_array.js" download="" title="Download: wip/atlas_trim_array.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  Non-trimmed</span>
-    <span class="c1">// game.load.atlasJSONArray('atlas', 'assets/sprites/atlas_array_no_trim.png', 'assets/sprites/atlas_json_array_no_trim.json');</span>
-    <span class="c1">// game.load.atlasJSONHash('atlas', 'assets/sprites/atlas_hash_no_trim.png', 'assets/sprites/atlas_json_hash_no_trim.json');</span>
+    //  Non-trimmed
+    // game.load.atlasJSONArray('atlas', 'assets/sprites/atlas_array_no_trim.png', 'assets/sprites/atlas_json_array_no_trim.json');
+    // game.load.atlasJSONHash('atlas', 'assets/sprites/atlas_hash_no_trim.png', 'assets/sprites/atlas_json_hash_no_trim.json');
 
-    <span class="c1">//  Trimmed</span>
-    <span class="c1">// game.load.atlasJSONArray('atlas', 'assets/sprites/atlas_array_trim.png', 'assets/sprites/atlas_json_array_trim.json');</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlasJSONHash</span><span class="p">(</span><span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'assets/sprites/atlas_hash_trim.png'</span><span class="p">,</span> <span class="s1">'assets/sprites/atlas_json_hash_trim.json'</span><span class="p">);</span>
+    //  Trimmed
+    // game.load.atlasJSONArray('atlas', 'assets/sprites/atlas_array_trim.png', 'assets/sprites/atlas_json_array_trim.json');
+    game.load.atlasJSONHash('atlas', 'assets/sprites/atlas_hash_trim.png', 'assets/sprites/atlas_json_hash_trim.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">330</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'nanoha_taiken_blue'</span><span class="p">);</span>
+    sprite = game.add.sprite(330, 100, 'atlas', 'nanoha_taiken_blue');
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">530</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'atlas'</span><span class="p">,</span> <span class="s1">'ladycop'</span><span class="p">);</span>
+    sprite = game.add.sprite(530, 100, 'atlas', 'ladycop');
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

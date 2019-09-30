@@ -55,47 +55,48 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/mask.js" title="sprites/mask.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/mask.js" download="" title="Download: sprites/mask.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'chaos'</span><span class="p">,</span> <span class="s1">'assets/pics/hotshot-chaos_in_tokyo.png'</span><span class="p">);</span>
+    game.load.image('chaos', 'assets/pics/hotshot-chaos_in_tokyo.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mask</span><span class="p">;</span>
+var sprite;
+var mask;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="c1">//	Here we add a Sprite to the display list</span>
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'chaos'</span><span class="p">);</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+	//	Here we add a Sprite to the display list
+    sprite = game.add.sprite(0, 0, 'chaos');
+    sprite.scale.set(2);
 
-    <span class="c1">//	A mask is a Graphics object</span>
-    <span class="nx">mask</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    //	A mask is a Graphics object
+    mask = game.add.graphics(0, 0);
 
-    <span class="c1">//	Shapes drawn to the Graphics object must be filled.</span>
-    <span class="nx">mask</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xffffff</span><span class="p">);</span>
+    //	Shapes drawn to the Graphics object must be filled.
+    mask.beginFill(0xffffff);
 
-    <span class="c1">//	Here we'll draw a circle</span>
-    <span class="nx">mask</span><span class="p">.</span><span class="nx">drawCircle</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    //	Here we'll draw a circle
+    mask.drawCircle(100, 100, 100);
 
-    <span class="c1">//	And apply it to the Sprite</span>
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">mask</span> <span class="o">=</span> <span class="nx">mask</span><span class="p">;</span>
+    //	And apply it to the Sprite
+    sprite.mask = mask;
 
-    <span class="c1">//	As you move the mouse / touch, the circle will track the sprite</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">move</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //	As you move the mouse / touch, the circle will track the sprite
+    game.input.addMoveCallback(move, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">move</span><span class="p">(</span><span class="nx">pointer</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+function move(pointer, x, y) {
 
-	<span class="nx">mask</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">100</span><span class="p">;</span>
-	<span class="nx">mask</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">-</span> <span class="mi">100</span><span class="p">;</span>
+	mask.x = x - 100;
+	mask.y = y - 100;
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

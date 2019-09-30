@@ -55,78 +55,79 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/text/bitmaptext%20max%20width.js" title="text/bitmaptext max width.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/text/bitmaptext%20max%20width.js" download="" title="Download: text/bitmaptext max width.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'gem'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/gem.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/gem.xml'</span><span class="p">);</span>
+    game.load.bitmapFont('gem', 'assets/fonts/bitmapFonts/gem.png', 'assets/fonts/bitmapFonts/gem.xml');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bpmText</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="s2">"Lorem ipsum "</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">words</span> <span class="o">=</span> <span class="p">[</span> 
-    <span class="s1">'dolor'</span><span class="p">,</span> <span class="s1">'sit'</span><span class="p">,</span> <span class="s1">'amet'</span><span class="p">,</span> <span class="s1">'consectetuer'</span><span class="p">,</span> <span class="s1">'adipiscing'</span><span class="p">,</span> <span class="s1">'elit'</span><span class="p">,</span> <span class="s1">'aenean'</span><span class="p">,</span> 
-    <span class="s1">'commodo'</span><span class="p">,</span> <span class="s1">'ligula'</span><span class="p">,</span> <span class="s1">'eget'</span><span class="p">,</span> <span class="s1">'massa'</span><span class="p">,</span> <span class="s1">'sociis'</span><span class="p">,</span> <span class="s1">'natoque'</span><span class="p">,</span> <span class="s1">'penatibus'</span><span class="p">,</span>
-    <span class="s1">'et'</span><span class="p">,</span> <span class="s1">'magnis'</span><span class="p">,</span> <span class="s1">'dis'</span><span class="p">,</span> <span class="s1">'parturient'</span><span class="p">,</span> <span class="s1">'montes'</span> <span class="p">];</span>
-<span class="kd">var</span> <span class="nx">run</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+var bpmText;
+var text = "Lorem ipsum ";
+var words = [ 
+    'dolor', 'sit', 'amet', 'consectetuer', 'adipiscing', 'elit', 'aenean', 
+    'commodo', 'ligula', 'eget', 'massa', 'sociis', 'natoque', 'penatibus',
+    'et', 'magnis', 'dis', 'parturient', 'montes' ];
+var run = 5;
+var current = 2;
 
-<span class="c1">// var text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid ergo aliud intellegetur nisi uti ne quae pars naturae neglegatur? Si longus, levis; Ita relinquet duas, de quibus etiam atque etiam consideret. Optime, inquam. Sed quanta sit alias, nunc tantum possitne esse tanta.\n\nQuid, si etiam iucunda memoria est praeteritorum malorum? Consequatur summas voluptates non modo parvo, sed per me nihilo, si potest; Atque his de rebus et splendida est eorum et illustris oratio. Mihi enim satis est, ipsis non satis. Ergo ita: non posse honeste vivi, nisi honeste vivatur? Mihi quidem Antiochum, quem audis, satis belle videris attendere. Et quod est munus, quod opus sapientiae? Ex rebus enim timiditas, non ex vocabulis nascitur. Ex ea difficultate illae fallaciloquae, ut ait Accius, malitiae natae sunt. Nonne videmus quanta perturbatio rerum omnium consequatur, quanta confusio? Quae cum magnifice primo dici viderentur, considerata minus probabantur.";</span>
-<span class="c1">// var text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid ergo aliud intellegetur nisi uti ne quae pars naturae neglegatur? Si longus, levis; Ita relinquet duas, de quibus etiam atque etiam consideret. Optime, inquam. Sed quanta sit alias, nunc tantum possitne esse tanta.\n\nQuid, si etiam iucunda memoria est praeteritorum malorum?";</span>
+// var text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid ergo aliud intellegetur nisi uti ne quae pars naturae neglegatur? Si longus, levis; Ita relinquet duas, de quibus etiam atque etiam consideret. Optime, inquam. Sed quanta sit alias, nunc tantum possitne esse tanta.\n\nQuid, si etiam iucunda memoria est praeteritorum malorum? Consequatur summas voluptates non modo parvo, sed per me nihilo, si potest; Atque his de rebus et splendida est eorum et illustris oratio. Mihi enim satis est, ipsis non satis. Ergo ita: non posse honeste vivi, nisi honeste vivatur? Mihi quidem Antiochum, quem audis, satis belle videris attendere. Et quod est munus, quod opus sapientiae? Ex rebus enim timiditas, non ex vocabulis nascitur. Ex ea difficultate illae fallaciloquae, ut ait Accius, malitiae natae sunt. Nonne videmus quanta perturbatio rerum omnium consequatur, quanta confusio? Quae cum magnifice primo dici viderentur, considerata minus probabantur.";
+// var text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid ergo aliud intellegetur nisi uti ne quae pars naturae neglegatur? Si longus, levis; Ita relinquet duas, de quibus etiam atque etiam consideret. Optime, inquam. Sed quanta sit alias, nunc tantum possitne esse tanta.\n\nQuid, si etiam iucunda memoria est praeteritorum malorum?";
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x272822</span><span class="p">;</span>
+    game.stage.backgroundColor = 0x272822;
 
-    <span class="nx">bmpText</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">bitmapText</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'gem'</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
-    <span class="c1">// bmpText = game.add.bitmapText(32, 32, 'gem', text, 32);</span>
+    bmpText = game.add.bitmapText(32, 32, 'gem', text, 16);
+    // bmpText = game.add.bitmapText(32, 32, 'gem', text, 32);
 
-    <span class="c1">//  Any one line in the bitmap text won't be longer than 400 pixels.</span>
-    <span class="c1">//  The exception to this rule is if the text has no spaces.</span>
-    <span class="c1">//  It line-wraps on spaces and word length.</span>
-    <span class="nx">bmpText</span><span class="p">.</span><span class="nx">maxWidth</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+    //  Any one line in the bitmap text won't be longer than 400 pixels.
+    //  The exception to this rule is if the text has no spaces.
+    //  It line-wraps on spaces and word length.
+    bmpText.maxWidth = 400;
 
-    <span class="c1">//  A visual marker to show where 400px width is</span>
-    <span class="kd">var</span> <span class="nx">marker</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="nx">marker</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0xa6e22e</span><span class="p">);</span>
-    <span class="nx">marker</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-    <span class="nx">marker</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    //  A visual marker to show where 400px width is
+    var marker = game.add.graphics(432, 0);
+    marker.beginFill(0xa6e22e);
+    marker.drawRect(0, 0, 1, game.height);
+    marker.endFill();
 
-    <span class="c1">//  Write out 200 random words</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="nx">addText</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Write out 200 random words
+    game.time.events.repeat(100, 200, addText, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">addText</span><span class="p">()</span> <span class="p">{</span>
+function addText() {
 
-    <span class="kd">var</span> <span class="nx">word</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">pick</span><span class="p">(</span><span class="nx">words</span><span class="p">);</span>
+    var word = game.rnd.pick(words);
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">current</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  Upper-case the first character of a new sentence</span>
-        <span class="nx">word</span> <span class="o">=</span> <span class="nx">word</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">+</span> <span class="nx">word</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (current === 0)
+    {
+        //  Upper-case the first character of a new sentence
+        word = word[0].toUpperCase() + word.slice(1);
+    }
 
-    <span class="nx">text</span> <span class="o">+=</span> <span class="nx">word</span><span class="p">;</span>
+    text += word;
 
-    <span class="nx">current</span><span class="o">++</span><span class="p">;</span>
+    current++;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">current</span> <span class="o">===</span> <span class="nx">run</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">text</span> <span class="o">+=</span> <span class="s2">". "</span><span class="p">;</span>
-        <span class="nx">run</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
-        <span class="nx">current</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">text</span> <span class="o">+=</span> <span class="s2">" "</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (current === run)
+    {
+        text += ". ";
+        run = game.rnd.between(3, 6);
+        current = 0;
+    }
+    else
+    {
+        text += " ";
+    }
 
-    <span class="nx">bmpText</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">;</span>
+    bmpText.text = text;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

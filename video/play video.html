@@ -55,29 +55,30 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/video/play%20video.js" title="video/play video.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/video/play%20video.js" download="" title="Download: video/play video.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"Loading videos ..."</span><span class="p">,</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"65px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ff0044"</span> <span class="p">});</span>
+    game.add.text(100, 100, "Loading videos ...", { font: "65px Arial", fill: "#ff0044" });
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'space'</span><span class="p">,</span> <span class="s1">'assets/video/wormhole.mp4'</span><span class="p">);</span>
+    game.load.video('space', 'assets/video/wormhole.mp4');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">video</span><span class="p">;</span>
+var video;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">video</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'space'</span><span class="p">);</span>
+    video = game.add.video('space');
 
-    <span class="nx">video</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    video.play(true);
 
-    <span class="c1">//  x, y, anchor x, anchor y, scale x, scale y</span>
-    <span class="nx">video</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    //  x, y, anchor x, anchor y, scale x, scale y
+    video.addToWorld();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

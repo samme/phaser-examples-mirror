@@ -55,100 +55,100 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/particlestorm/swirl.js" title="particlestorm/swirl.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/particlestorm/swirl.js" download="" title="Download: particlestorm/swirl.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Particle Storm Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/particlestorm
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">manager</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">angle</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+var manager = null;
+var emitter = null;
+var angle = 0;
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">forceSingleUpdate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    game.forceSingleUpdate = true;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'logo'</span><span class="p">,</span> <span class="s1">'assets/particlestorm/logo-flat.png'</span><span class="p">);</span>
+    game.load.image('logo', 'assets/particlestorm/logo-flat.png');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="s1">'assets/particlestorm/particles/'</span><span class="p">;</span>
+    game.load.path = 'assets/particlestorm/particles/';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'colorsHD'</span><span class="p">);</span>
+    game.load.atlas('colorsHD');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#9B187F'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#9B187F';
 
-    <span class="nx">manager</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">ParticleStorm</span><span class="p">);</span>
+    manager = this.game.plugins.add(Phaser.ParticleStorm);
 
-    <span class="kd">var</span> <span class="nx">squareRod</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">visible</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="mi">2500</span><span class="p">,</span>
-        <span class="na">rotation</span><span class="p">:</span> <span class="p">{</span> <span class="na">initial</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">delta</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span> <span class="p">},</span>
-        <span class="na">emit</span><span class="p">:</span> <span class="p">{</span>
-            <span class="na">name</span><span class="p">:</span> <span class="s1">'squareParticle'</span><span class="p">,</span>
-            <span class="na">value</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
-            <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">],</span>
-            <span class="na">inherit</span><span class="p">:</span> <span class="p">{</span> <span class="na">angularVelocity</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">};</span>
+    var squareRod = {
+        visible: false,
+        lifespan: 2500,
+        rotation: { initial: 0, delta: -0.5 },
+        emit: {
+            name: 'squareParticle',
+            value: 3.0,
+            control: [ { x: 0, y: 1 }, { x: 1, y: 1 } ],
+            inherit: { angularVelocity: true }
+        }
+    };
 
-    <span class="kd">var</span> <span class="nx">squareParticle</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">image</span><span class="p">:</span> <span class="s1">'colorsHD'</span><span class="p">,</span>
-        <span class="na">frame</span><span class="p">:</span> <span class="p">[</span><span class="s1">'red'</span><span class="p">,</span> <span class="s1">'blue'</span><span class="p">,</span> <span class="s1">'yellow'</span><span class="p">,</span> <span class="s1">'white'</span><span class="p">],</span>
-        <span class="na">lifespan</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
-        <span class="na">blendMode</span><span class="p">:</span> <span class="s1">'ADD'</span><span class="p">,</span>
-        <span class="na">scale</span><span class="p">:</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="na">control</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mf">0.2</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">]</span> <span class="p">},</span>
-        <span class="na">sendToBack</span><span class="p">:</span> <span class="kc">true</span>
-    <span class="p">};</span>
+    var squareParticle = {
+        image: 'colorsHD',
+        frame: ['red', 'blue', 'yellow', 'white'],
+        lifespan: 5000,
+        blendMode: 'ADD',
+        scale: { value: 1.0, control: [ { x: 0, y: 0.2 }, { x: 0.9, y: 1 }, { x: 1, y: 0 } ] },
+        sendToBack: true
+    };
 
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'squareRod'</span><span class="p">,</span> <span class="nx">squareRod</span><span class="p">);</span>
-    <span class="nx">manager</span><span class="p">.</span><span class="nx">addData</span><span class="p">(</span><span class="s1">'squareParticle'</span><span class="p">,</span> <span class="nx">squareParticle</span><span class="p">);</span>
+    manager.addData('squareRod', squareRod);
+    manager.addData('squareParticle', squareParticle);
 
-    <span class="nx">emitter</span> <span class="o">=</span> <span class="nx">manager</span><span class="p">.</span><span class="nx">createEmitter</span><span class="p">();</span>
+    emitter = manager.createEmitter();
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    emitter.addToWorld();
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">onEmit</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Signal</span><span class="p">();</span>
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">onEmit</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">setRotation</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    emitter.onEmit = new Phaser.Signal();
+    emitter.onEmit.add(setRotation, this);
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'squareRod'</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="p">{</span> <span class="na">total</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="na">repeat</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="na">frequency</span><span class="p">:</span> <span class="mi">3000</span> <span class="p">});</span>
+    emitter.emit('squareRod', 400, 300, { total: 4, repeat: -1, frequency: 3000 });
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">487</span><span class="p">,</span> <span class="s1">'logo'</span><span class="p">);</span>
+    game.add.image(432, 487, 'logo');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">setRotation</span><span class="p">(</span><span class="nx">emitter</span><span class="p">,</span> <span class="nx">particle</span><span class="p">)</span> <span class="p">{</span>
+function setRotation(emitter, particle) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">particle</span><span class="p">.</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">'squareParticle'</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (particle.key === 'squareParticle')
+    {
+        return;
+    }
 
-    <span class="nx">particle</span><span class="p">.</span><span class="nx">transform</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">initial</span> <span class="o">=</span> <span class="nx">angle</span><span class="p">;</span>
+    particle.transform.rotation.initial = angle;
 
-    <span class="nx">angle</span> <span class="o">+=</span> <span class="mi">90</span><span class="p">;</span>
+    angle += 90;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">angle</span> <span class="o">===</span> <span class="mi">360</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">angle</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (angle === 360)
+    {
+        angle = 0;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">emitter</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="mi">432</span><span class="p">,</span> <span class="mi">522</span><span class="p">);</span>
+    emitter.debug(432, 522);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

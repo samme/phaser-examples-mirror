@@ -55,41 +55,42 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/display/extract%20mask.js" title="display/extract mask.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/display/extract%20mask.js" download="" title="Download: display/extract mask.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });</span>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+// var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'font'</span><span class="p">,</span> <span class="s1">'assets/demoscene/knighthawks.png'</span><span class="p">);</span>
+    game.load.image('font', 'assets/demoscene/knighthawks.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">font</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">mask</span><span class="p">;</span>
+var font;
+var mask;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">font</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
-	<span class="nx">mask</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
-	<span class="nx">mask</span><span class="p">.</span><span class="nx">fill</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
+	font = game.make.bitmapData(320, 150);
+	mask = game.make.bitmapData(320, 150);
+	mask.fill(50, 50, 50);
 
-	<span class="nx">font</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="s1">'font'</span><span class="p">);</span>
+	font.draw('font');
 
-	<span class="nx">font</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+	font.update();
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">font</span><span class="p">);</span>
-	<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="nx">mask</span><span class="p">);</span>
+	game.add.sprite(0, 0, font);
+	game.add.sprite(0, 150, mask);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">addOnce</span><span class="p">(</span><span class="nx">getMask</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	game.input.onDown.addOnce(getMask, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">getMask</span> <span class="p">()</span> <span class="p">{</span>
+function getMask () {
 
-	<span class="nx">font</span><span class="p">.</span><span class="nx">extract</span><span class="p">(</span><span class="nx">mask</span><span class="p">,</span> <span class="mi">237</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">140</span><span class="p">);</span>
+	font.extract(mask, 237, 0, 140);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

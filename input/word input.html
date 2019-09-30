@@ -55,68 +55,68 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/word%20input.js" title="input/word input.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/word%20input.js" download="" title="Download: input/word input.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create });
 
-<span class="kd">var</span> <span class="nx">word</span> <span class="o">=</span> <span class="s2">"phaser"</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">correct</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
+var word = "phaser";
+var correct = [];
+var bmd;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
    
-    <span class="c1">//  Here we'll create a simple array where each letter of the word to enter represents one element:</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">word</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">correct</span><span class="p">[</span><span class="nx">word</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
+    //  Here we'll create a simple array where each letter of the word to enter represents one element:
+    for (var i = 0; i < word.length; i++)
+    {
+        correct[word[i]] = false;
+    }
 
-    <span class="c1">//  This is our BitmapData onto which we'll draw the word being entered</span>
-    <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'64px Arial'</span><span class="p">;</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#ffffff'</span><span class="p">;</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="nx">word</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    //  This is our BitmapData onto which we'll draw the word being entered
+    bmd = game.make.bitmapData(800, 200);
+    bmd.context.font = '64px Arial';
+    bmd.context.fillStyle = '#ffffff';
+    bmd.context.fillText(word, 64, 64);
+    bmd.addToWorld();
 
-    <span class="c1">//  Capture all key presses</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addCallbacks</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">keyPress</span><span class="p">);</span>
+    //  Capture all key presses
+    game.input.keyboard.addCallbacks(this, null, null, keyPress);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">keyPress</span><span class="p">(</span><span class="kr">char</span><span class="p">)</span> <span class="p">{</span>
+function keyPress(char) {
 
-    <span class="c1">//  Clear the BMD</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">cls</span><span class="p">();</span>
+    //  Clear the BMD
+    bmd.cls();
 
-    <span class="c1">//  Set the x value we'll start drawing the text from</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
+    //  Set the x value we'll start drawing the text from
+    var x = 64;
 
-    <span class="c1">//  Loop through each letter of the word being entered and check them against the key that was pressed</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">word</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">letter</span> <span class="o">=</span> <span class="nx">word</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+    //  Loop through each letter of the word being entered and check them against the key that was pressed
+    for (var i = 0; i < word.length; i++)
+    {
+        var letter = word.charAt(i);
 
-        <span class="c1">//  If they pressed one of the letters in the word, flag it as correct</span>
-        <span class="k">if</span> <span class="p">(</span><span class="kr">char</span> <span class="o">===</span> <span class="nx">letter</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">correct</span><span class="p">[</span><span class="nx">letter</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="p">}</span>
+        //  If they pressed one of the letters in the word, flag it as correct
+        if (char === letter)
+        {
+            correct[letter] = true;
+        }
 
-        <span class="c1">//  Now draw the word, letter by letter, changing colour as required</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">correct</span><span class="p">[</span><span class="nx">letter</span><span class="p">])</span>
-        <span class="p">{</span>
-            <span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#00ff00'</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#ffffff'</span><span class="p">;</span>
-        <span class="p">}</span>
+        //  Now draw the word, letter by letter, changing colour as required
+        if (correct[letter])
+        {
+            bmd.context.fillStyle = '#00ff00';
+        }
+        else
+        {
+            bmd.context.fillStyle = '#ffffff';
+        }
 
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="nx">letter</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+        bmd.context.fillText(letter, x, 64);
 
-        <span class="nx">x</span> <span class="o">+=</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">measureText</span><span class="p">(</span><span class="nx">letter</span><span class="p">).</span><span class="nx">width</span><span class="p">;</span>
-    <span class="p">}</span>
+        x += bmd.context.measureText(letter).width;
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

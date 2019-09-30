@@ -55,74 +55,74 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/box2d/edge%20shape.js" title="box2d/edge shape.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/box2d/edge%20shape.js" download="" title="Download: box2d/edge shape.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Chris Campbell &lt;iforce2d@gmail.com&gt;
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Chris Campbell <iforce2d@gmail.com>
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Box2D Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/box2d
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#124184'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#124184';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">BOX2D</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">restitution</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">setBoundsToWorld</span><span class="p">();</span>
+    game.physics.startSystem(Phaser.Physics.BOX2D);
+    game.physics.box2d.gravity.y = 400;
+    game.physics.box2d.restitution = 0.8;
+    game.physics.box2d.setBoundsToWorld();
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">ball</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
-        <span class="nx">ball</span><span class="p">.</span><span class="nx">bullet</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 10; i++)
+    {
+        var ball = new Phaser.Physics.Box2D.Body(this.game, null, game.world.randomX, 0);
+        ball.setCircle(16);
+        ball.bullet = true;
+    }
 
-    <span class="kd">var</span> <span class="nx">ground</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Box2D</span><span class="p">.</span><span class="nx">Body</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+    var ground = new Phaser.Physics.Box2D.Body(this.game, null, 0, 200);
 
-    <span class="nx">ground</span><span class="p">.</span><span class="nx">addEdge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">);</span>
-    <span class="nx">ground</span><span class="p">.</span><span class="nx">addEdge</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">);</span>
-    <span class="nx">ground</span><span class="p">.</span><span class="nx">addEdge</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">);</span>
-    <span class="nx">ground</span><span class="p">.</span><span class="nx">addEdge</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="o">-</span><span class="mi">85</span><span class="p">);</span>
-    <span class="nx">ground</span><span class="p">.</span><span class="nx">addEdge</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="o">-</span><span class="mi">85</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">);</span>
-    <span class="nx">ground</span><span class="p">.</span><span class="nx">addEdge</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">);</span>
-    <span class="nx">ground</span><span class="p">.</span><span class="nx">addEdge</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    ground.addEdge(0, 0, 100, -100);
+    ground.addEdge(100, -100, 200, -50);
+    ground.addEdge(200, -50, 300, -50);
+    ground.addEdge(300, -50, 500, -85);
+    ground.addEdge(500, -85, 600, -10);
+    ground.addEdge(600, -10, 700, -40);
+    ground.addEdge(700, -40, 800, 0);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">mouseDragStart</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">mouseDragMove</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">mouseDragEnd</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(mouseDragStart, this);
+    game.input.addMoveCallback(mouseDragMove, this);
+    game.input.onUp.add(mouseDragEnd, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">mouseDragStart</span><span class="p">()</span> <span class="p">{</span>
+function mouseDragStart() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">mouseDragStart</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
+    game.physics.box2d.mouseDragStart(game.input.mousePointer);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">mouseDragMove</span><span class="p">()</span> <span class="p">{</span>
+function mouseDragMove() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">mouseDragMove</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">);</span>
+    game.physics.box2d.mouseDragMove(game.input.mousePointer);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">mouseDragEnd</span><span class="p">()</span> <span class="p">{</span>
+function mouseDragEnd() {
     
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">box2d</span><span class="p">.</span><span class="nx">mouseDragEnd</span><span class="p">();</span>
+    game.physics.box2d.mouseDragEnd();
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">box2dWorld</span><span class="p">();</span>
+    game.debug.box2dWorld();
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

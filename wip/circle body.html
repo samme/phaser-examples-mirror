@@ -55,103 +55,104 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/circle%20body.js" title="wip/circle body.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/circle%20body.js" download="" title="Download: wip/circle body.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'wizball'</span><span class="p">,</span> <span class="s1">'assets/sprites/wizball.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'disk'</span><span class="p">,</span> <span class="s1">'assets/sprites/copy-that-floppy.png'</span><span class="p">);</span>
+    game.load.image('wizball', 'assets/sprites/wizball.png');
+    game.load.image('disk', 'assets/sprites/copy-that-floppy.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">ball1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">ball2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">disk</span><span class="p">;</span>
+var ball1;
+var ball2;
+var disk;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="c1">// disk = game.add.sprite(80, 80, 'disk');</span>
-    <span class="nx">ball1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'wizball'</span><span class="p">);</span>
-    <span class="nx">ball2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'wizball'</span><span class="p">);</span>
+    // disk = game.add.sprite(80, 80, 'disk');
+    ball1 = game.add.sprite(100, 200, 'wizball');
+    ball2 = game.add.sprite(700, 200, 'wizball');
 
-    <span class="c1">//  rect corners collide, but circles don't</span>
-    <span class="c1">// ball2.x = 280;</span>
-    <span class="c1">// ball2.y = 220;</span>
+    //  rect corners collide, but circles don't
+    // ball2.x = 280;
+    // ball2.y = 220;
 
-    <span class="c1">//  circles collide</span>
-    <span class="c1">// ball2.x = 260;</span>
-    <span class="c1">// ball2.y = 140;</span>
+    //  circles collide
+    // ball2.x = 260;
+    // ball2.y = 140;
 
-    <span class="c1">//  disk rect NOT collide with ball1, and is out of its bounds</span>
-    <span class="c1">// disk.x = 320;</span>
-    <span class="c1">// disk.y = 380;</span>
+    //  disk rect NOT collide with ball1, and is out of its bounds
+    // disk.x = 320;
+    // disk.y = 380;
 
-    <span class="c1">//  disk rect NOT collide with ball1, but is within its bounds</span>
-    <span class="c1">// disk.x = 280;</span>
-    <span class="c1">// disk.y = 380;</span>
+    //  disk rect NOT collide with ball1, but is within its bounds
+    // disk.x = 280;
+    // disk.y = 380;
 
-    <span class="c1">//  disk rect WILL collide with ball1</span>
-    <span class="c1">// disk.x = 270;</span>
-    <span class="c1">// disk.y = 370;</span>
-
-
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">([</span><span class="nx">ball1</span><span class="p">,</span> <span class="nx">ball2</span><span class="p">]);</span>
-    <span class="c1">// game.physics.arcade.enable([disk, ball1, ball2]);</span>
+    //  disk rect WILL collide with ball1
+    // disk.x = 270;
+    // disk.y = 370;
 
 
-    <span class="c1">//  By default the Body is a rectangle. Let's turn it into a Circle with a radius of 45 pixels</span>
-
-    <span class="nx">ball1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">45</span><span class="p">);</span>
-    <span class="nx">ball2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">setCircle</span><span class="p">(</span><span class="mi">45</span><span class="p">);</span>
-
-    <span class="c1">// ball1.body.immovable = true;</span>
-
-    <span class="c1">// ball2.body.mass = 3;</span>
-
-    <span class="c1">//  Set the ball to collide with the world, have gravity, bounce, and move.</span>
-    <span class="nx">ball1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">ball2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="c1">// disk.body.collideWorldBounds = true;</span>
-
-    <span class="nx">ball1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="nx">ball2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="c1">// disk.body.bounce.set(1);</span>
-
-    <span class="nx">ball1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-    <span class="nx">ball2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-    <span class="c1">// disk.body.gravity.y = 100;</span>
-
-    <span class="c1">// ball1.body.velocity.x = 50;</span>
-    <span class="c1">// ball2.body.velocity.x = -50;</span>
+    game.physics.arcade.enable([ball1, ball2]);
+    // game.physics.arcade.enable([disk, ball1, ball2]);
 
 
-    <span class="nx">ball1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">150</span><span class="p">);</span>
-    <span class="nx">ball2</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="mi">60</span><span class="p">);</span>
-    <span class="c1">// disk.body.velocity.set(50);</span>
+    //  By default the Body is a rectangle. Let's turn it into a Circle with a radius of 45 pixels
 
-    <span class="c1">// game.input.onDown.add(function() { console.log(game.physics.arcade.intersects(ball1.body, ball2.body)); });</span>
-    <span class="c1">// game.input.onDown.add(function() { console.log(game.physics.arcade.intersects(ball1.body, disk.body)); });</span>
+    ball1.body.setCircle(45);
+    ball2.body.setCircle(45);
 
-<span class="p">}</span>
+    // ball1.body.immovable = true;
 
-<span class="kd">function</span> <span class="nx">update</span> <span class="p">()</span> <span class="p">{</span>
+    // ball2.body.mass = 3;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">ball1</span><span class="p">,</span> <span class="nx">ball2</span><span class="p">);</span>
-    <span class="c1">// game.physics.arcade.collide(ball1, disk);</span>
-    <span class="c1">// game.physics.arcade.collide(ball2, disk);</span>
+    //  Set the ball to collide with the world, have gravity, bounce, and move.
+    ball1.body.collideWorldBounds = true;
+    ball2.body.collideWorldBounds = true;
+    // disk.body.collideWorldBounds = true;
+
+    ball1.body.bounce.set(1);
+    ball2.body.bounce.set(1);
+    // disk.body.bounce.set(1);
+
+    ball1.body.gravity.y = 100;
+    ball2.body.gravity.y = 100;
+    // disk.body.gravity.y = 100;
+
+    // ball1.body.velocity.x = 50;
+    // ball2.body.velocity.x = -50;
+
+
+    ball1.body.velocity.set(150);
+    ball2.body.velocity.set(-200, 60);
+    // disk.body.velocity.set(50);
+
+    // game.input.onDown.add(function() { console.log(game.physics.arcade.intersects(ball1.body, ball2.body)); });
+    // game.input.onDown.add(function() { console.log(game.physics.arcade.intersects(ball1.body, disk.body)); });
+
+}
+
+function update () {
+
+    game.physics.arcade.collide(ball1, ball2);
+    // game.physics.arcade.collide(ball1, disk);
+    // game.physics.arcade.collide(ball2, disk);
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span> <span class="p">()</span> <span class="p">{</span>
+function render () {
 
-    <span class="c1">// game.debug.body(disk);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">body</span><span class="p">(</span><span class="nx">ball1</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">body</span><span class="p">(</span><span class="nx">ball2</span><span class="p">);</span>
+    // game.debug.body(disk);
+    game.debug.body(ball1);
+    game.debug.body(ball2);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

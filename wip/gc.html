@@ -55,41 +55,41 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/gc.js" title="wip/gc.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/gc.js" download="" title="Download: wip/gc.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">1280</span><span class="p">,</span> <span class="mi">720</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span>
-    <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span>
-    <span class="na">create</span><span class="p">:</span> <span class="nx">create</span>
-<span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>game = new Phaser.Game(1280, 720, Phaser.CANVAS, 'phaser-example', {
+    preload: preload,
+    create: create
+});
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'grass_tile'</span><span class="p">,</span> <span class="s1">'wip/gt_7.png'</span><span class="p">);</span>
+    game.load.image('grass_tile', 'wip/gt_7.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">randomInt</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">posY</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">x</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">y</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">TILE_SIZE_WIDTH</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">TILE_SIZE_HEIGHT</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">TILE_OFFSET_MODULO</span> <span class="o">=</span> <span class="o">-</span><span class="nx">TILE_SIZE_WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">TILE_MAP_WIDTH_TILES_COUNT</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">TILE_MAP_HEIGHT_TILES_COUNT</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">TILE_MAP_OFFSET_Y</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">group</span><span class="p">;</span>
+var randomInt;
+var posY;
+var x;
+var y;
+var TILE_SIZE_WIDTH = 64;
+var TILE_SIZE_HEIGHT = 32;
+var TILE_OFFSET_MODULO = -TILE_SIZE_WIDTH / 2;
+var TILE_MAP_WIDTH_TILES_COUNT = 30;
+var TILE_MAP_HEIGHT_TILES_COUNT = 30;
+var TILE_MAP_OFFSET_Y = 200;
+var group;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">900</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'grass_tile'</span><span class="p">);</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 900; i++)
+    {
+        game.add.sprite(game.world.randomX, game.world.randomY, 'grass_tile');
+    }
 
-    <span class="cm">/*
+    /*
     group = GAME.add.group();
-    for (y = 0; y &lt; TILE_MAP_HEIGHT_TILES_COUNT; y++) {
-        for (x = 0; x &lt; TILE_MAP_WIDTH_TILES_COUNT; x++) {
+    for (y = 0; y < TILE_MAP_HEIGHT_TILES_COUNT; y++) {
+        for (x = 0; x < TILE_MAP_WIDTH_TILES_COUNT; x++) {
 
             // Create some random noise, so the ground doesn't look leveled
             randomInt = ((Math.random() * 4) + 0) | 0;
@@ -106,11 +106,11 @@
 
         }
     }
-    */</span>
+    */
 
 
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

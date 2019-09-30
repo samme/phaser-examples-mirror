@@ -55,45 +55,46 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/01pos.js" title="wip/01pos.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/01pos.js" download="" title="Download: wip/01pos.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bg'</span><span class="p">,</span> <span class="s1">'assets/pics/undersea.jpg'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'disk'</span><span class="p">,</span> <span class="s1">'assets/sprites/copy-that-floppy.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'squad'</span><span class="p">,</span> <span class="s1">'assets/sprites/bsquadron3.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'loop'</span><span class="p">,</span> <span class="s1">'assets/sprites/beball1.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">bitmapFont</span><span class="p">(</span><span class="s1">'desyrel'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.png'</span><span class="p">,</span> <span class="s1">'assets/fonts/bitmapFonts/desyrel.xml'</span><span class="p">);</span>
+    game.load.image('bg', 'assets/pics/undersea.jpg');
+    game.load.image('disk', 'assets/sprites/copy-that-floppy.png');
+    game.load.image('squad', 'assets/sprites/bsquadron3.png');
+    game.load.image('loop', 'assets/sprites/beball1.png');
+    game.load.bitmapFont('desyrel', 'assets/fonts/bitmapFonts/desyrel.png', 'assets/fonts/bitmapFonts/desyrel.xml');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">child1</span><span class="p">;</span>
+var sprite;
+var child1;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'disk'</span><span class="p">);</span>
+    sprite = game.add.sprite(300, 200, 'disk');
 
-    <span class="c1">// sprite.scale.x = -1;</span>
+    // sprite.scale.x = -1;
 
-    <span class="nx">child1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">'disk'</span><span class="p">);</span>
+    child1 = game.make.sprite(64, 64, 'disk');
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">child1</span><span class="p">);</span>
+    sprite.addChild(child1);
 
-    <span class="nx">child1</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    child1.scale.x = -1;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">updateTransform</span><span class="p">();</span>
+    game.stage.updateTransform();
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">worldPosition</span><span class="p">,</span> <span class="nx">child1</span><span class="p">.</span><span class="nx">worldPosition</span><span class="p">);</span>
+    console.log(sprite.worldPosition, child1.worldPosition);
 
-    <span class="cm">/*
+    /*
     var group = game.make.group();
 
     group.create(0, 0, 'bg');
 
     //  Add a bunch of sprites in random positions to the group
-    for (var i = 0; i &lt; 16; i++)
+    for (var i = 0; i < 16; i++)
     {
         group.create(game.world.randomX, game.world.randomY, 'loop');
     }
@@ -120,24 +121,24 @@
     //  Draw the group to the BitmapData
     bmd.drawGroup(group);
     // bmd.drawFull(group);
-    */</span>
+    */
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">child1</span><span class="p">.</span><span class="nx">worldTransform</span><span class="p">);</span> <span class="p">});</span>
+    game.input.onDown.add(function() { console.log(child1.worldTransform); });
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">worldPosition</span><span class="p">,</span> <span class="s1">'#ff00ff'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">child1</span><span class="p">.</span><span class="nx">worldPosition</span><span class="p">,</span> <span class="s1">'#ff0000'</span><span class="p">);</span>
+    game.debug.geom(sprite.worldPosition, '#ff00ff');
+    game.debug.geom(child1.worldPosition, '#ff0000');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">worldScale</span><span class="p">.</span><span class="nx">toString</span><span class="p">(),</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">child1</span><span class="p">.</span><span class="nx">worldScale</span><span class="p">.</span><span class="nx">toString</span><span class="p">(),</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text(sprite.worldScale.toString(), 32, 32);
+    game.debug.text(child1.worldScale.toString(), 32, 64);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">toString</span><span class="p">(),</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">child1</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">toString</span><span class="p">(),</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text(sprite.scale.toString(), 320, 32);
+    game.debug.text(child1.scale.toString(), 320, 64);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

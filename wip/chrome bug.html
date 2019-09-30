@@ -55,64 +55,65 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/chrome%20bug.js" title="wip/chrome bug.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/chrome%20bug.js" download="" title="Download: wip/chrome bug.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
-<span class="c1">// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/shinyball.png'</span><span class="p">);</span>
+    game.load.image('ball', 'assets/sprites/shinyball.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">canvas</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">context</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">baseTexture</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">texture</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">sprite</span><span class="p">;</span>
+var bmd;
+var canvas;
+var context;
+var baseTexture;
+var texture;
+var sprite;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">canvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">"canvas"</span><span class="p">);</span>
-    <span class="c1">// canvas.width = 800;</span>
-    <span class="c1">// canvas.height = 200;</span>
-    <span class="nx">context</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s2">"2d"</span><span class="p">);</span>
+    canvas = document.createElement("canvas");
+    // canvas.width = 800;
+    // canvas.height = 200;
+    context = canvas.getContext("2d");
 
-    <span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'rgba(255, 255, 255, 1)'</span><span class="p">;</span>
-    <span class="nx">context</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'28px Courier'</span><span class="p">;</span>
-    <span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="s1">'x: starting'</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    context.fillStyle = 'rgba(255, 255, 255, 1)';
+    context.font = '28px Courier';
+    context.fillText('x: starting', 64, 64);
 
-    <span class="nx">baseTexture</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">BaseTexture</span><span class="p">(</span><span class="nx">canvas</span><span class="p">);</span>
-    <span class="nx">texture</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">Texture</span><span class="p">(</span><span class="nx">baseTexture</span><span class="p">);</span>
+    baseTexture = new PIXI.BaseTexture(canvas);
+    texture = new PIXI.Texture(baseTexture);
 
-	<span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">texture</span><span class="p">);</span>
+	sprite = game.add.sprite(0, 0, texture);
 
 
-<span class="cm">/*	bmd = game.add.bitmapData(800, 600);
+/*	bmd = game.add.bitmapData(800, 600);
 
 	bmd.context.fillStyle = 'rgba(255, 255, 255, 1)';
 	bmd.context.font = '28px Courier';
 	bmd.context.fillText('x: starting', 64, 64);
 
 	game.add.sprite(0, 0, bmd);
-*/</span>
-<span class="p">}</span>
+*/
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">context</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
-    <span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="s1">'x: '</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">now</span><span class="p">.</span><span class="nx">toString</span><span class="p">(),</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    context.clearRect(0, 0, 600, 400);
+    context.fillText('x: ' + game.time.now.toString(), 64, 64);
 
-    <span class="nx">PIXI</span><span class="p">.</span><span class="nx">updateWebGLTexture</span><span class="p">(</span><span class="nx">baseTexture</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">gl</span><span class="p">);</span>
+    PIXI.updateWebGLTexture(baseTexture, game.renderer.gl);
 
-	<span class="c1">// bmd.context.clearRect(0, 0, this.game.width, this.game.height);</span>
-	<span class="c1">// bmd.context.fillText('x: ' + game.input.x.toString(), 64, 64);</span>
-	<span class="c1">// bmd.dirty = true;</span>
-	<span class="c1">// PIXI.updateWebGLTexture(this.baseTexture, this.game.renderer.gl);</span>
+	// bmd.context.clearRect(0, 0, this.game.width, this.game.height);
+	// bmd.context.fillText('x: ' + game.input.x.toString(), 64, 64);
+	// bmd.dirty = true;
+	// PIXI.updateWebGLTexture(this.baseTexture, this.game.renderer.gl);
 
 
-<span class="p">}</span>
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

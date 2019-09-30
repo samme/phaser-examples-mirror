@@ -55,44 +55,44 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/pool%20test%202.js" title="wip/pool test 2.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/pool%20test%202.js" download="" title="Download: wip/pool test 2.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, render: render });
 
-<span class="kd">var</span> <span class="nx">group</span><span class="p">;</span>
+var group;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    group = game.add.group();
 
-    <span class="nx">addText</span><span class="p">();</span>
+    addText();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">removeRandom</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(removeRandom, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">removeRandom</span><span class="p">()</span> <span class="p">{</span>
+function removeRandom() {
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">group</span><span class="p">.</span><span class="nx">getFirstExists</span><span class="p">();</span>
+    var text = group.getFirstExists();
 
-    <span class="nx">text</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+    text.destroy();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">addText</span><span class="p">()</span> <span class="p">{</span>
+function addText() {
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">760</span><span class="p">),</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">580</span><span class="p">),</span> <span class="s2">"phaser "</span> <span class="o">+</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">CanvasPool</span><span class="p">.</span><span class="nx">getTotal</span><span class="p">(),</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"32px Arial"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#ff0044"</span> <span class="p">});</span>
+    var text = game.make.text(game.rnd.between(0, 760), game.rnd.between(0, 580), "phaser " + PIXI.CanvasPool.getTotal(), { font: "32px Arial", fill: "#ff0044" });
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+    group.add(text);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="nx">addText</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.time.events.add(1000, addText, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"CanvasPool - total: "</span> <span class="o">+</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">CanvasPool</span><span class="p">.</span><span class="nx">getTotal</span><span class="p">()</span> <span class="o">+</span> <span class="s2">" available: "</span> <span class="o">+</span> <span class="nx">PIXI</span><span class="p">.</span><span class="nx">CanvasPool</span><span class="p">.</span><span class="nx">getFree</span><span class="p">(),</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.text("CanvasPool - total: " + PIXI.CanvasPool.getTotal() + " available: " + PIXI.CanvasPool.getFree(), 32, 32);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

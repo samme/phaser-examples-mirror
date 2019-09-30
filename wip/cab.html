@@ -55,39 +55,40 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/cab.js" title="wip/cab.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/cab.js" download="" title="Download: wip/cab.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'phaser'</span><span class="p">,</span> <span class="s1">'assets/sprites/phaser.png'</span><span class="p">);</span>
+    game.load.image('phaser', 'assets/sprites/phaser.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">myGroup</span><span class="p">;</span>
+var myGroup;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">myGroup</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    myGroup = this.game.add.group();
 
-    <span class="nx">myGroup</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"phaser"</span><span class="p">);</span>
-    <span class="nx">myGroup</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"phaser"</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">myGroup</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="s2">"phaser"</span><span class="p">);</span>
-    <span class="nx">s</span><span class="p">.</span><span class="nx">angle</span> <span class="o">=</span> <span class="mi">45</span><span class="p">;</span>
+    myGroup.create(50, 50, "phaser");
+    myGroup.create(250, 50, "phaser");
+    var s = myGroup.create(250, 150, "phaser");
+    s.angle = 45;
 
-    <span class="c1">// setInterval(function () {</span>
-    <span class="c1">//     console.log('cab', myGroup.cacheAsBitmap);</span>
-    <span class="c1">//     myGroup.cacheAsBitmap = !myGroup.cacheAsBitmap;</span>
-        <span class="c1">// console.log(mySprite.position);</span>
-    <span class="c1">// }, 1000);</span>
+    // setInterval(function () {
+    //     console.log('cab', myGroup.cacheAsBitmap);
+    //     myGroup.cacheAsBitmap = !myGroup.cacheAsBitmap;
+        // console.log(mySprite.position);
+    // }, 1000);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">gen</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(gen, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">gen</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">myGroup</span><span class="p">.</span><span class="nx">cacheAsBitmap</span> <span class="o">=</span> <span class="o">!</span><span class="nx">myGroup</span><span class="p">.</span><span class="nx">cacheAsBitmap</span><span class="p">;</span>
-<span class="p">}</span>
+function gen() {
+    myGroup.cacheAsBitmap = !myGroup.cacheAsBitmap;
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

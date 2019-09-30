@@ -55,58 +55,59 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/time/basic%20repeat%20event.js" title="time/basic repeat event.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/time/basic%20repeat%20event.js" download="" title="Download: time/basic repeat event.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/pangball.png'</span><span class="p">);</span>
+    game.load.image('ball', 'assets/sprites/pangball.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#6688ee'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#6688ee';
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">gravity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">150</span><span class="p">;</span>
+    game.physics.arcade.gravity.y = 150;
 
-    <span class="c1">//  Here we'll create a basic repeating event.</span>
+    //  Here we'll create a basic repeating event.
 
-    <span class="c1">//  The way a repeating event works is that it is placed into the queue once, </span>
-    <span class="c1">//  and when it runs its 'repeatCounter' is reduced by 1 and it's moved back into the queue again.</span>
-    <span class="c1">//  To this end the queue will only ever have 1 event actually in it.</span>
+    //  The way a repeating event works is that it is placed into the queue once, 
+    //  and when it runs its 'repeatCounter' is reduced by 1 and it's moved back into the queue again.
+    //  To this end the queue will only ever have 1 event actually in it.
 
-    <span class="c1">//  The first parameter is how long to wait before the event fires. In this case 2 seconds (you could pass in 2000 as the value as well.)</span>
-    <span class="c1">//  The second parameter is how many times the event will run in total. Here we'll run it 10 times.</span>
-    <span class="c1">//  The next two parameters are the function to call ('createBall') and the context under which that will happen.</span>
+    //  The first parameter is how long to wait before the event fires. In this case 2 seconds (you could pass in 2000 as the value as well.)
+    //  The second parameter is how many times the event will run in total. Here we'll run it 10 times.
+    //  The next two parameters are the function to call ('createBall') and the context under which that will happen.
 
-    <span class="c1">//  Once the event has been called 10 times it will never be called again.</span>
+    //  Once the event has been called 10 times it will never be called again.
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Timer</span><span class="p">.</span><span class="nx">SECOND</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">createBall</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.time.events.repeat(Phaser.Timer.SECOND * 2, 10, createBall, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createBall</span><span class="p">()</span> <span class="p">{</span>
+function createBall() {
 
-    <span class="c1">//  A bouncey ball sprite just to visually see what's going on.</span>
+    //  A bouncey ball sprite just to visually see what's going on.
 
-    <span class="kd">var</span> <span class="nx">ball</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
+    var ball = game.add.sprite(game.world.randomX, 0, 'ball');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">ball</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    game.physics.enable(ball, Phaser.Physics.ARCADE);
 
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span>
-    <span class="nx">ball</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">collideWorldBounds</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    ball.body.bounce.y = 0.9;
+    ball.body.collideWorldBounds = true;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Time until event: "</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">duration</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Next tick: "</span> <span class="o">+</span> <span class="nx">game</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">next</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+    game.debug.text("Time until event: " + game.time.events.duration.toFixed(0), 32, 32);
+    game.debug.text("Next tick: " + game.time.events.next.toFixed(0), 32, 64);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,79 +55,80 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/input/drag%20event%20parameters.js" title="input/drag event parameters.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/input/drag%20event%20parameters.js" download="" title="Download: input/drag event parameters.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'grid'</span><span class="p">,</span> <span class="s1">'assets/tests/debug-grid-1920x1920.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari800xl.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sonic'</span><span class="p">,</span> <span class="s1">'assets/sprites/sonic_havok_sanity.png'</span><span class="p">);</span>
+    game.load.image('grid', 'assets/tests/debug-grid-1920x1920.png');
+    game.load.image('atari', 'assets/sprites/atari800xl.png');
+    game.load.image('sonic', 'assets/sprites/sonic_havok_sanity.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="s1">'Drag a sprite'</span><span class="p">;</span>
+var result = 'Drag a sprite';
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'grid'</span><span class="p">);</span>
+    game.add.sprite(0, 0, 'grid');
 
-    <span class="kd">var</span> <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    var group = game.add.group();
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">inputEnableChildren</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    group.inputEnableChildren = true;
 
-    <span class="kd">var</span> <span class="nx">atari</span> <span class="o">=</span> <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'atari'</span><span class="p">);</span>
+    var atari = group.create(32, 100, 'atari');
 
-    <span class="c1">//  Enable input and allow for dragging</span>
-    <span class="nx">atari</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">atari</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
-    <span class="nx">atari</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDragStart</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">atari</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDragStop</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    //  Enable input and allow for dragging
+    atari.inputEnabled = true;
+    atari.input.enableDrag();
+    atari.events.onDragStart.add(onDragStart, this);
+    atari.events.onDragStop.add(onDragStop, this);
 
-    <span class="kd">var</span> <span class="nx">sonic</span> <span class="o">=</span> <span class="nx">group</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'sonic'</span><span class="p">);</span>
+    var sonic = group.create(300, 200, 'sonic');
 
-    <span class="nx">sonic</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">sonic</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
-    <span class="nx">sonic</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDragStart</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">sonic</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDragStop</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    sonic.inputEnabled = true;
+    sonic.input.enableDrag();
+    sonic.events.onDragStart.add(onDragStart, this);
+    sonic.events.onDragStop.add(onDragStop, this);
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">onChildInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    group.onChildInputDown.add(onDown, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onDown</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function onDown(sprite, pointer) {
 
-    <span class="nx">result</span> <span class="o">=</span> <span class="s2">"Down "</span> <span class="o">+</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">key</span><span class="p">;</span>
+    result = "Down " + sprite.key;
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'down'</span><span class="p">,</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+    console.log('down', sprite.key);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onDragStart</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function onDragStart(sprite, pointer) {
 
-    <span class="nx">result</span> <span class="o">=</span> <span class="s2">"Dragging "</span> <span class="o">+</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">key</span><span class="p">;</span>
+    result = "Dragging " + sprite.key;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onDragStop</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function onDragStop(sprite, pointer) {
 
-    <span class="nx">result</span> <span class="o">=</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">key</span> <span class="o">+</span> <span class="s2">" dropped at x:"</span> <span class="o">+</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="s2">" y: "</span> <span class="o">+</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    result = sprite.key + " dropped at x:" + pointer.x + " y: " + pointer.y;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="mi">400</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'input disabled on'</span><span class="p">,</span> <span class="nx">sprite</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enabled</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    if (pointer.y > 400)
+    {
+        console.log('input disabled on', sprite.key);
+        sprite.input.enabled = false;
 
-        <span class="nx">sprite</span><span class="p">.</span><span class="nx">sendToBack</span><span class="p">();</span>
-    <span class="p">}</span>
+        sprite.sendToBack();
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    game.debug.text(result, 10, 20);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

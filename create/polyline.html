@@ -55,179 +55,180 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/create/polyline.js" title="create/polyline.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/create/polyline.js" download="" title="Download: create/polyline.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update, render: render });
 
-<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">polyline</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="kd">var</span> <span class="nx">tracing</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">current</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">dropZone</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
+var data = [];
+var polyline = [];
+var tracing = false;
+var current;
+var dropZone;
+var bmd;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x000000</span><span class="p">;</span>
+    game.stage.backgroundColor = 0x000000;
 
-    <span class="c1">//  When the current line is done it'll get rendered to this bmd</span>
-    <span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">();</span>
+    //  When the current line is done it'll get rendered to this bmd
+    bmd = game.make.bitmapData(800, 600);
+    bmd.addToWorld();
 
-    <span class="nx">keys</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">addKeys</span><span class="p">(</span>
-        <span class="p">{</span>
-            <span class="s1">'close'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACEBAR</span><span class="p">,</span>
-            <span class="s1">'save'</span><span class="p">:</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">S</span>
-        <span class="p">}</span>
-    <span class="p">);</span>
+    keys = game.input.keyboard.addKeys(
+        {
+            'close': Phaser.Keyboard.SPACEBAR,
+            'save': Phaser.Keyboard.S
+        }
+    );
 
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">close</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">closeLine</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">keys</span><span class="p">.</span><span class="nx">save</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">save</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    keys.close.onDown.add(closeLine, this);
+    keys.save.onDown.add(save, this);
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onDown</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onUp</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">onUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">addMoveCallback</span><span class="p">(</span><span class="nx">trace</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.onDown.add(onDown, this);
+    game.input.onUp.add(onUp, this);
+    game.input.addMoveCallback(trace, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">save</span><span class="p">()</span> <span class="p">{</span>
+function save() {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+    console.clear();
 
-    <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s1">'var data = [\n'</span><span class="p">;</span>
+    var s = 'var data = [\n';
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">polyline</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">s</span> <span class="o">+=</span> <span class="s1">'\t[ '</span> <span class="o">+</span> <span class="nx">polyline</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">start</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="s1">', '</span> <span class="o">+</span> <span class="nx">polyline</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">start</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="s1">', '</span> <span class="o">+</span> <span class="nx">polyline</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="s1">', '</span> <span class="o">+</span> <span class="nx">polyline</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="s1">' ]'</span><span class="p">;</span>
+    for (var i = 0; i < polyline.length; i++)
+    {
+        s += '\t[ ' + polyline[i].start.x + ', ' + polyline[i].start.y + ', ' + polyline[i].end.x + ', ' + polyline[i].end.y + ' ]';
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="nx">polyline</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">s</span> <span class="o">+=</span> <span class="s1">'\n'</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="nx">s</span> <span class="o">+=</span> <span class="s1">',\n'</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+        if (i === polyline.length - 1)
+        {
+            s += '\n';
+        }
+        else
+        {
+            s += ',\n';
+        }
+    }
 
-    <span class="nx">s</span> <span class="o">+=</span> <span class="s1">'];'</span><span class="p">;</span>
+    s += '];';
     
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
+    console.log(s);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">closeLine</span><span class="p">()</span> <span class="p">{</span>
+function closeLine() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">current</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">current</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-        <span class="nx">tracing</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (current)
+    {
+        current = null;
+        tracing = false;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onDown</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function onDown(pointer) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">tracing</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">//  End line</span>
-        <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">current</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">current</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    if (tracing)
+    {
+        //  End line
+        var x = current.end.x;
+        var y = current.end.y;
 
-        <span class="nx">polyline</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">current</span><span class="p">.</span><span class="nx">clone</span><span class="p">());</span>
+        polyline.push(current.clone());
 
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="nx">current</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">current</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">current</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">current</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="s1">'#00ff00'</span><span class="p">);</span>
+        bmd.line(current.start.x, current.start.y, current.end.x, current.end.y, '#00ff00');
 
-        <span class="c1">//  If it closes the line then quit</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">dropZone</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">y</span> <span class="o">===</span> <span class="nx">dropZone</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">data</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">polyline</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
-            <span class="nx">polyline</span> <span class="o">=</span> <span class="p">[];</span>
-            <span class="nx">current</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-            <span class="nx">tracing</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-            <span class="nx">redraw</span><span class="p">();</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="nx">current</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="nx">current</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-        <span class="nx">dropZone</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Circle</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
-        <span class="nx">tracing</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
+        //  If it closes the line then quit
+        if (x === dropZone.x && y === dropZone.y)
+        {
+            data.push(polyline.slice(0));
+            polyline = [];
+            current = null;
+            tracing = false;
+            redraw();
+        }
+        else
+        {
+            current = new Phaser.Line(x, y, pointer.x, pointer.y);
+        }
+    }
+    else
+    {
+        current = new Phaser.Line(pointer.x, pointer.y, pointer.x, pointer.y);
+        dropZone = new Phaser.Circle(pointer.x, pointer.y, 16);
+        tracing = true;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">redraw</span><span class="p">()</span> <span class="p">{</span>
+function redraw() {
 
-    <span class="c1">// console.log(data);</span>
+    // console.log(data);
 
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">cls</span><span class="p">();</span>
-    <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#00aa00'</span><span class="p">;</span>
+    bmd.cls();
+    bmd.ctx.fillStyle = '#00aa00';
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    for (var i = 0; i < data.length; i++)
+    {
+        var path = data[i];
 
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+        bmd.ctx.beginPath();
 
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">path</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">path</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+        bmd.ctx.moveTo(path[0].start.x, path[0].start.y);
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">n</span> <span class="o">&lt;</span> <span class="nx">path</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">n</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">path</span><span class="p">[</span><span class="nx">n</span><span class="p">].</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">path</span><span class="p">[</span><span class="nx">n</span><span class="p">].</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-        <span class="p">}</span>
+        for (var n = 0; n < path.length; n++)
+        {
+            bmd.ctx.lineTo(path[n].end.x, path[n].end.y);
+        }
 
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
+        bmd.ctx.closePath();
 
-        <span class="nx">bmd</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
-    <span class="p">}</span>
+        bmd.ctx.fill();
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">onUp</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function onUp(pointer) {
 
 
     
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">trace</span><span class="p">(</span><span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function trace(pointer) {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">current</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">dropZone</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">polyline</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">current</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="nx">dropZone</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">dropZone</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="nx">current</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    if (current)
+    {
+        if (dropZone.contains(pointer.x, pointer.y) && polyline.length > 1)
+        {
+            current.end.setTo(dropZone.x, dropZone.y);
+        }
+        else
+        {
+            current.end.setTo(pointer.x, pointer.y);
+        }
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">current</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">dropZone</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">current</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">current</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="p">))</span>
-        <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">current</span><span class="p">,</span> <span class="s1">'#ffff00'</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">geom</span><span class="p">(</span><span class="nx">current</span><span class="p">,</span> <span class="s1">'#00ff00'</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    if (current)
+    {
+        if (dropZone.contains(current.end.x, current.end.y))
+        {
+            game.debug.geom(current, '#ffff00');
+        }
+        else
+        {
+            game.debug.geom(current, '#00ff00');
+        }
+    }
 
-<span class="p">}</span>
+}
 
 </code></pre>
 <meta content="../" name="loadPath">

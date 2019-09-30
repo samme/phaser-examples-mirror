@@ -55,123 +55,124 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/tilemap%20blank.js" title="wip/tilemap blank.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/tilemap%20blank.js" download="" title="Download: wip/tilemap blank.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ground_1x1'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/ground_1x1.png'</span><span class="p">);</span>
+    game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">map</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">layer</span><span class="p">;</span>
+var map;
+var layer;
 
-<span class="kd">var</span> <span class="nx">marker</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">currentTile</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
+var marker;
+var currentTile = 0;
+var cursors;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#787878'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#787878';
 
-    <span class="c1">//  Creates a blank tilemap</span>
-    <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">();</span>
+    //  Creates a blank tilemap
+    map = game.add.tilemap();
 
-    <span class="c1">//  Creates a layer and sets-up the map dimensions.</span>
-    <span class="c1">//  In this case the map is 30x30 tiles in size and the tiles are 32x32 pixels in size.</span>
-    <span class="nx">map</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'level1'</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    //  Creates a layer and sets-up the map dimensions.
+    //  In this case the map is 30x30 tiles in size and the tiles are 32x32 pixels in size.
+    map.create('level1', 30, 30, 32, 32);
 
-    <span class="c1">//  Add a Tileset image to the map</span>
-    <span class="nx">map</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'ground_1x1'</span><span class="p">);</span>
+    //  Add a Tileset image to the map
+    map.addTilesetImage('ground_1x1');
     
-    <span class="c1">//  Create a layer. This is where the map is rendered to.</span>
-    <span class="nx">layer</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="s1">'level1'</span><span class="p">);</span>
+    //  Create a layer. This is where the map is rendered to.
+    layer = map.createLayer('level1');
 
-    <span class="c1">//  Resize the world</span>
-    <span class="nx">layer</span><span class="p">.</span><span class="nx">resizeWorld</span><span class="p">();</span>
+    //  Resize the world
+    layer.resizeWorld();
 
-    <span class="c1">//  Create our tile selector at the top of the screen</span>
-    <span class="nx">createTileSelector</span><span class="p">();</span>
+    //  Create our tile selector at the top of the screen
+    createTileSelector();
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">setMoveCallback</span><span class="p">(</span><span class="nx">updateMarker</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    game.input.setMoveCallback(updateMarker, this);
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">map</span><span class="p">.</span><span class="nx">tiles</span><span class="p">);</span>
+    console.log(map.tiles);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">pickTile</span><span class="p">(</span><span class="nx">sprite</span><span class="p">,</span> <span class="nx">pointer</span><span class="p">)</span> <span class="p">{</span>
+function pickTile(sprite, pointer) {
 
-    <span class="nx">currentTile</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">math</span><span class="p">.</span><span class="nx">snapToFloor</span><span class="p">(</span><span class="nx">pointer</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">32</span><span class="p">;</span>
+    currentTile = game.math.snapToFloor(pointer.x, 32) / 32;
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">map</span><span class="p">.</span><span class="nx">tiles</span><span class="p">[</span><span class="nx">currentTile</span><span class="p">]);</span>
+    console.log(map.tiles[currentTile]);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">updateMarker</span><span class="p">()</span> <span class="p">{</span>
+function updateMarker() {
 
-    <span class="nx">marker</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">worldX</span><span class="p">)</span> <span class="o">*</span> <span class="mi">32</span><span class="p">;</span>
-    <span class="nx">marker</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">.</span><span class="nx">worldY</span><span class="p">)</span> <span class="o">*</span> <span class="mi">32</span><span class="p">;</span>
+    marker.x = layer.getTileX(game.input.activePointer.worldX) * 32;
+    marker.y = layer.getTileY(game.input.activePointer.worldY) * 32;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">mousePointer</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">map</span><span class="p">.</span><span class="nx">putTile</span><span class="p">(</span><span class="nx">currentTile</span><span class="p">,</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileX</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">x</span><span class="p">),</span> <span class="nx">layer</span><span class="p">.</span><span class="nx">getTileY</span><span class="p">(</span><span class="nx">marker</span><span class="p">.</span><span class="nx">y</span><span class="p">))</span>
-    <span class="p">}</span>
+    if (game.input.mousePointer.isDown)
+    {
+        map.putTile(currentTile, layer.getTileX(marker.x), layer.getTileY(marker.y))
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        game.camera.x -= 4;
+    }
+    else if (cursors.right.isDown)
+    {
+        game.camera.x += 4;
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        game.camera.y -= 4;
+    }
+    else if (cursors.down.isDown)
+    {
+        game.camera.y += 4;
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">createTileSelector</span><span class="p">()</span> <span class="p">{</span>
+function createTileSelector() {
 
-    <span class="c1">//  Our tile selection window</span>
-    <span class="kd">var</span> <span class="nx">tileSelector</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    //  Our tile selection window
+    var tileSelector = game.add.group();
 
-    <span class="kd">var</span> <span class="nx">tileSelectorBackground</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">graphics</span><span class="p">();</span>
-    <span class="nx">tileSelectorBackground</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0x000000</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-    <span class="nx">tileSelectorBackground</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">34</span><span class="p">);</span>
-    <span class="nx">tileSelectorBackground</span><span class="p">.</span><span class="nx">endFill</span><span class="p">();</span>
+    var tileSelectorBackground = game.make.graphics();
+    tileSelectorBackground.beginFill(0x000000, 0.5);
+    tileSelectorBackground.drawRect(0, 0, 800, 34);
+    tileSelectorBackground.endFill();
 
-    <span class="nx">tileSelector</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tileSelectorBackground</span><span class="p">);</span>
+    tileSelector.add(tileSelectorBackground);
 
-    <span class="kd">var</span> <span class="nx">tileStrip</span> <span class="o">=</span> <span class="nx">tileSelector</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ground_1x1'</span><span class="p">);</span>
-    <span class="nx">tileStrip</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">tileStrip</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">pickTile</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    var tileStrip = tileSelector.create(1, 1, 'ground_1x1');
+    tileStrip.inputEnabled = true;
+    tileStrip.events.onInputDown.add(pickTile, this);
 
-    <span class="nx">tileSelector</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    tileSelector.fixedToCamera = true;
 
-    <span class="c1">//  Our painting marker</span>
-    <span class="nx">marker</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">();</span>
-    <span class="nx">marker</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mh">0x000000</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">marker</span><span class="p">.</span><span class="nx">drawRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    //  Our painting marker
+    marker = game.add.graphics();
+    marker.lineStyle(2, 0x000000, 1);
+    marker.drawRect(0, 0, 32, 32);
 
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

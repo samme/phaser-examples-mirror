@@ -55,45 +55,46 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/misc/weighted%20pick.js" title="misc/weighted pick.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/misc/weighted%20pick.js" download="" title="Download: misc/weighted pick.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bg'</span><span class="p">,</span> <span class="s1">'assets/skies/deepblue.png'</span><span class="p">);</span>
+    game.load.image('bg', 'assets/skies/deepblue.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'bg'</span><span class="p">);</span>
+    game.add.image(0, 0, 'bg');
 
-    <span class="kd">var</span> <span class="nx">test</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">];</span>
+    var test = [0,1,2,3,4,5,6,7,8,9];
 
-    <span class="kd">var</span> <span class="nx">total</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span>
+    var total = [0,0,0,0,0,0,0,0,0,0];
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">rnd</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">weightedPick</span><span class="p">(</span><span class="nx">test</span><span class="p">);</span>
+    for (var i = 0; i < 1000000; i++)
+    {
+        rnd = this.game.rnd.weightedPick(test);
 
-        <span class="nx">total</span><span class="p">[</span><span class="nx">rnd</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
-    <span class="p">}</span>
+        total[rnd]++;
+    }
 
-    <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="p">{</span> <span class="na">font</span><span class="p">:</span> <span class="s2">"24px Courier"</span><span class="p">,</span> <span class="na">fill</span><span class="p">:</span> <span class="s2">"#fff"</span><span class="p">,</span> <span class="na">tabs</span><span class="p">:</span> <span class="p">[</span> <span class="mi">150</span> <span class="p">]</span> <span class="p">};</span>
+    var style = { font: "24px Courier", fill: "#fff", tabs: [ 150 ] };
 
-    <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">[</span><span class="s1">'Value'</span><span class="p">,</span> <span class="s1">'Total'</span> <span class="p">]</span>
-    <span class="p">];</span>
+    var list = [
+        ['Value', 'Total' ]
+    ];
 
-    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">total</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">list</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="nx">i</span><span class="p">,</span> <span class="nx">total</span><span class="p">[</span><span class="nx">i</span><span class="p">]]);</span>
-    <span class="p">}</span>
+    for (i = 0; i < total.length; i++)
+    {
+        list.push([i, total[i]]);
+    }
 
-    <span class="nx">text</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
-    <span class="nx">text</span><span class="p">.</span><span class="nx">parseList</span><span class="p">(</span><span class="nx">list</span><span class="p">);</span>
+    text = game.add.text(200, 64, '', style);
+    text.parseList(list);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

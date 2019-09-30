@@ -55,23 +55,24 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/misc/net.js" title="misc/net.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/misc/net.js" download="" title="Download: misc/net.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { render: render });
 
-<span class="kd">function</span> <span class="nx">render</span> <span class="p">()</span> <span class="p">{</span>
+function render () {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Host Name:'</span><span class="o">+</span><span class="nx">game</span><span class="p">.</span><span class="nx">net</span><span class="p">.</span><span class="nx">getHostName</span><span class="p">(),</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span><span class="mi">20</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Host Name contains 192:'</span><span class="o">+</span><span class="nx">game</span><span class="p">.</span><span class="nx">net</span><span class="p">.</span><span class="nx">checkDomainName</span><span class="p">(</span><span class="s1">'192'</span><span class="p">),</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span><span class="mi">40</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Host Name contains google.com:'</span><span class="o">+</span><span class="nx">game</span><span class="p">.</span><span class="nx">net</span><span class="p">.</span><span class="nx">checkDomainName</span><span class="p">(</span><span class="s1">'google.com'</span><span class="p">),</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span><span class="mi">60</span><span class="p">);</span>
+    game.debug.text('Host Name:'+game.net.getHostName(),game.world.centerX-300,20);
+    game.debug.text('Host Name contains 192:'+game.net.checkDomainName('192'),game.world.centerX-300,40);
+    game.debug.text('Host Name contains google.com:'+game.net.checkDomainName('google.com'),game.world.centerX-300,60);
 
-    <span class="c1">//  Add some values to the query string</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Query string with new values : '</span><span class="o">+</span><span class="nx">game</span><span class="p">.</span><span class="nx">net</span><span class="p">.</span><span class="nx">updateQueryString</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">,</span> <span class="s1">'520'</span><span class="p">),</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="o">-</span><span class="mi">400</span><span class="p">,</span><span class="mi">80</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Query string with new values : '</span><span class="o">+</span><span class="nx">game</span><span class="p">.</span><span class="nx">net</span><span class="p">.</span><span class="nx">updateQueryString</span><span class="p">(</span><span class="s1">'amiga'</span><span class="p">,</span> <span class="s1">'1200'</span><span class="p">),</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="o">-</span><span class="mi">400</span><span class="p">,</span><span class="mi">100</span><span class="p">);</span>
+    //  Add some values to the query string
+    game.debug.text('Query string with new values : '+game.net.updateQueryString('atari', '520'),game.world.centerX-400,80);
+    game.debug.text('Query string with new values : '+game.net.updateQueryString('amiga', '1200'),game.world.centerX-400,100);
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Query String: '</span><span class="o">+</span><span class="nx">game</span><span class="p">.</span><span class="nx">net</span><span class="p">.</span><span class="nx">getQueryString</span><span class="p">(),</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span><span class="mi">140</span><span class="p">);</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Query String Param: '</span><span class="o">+</span><span class="nx">game</span><span class="p">.</span><span class="nx">net</span><span class="p">.</span><span class="nx">getQueryString</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">),</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span><span class="mi">160</span><span class="p">);</span>
+    console.log('Query String: '+game.net.getQueryString(),game.world.centerX-300,140);
+    console.log('Query String Param: '+game.net.getQueryString('atari'),game.world.centerX-300,160);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

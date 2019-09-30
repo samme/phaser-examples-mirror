@@ -55,65 +55,66 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/landscape-pointer.js" title="wip/landscape-pointer.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/landscape-pointer.js" download="" title="Download: wip/landscape-pointer.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">672</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">init</span><span class="p">:</span> <span class="nx">init</span><span class="p">,</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(1024, 672, Phaser.CANVAS, 'phaser-example', { init: init, preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+function init() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">scaleMode</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">ScaleManager</span><span class="p">.</span><span class="nx">SHOW_ALL</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">minWidth</span> <span class="o">=</span> <span class="mi">480</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">minHeight</span> <span class="o">=</span> <span class="mi">260</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">maxWidth</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">maxHeight</span> <span class="o">=</span> <span class="mi">768</span><span class="p">;</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">forceOrientation</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">enterIncorrectOrientation</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">enterIncorrectOrientation</span><span class="p">,</span> <span class="nx">game</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">leaveIncorrectOrientation</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">leaveIncorrectOrientation</span><span class="p">,</span> <span class="nx">game</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setScreenSize</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.scale.minWidth = 480;
+    game.scale.minHeight = 260;
+    game.scale.maxWidth = 1024;
+    game.scale.maxHeight = 768;
+    game.scale.forceOrientation(true, false);
+    game.scale.enterIncorrectOrientation.add(enterIncorrectOrientation, game);
+    game.scale.leaveIncorrectOrientation.add(leaveIncorrectOrientation, game);
+    game.scale.setScreenSize(true);
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x004400</span><span class="p">;</span>
+	game.stage.backgroundColor = 0x004400;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'mummy'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
+    game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">mummy</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">anim</span><span class="p">;</span>
+var mummy;
+var anim;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">mummy</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'mummy'</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+    mummy = game.add.sprite(300, 200, 'mummy', 5);
 
-    <span class="nx">anim</span> <span class="o">=</span> <span class="nx">mummy</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
+    anim = mummy.animations.add('walk');
 
-    <span class="nx">anim</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    anim.play(20, true);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">enterIncorrectOrientation</span> <span class="p">()</span> <span class="p">{</span>
+function enterIncorrectOrientation () {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0xff0000</span><span class="p">;</span>
+	game.stage.backgroundColor = 0xff0000;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">leaveIncorrectOrientation</span> <span class="p">()</span> <span class="p">{</span>
+function leaveIncorrectOrientation () {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="mh">0x000033</span><span class="p">;</span>
+	game.stage.backgroundColor = 0x000033;
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">pointer</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">activePointer</span><span class="p">);</span>
+	game.debug.pointer(game.input.activePointer);
 	
-<span class="p">}</span></code></pre>
+}</code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
   <p><a href="https://github.com/samme/phaser-examples-mirror">phaser-examples-mirror</a> from <a href="https://github.com/photonstorm/phaser-examples">photonstorm/phaser-examples</a> (<a href="http://opensource.org/licenses/MIT">MIT License</a>).</p>

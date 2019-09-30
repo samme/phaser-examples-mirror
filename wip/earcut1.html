@@ -55,47 +55,48 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/earcut1.js" title="wip/earcut1.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/earcut1.js" download="" title="Download: wip/earcut1.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.WEBGL, 'phaser-example', { create: create });
 
-<span class="kd">function</span> <span class="nx">create</span> <span class="p">()</span> <span class="p">{</span>
+function create () {
 
-    <span class="kd">var</span> <span class="nx">graphics</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">graphics</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var graphics = this.game.add.graphics(0, 0);
 
-    <span class="c1">// poly with 4 points</span>
-    <span class="kd">var</span> <span class="nx">points</span> <span class="o">=</span> <span class="p">[</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">38</span><span class="p">,</span><span class="mi">21</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">83</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">108</span><span class="p">,</span><span class="mi">48</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)]</span>
+    // poly with 4 points
+    var points = [new Phaser.Point(38,21), new Phaser.Point(83,10), new Phaser.Point(108,48), new Phaser.Point(100,100)]
 
-    <span class="c1">// a poly with more than 4 points breaks the rendering of the shape</span>
-    <span class="c1">// comment out the line bewlow line and issue disappears</span>
-    <span class="nx">points</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">))</span>
+    // a poly with more than 4 points breaks the rendering of the shape
+    // comment out the line bewlow line and issue disappears
+    points.push(new Phaser.Point(20,50))
 
-    <span class="c1">// fills break</span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">beginFill</span><span class="p">(</span><span class="mh">0x00FF00</span><span class="p">)</span>
+    // fills break
+    graphics.beginFill(0x00FF00)
 
-    <span class="c1">// outline seems to be ok </span>
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">lineStyle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mh">0xFF0000</span><span class="p">)</span>
+    // outline seems to be ok 
+    graphics.lineStyle(1,0xFF0000)
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">drawPolygon</span><span class="p">(</span><span class="nx">points</span><span class="p">)</span>    
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">endFill</span><span class="p">()</span>
+    graphics.drawPolygon(points)    
+    graphics.endFill()
 
-    <span class="nx">graphics</span><span class="p">.</span><span class="nx">cacheAsBitmap</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    graphics.cacheAsBitmap = true;
 
-    <span class="c1">// create our render texture to the size of the game        </span>
-    <span class="kd">var</span> <span class="nx">renderTexture</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RenderTexture</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span>
+    // create our render texture to the size of the game        
+    var renderTexture = new Phaser.RenderTexture(this.game, this.game.width, this.game.height)
 
-    <span class="c1">// we could use graphics width/height but it reports wrong</span>
-    <span class="c1">//var renderTexture = new Phaser.RenderTexture(this.game, graphics.width, graphics.height)</span>
+    // we could use graphics width/height but it reports wrong
+    //var renderTexture = new Phaser.RenderTexture(this.game, graphics.width, graphics.height)
 
-    <span class="c1">// render graphic to the texture    </span>
-    <span class="c1">// neither of these methods work    </span>
-    <span class="nx">renderTexture</span><span class="p">.</span><span class="nx">renderXY</span><span class="p">(</span><span class="nx">graphics</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="kc">true</span><span class="p">)</span>
-    <span class="c1">// this.renderTexture.render(graphics, null, true);</span>
+    // render graphic to the texture    
+    // neither of these methods work    
+    renderTexture.renderXY(graphics, 0,0,true)
+    // this.renderTexture.render(graphics, null, true);
 
-    <span class="c1">// add the texture to a sprite</span>
-    <span class="kd">var</span> <span class="nx">myRenderedSprite</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">renderTexture</span><span class="p">)</span>
-    <span class="nx">myRenderedSprite</span><span class="p">.</span><span class="nx">x</span><span class="o">=</span><span class="mi">400</span><span class="p">;</span>
+    // add the texture to a sprite
+    var myRenderedSprite = this.game.add.sprite(0,0,renderTexture)
+    myRenderedSprite.x=400;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,37 +55,38 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/loader/load%20spritesheet.js" title="loader/load spritesheet.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/loader/load%20spritesheet.js" download="" title="Download: loader/load spritesheet.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  A sprite sheet is for loading classic "old school" style animations, where each frame </span>
-    <span class="c1">//  uses the exact same size frame and there is no configuration file.</span>
+    //  A sprite sheet is for loading classic "old school" style animations, where each frame 
+    //  uses the exact same size frame and there is no configuration file.
     
-    <span class="c1">//  This is different to a Texture Atlas, in which the frames are usually variable in size</span>
-    <span class="c1">//  and come with a json or xml file that describes their structure. Sometimes a Texture Atlas</span>
-    <span class="c1">//  is called a "sprite sheet" but that isn't the terminology Phaser uses.</span>
+    //  This is different to a Texture Atlas, in which the frames are usually variable in size
+    //  and come with a json or xml file that describes their structure. Sometimes a Texture Atlas
+    //  is called a "sprite sheet" but that isn't the terminology Phaser uses.
 
-    <span class="c1">//  To add a sprite sheet to the loader use the following:</span>
+    //  To add a sprite sheet to the loader use the following:
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'uniqueKey'</span><span class="p">,</span> <span class="s1">'assets/sprites/metalslug_mummy37x45.png'</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
+    game.load.spritesheet('uniqueKey', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
 
-    <span class="c1">//  37x45 is the size of each frame</span>
-    <span class="c1">//  There are 18 frames in the PNG - you can leave this value blank if the frames fill up the entire PNG, but in this case there are some</span>
-    <span class="c1">//  blank frames at the end, so we tell the loader how many to load</span>
+    //  37x45 is the size of each frame
+    //  There are 18 frames in the PNG - you can leave this value blank if the frames fill up the entire PNG, but in this case there are some
+    //  blank frames at the end, so we tell the loader how many to load
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'uniqueKey'</span><span class="p">);</span>
+    var sprite = game.add.sprite(300, 200, 'uniqueKey');
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">);</span>
+    sprite.animations.add('walk');
 
-    <span class="nx">sprite</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'walk'</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    sprite.animations.play('walk', 50, true);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

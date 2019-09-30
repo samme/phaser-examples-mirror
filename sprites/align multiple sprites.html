@@ -55,25 +55,26 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/sprites/align%20multiple%20sprites.js" title="sprites/align multiple sprites.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/sprites/align%20multiple%20sprites.js" download="" title="Download: sprites/align multiple sprites.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'block'</span><span class="p">,</span> <span class="s1">'assets/sprites/block.png'</span><span class="p">);</span>
+    game.load.image('block', 'assets/sprites/block.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">'block'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">sprite2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'block'</span><span class="p">).</span><span class="nx">alignTo</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RIGHT_CENTER</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">sprite3</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'block'</span><span class="p">).</span><span class="nx">alignTo</span><span class="p">(</span><span class="nx">sprite2</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RIGHT_CENTER</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">sprite4</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'block'</span><span class="p">).</span><span class="nx">alignTo</span><span class="p">(</span><span class="nx">sprite3</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RIGHT_CENTER</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">sprite5</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'block'</span><span class="p">).</span><span class="nx">alignTo</span><span class="p">(</span><span class="nx">sprite4</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RIGHT_CENTER</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">sprite6</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'block'</span><span class="p">).</span><span class="nx">alignTo</span><span class="p">(</span><span class="nx">sprite5</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">RIGHT_CENTER</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    var sprite1 = game.add.sprite(70, 250, 'block');
+    var sprite2 = game.add.sprite(0, 0, 'block').alignTo(sprite1, Phaser.RIGHT_CENTER, 16);
+    var sprite3 = game.add.sprite(0, 0, 'block').alignTo(sprite2, Phaser.RIGHT_CENTER, 16);
+    var sprite4 = game.add.sprite(0, 0, 'block').alignTo(sprite3, Phaser.RIGHT_CENTER, 16);
+    var sprite5 = game.add.sprite(0, 0, 'block').alignTo(sprite4, Phaser.RIGHT_CENTER, 16);
+    var sprite6 = game.add.sprite(0, 0, 'block').alignTo(sprite5, Phaser.RIGHT_CENTER, 16);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,36 +55,37 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/wip/pixel%20priority%202.js" title="wip/pixel priority 2.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/wip/pixel%20priority%202.js" download="" title="Download: wip/pixel priority 2.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'shock'</span><span class="p">,</span> <span class="s1">'assets/pics/shocktroopers_lulu.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari800.png'</span><span class="p">);</span>
+    game.load.image('shock', 'assets/pics/shocktroopers_lulu.png');
+    game.load.image('atari', 'assets/sprites/atari800.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
 
 
-    <span class="c1">//  High Priority, not pixel perfect - SHOULD ALWAYS BE PICKED UP</span>
-    <span class="kd">var</span> <span class="nx">shock</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'shock'</span><span class="p">);</span>
-    <span class="nx">shock</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">shock</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">();</span>
-    <span class="nx">shock</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">priorityID</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    //  High Priority, not pixel perfect - SHOULD ALWAYS BE PICKED UP
+    var shock = game.add.sprite(250, 200, 'shock');
+    shock.inputEnabled = true;
+    shock.input.enableDrag();
+    shock.input.priorityID = 1;
 
-    <span class="c1">//  Pixel Perfect but lower priority, so should not be dragged if the input got 'shock' first</span>
-    <span class="kd">var</span> <span class="nx">atari</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'atari'</span><span class="p">);</span>
-    <span class="nx">atari</span><span class="p">.</span><span class="nx">alpha</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">;</span>
-    <span class="nx">atari</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="c1">// atari.input.pixelPerfectClick = true; // assigned before enableDrag = works, after = fails</span>
-    <span class="c1">// atari.input.enableDrag();</span>
-    <span class="nx">atari</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span> <span class="c1">// true = pixel perfect</span>
-    <span class="nx">atari</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">priorityID</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    //  Pixel Perfect but lower priority, so should not be dragged if the input got 'shock' first
+    var atari = game.add.sprite(100, 200, 'atari');
+    atari.alpha = 0.7;
+    atari.inputEnabled = true;
+    // atari.input.pixelPerfectClick = true; // assigned before enableDrag = works, after = fails
+    // atari.input.enableDrag();
+    atari.input.enableDrag(false, false, true); // true = pixel perfect
+    atari.input.priorityID = 3;
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

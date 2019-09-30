@@ -55,30 +55,31 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/animation/creature%20dragon.js" title="animation/creature dragon.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/animation/creature%20dragon.js" download="" title="Download: animation/creature dragon.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">WEBGL</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.WEBGL, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/skies/deepblue.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'dragonTexture'</span><span class="p">,</span> <span class="s1">'assets/creature/dragon.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'dragonMesh'</span><span class="p">,</span> <span class="s1">'assets/creature/dragon.json'</span><span class="p">);</span>
+    game.load.image('sky', 'assets/skies/deepblue.png');
+    game.load.image('dragonTexture', 'assets/creature/dragon.png');
+    game.load.json('dragonMesh', 'assets/creature/dragon.json');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">dragon</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+var dragon = null;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
+    game.add.image(0, 0, 'sky');
 
-    <span class="nx">dragon</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">creature</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="s1">'dragonTexture'</span><span class="p">,</span> <span class="s1">'dragonMesh'</span><span class="p">);</span>
+    dragon = game.add.creature(450, 350, 'dragonTexture', 'dragonMesh');
 
-    <span class="nx">dragon</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">25.0</span><span class="p">);</span>
+    dragon.scale.set(25.0);
     
-    <span class="nx">dragon</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span> <span class="c1">//  true = loop</span>
+    dragon.play(true); //  true = loop
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

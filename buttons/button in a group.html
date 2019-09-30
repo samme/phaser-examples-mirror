@@ -55,56 +55,57 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/buttons/button%20in%20a%20group.js" title="buttons/button in a group.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/buttons/button%20in%20a%20group.js" download="" title="Download: buttons/button in a group.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'button'</span><span class="p">,</span> <span class="s1">'assets/buttons/button_sprite_sheet.png'</span><span class="p">,</span> <span class="mi">193</span><span class="p">,</span> <span class="mi">71</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'background'</span><span class="p">,</span><span class="s1">'assets/misc/starfield.jpg'</span><span class="p">);</span>
+    game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+    game.load.image('background','assets/misc/starfield.jpg');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">group</span><span class="p">;</span>
+var group;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">'background'</span><span class="p">);</span>
+    game.add.tileSprite(0, 0, 800, 600, 'background');
 
-    <span class="nx">group</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    group = game.add.group();
 
-    <span class="kd">var</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">button</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span> <span class="o">-</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'button'</span><span class="p">,</span> <span class="nx">removeGroup</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    var button = game.make.button(game.world.centerX - 95, 400, 'button', removeGroup, this, 2, 1, 0);
 
-    <span class="nx">button</span><span class="p">.</span><span class="nx">onInputOver</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">over</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">button</span><span class="p">.</span><span class="nx">onInputOut</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    button.onInputOver.add(over, this);
+    button.onInputOut.add(out, this);
 
-    <span class="c1">// game.input.onDown.addOnce(removeGroup, this);</span>
+    // game.input.onDown.addOnce(removeGroup, this);
 
-    <span class="nx">group</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">button</span><span class="p">);</span>
+    group.add(button);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">removeGroup</span><span class="p">()</span> <span class="p">{</span>
+function removeGroup() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">group</span><span class="p">);</span>
+    game.world.remove(group);
 
-    <span class="c1">// group.destroy();</span>
+    // group.destroy();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">over</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'button over'</span><span class="p">);</span>
-<span class="p">}</span>
+function over() {
+    console.log('button over');
+}
 
-<span class="kd">function</span> <span class="nx">out</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'button out'</span><span class="p">);</span>
-<span class="p">}</span>
+function out() {
+    console.log('button out');
+}
 
-<span class="kd">function</span> <span class="nx">actionOnClick</span> <span class="p">()</span> <span class="p">{</span>
+function actionOnClick () {
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'button clicked'</span><span class="p">);</span>
+    console.log('button clicked');
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

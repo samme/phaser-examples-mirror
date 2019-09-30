@@ -55,43 +55,44 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/arcade%20physics/group%20vs%20self.js" title="arcade physics/group vs self.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/arcade%20physics/group%20vs%20self.js" download="" title="Download: arcade physics/group vs self.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s1">'spinner'</span><span class="p">,</span> <span class="s1">'assets/sprites/bluemetal_32x32x4.png'</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.load.spritesheet('spinner', 'assets/sprites/bluemetal_32x32x4.png', 32, 32);
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprites</span><span class="p">;</span>
+var sprites;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Here we create a group, populate it with sprites, give them all a random velocity</span>
-    <span class="c1">//  and then check the group against itself for collision</span>
+    //  Here we create a group, populate it with sprites, give them all a random velocity
+    //  and then check the group against itself for collision
 
-    <span class="nx">sprites</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">physicsGroup</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+    sprites = game.add.physicsGroup(Phaser.Physics.ARCADE);
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">sprites</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">700</span><span class="p">),</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="s1">'spinner'</span><span class="p">);</span>
-        <span class="nx">s</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'spin'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]);</span>
-        <span class="nx">s</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'spin'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-        <span class="nx">s</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="nx">game</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">));</span>
-    <span class="p">}</span>
+    for (var i = 0; i < 90; i++)
+    {
+        var s = sprites.create(game.rnd.integerInRange(100, 700), game.rnd.integerInRange(32, 200), 'spinner');
+        s.animations.add('spin', [0, 1, 2, 3]);
+        s.play('spin', 20, true);
+        s.body.velocity.set(game.rnd.integerInRange(-200, 200), game.rnd.integerInRange(-200, 200));
+    }
 
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'body.collideWorldBounds'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'body.bounce.x'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="nx">sprites</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'body.bounce.y'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    sprites.setAll('body.collideWorldBounds', true);
+    sprites.setAll('body.bounce.x', 1);
+    sprites.setAll('body.bounce.y', 1);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">collide</span><span class="p">(</span><span class="nx">sprites</span><span class="p">);</span>
+    game.physics.arcade.collide(sprites);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

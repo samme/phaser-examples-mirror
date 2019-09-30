@@ -55,49 +55,50 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/bitmapdata/set%20hsl.js" title="bitmapdata/set hsl.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/bitmapdata/set%20hsl.js" download="" title="Download: bitmapdata/set hsl.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">,</span> <span class="s1">'assets/tests/ships.png'</span><span class="p">);</span>
+    game.load.image('pic', 'assets/tests/ships.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">bmd</span><span class="p">;</span>
+var bmd;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#2d2d2d'</span><span class="p">;</span>
+	game.stage.backgroundColor = '#2d2d2d';
 
-	<span class="nx">bmd</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">make</span><span class="p">.</span><span class="nx">bitmapData</span><span class="p">();</span>
+	bmd = game.make.bitmapData();
 
-	<span class="nx">bmd</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'pic'</span><span class="p">);</span>
+	bmd.load('pic');
 
-	<span class="kd">var</span> <span class="nx">sprite</span> <span class="o">=</span> <span class="nx">bmd</span><span class="p">.</span><span class="nx">addToWorld</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerY</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-	<span class="nx">sprite</span><span class="p">.</span><span class="nx">smoothed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+	var sprite = bmd.addToWorld(game.world.centerX, game.world.centerY, 0.5, 0.5, 3, 3);
+	sprite.smoothed = false;
 
-	<span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">onDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">startProcess</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	game.input.onDown.add(startProcess, this);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">startProcess</span> <span class="p">()</span> <span class="p">{</span>
+function startProcess () {
 
-	<span class="c1">//	fixed h</span>
-	<span class="c1">// bmd.setHSL(0.2);</span>
+	//	fixed h
+	// bmd.setHSL(0.2);
 
-	<span class="c1">//	shift</span>
-	<span class="nx">bmd</span><span class="p">.</span><span class="nx">shiftHSL</span><span class="p">(</span><span class="mf">0.1</span><span class="p">);</span>
+	//	shift
+	bmd.shiftHSL(0.1);
 
-	<span class="c1">// bmd.shiftHSL(0.1, null, null, new Phaser.Rectangle(32, 32, 100, 100));</span>
+	// bmd.shiftHSL(0.1, null, null, new Phaser.Rectangle(32, 32, 100, 100));
 
-	<span class="c1">//	white hit</span>
-	<span class="c1">// bmd.shiftHSL(null, null, 1.0);</span>
+	//	white hit
+	// bmd.shiftHSL(null, null, 1.0);
 
-	<span class="c1">//	desaturation</span>
-	<span class="c1">// bmd.shiftHSL(null, -1.0, null);</span>
+	//	desaturation
+	// bmd.shiftHSL(null, -1.0, null);
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

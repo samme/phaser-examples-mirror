@@ -55,47 +55,48 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/loader/load%20audio.js" title="loader/load audio.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/loader/load%20audio.js" download="" title="Download: loader/load audio.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="c1">//  To load an audio file use the following structure.</span>
-    <span class="c1">//  As with all load operations the first parameter is a unique key, which must be unique between all audio files.</span>
+    //  To load an audio file use the following structure.
+    //  As with all load operations the first parameter is a unique key, which must be unique between all audio files.
 
-    <span class="c1">//  The second parameter is an array containing the same audio file but in different formats.</span>
-    <span class="c1">//  In this example the music is provided as an mp3 and a ogg (Firefox will want the ogg for example)</span>
+    //  The second parameter is an array containing the same audio file but in different formats.
+    //  In this example the music is provided as an mp3 and a ogg (Firefox will want the ogg for example)
 
-    <span class="c1">//  The loader works by checking if the browser can support the first file type in the list (mp3 in this case). If it can, it loads it, otherwise</span>
-    <span class="c1">//  it moves to the next file in the list (the ogg). If it can't load any of them the file will error.</span>
+    //  The loader works by checking if the browser can support the first file type in the list (mp3 in this case). If it can, it loads it, otherwise
+    //  it moves to the next file in the list (the ogg). If it can't load any of them the file will error.
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s1">'boden'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'assets/audio/bodenstaendig_2000_in_rock_4bit.mp3'</span><span class="p">,</span> <span class="s1">'assets/audio/bodenstaendig_2000_in_rock_4bit.ogg'</span><span class="p">]);</span>
+    game.load.audio('boden', ['assets/audio/bodenstaendig_2000_in_rock_4bit.mp3', 'assets/audio/bodenstaendig_2000_in_rock_4bit.ogg']);
 
-    <span class="c1">//  If you know you only need to load 1 type of audio file, you can pass a string instead of an array, like this:</span>
-    <span class="c1">// game.load.audio('boden', 'assets/audio/bodenstaendig_2000_in_rock_4bit.mp3');</span>
+    //  If you know you only need to load 1 type of audio file, you can pass a string instead of an array, like this:
+    // game.load.audio('boden', 'assets/audio/bodenstaendig_2000_in_rock_4bit.mp3');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">music</span><span class="p">;</span>
+var music;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">stage</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'#182d3b'</span><span class="p">;</span>
+    game.stage.backgroundColor = '#182d3b';
 
-    <span class="nx">music</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">sound</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s1">'boden'</span><span class="p">);</span>
+    music = game.sound.play('boden');
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+function render() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">soundInfo</span><span class="p">(</span><span class="nx">music</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+    game.debug.soundInfo(music, 32, 32);
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">music</span><span class="p">.</span><span class="nx">isDecoding</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Decoding MP3 ..."</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (music.isDecoding)
+    {
+        game.debug.text("Decoding MP3 ...", 32, 200);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,85 +55,86 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/ninja%20physics/ninja%20tilemap.js" title="ninja physics/ninja tilemap.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/ninja%20physics/ninja%20tilemap.js" download="" title="Download: ninja physics/ninja tilemap.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
 
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'map'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/maps/ninja-tilemap.json'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">.</span><span class="nx">TILED_JSON</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ball'</span><span class="p">,</span> <span class="s1">'assets/sprites/shinyball.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sky'</span><span class="p">,</span> <span class="s1">'assets/skies/sky2.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'kenney'</span><span class="p">,</span> <span class="s1">'assets/tilemaps/tiles/kenney.png'</span><span class="p">);</span>
+    game.load.tilemap('map', 'assets/tilemaps/maps/ninja-tilemap.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('ball', 'assets/sprites/shinyball.png');
+    game.load.image('sky', 'assets/skies/sky2.png');
+    game.load.image('kenney', 'assets/tilemaps/tiles/kenney.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">sprite1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">cursors</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">map</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">layer</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tiles</span><span class="p">;</span>
+var sprite1;
+var cursors;
+var map;
+var layer;
+var tiles;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="kd">var</span> <span class="nx">sky</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'sky'</span><span class="p">);</span>
-    <span class="nx">sky</span><span class="p">.</span><span class="nx">fixedToCamera</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    var sky = game.add.image(0, 0, 'sky');
+    sky.fixedToCamera = true;
 
-    <span class="c1">//  Activate the Ninja physics system</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">NINJA</span><span class="p">);</span>
+    //  Activate the Ninja physics system
+    game.physics.startSystem(Phaser.Physics.NINJA);
 
-    <span class="nx">map</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">'map'</span><span class="p">);</span>
+    map = game.add.tilemap('map');
 
-    <span class="nx">map</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">'kenney'</span><span class="p">);</span>
+    map.addTilesetImage('kenney');
     
-    <span class="nx">layer</span> <span class="o">=</span> <span class="nx">map</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="s1">'Tile Layer 1'</span><span class="p">);</span>
+    layer = map.createLayer('Tile Layer 1');
 
-    <span class="nx">layer</span><span class="p">.</span><span class="nx">resizeWorld</span><span class="p">();</span>
+    layer.resizeWorld();
 
-    <span class="kd">var</span> <span class="nx">slopeMap</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">'32'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'77'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'95'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'36'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'137'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'140'</span><span class="p">:</span> <span class="mi">2</span> <span class="p">};</span>
+    var slopeMap = { '32': 1, '77': 1, '95': 2, '36': 3, '137': 3, '140': 2 };
 
-    <span class="nx">tiles</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">ninja</span><span class="p">.</span><span class="nx">convertTilemap</span><span class="p">(</span><span class="nx">map</span><span class="p">,</span> <span class="nx">layer</span><span class="p">,</span> <span class="nx">slopeMap</span><span class="p">);</span>
+    tiles = game.physics.ninja.convertTilemap(map, layer, slopeMap);
 
-    <span class="nx">sprite1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">'ball'</span><span class="p">);</span>
+    sprite1 = game.add.sprite(50, 50, 'ball');
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">ninja</span><span class="p">.</span><span class="nx">enableCircle</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">,</span> <span class="nx">sprite1</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+    game.physics.ninja.enableCircle(sprite1, sprite1.width / 2);
 
-    <span class="c1">//  A little more bounce</span>
-    <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">bounce</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+    //  A little more bounce
+    sprite1.body.bounce = 0.5;
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">sprite1</span><span class="p">);</span>
+    game.camera.follow(sprite1);
 
-    <span class="nx">cursors</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">createCursorKeys</span><span class="p">();</span>
+    cursors = game.input.keyboard.createCursorKeys();
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">tiles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">circle</span><span class="p">.</span><span class="nx">collideCircleVsTile</span><span class="p">(</span><span class="nx">tiles</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">tile</span><span class="p">);</span>
+    for (var i = 0; i < tiles.length; i++)
+    {
+        sprite1.body.circle.collideCircleVsTile(tiles[i].tile);
 
-    <span class="p">}</span>
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.left.isDown)
+    {
+        sprite1.body.moveLeft(20);
+    }
+    else if (cursors.right.isDown)
+    {
+        sprite1.body.moveRight(20);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">up</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cursors</span><span class="p">.</span><span class="nx">down</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nx">sprite1</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">moveUp</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (cursors.up.isDown)
+    {
+        sprite1.body.moveUp(20);
+    }
+    else if (cursors.down.isDown)
+    {
+        sprite1.body.moveUp(20);
+    }
 
-<span class="p">}</span>
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

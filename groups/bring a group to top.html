@@ -55,78 +55,79 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/groups/bring%20a%20group%20to%20top.js" title="groups/bring a group to top.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/groups/bring%20a%20group%20to%20top.js" download="" title="Download: groups/bring a group to top.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">,</span> <span class="p">{</span> <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span> <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span> <span class="na">update</span><span class="p">:</span> <span class="nx">update</span><span class="p">,</span> <span class="na">render</span><span class="p">:</span> <span class="nx">render</span> <span class="p">});</span>
+</div>
+<pre class="highlight javascript"><code>
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
-<span class="kd">function</span> <span class="nx">preload</span><span class="p">()</span> <span class="p">{</span>
+function preload() {
 
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'beast'</span><span class="p">,</span> <span class="s1">'assets/pics/shadow_of_the_beast2_karamoon.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'snot'</span><span class="p">,</span> <span class="s1">'assets/pics/nslide_snot.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'atari1'</span><span class="p">,</span> <span class="s1">'assets/sprites/atari130xe.png'</span><span class="p">);</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'sonic'</span><span class="p">,</span> <span class="s1">'assets/sprites/sonic_havok_sanity.png'</span><span class="p">);</span>
+    game.load.image('beast', 'assets/pics/shadow_of_the_beast2_karamoon.png');
+    game.load.image('snot', 'assets/pics/nslide_snot.png');
+    game.load.image('atari1', 'assets/sprites/atari130xe.png');
+    game.load.image('sonic', 'assets/sprites/sonic_havok_sanity.png');
 
-<span class="p">}</span>
+}
 
-<span class="kd">var</span> <span class="nx">group1</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">group2</span><span class="p">;</span>
+var group1;
+var group2;
 
-<span class="kd">function</span> <span class="nx">create</span><span class="p">()</span> <span class="p">{</span>
+function create() {
 
-    <span class="c1">//  Create a background image</span>
-    <span class="kd">var</span> <span class="nx">bg</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'beast'</span><span class="p">);</span>
-    <span class="nx">bg</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+    //  Create a background image
+    var bg = game.add.sprite(0, 0, 'beast');
+    bg.width = 800;
 
-    <span class="c1">//  Create a Group that will sit above the background image</span>
-    <span class="nx">group1</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    //  Create a Group that will sit above the background image
+    group1 = game.add.group();
 
-    <span class="c1">//  Create a Group that will sit above Group 1</span>
-    <span class="nx">group2</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+    //  Create a Group that will sit above Group 1
+    group2 = game.add.group();
 
-    <span class="c1">//  Now let's create some random sprites and enable them all for drag and 'bring to top'</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">tempSprite</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'atari1'</span><span class="p">);</span>
+    //  Now let's create some random sprites and enable them all for drag and 'bring to top'
+    for (var i = 0; i < 10; i++)
+    {
+        var tempSprite = game.add.sprite(game.world.randomX, game.world.randomY, 'atari1');
 
-        <span class="nx">tempSprite</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'atari'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">;</span>
-        <span class="nx">tempSprite</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">tempSprite</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        tempSprite.name = 'atari' + i;
+        tempSprite.inputEnabled = true;
+        tempSprite.input.enableDrag(false, true);
 
-        <span class="nx">group1</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tempSprite</span><span class="p">);</span>
+        group1.add(tempSprite);
 
-        <span class="c1">//  Sonics</span>
+        //  Sonics
 
-        <span class="kd">var</span> <span class="nx">tempSprite</span><span class="o">=</span><span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">randomY</span><span class="p">,</span> <span class="s1">'sonic'</span><span class="p">);</span>
+        var tempSprite=game.add.sprite(game.world.randomX, game.world.randomY, 'sonic');
 
-        <span class="nx">tempSprite</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'sonic'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">;</span>
-        <span class="nx">tempSprite</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">tempSprite</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        tempSprite.name = 'sonic' + i;
+        tempSprite.inputEnabled = true;
+        tempSprite.input.enableDrag(false, true);
 
-        <span class="nx">group2</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tempSprite</span><span class="p">);</span>
-    <span class="p">}</span>
+        group2.add(tempSprite);
+    }
 
-    <span class="c1">//  Create a foreground image - everything should appear behind this, even when dragged</span>
-    <span class="kd">var</span> <span class="nx">snot</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">centerX</span><span class="p">,</span> <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'snot'</span><span class="p">);</span>
-    <span class="nx">snot</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    //  Create a foreground image - everything should appear behind this, even when dragged
+    var snot = game.add.sprite(game.world.centerX, game.world.height, 'snot');
+    snot.anchor.setTo(0.5, 1);
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+function update() {
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">ONE</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">bringToTop</span><span class="p">(</span><span class="nx">group1</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (game.input.keyboard.isDown(Phaser.Keyboard.ONE))
+    {
+        game.world.bringToTop(group1);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">isDown</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">TWO</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">bringToTop</span><span class="p">(</span><span class="nx">group2</span><span class="p">);</span>
-    <span class="p">}</span>
+    if (game.input.keyboard.isDown(Phaser.Keyboard.TWO))
+    {
+        game.world.bringToTop(group2);
+    }
 
-<span class="p">}</span>
+}
 
-<span class="kd">function</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">game</span><span class="p">.</span><span class="nx">debug</span><span class="p">.</span><span class="nx">inputInfo</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-<span class="p">}</span>
+function render() {
+    game.debug.inputInfo(32, 32);
+}
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">

@@ -55,143 +55,143 @@
 </h1>
 <div class="sourcelinks">
   <a href="../js/node_modules/phaser-examples/examples/virtualjoystick/dual%20sticks.js" title="virtualjoystick/dual sticks.js">source</a> • <a href="../js/node_modules/phaser-examples/examples/virtualjoystick/dual%20sticks.js" download="" title="Download: virtualjoystick/dual sticks.js" type="application/javascript">download</a>
-</div><pre class="highlight javascript"><code>
-<span class="cm">/**
-* @author       Richard Davey &lt;rich@photonstorm.com&gt;
+</div>
+<pre class="highlight javascript"><code>/**
+* @author       Richard Davey <rich@photonstorm.com>
 * @copyright    2015 Photon Storm Ltd.
 * @license      {@link http://choosealicense.com/licenses/no-license/|No License}
 * 
 * @description  This example requires the Phaser Virtual Joystick Plugin to run.
 *               For more details please see http://phaser.io/shop/plugins/virtualjoystick
-*/</span>
+*/
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">'phaser-example'</span><span class="p">);</span>
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example');
 
-<span class="kd">var</span> <span class="nx">PhaserGame</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+var PhaserGame = function () {
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">bullets</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">bulletTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    this.sprite;
+    this.bullets;
+    this.bulletTime = 0;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">;</span>
+    this.pad;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">;</span>
+    this.stick1;
+    this.stick2;
 
-<span class="p">};</span>
+};
 
-<span class="nx">PhaserGame</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+PhaserGame.prototype = {
 
-    <span class="na">init</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    init: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">renderSession</span><span class="p">.</span><span class="nx">roundPixels</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">startSystem</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
+        this.game.renderer.renderSession.roundPixels = true;
+        this.physics.startSystem(Phaser.Physics.ARCADE);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">preload</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    preload: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">atlas</span><span class="p">(</span><span class="s1">'arcade'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/arcade-joystick.png'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/skins/arcade-joystick.json'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'ship'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/thrust.png'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'stars'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/starfield.jpg'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s1">'bullet'</span><span class="p">,</span> <span class="s1">'assets/virtualjoystick/bullet2.png'</span><span class="p">);</span>
+        this.load.atlas('arcade', 'assets/virtualjoystick/skins/arcade-joystick.png', 'assets/virtualjoystick/skins/arcade-joystick.json');
+        this.load.image('ship', 'assets/virtualjoystick/thrust.png');
+        this.load.image('stars', 'assets/virtualjoystick/starfield.jpg');
+        this.load.image('bullet', 'assets/virtualjoystick/bullet2.png');
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">create</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    create: function () {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tileSprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span> <span class="s1">'stars'</span><span class="p">);</span>
+        this.add.tileSprite(0, 0, this.game.width, this.game.height, 'stars');
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">bullets</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">physicsGroup</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">bullets</span><span class="p">.</span><span class="nx">createMultiple</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="s1">'bullet'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">bullets</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'anchor.x'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">bullets</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s1">'anchor.y'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+        this.bullets = this.add.physicsGroup();
+        this.bullets.createMultiple(40, 'bullet');
+        this.bullets.setAll('anchor.x', 0.5);
+        this.bullets.setAll('anchor.y', 0.5);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">'ship'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+        this.sprite = this.add.sprite(300, 300, 'ship');
+        this.sprite.anchor.set(0.5);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">);</span>
+        this.physics.arcade.enable(this.sprite);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">pad</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">VirtualJoystick</span><span class="p">);</span>
+        this.pad = this.game.plugins.add(Phaser.VirtualJoystick);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick1</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addStick</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">.</span><span class="nx">scale</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">.</span><span class="nx">alignBottomLeft</span><span class="p">(</span><span class="mi">48</span><span class="p">);</span>
+        this.stick1 = this.pad.addStick(0, 0, 100, 'arcade');
+        this.stick1.scale = 0.6;
+        this.stick1.alignBottomLeft(48);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick2</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pad</span><span class="p">.</span><span class="nx">addStick</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'arcade'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">.</span><span class="nx">scale</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">.</span><span class="nx">alignBottomRight</span><span class="p">(</span><span class="mi">48</span><span class="p">);</span>
+        this.stick2 = this.pad.addStick(0, 0, 100, 'arcade');
+        this.stick2.scale = 0.6;
+        this.stick2.alignBottomRight(48);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    update: function () {
 
-        <span class="kd">var</span> <span class="nx">maxSpeed</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
+        var maxSpeed = 300;
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">velocityFromRotation</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">.</span><span class="nx">rotation</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">.</span><span class="nx">force</span> <span class="o">*</span> <span class="nx">maxSpeed</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick1</span><span class="p">.</span><span class="nx">rotation</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-        <span class="p">}</span>
+        if (this.stick1.isDown)
+        {
+            this.physics.arcade.velocityFromRotation(this.stick1.rotation, this.stick1.force * maxSpeed, this.sprite.body.velocity);
+            this.sprite.rotation = this.stick1.rotation;
+        }
+        else
+        {
+            this.sprite.body.velocity.set(0);
+        }
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">.</span><span class="nx">isDown</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">fireBullet</span><span class="p">();</span>
-        <span class="p">}</span>
+        if (this.stick2.isDown)
+        {
+            this.fireBullet();
+        }
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">screenWrap</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">);</span>
+        this.screenWrap(this.sprite);
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">bullets</span><span class="p">.</span><span class="nx">forEachExists</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">screenWrap</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        this.bullets.forEachExists(this.screenWrap, this);
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">fireBullet</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    fireBullet: function () {
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">time</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">bulletTime</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">bullet</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">bullets</span><span class="p">.</span><span class="nx">getFirstExists</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+        if (this.time.time > this.bulletTime)
+        {
+            var bullet = this.bullets.getFirstExists(false);
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">bullet</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="nx">bullet</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">16</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">16</span><span class="p">);</span>
-                <span class="nx">bullet</span><span class="p">.</span><span class="nx">lifespan</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>
-                <span class="nx">bullet</span><span class="p">.</span><span class="nx">rotation</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">.</span><span class="nx">rotation</span><span class="p">;</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">velocityFromRotation</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stick2</span><span class="p">.</span><span class="nx">rotation</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="nx">bullet</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">velocity</span><span class="p">);</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">bulletTime</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">time</span> <span class="o">+</span> <span class="mi">50</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+            if (bullet)
+            {
+                bullet.reset(this.sprite.body.x + 16, this.sprite.body.y + 16);
+                bullet.lifespan = 2000;
+                bullet.rotation = this.stick2.rotation;
+                this.physics.arcade.velocityFromRotation(this.stick2.rotation, 400, bullet.body.velocity);
+                this.bulletTime = this.time.time + 50;
+            }
+        }
 
-    <span class="p">},</span>
+    },
 
-    <span class="na">screenWrap</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">)</span> <span class="p">{</span>
+    screenWrap: function (sprite) {
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">width</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (sprite.x < 0)
+        {
+            sprite.x = game.width;
+        }
+        else if (sprite.x > game.width)
+        {
+            sprite.x = 0;
+        }
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">sprite</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
+        if (sprite.y < 0)
+        {
+            sprite.y = game.height;
+        }
+        else if (sprite.y > game.height)
+        {
+            sprite.y = 0;
+        }
 
-    <span class="p">}</span>
+    }
 
-<span class="p">};</span>
+};
 
-<span class="nx">game</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'Game'</span><span class="p">,</span> <span class="nx">PhaserGame</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+game.state.add('Game', PhaserGame, true);
 </code></pre>
 <meta content="../" name="loadPath">
 <footer class="footer">
