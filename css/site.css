@@ -73,17 +73,14 @@ a {
   font-weight: 500;
   text-decoration: none;
 }
-a:link {
+a:link, a:visited {
   color: #7cafc2;
 }
-a:visited {
-  color: #ba8baf;
-}
 a:hover, a:focus {
-  color: #638998;
+  color: #4a646d;
 }
 a:active {
-  color: #4a646d;
+  color: #ab4642;
 }
 
 button, label, select {
@@ -156,10 +153,12 @@ nav a:hover, nav a:focus {
 
 .highlight {
   overflow: auto;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 2rem;
   margin: 0;
   text-align: left;
   font-size: 0.75rem;
+  background: #282828;
+  color: #e8e8e8;
 }
 @media (min-width: 768px) {
   .highlight {
@@ -196,7 +195,13 @@ nav a:hover, nav a:focus {
 .sourcelinks {
   padding: 0.75rem 0;
   overflow: hidden;
+  font-size: 1rem;
   background: #e8e8e8;
+}
+@media (min-width: 768px) {
+  .sourcelinks {
+    font-size: 1.25rem;
+  }
 }
 
 .spaceship {
@@ -215,13 +220,9 @@ nav a:hover, nav a:focus {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  height: 600px;
   background: #282828 url(../assets/sprites/phaser.png) no-repeat center;
   overflow: hidden;
-}
-@media (min-height: 600px) {
-  #phaser-example {
-    height: 600px;
-  }
 }
 #phaser-example.bigger {
   height: 100vh;
