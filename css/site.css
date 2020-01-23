@@ -70,14 +70,14 @@ code, pre {
 }
 
 a {
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
 }
 a:link, a:visited {
   color: #7cafc2;
 }
 a:hover, a:focus {
-  color: #4a646d;
+  color: #dc9656;
 }
 a:active {
   color: #ab4642;
@@ -141,7 +141,7 @@ nav a:hover, nav a:focus {
   justify-content: center;
   height: 300px;
   max-height: 100vh;
-  background: #282828 url(../assets/skies/space2.png) repeat-x bottom/auto 100%;
+  background: #282828 url(../assets/skies/starfield.png) repeat-x bottom/auto 100%;
   color: #f8f8f8;
 }
 .header h1 {
