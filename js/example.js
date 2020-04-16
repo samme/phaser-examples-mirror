@@ -1,5 +1,5 @@
 (function() {
-  var $bigger, $phaserExample, $userScale, id, loadPath, reset;
+  var $bigger, $phaserExample, $scaleMode, $userScale, id, loadPath, reset;
 
   loadPath = this.loadPath;
 
@@ -15,6 +15,8 @@
   $phaserExample = id('phaser-example');
 
   $bigger = id('bigger');
+
+  $scaleMode = id('scaleMode');
 
   $userScale = id('userScale');
 
@@ -34,7 +36,7 @@
     game.state.restart();
   });
 
-  id('scaleMode').addEventListener('change', function() {
+  $scaleMode.addEventListener('change', function() {
     var value;
     value = Number(this.value);
     game.scale.scaleMode = value;
@@ -53,6 +55,11 @@
 
   id('rendering').addEventListener('change', function() {
     game.canvas.style.imageRendering = this.value;
+  });
+
+  window.addEventListener('load', function() {
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    $scaleMode.value = game.scale.scaleMode;
   });
 
 }).call(this);
