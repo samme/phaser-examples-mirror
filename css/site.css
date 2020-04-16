@@ -24,11 +24,11 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 @media (min-width: 768px) {
   h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 }
 @media (min-width: 1024px) {
@@ -38,11 +38,11 @@ h1 {
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 @media (min-width: 768px) {
   h2 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -51,7 +51,7 @@ h3 {
 }
 @media (min-width: 768px) {
   h3 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 }
 
@@ -219,10 +219,14 @@ nav a:hover, nav a:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  height: 600px;
+  height: 50vh;
   background: #282828 url(../assets/sprites/phaser.png) no-repeat center;
   overflow: hidden;
+}
+@media (min-height: 768px) {
+  #phaser-example {
+    height: 600px;
+  }
 }
 #phaser-example.bigger {
   height: 100vh;
