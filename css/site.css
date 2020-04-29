@@ -165,16 +165,6 @@ nav a:hover, nav a:focus {
     font-size: 1rem;
   }
 }
-@media (min-width: 1024px) {
-  .highlight {
-    font-size: 1rem;
-  }
-}
-@media (min-width: 1440px) {
-  .highlight {
-    font-size: 1.25rem;
-  }
-}
 
 @keyframes fly {
   from {
@@ -222,6 +212,11 @@ nav a:hover, nav a:focus {
   height: 50vh;
   background: #282828 url(../assets/sprites/phaser.png) no-repeat center;
   overflow: hidden;
+}
+@media (min-height: 384px) {
+  #phaser-example {
+    height: 300px;
+  }
 }
 @media (min-height: 768px) {
   #phaser-example {
